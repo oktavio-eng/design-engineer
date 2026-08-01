@@ -709,7 +709,17 @@ body.cpanel-open .cpanel {
 }
 @media (max-width: 900px) {
   .topbar {
+    top: max(16px, env(safe-area-inset-top));
+    opacity: 1;
+    pointer-events: auto;
+    transform: translate(-50%, 0) scale(1);
+  }
+  .topbar__nav {
     display: none;
+  }
+  .topbar__icon {
+    width: 44px;
+    height: 44px;
   }
 }
 .gloss {
