@@ -988,6 +988,7 @@ mailTrigger.addEventListener("click", function () {
     modal = document.getElementById("cmdModal"),
     modalBody = document.getElementById("cmdModalBody"),
     modalClose = document.getElementById("cmdModalClose"),
+    modalBack = document.getElementById("cmdModalBack"),
     trigger = document.querySelector(".topbar__logo");
 
   // One flat index over every collection already on the page. Built once: these
@@ -1006,7 +1007,10 @@ mailTrigger.addEventListener("click", function () {
   add("Reading", readings);
 
   var results = [],
-    cursor = 0;
+    cursor = 0,
+    // Where the list was when the detail opened, so going back lands on the
+    // same row instead of snapping to the top.
+    lastCursor = 0;
 
   function score(item, q) {
     var n = item.name.toLowerCase(),
@@ -1062,26 +1066,39 @@ mailTrigger.addEventListener("click", function () {
     list.innerHTML = html;
   }
 
-  function moveCursor(delta) {
+  function setCursor(i) {
     if (!results.length) return;
     var items = list.querySelectorAll(".cmd__item");
+    if (!items.length) return;
     items[cursor].setAttribute("aria-selected", "false");
-    cursor = (cursor + delta + results.length) % results.length;
+    cursor = Math.min(Math.max(i, 0), items.length - 1);
     items[cursor].setAttribute("aria-selected", "true");
     if (items[cursor].scrollIntoView) items[cursor].scrollIntoView({ block: "nearest" });
   }
 
-  function openCmd() {
+  function moveCursor(delta) {
+    if (!results.length) return;
+    setCursor((cursor + delta + results.length) % results.length);
+  }
+
+  // keepQuery is the "back from detail" path: same query, same selected row.
+  function openCmd(keepQuery) {
     close();
     closeComment();
     closeAbout();
     closeAvatar();
     closeMail();
+    // Also tears down the detail layer, so ⌘K on top of an open detail swaps
+    // surfaces instead of stacking them.
+    document.body.classList.remove("cmd-detail-open");
+    modal.setAttribute("aria-hidden", "true");
     document.body.classList.add("cmd-open");
     wash.setAttribute("aria-hidden", "false");
     cmd.setAttribute("aria-hidden", "false");
-    input.value = "";
+    if (!keepQuery) input.value = "";
     render();
+    // render() rebuilds the list and resets the cursor, so restoring comes after.
+    if (keepQuery) setCursor(lastCursor);
     setTimeout(function () {
       input.focus();
     }, 60);
@@ -1095,6 +1112,11 @@ mailTrigger.addEventListener("click", function () {
     document.body.classList.remove("cmd-detail-open");
     wash.setAttribute("aria-hidden", "true");
     modal.setAttribute("aria-hidden", "true");
+  }
+  // Back to the results. The wash stays up the whole time — both states share
+  // the same rule in the CSS, so hiding and re-showing it would flash.
+  function backToCmd() {
+    openCmd(true);
   }
 
   // Opening a result in a modal reuses the exact markup the side panel builds,
@@ -1129,6 +1151,9 @@ mailTrigger.addEventListener("click", function () {
     }
     html += "</div>";
     modalBody.innerHTML = html;
+    // Taken from the item, not the global cursor: a click opens a row the
+    // keyboard cursor was never on.
+    lastCursor = results.indexOf(item);
     closeCmd();
     document.body.classList.add("cmd-detail-open");
     wash.setAttribute("aria-hidden", "false");
@@ -1167,8 +1192,10 @@ mailTrigger.addEventListener("click", function () {
   }
 
   wash.addEventListener("click", function () {
-    document.body.classList.contains("cmd-detail-open") ? closeCmdDetail() : closeCmd();
+    document.body.classList.contains("cmd-detail-open") ? backToCmd() : closeCmd();
   });
+  modalBack.addEventListener("click", backToCmd);
+  // The × is the only gesture that dismisses the whole stack at once.
   modalClose.addEventListener("click", closeCmdDetail);
 
   document.addEventListener(
@@ -1183,7 +1210,7 @@ mailTrigger.addEventListener("click", function () {
       // Innermost surface first, so Escape peels one layer at a time.
       if (document.body.classList.contains("cmd-detail-open")) {
         ev.stopImmediatePropagation();
-        closeCmdDetail();
+        backToCmd();
       } else if (document.body.classList.contains("cmd-open")) {
         ev.stopImmediatePropagation();
         closeCmd();
