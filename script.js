@@ -677,25 +677,16 @@ Object.keys(nvMap).forEach(function (e) {
   t && nvIO.observe(t);
 });
 const topbar = document.querySelector(".topbar"),
-  NAV_IDLE_MS = 1200,
-  navCompact = window.matchMedia("(max-width: 900px)");
+  NAV_IDLE_MS = 1200;
 let navIdleTimer = null,
   navHovering = !1;
 function scheduleNavIdle() {
   clearTimeout(navIdleTimer),
     navHovering ||
-      navCompact.matches ||
       (navIdleTimer = setTimeout(function () {
         topbar.classList.remove("visible"), topbar.setAttribute("aria-hidden", "true");
       }, 1200));
 }
-function syncNavCompact() {
-  navCompact.matches &&
-    (clearTimeout(navIdleTimer),
-    topbar.classList.add("visible"),
-    topbar.setAttribute("aria-hidden", "false"));
-}
-navCompact.addEventListener("change", syncNavCompact), syncNavCompact();
 function showNav() {
   topbar.classList.add("visible"), topbar.setAttribute("aria-hidden", "false"), scheduleNavIdle();
 }
