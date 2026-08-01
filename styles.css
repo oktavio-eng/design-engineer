@@ -40,6 +40,11 @@ body {
   color: var(--ink);
   padding: 120px 24px 128px;
 }
+@media (max-width: 560px) {
+  body {
+    padding-top: 60px;
+  }
+}
 main {
   max-width: 560px;
   margin-inline: auto;
