@@ -1,0 +1,38 @@
+:root {
+  --bg: oklch(0.991 0 0);
+  --ink: oklch(0.173 0 0);
+  --muted: oklch(0.52 0 0);
+  --faint: oklch(0.68 0 0);
+  --line: oklch(0.94 0 0);
+  --white: oklch(1 0 0);
+  --white-a40: oklch(1 0 0 / 0.4);
+  --white-a50: oklch(1 0 0 / 0.5);
+  --white-a60: oklch(1 0 0 / 0.6);
+  --gray-870: oklch(0.87 0 0);
+  --gray-955: oklch(0.955 0 0);
+  --bg-a90: oklch(0.991 0 0 / 0.9);
+  --ink-a5: color-mix(in srgb, var(--ink) 5%, transparent);
+  --ink-a7: color-mix(in srgb, var(--ink) 7%, transparent);
+  --wash-bg: color-mix(in srgb, var(--bg) 55%, transparent);
+  --shadow-a0086: oklch(0 0 0 / 0.0086);
+  --shadow-a0128: oklch(0 0 0 / 0.0128);
+  --shadow-a0214: oklch(0 0 0 / 0.0214);
+  --shadow-a02: oklch(0 0 0 / 0.02);
+  --shadow-a04: oklch(0 0 0 / 0.04);
+  --shadow-a05: oklch(0 0 0 / 0.05);
+  --shadow-a08: oklch(0 0 0 / 0.08);
+  --glass-bg: color-mix(in srgb, var(--bg) 72%, transparent);
+  --glass-blur-sm: 18px;
+  --glass-blur: 24px;
+  --glass-blur-lg: 36px;
+  --glass-sat: 150%;
+  --shadow-glass-core: inset 0 1px 0 0 oklch(1 0 0 / 0.4), 0 0 2px oklch(0 0 0 / 0.008),
+    0 0 6px oklch(0 0 0 / 0.012);
+  --shadow-card:
+    0 1px 2px var(--shadow-a02),
+    0 8px 24px var(--shadow-a04),
+    0 24px 64px var(--shadow-a05);
+  --shadow-modal:
+    var(--shadow-glass-core),
+    0 24px 64px var(--shadow-a05);
+}

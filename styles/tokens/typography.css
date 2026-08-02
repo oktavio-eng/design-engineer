@@ -1,0 +1,16 @@
+:root {
+  --font-sans: Inter, system-ui, sans-serif;
+  --fs-11: 11px;
+  --fs-12: 12px;
+  --fs-13: 13px;
+  --fs-14: 14px;
+  --fs-15: 15px;
+  --fs-16: 16px;
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --lh-snug: 1.5;
+  --lh-base: 1.6;
+  --ls-tight: -0.01em;
+  --ls-wide: 0.02em;
+}

@@ -1,15 +1,18 @@
 # AGENTS.md — Design Engineer Wiki
 
-Contexto para qualquer agente de IA (Cursor, Claude Code, etc.) que for editar este repositório. Leia isto antes de mexer no `index.html`, `styles.css` ou `script.js`.
+Contexto para qualquer agente de IA (Cursor, Claude Code, etc.) que for editar este repositório. Leia isto antes de mexer no `index.html`, `styles/` ou `script.js`.
 
 ## O que é este projeto
 
 Um site pessoal single-page do Otavio (GOW Studio) — um "plano de transição de carreira" pra design engineer, com estudo de referências (Rauno Freiberg, Emil Kowalski, Jakub Krehel, floguo, Paco Coursey, shadcn, etc.), cursos, leituras e craft references. Também funciona como prova pública de trabalho (portfolio > diploma).
 
-- **Stack:** três arquivos estáticos, zero build step — `index.html` (markup), `styles.css`, `script.js`. Servidos direto, sem bundler, sem framework.
-  - `index.html` carrega os dois com `<link rel="stylesheet" href="/styles.css">` e `<script src="/script.js" defer>`.
+- **Stack:** arquivos estáticos, zero build step — `index.html` (markup), `styles/` (CSS), `script.js`. Servidos direto, sem bundler, sem framework.
+  - `index.html` carrega `<link rel="stylesheet" href="/styles/main.css">` e `<script src="/script.js" defer>`.
+  - `styles/main.css` é o que sobrou do antigo `styles.css` depois da extração de tokens — as regras de componente, todas consumindo variáveis via `var()`. Ele começa com cinco `@import`, um por arquivo em `styles/tokens/`: `colors.css`, `motion.css`, `spacing.css`, `typography.css`, `radius.css`. `@import` é nativo do CSS (sem bundler processando nada) — o browser busca os cinco arquivos antes de aplicar o resto de `main.css`, então a ordem dos `@import` no topo do arquivo importa e não pode ter regra alguma antes deles.
+  - Qualquer valor novo (cor, timing, espaçamento, tipografia, raio) deve nascer como variável no arquivo de token certo, não como literal solto em `main.css`. Se o valor já existe em outro token com o mesmo número, reuse — não duplique.
+  - `--panel-w` (em `styles/tokens/spacing.css`) é lido/escrito por `script.js` via `style.setProperty`/`getComputedStyle` no `documentElement` — não renomeie essa variável nem a mova pra fora de um seletor `:root` alcançável globalmente.
   - O `defer` é o que faz o `script.js` rodar depois do parse do DOM — equivalente ao antigo script no fim do `</body>`. **Não troque `defer` por `async`**: o script consulta o DOM no topo do arquivo e quebraria.
-  - Era um `index.html` único com CSS e JS inline até 01/08/2026. Se você encontrar documentação ou memória falando em "arquivo único", está desatualizada.
+  - Era um `index.html` único com CSS e JS inline até 01/08/2026, depois virou `index.html` + `styles.css` + `script.js`, e em seguida `styles.css` foi quebrado em `styles/main.css` + `styles/tokens/*.css`. Se você encontrar documentação ou memória falando em "arquivo único" ou em `styles.css` na raiz, está desatualizada.
 - **Deploy:** Vercel, projeto **`design-engineer`** (team ID `team_mMftBNlEUa18031DuM84fBHt`). **NUNCA crie um projeto novo na Vercel — sempre atualize o existente.**
 - **URL de produção:** `design-engineer-phi.vercel.app`
 - **Repo:** conectado ao GitHub (`oktavio-eng/design-engineer`) — push na `main` dispara deploy automático.
@@ -17,8 +20,8 @@ Um site pessoal single-page do Otavio (GOW Studio) — um "plano de transição 
 ## Regras inegociáveis
 
 1. **Nunca crie um novo projeto Vercel.** Sempre atualize o `design-engineer` existente.
-2. **Os quatro arquivos andam juntos** em qualquer deploy: `index.html`, `styles.css`, `script.js`, `favicon.svg`. Subir o HTML sem o CSS/JS derruba o site inteiro, não só o estilo.
-3. **Antes de qualquer deploy/commit**, valide: HTML bem formado (tags fechando corretamente) e `node --check script.js` sem erro. Rode local antes de subir (`python3 -m http.server` na raiz e abra no browser — abrir o `index.html` via `file://` não serve, os caminhos absolutos `/styles.css` e `/script.js` não resolvem).
+2. **Os arquivos andam juntos** em qualquer deploy: `index.html`, `styles/main.css`, os cinco arquivos em `styles/tokens/`, `script.js`, `favicon.svg`. Subir o HTML sem o CSS completo (main.css + tokens) derruba o site inteiro, não só o estilo — `main.css` sozinho, sem os tokens, quebra tudo porque cada `var()` fica sem definição.
+3. **Antes de qualquer deploy/commit**, valide: HTML bem formado (tags fechando corretamente) e `node --check script.js` sem erro. Rode local antes de subir (`python3 -m http.server` na raiz e abra no browser — abrir o `index.html` via `file://` não serve, os caminhos absolutos `/styles/main.css` e `/script.js` não resolvem).
 4. **Sem artefato visual quebrado.** Se um favicon, imagem ou asset externo falhar ao carregar, o padrão é remover o elemento do DOM (não deixar caixa vazia, ícone quebrado ou espaço reservado vazio).
 5. **Prefira edições cirúrgicas.** Os arquivos são grandes (~1.200 linhas cada em CSS e JS) — localize o trecho exato antes de editar (`grep -n` ou busca por texto), não reescreva o arquivo inteiro pra mudanças pequenas.
 6. **Não use APIs que não existem no browser.** Ver "Persistência" abaixo — o site já foi mordido por isso uma vez.
@@ -36,6 +39,18 @@ Um site pessoal single-page do Otavio (GOW Studio) — um "plano de transição 
 - Entrada de elementos: stagger animation via `@keyframes enter` (fade + `translateY` + blur leve).
 - Toda transição precisa ser **interruptível** — nunca travar o usuário no meio de uma animação.
 - Curvas de easing específicas por contexto, não uma curva genérica pra tudo (referência de craft: recent.design, deck.gallery).
+
+### Tokens (`styles/tokens/`)
+
+Extraídos de `styles.css` em 01/08/2026 (ver `tokens/extract-design-tokens` no histórico) — zero mudança visual, validado por diff estrutural do CSSOM (todas as 854 declarações do arquivo original batem com a versão tokenizada após resolver `var()`) e screenshot pixel-a-pixel (desktop + mobile) antes/depois.
+
+- `colors.css` — `--bg`/`--ink`/`--muted`/`--faint`/`--line` (a paleta OKLCH original), variantes de alpha (`--white-a40`, `--shadow-a05`, `--ink-a5` etc.), o sistema de vidro (`--glass-bg`/`--glass-blur`/`--glass-sat`) e as sombras compostas reaproveitadas em mais de um lugar (`--shadow-glass-core`, `--shadow-card`, `--shadow-modal`).
+- `motion.css` — as três curvas de easing (`--ease`, `--ease-out`, `--ease-pop`) e uma escala de durações nomeada pelo valor em ms (`--duration-120`, `--duration-250` etc.), cobrindo só os números que o arquivo realmente usa.
+- `spacing.css` — `--panel-w`/`--topbar-h` (pré-existentes; `--panel-w` é lido/escrito por `script.js`, não renomear) mais `--cpanel-w`/`--border-w` (novos, mesma ideia) e uma escala genérica `--space-N` (px) pra todo o resto — padding, margin, gap, largura/altura, offsets de posição e de `transform`.
+- `typography.css` — `--font-sans`, escala de `--fs-N` (font-size), `--fw-regular/medium/semibold`, `--lh-base/snug`, `--ls-tight/wide`.
+- `radius.css` — escala `--radius-N` + `--radius-full` (999px, pill) e as variáveis de `corner-shape` (`--corner-sm`/`--corner-lg`) que já existiam.
+
+Regra pra manter isso limpo: **todo valor novo de cor, timing, espaçamento, tipografia ou raio nasce como token**, no arquivo certo — nunca como literal solto em `main.css`. Se o número já existe como token (mesmo px/ms/oklch), reuse em vez de criar um novo. Exceção proposital: os offsets internos de `box-shadow`/`backdrop-filter` blur/spread de UM sombra específica (ex. os `1px`/`2px`/`6px` da sombra de `.panel-close`) ficam literais dentro do próprio valor — só a cor vira token — pra não acoplar a "receita" de uma sombra à escala de espaçamento genérica; se a mesma sombra composta aparecer em 2+ lugares, aí sim vira token único (foi o caso de `--shadow-card` e `--shadow-modal`). Breakpoints de `@media` (560px, 900px) também ficam literais — CSS não permite `var()` dentro de media query condition em nenhum browser hoje.
 
 ## Padrões já implementados (não reinventar)
 
@@ -60,7 +75,7 @@ Um site pessoal single-page do Otavio (GOW Studio) — um "plano de transição 
 
 - [ ] HTML valida (tags balanceadas)
 - [ ] `node --check script.js` passa
-- [ ] Os quatro arquivos (`index.html`, `styles.css`, `script.js`, `favicon.svg`) estão consistentes entre si no commit
+- [ ] Os arquivos (`index.html`, `styles/main.css`, `styles/tokens/*.css`, `script.js`, `favicon.svg`) estão consistentes entre si no commit
 - [ ] Servido por HTTP local (`python3 -m http.server`) e aberto no browser — console sem erro, CSS aplicado, favicons resolvendo
 - [ ] Testado visualmente antes do push (o build da Vercel não pega erro de "craft" — só erro de build; e como não há build step, ele não pega nem erro de sintaxe)
 - [ ] Nenhum "ver mais/menos" ou fallback de imagem voltou pro padrão antigo (`display:none` seco, placeholder quebrado)
