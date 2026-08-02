@@ -1,0 +1,12 @@
+:root {
+  --radius-3: 3px;
+  --radius-6: 6px;
+  --radius-12: 12px;
+  --radius-16: 16px;
+  --radius-24: 24px;
+  --radius-28: 28px;
+  --radius-32: 32px;
+  --radius-full: 999px;
+  --corner-sm: superellipse(1.35);
+  --corner-lg: superellipse(1.65);
+}

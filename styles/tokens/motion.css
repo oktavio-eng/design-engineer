@@ -1,0 +1,21 @@
+:root {
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-pop: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration-40: 40ms;
+  --duration-60: 60ms;
+  --duration-80: 80ms;
+  --duration-120: 120ms;
+  --duration-150: 150ms;
+  --duration-160: 160ms;
+  --duration-180: 180ms;
+  --duration-200: 200ms;
+  --duration-240: 240ms;
+  --duration-250: 250ms;
+  --duration-320: 320ms;
+  --duration-400: 400ms;
+  --duration-480: 480ms;
+  --duration-500: 500ms;
+  --duration-560: 560ms;
+  --duration-640: 640ms;
+}

@@ -10,12 +10,12 @@ Leia o [AGENTS.md](AGENTS.md) antes — ele descreve o craft que este roteiro as
 
 Estes são o produto, não o andaime. Vão inteiros:
 
-- **`styles.css` na íntegra.** Tokens OKLCH, tipografia Inter, cascata de colunas, glass/squircle, sombras em camadas, curvas de easing. É aqui que mora o "mesmo design".
+- **`styles/` na íntegra** (`main.css` + os cinco arquivos em `tokens/`). Tokens OKLCH, tipografia Inter, cascata de colunas, glass/squircle, sombras em camadas, curvas de easing. É aqui que mora o "mesmo design".
 - **A máquina do `script.js`:** painel lateral redimensionável, modais, busca ⌘K com o modal de detalhe + botão de voltar, cascata de fallback de favicon (`favFallback` + `sweepFavicons`), helpers `readStored`/`writeStored`, `esc()`, `favicon()`.
 - **A malha de animação:** `.stagger` (entrada das seções) e `.p-stagger` (entrada do conteúdo do painel).
 - **Topbar:** logo, nav com `IntersectionObserver` marcando a seção ativa, auto-hide após 1200ms, ícones sociais, composer de e-mail.
 
-**Regra que continua valendo:** três arquivos, zero build step, `<script defer>` — nunca `async`.
+**Regra que continua valendo:** arquivos estáticos, zero build step, `<script defer>` — nunca `async`.
 
 ## 2. O que muda: só o conteúdo e os nomes das coleções
 
@@ -47,7 +47,7 @@ Tudo que você precisa tocar no `script.js` está nestes cinco lugares. Fora del
 4. **O índice da busca** ([script.js:995-1006](script.js#L995-L1006)) — `add("Grupo", objeto)`, uma linha por coleção. Os nomes de grupo aparecem como cabeçalho na lista de resultados.
 5. **A nav da topbar** — os `href="#secao"` no HTML precisam bater com os `id` das `<section>`; o `IntersectionObserver` se liga sozinho a partir disso ([script.js:657-679](script.js#L657-L679)).
 
-**Armadilha de CSS:** `.stagger` tem delays escritos à mão até `nth-child(9)` ([styles.css:786-816](styles.css#L786-L816)) e `.p-stagger` até `nth-child(5)`. Se o portfolio tiver mais seções que isso, as extras entram **sem delay** (todas juntas) e a cascata quebra. Estender as regras junto.
+**Armadilha de CSS:** `.stagger` tem delays escritos à mão até `nth-child(9)` ([styles/main.css:784-816](styles/main.css#L784-L816)) e `.p-stagger` até `nth-child(5)`. Se o portfolio tiver mais seções que isso, as extras entram **sem delay** (todas juntas) e a cascata quebra. Estender as regras junto.
 
 ## 4. A galeria — a única parte que exige decisão de design
 
@@ -78,7 +78,7 @@ A saída que preserva a coerência: **a foto é conteúdo, não decoração**. O
 Não há build step: a Vercel publica erro de sintaxe sem reclamar e o site cai inteiro, em silêncio. Único teste que existe:
 
 1. `node --check script.js` e HTML com tags balanceadas.
-2. `python3 -m http.server` na raiz + browser (nunca `file://` — os caminhos `/styles.css` e `/script.js` são absolutos).
+2. `python3 -m http.server` na raiz + browser (nunca `file://` — os caminhos `/styles/main.css` e `/script.js` são absolutos).
 3. Dirigir o site de verdade: abrir ⌘K, buscar, abrir um projeto, voltar, abrir a galeria, ampliar uma foto, fechar. Console sem erro, favicons resolvendo.
 4. Mobile e `prefers-reduced-motion` ligado.
 
