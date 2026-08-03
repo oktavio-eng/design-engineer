@@ -34,7 +34,7 @@ sweepFavicons();
 /* ---------------------------------------------------------------------------
    Intro — the "hello screensaver".
 
-   Greets in ten languages, one word per cycle, then dissolves the word into
+   Greets in seven languages, one word per cycle, then dissolves the word into
    the mark and hands the page over. Every duration is read back out of
    tokens/motion.css so the schedule here and the transitions in main.css can
    never drift apart. Runs once per tab session (sessionStorage), not once
@@ -58,16 +58,13 @@ sweepFavicons();
   if (!intro) return;
 
   // Latin scripts ride on Inter; the rest fall through to system-ui, which
-  // carries Cyrillic, Arabic and CJK on every platform we target.
+  // carries CJK on every platform we target.
   const GREETINGS = [
     "Ciao",
     "Hola",
     "Bonjour",
     "Hallo",
     "Olá",
-    "Merhaba",
-    "Здравствуйте",
-    "مرحبا",
     "こんにちは",
     "你好",
     "Hello",

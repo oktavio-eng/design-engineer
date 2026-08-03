@@ -10,8 +10,8 @@ Leia o [AGENTS.md](AGENTS.md) antes — ele descreve o craft que este roteiro as
 
 Estes são o produto, não o andaime. Vão inteiros:
 
-- **`styles/` na íntegra** (`main.css` + os cinco arquivos em `tokens/`). Tokens OKLCH, tipografia Inter, cascata de colunas, glass/squircle, sombras em camadas, curvas de easing. É aqui que mora o "mesmo design".
-- **A máquina do `script.js`:** painel lateral redimensionável, modais, busca ⌘K com o modal de detalhe + botão de voltar, cascata de fallback de favicon (`favFallback` + `sweepFavicons`), helpers `readStored`/`writeStored`, `esc()`, `favicon()`.
+- `styles/` **na íntegra** (`main.css` + os cinco arquivos em `tokens/`). Tokens OKLCH, tipografia Inter, cascata de colunas, glass/squircle, sombras em camadas, curvas de easing. É aqui que mora o "mesmo design".
+- **A máquina do** `script.js`**:** painel lateral redimensionável, modais, busca ⌘K com o modal de detalhe + botão de voltar, cascata de fallback de favicon (`favFallback` + `sweepFavicons`), helpers `readStored`/`writeStored`, `esc()`, `favicon()`.
 - **A malha de animação:** `.stagger` (entrada das seções) e `.p-stagger` (entrada do conteúdo do painel).
 - **Topbar:** logo, nav com `IntersectionObserver` marcando a seção ativa, auto-hide após 1200ms, ícones sociais, composer de e-mail.
 
@@ -19,15 +19,17 @@ Estes são o produto, não o andaime. Vão inteiros:
 
 ## 2. O que muda: só o conteúdo e os nomes das coleções
 
-| Hoje | No portfolio |
-|---|---|
-| `people` (6 + 6 extras) | `clients` — projetos de cliente |
-| `courses` | `personal` — projetos pessoais |
-| `readings` | `life` — vida |
-| `refs` | *(some, ou vira a galeria)* |
+
+| Hoje                         | No portfolio                          |
+| ---------------------------- | ------------------------------------- |
+| `people` (6 + 6 extras)      | `clients` — projetos de cliente       |
+| `courses`                    | `personal` — projetos pessoais        |
+| `readings`                   | `life` — vida                         |
+| `refs`                       | *(some, ou vira a galeria)*           |
 | `phases` (01–04, expansível) | *(opcional)* processo / como trabalho |
-| The principle | posicionamento: o que faço e pra quem |
-| Their aesthetic, decoded | *(some, ou vira "como eu trabalho")* |
+| The principle                | posicionamento: o que faço e pra quem |
+| Their aesthetic, decoded     | *(some, ou vira "como eu trabalho")*  |
+
 
 Cada entrada tem que caber na forma que o `render()` já espera — não invente campo novo sem mexer no render:
 
@@ -42,7 +44,7 @@ Pra um projeto de cliente isso vira: `name` = cliente/projeto, `role` = "o que e
 Tudo que você precisa tocar no `script.js` está nestes cinco lugares. Fora deles, o arquivo não muda.
 
 1. **Os objetos de dados** ([script.js:34+](script.js#L34)) — trocar `people`/`phases`/`refs`/`courses`/`readings` pelas coleções novas.
-2. **O registro `lists`** ([script.js:551-586](script.js#L551-L586)) — é o extension point de verdade. Cada tipo é `{ els: <NodeList do DOM>, get: <el → entrada>, idAttr: <sufixo do data-attr> }`. Um tipo novo = uma entrada aqui + um `data-client="acme"` no HTML + a chave no objeto de dados. Nada mais.
+2. **O registro** `lists` ([script.js:551-586](script.js#L551-L586)) — é o extension point de verdade. Cada tipo é `{ els: <NodeList do DOM>, get: <el → entrada>, idAttr: <sufixo do data-attr> }`. Um tipo novo = uma entrada aqui + um `data-client="acme"` no HTML + a chave no objeto de dados. Nada mais.
 3. **O delegador de clique fora do painel** ([script.js:722-735](script.js#L722-L735)) — tem uma lista literal de `closest("[data-ref]")`, `[data-course]`, `[data-reading]`. Precisa listar os novos atributos, senão clicar numa linha fecha o painel em vez de abrir.
 4. **O índice da busca** ([script.js:995-1006](script.js#L995-L1006)) — `add("Grupo", objeto)`, uma linha por coleção. Os nomes de grupo aparecem como cabeçalho na lista de resultados.
 5. **A nav da topbar** — os `href="#secao"` no HTML precisam bater com os `id` das `<section>`; o `IntersectionObserver` se liga sozinho a partir disso ([script.js:657-679](script.js#L657-L679)).
@@ -61,17 +63,23 @@ A saída que preserva a coerência: **a foto é conteúdo, não decoração**. O
 - **Peso.** Hoje o site inteiro tem ~90KB. Uma galeria é outra ordem de grandeza. `.webp`, `width`/`height` no `<img>`, `loading="lazy"` em tudo abaixo da dobra, e um teto consciente de quantas fotos entram.
 - **Falha de imagem:** vale a regra 4 do AGENTS.md — ou carrega, ou o elemento **sai** do DOM. Nada de quadrado cinza.
 
+
+
 ## 5. O que não levar
 
 - **Sistema de comentários** (`plan-comments-v2`, "add a note", painel `cpanel`): são notas pra você mesmo num documento de estudo. Num portfolio público, é ruído — e qualquer visitante vê o campo. Remover o `cpanel`, `loadComments`/`persistComments`, `itemHtml(...)` com `data-c`, e o `noteBlock`.
 - **Modal "About this document"** com o histórico de versões: é meta-conteúdo deste documento. Ou some, ou vira um "sobre" de verdade.
-- **`og.jpg`, `favicon.svg`, `avatar.webp`:** trocar. O favicon atual é o logo GOW — decidir se o portfolio usa a mesma marca.
+- `og.jpg`**,** `favicon.svg`**,** `avatar.webp`**:** trocar. O favicon atual é o logo GOW — decidir se o portfolio usa a mesma marca.
+
+
 
 ## 6. Repo e deploy
 
 - **Repo novo**, cópia dos arquivos. Não é fork nem branch deste — os dois vão divergir no primeiro dia.
-- **Projeto Vercel novo.** A regra 1 do AGENTS.md ("nunca crie um projeto novo na Vercel") vale **só pro `design-engineer`**; um site novo é um projeto novo, e é o certo. Deixar isso escrito no AGENTS.md do repo novo, senão um agente futuro lê a regra fora de contexto e trava.
+- **Projeto Vercel novo.** A regra 1 do AGENTS.md ("nunca crie um projeto novo na Vercel") vale **só pro** `design-engineer`; um site novo é um projeto novo, e é o certo. Deixar isso escrito no AGENTS.md do repo novo, senão um agente futuro lê a regra fora de contexto e trava.
 - Copiar o `AGENTS.md` adaptado junto. Ele é o que impede a próxima IA de desfazer o craft.
+
+
 
 ## 7. Verificação (o que salva o site)
 
