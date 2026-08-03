@@ -821,6 +821,90 @@ a.note-open.note-empty:hover {
     filter: blur(0);
   }
 }
+/* ---------------------------------------------------------------------------
+   Intro — the "hello screensaver": a full-bleed greeting in twenty languages
+   that plays over the page before the content is revealed.
+
+   The overlay is inert unless <html> carries `.intro-playing`. That class ships
+   in the markup (so there is no frame of content before the intro paints) and
+   script.js drops it when the sequence ends. Anything that keeps the sequence
+   from running — reduced motion, JS disabled — takes the class out of play
+   instead of adding one, so a failure can never strand the page behind a
+   permanent white sheet.
+
+   Word and mark share one grid cell: the word fades out, the mark fades in on
+   the same optical center. Timing comes from tokens/motion.css.
+--------------------------------------------------------------------------- */
+.intro {
+  display: none;
+}
+.intro-playing .intro {
+  display: grid;
+  place-items: center;
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  padding-inline: var(--space-24);
+  background: var(--bg);
+  transition: opacity var(--intro-out) var(--ease-out);
+}
+.intro-playing .intro > * {
+  grid-area: 1 / 1;
+}
+/* The content stagger is withheld behind the overlay and dealt the moment the
+   overlay starts dissolving, so the two cross-fade instead of leaving a blank
+   page between them. Dropping `animation-name` rather than pausing is what
+   makes this reliable: the elements simply sit in the static opacity-0 state
+   they already declare, and `enter` starts clean from zero when the name comes
+   back — no resuming a timeline that began before the page was visible. */
+.intro-playing:not(.intro-done) .stagger {
+  animation-name: none;
+}
+.intro-playing.intro-done .intro {
+  opacity: 0;
+  pointer-events: none;
+}
+/* Skipping is a cut, not a dissolve — match the word transition, not the outro. */
+.intro-playing.intro-skipped .intro {
+  transition-duration: var(--intro-fade);
+}
+.intro__word {
+  display: flex;
+  align-items: center;
+  gap: var(--space-12);
+  white-space: nowrap;
+  font-size: var(--fs-40);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-snug);
+  letter-spacing: var(--ls-tight);
+  color: var(--ink);
+  opacity: 0;
+  transform: scale(0.95);
+  transition:
+    opacity var(--intro-fade) var(--ease-out),
+    transform var(--intro-fade) var(--ease-out);
+}
+.intro__mark {
+  display: block;
+  height: var(--space-44);
+  width: auto;
+  opacity: 0;
+  transform: scale(0.95);
+  transition:
+    opacity var(--intro-reveal) var(--ease-out),
+    transform var(--intro-reveal) var(--ease-out);
+}
+.intro__word.visible,
+.intro__mark.visible {
+  opacity: 1;
+  transform: scale(1);
+}
+@media (max-width: 560px) {
+  .intro__word {
+    gap: var(--space-8);
+    font-size: var(--fs-28);
+  }
+}
 @supports (corner-shape: superellipse(1)) {
   .fav {
     corner-shape: var(--corner-sm);
@@ -1363,6 +1447,11 @@ body.cmd-detail-open .cmd-modal {
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+  /* Never paint the intro at all — script.js also bails, but this beats it to
+     the first frame. */
+  .intro-playing .intro {
+    display: none;
   }
   .p-stagger,
   .stagger {
