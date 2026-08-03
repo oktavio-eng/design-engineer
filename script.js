@@ -72,102 +72,128 @@ sweepFavicons();
   const word = document.getElementById("intro-word");
   const text = document.getElementById("intro-text");
   const mark = document.getElementById("intro-mark");
-  const tokens = getComputedStyle(root);
-  const ms = function (name) {
-    return parseFloat(tokens.getPropertyValue(name)) || 0;
-  };
-  const FADE = ms("--intro-fade");
-  const HOLD = ms("--intro-hold");
-  const HOLD_LAST = ms("--intro-hold-last");
-  const REVEAL = ms("--intro-reveal");
-  const MARK_HOLD = ms("--intro-mark-hold");
-  const OUT = ms("--intro-out");
 
-  // Once per tab session, not per visit: sessionStorage (not the
-  // localStorage the rest of the site uses for real persistence) is the
-  // correct tool here — a reload five minutes later shouldn't replay a
-  // 7s greeting, but a fresh tab should. Documented as a deliberate
-  // exception in AGENTS.md. Same swallow-the-exception shape as the
-  // localStorage helpers below (readStored/writeStored): persistence here
-  // is a nicety, never a requirement.
-  const SESSION_KEY = "intro-shown-v1";
-  function seenIntro() {
-    try {
-      return sessionStorage.getItem(SESSION_KEY) === "1";
-    } catch (e) {
-      return false;
-    }
-  }
-  function markIntroSeen() {
-    try {
-      sessionStorage.setItem(SESSION_KEY, "1");
-    } catch (e) {}
-  }
-
-  const SKIP_EVENTS = ["pointerdown", "keydown", "wheel", "touchmove"];
-  const SKIP_OPTS = { capture: true, passive: true };
-  let timer = null;
-  let ended = false;
-
-  function end(skipped) {
-    if (ended) return;
-    ended = true;
-    clearTimeout(timer);
-    SKIP_EVENTS.forEach(function (type) {
-      window.removeEventListener(type, skip, SKIP_OPTS);
-    });
-    if (skipped) root.classList.add("intro-skipped");
-    // `intro-done` fades the overlay out and releases the content stagger in
-    // the same frame, so the page arrives as the greeting leaves.
-    root.classList.add("intro-done");
-    setTimeout(function () {
-      root.classList.remove("intro-playing", "intro-done", "intro-skipped");
-      intro.remove();
-    }, skipped ? FADE : OUT);
-  }
-
-  function skip() {
-    end(true);
-  }
-
-  function step(i) {
-    if (i >= GREETINGS.length) {
-      mark.classList.add("visible");
-      timer = setTimeout(function () {
-        end(false);
-      }, REVEAL + MARK_HOLD);
+  // Chrome/Firefox hold a `defer` script until stylesheets queued earlier in
+  // <head> have applied, so `main.css` is always in by the time this runs.
+  // Safari doesn't make that guarantee: it can run this script before
+  // `main.css` lands, and every --intro-* read below then comes back empty.
+  // `parseFloat("") || 0` turns that into a 0ms duration for the whole
+  // sequence, which finishes in a handful of same-tick timeouts — the intro
+  // "runs" in under a millisecond and never paints a frame.
+  // A `link.sheet` / `load` check isn't enough to guard against this: in
+  // Safari `link.sheet` can go non-null before the sheet's rules are actually
+  // folded into computed style, so it reports ready one frame too early.
+  // Poll the token itself instead — the one thing that's true exactly when
+  // reading it will work — capped so a stylesheet that genuinely never loads
+  // can't hang the intro forever.
+  let tokenWait = 0;
+  (function waitForTokens() {
+    const ready = getComputedStyle(root).getPropertyValue("--intro-fade").trim() !== "";
+    if (ready || ++tokenWait > 60) {
+      start();
       return;
     }
-    text.textContent = GREETINGS[i];
-    // Flush the opacity-0 state first. On the very first word nothing has been
-    // painted yet, and without a settled "before" the browser jumps straight to
-    // opacity 1 with no transition at all.
-    void word.offsetWidth;
-    word.classList.add("visible");
-    // "Hello" sits a beat longer than the rest — the pause before the mark.
-    const hold = i === GREETINGS.length - 1 ? HOLD_LAST : HOLD;
-    timer = setTimeout(function () {
-      word.classList.remove("visible");
-      // Let the word finish leaving before the next one starts arriving: the
-      // bullet shifts with every word width, and only an empty frame hides it.
+    requestAnimationFrame(waitForTokens);
+  })();
+
+  function start() {
+    const tokens = getComputedStyle(root);
+    const ms = function (name) {
+      return parseFloat(tokens.getPropertyValue(name)) || 0;
+    };
+    const FADE = ms("--intro-fade");
+    const HOLD = ms("--intro-hold");
+    const HOLD_LAST = ms("--intro-hold-last");
+    const REVEAL = ms("--intro-reveal");
+    const MARK_HOLD = ms("--intro-mark-hold");
+    const OUT = ms("--intro-out");
+
+    // Once per tab session, not per visit: sessionStorage (not the
+    // localStorage the rest of the site uses for real persistence) is the
+    // correct tool here — a reload five minutes later shouldn't replay a
+    // 7s greeting, but a fresh tab should. Documented as a deliberate
+    // exception in AGENTS.md. Same swallow-the-exception shape as the
+    // localStorage helpers below (readStored/writeStored): persistence here
+    // is a nicety, never a requirement.
+    const SESSION_KEY = "intro-shown-v1";
+    function seenIntro() {
+      try {
+        return sessionStorage.getItem(SESSION_KEY) === "1";
+      } catch (e) {
+        return false;
+      }
+    }
+    function markIntroSeen() {
+      try {
+        sessionStorage.setItem(SESSION_KEY, "1");
+      } catch (e) {}
+    }
+
+    const SKIP_EVENTS = ["pointerdown", "keydown", "wheel", "touchmove"];
+    const SKIP_OPTS = { capture: true, passive: true };
+    let timer = null;
+    let ended = false;
+
+    function end(skipped) {
+      if (ended) return;
+      ended = true;
+      clearTimeout(timer);
+      SKIP_EVENTS.forEach(function (type) {
+        window.removeEventListener(type, skip, SKIP_OPTS);
+      });
+      if (skipped) root.classList.add("intro-skipped");
+      // `intro-done` fades the overlay out and releases the content stagger in
+      // the same frame, so the page arrives as the greeting leaves.
+      root.classList.add("intro-done");
+      setTimeout(function () {
+        root.classList.remove("intro-playing", "intro-done", "intro-skipped");
+        intro.remove();
+      }, skipped ? FADE : OUT);
+    }
+
+    function skip() {
+      end(true);
+    }
+
+    function step(i) {
+      if (i >= GREETINGS.length) {
+        mark.classList.add("visible");
+        timer = setTimeout(function () {
+          end(false);
+        }, REVEAL + MARK_HOLD);
+        return;
+      }
+      text.textContent = GREETINGS[i];
+      // Flush the opacity-0 state first. On the very first word nothing has been
+      // painted yet, and without a settled "before" the browser jumps straight to
+      // opacity 1 with no transition at all.
+      void word.offsetWidth;
+      word.classList.add("visible");
+      // "Hello" sits a beat longer than the rest — the pause before the mark.
+      const hold = i === GREETINGS.length - 1 ? HOLD_LAST : HOLD;
       timer = setTimeout(function () {
-        step(i + 1);
-      }, FADE);
-    }, FADE + hold);
-  }
+        word.classList.remove("visible");
+        // Let the word finish leaving before the next one starts arriving: the
+        // bullet shifts with every word width, and only an empty frame hides it.
+        timer = setTimeout(function () {
+          step(i + 1);
+        }, FADE);
+      }, FADE + hold);
+    }
 
-  const still = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)");
-  if ((still && still.matches) || seenIntro()) {
-    root.classList.remove("intro-playing");
-    intro.remove();
-    return;
-  }
+    const still = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)");
+    if ((still && still.matches) || seenIntro()) {
+      root.classList.remove("intro-playing");
+      intro.remove();
+      return;
+    }
 
-  markIntroSeen();
-  SKIP_EVENTS.forEach(function (type) {
-    window.addEventListener(type, skip, SKIP_OPTS);
-  });
-  step(0);
+    markIntroSeen();
+    SKIP_EVENTS.forEach(function (type) {
+      window.addEventListener(type, skip, SKIP_OPTS);
+    });
+    step(0);
+  }
 })();
 
 const people = {
