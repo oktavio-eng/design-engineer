@@ -31,6 +31,149 @@ function sweepFavicons() {
 }
 sweepFavicons();
 
+/* ---------------------------------------------------------------------------
+   Intro — the "hello screensaver".
+
+   Greets in ten languages, one word per cycle, then dissolves the word into
+   the mark and hands the page over. Every duration is read back out of
+   tokens/motion.css so the schedule here and the transitions in main.css can
+   never drift apart. Runs once per tab session (sessionStorage), not once
+   per visit — see the SESSION_KEY block below.
+
+   Three rules the sequence has to keep:
+   - It is interruptible. Any deliberate input ends it on the spot.
+   - It cannot trap the page. `.intro-playing` comes off <html> on every exit
+     path — finished, skipped, already seen this session, or refused for
+     reduced motion.
+   - No held state is free. Every pause (the per-word hold, the mark's beat
+     before the dissolve) is a deliberate number that adds to the total; when
+     the total needs to move, that's the first place to look.
+
+   This block sits at the top of the file on purpose: it is the first thing the
+   page does, so it runs before the rest of the script is even parsed.
+--------------------------------------------------------------------------- */
+(function () {
+  const root = document.documentElement;
+  const intro = document.getElementById("intro");
+  if (!intro) return;
+
+  // Latin scripts ride on Inter; the rest fall through to system-ui, which
+  // carries Cyrillic, Arabic and CJK on every platform we target.
+  const GREETINGS = [
+    "Ciao",
+    "Hola",
+    "Bonjour",
+    "Hallo",
+    "Olá",
+    "Merhaba",
+    "Здравствуйте",
+    "مرحبا",
+    "こんにちは",
+    "你好",
+    "Hello",
+  ];
+
+  const word = document.getElementById("intro-word");
+  const text = document.getElementById("intro-text");
+  const mark = document.getElementById("intro-mark");
+  const tokens = getComputedStyle(root);
+  const ms = function (name) {
+    return parseFloat(tokens.getPropertyValue(name)) || 0;
+  };
+  const FADE = ms("--intro-fade");
+  const HOLD = ms("--intro-hold");
+  const HOLD_LAST = ms("--intro-hold-last");
+  const REVEAL = ms("--intro-reveal");
+  const MARK_HOLD = ms("--intro-mark-hold");
+  const OUT = ms("--intro-out");
+
+  // Once per tab session, not per visit: sessionStorage (not the
+  // localStorage the rest of the site uses for real persistence) is the
+  // correct tool here — a reload five minutes later shouldn't replay a
+  // 7s greeting, but a fresh tab should. Documented as a deliberate
+  // exception in AGENTS.md. Same swallow-the-exception shape as the
+  // localStorage helpers below (readStored/writeStored): persistence here
+  // is a nicety, never a requirement.
+  const SESSION_KEY = "intro-shown-v1";
+  function seenIntro() {
+    try {
+      return sessionStorage.getItem(SESSION_KEY) === "1";
+    } catch (e) {
+      return false;
+    }
+  }
+  function markIntroSeen() {
+    try {
+      sessionStorage.setItem(SESSION_KEY, "1");
+    } catch (e) {}
+  }
+
+  const SKIP_EVENTS = ["pointerdown", "keydown", "wheel", "touchmove"];
+  const SKIP_OPTS = { capture: true, passive: true };
+  let timer = null;
+  let ended = false;
+
+  function end(skipped) {
+    if (ended) return;
+    ended = true;
+    clearTimeout(timer);
+    SKIP_EVENTS.forEach(function (type) {
+      window.removeEventListener(type, skip, SKIP_OPTS);
+    });
+    if (skipped) root.classList.add("intro-skipped");
+    // `intro-done` fades the overlay out and releases the content stagger in
+    // the same frame, so the page arrives as the greeting leaves.
+    root.classList.add("intro-done");
+    setTimeout(function () {
+      root.classList.remove("intro-playing", "intro-done", "intro-skipped");
+      intro.remove();
+    }, skipped ? FADE : OUT);
+  }
+
+  function skip() {
+    end(true);
+  }
+
+  function step(i) {
+    if (i >= GREETINGS.length) {
+      mark.classList.add("visible");
+      timer = setTimeout(function () {
+        end(false);
+      }, REVEAL + MARK_HOLD);
+      return;
+    }
+    text.textContent = GREETINGS[i];
+    // Flush the opacity-0 state first. On the very first word nothing has been
+    // painted yet, and without a settled "before" the browser jumps straight to
+    // opacity 1 with no transition at all.
+    void word.offsetWidth;
+    word.classList.add("visible");
+    // "Hello" sits a beat longer than the rest — the pause before the mark.
+    const hold = i === GREETINGS.length - 1 ? HOLD_LAST : HOLD;
+    timer = setTimeout(function () {
+      word.classList.remove("visible");
+      // Let the word finish leaving before the next one starts arriving: the
+      // bullet shifts with every word width, and only an empty frame hides it.
+      timer = setTimeout(function () {
+        step(i + 1);
+      }, FADE);
+    }, FADE + hold);
+  }
+
+  const still = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)");
+  if ((still && still.matches) || seenIntro()) {
+    root.classList.remove("intro-playing");
+    intro.remove();
+    return;
+  }
+
+  markIntroSeen();
+  SKIP_EVENTS.forEach(function (type) {
+    window.addEventListener(type, skip, SKIP_OPTS);
+  });
+  step(0);
+})();
+
 const people = {
     rauno: {
       name: "Rauno Freiberg",
