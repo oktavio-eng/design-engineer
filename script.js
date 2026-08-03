@@ -34,7 +34,7 @@ sweepFavicons();
 /* ---------------------------------------------------------------------------
    Intro — the "hello screensaver".
 
-   Greets in seven languages, one word per cycle, then dissolves the word into
+   Greets in six languages, one word per cycle, then dissolves the word into
    the mark and hands the page over. Every duration is read back out of
    tokens/motion.css so the schedule here and the transitions in main.css can
    never drift apart. Runs once per tab session (sessionStorage), not once
@@ -63,7 +63,6 @@ sweepFavicons();
     "Ciao",
     "Hola",
     "Bonjour",
-    "Hallo",
     "Olá",
     "こんにちは",
     "你好",
