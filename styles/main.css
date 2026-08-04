@@ -873,7 +873,7 @@ a.note-open.note-empty:hover {
   align-items: center;
   gap: var(--space-12);
   white-space: nowrap;
-  font-size: var(--fs-16);
+  font-size: 1.2rem;
   font-weight: var(--fw-medium);
   line-height: var(--lh-snug);
   letter-spacing: var(--ls-tight);
@@ -899,7 +899,7 @@ a.note-open.note-empty:hover {
   opacity: 1;
   transform: scale(1);
 }
-/* A palavra é `--fs-16` nos dois breakpoints de propósito — só o gap encolhe. */
+/* A palavra é 1.2rem nos dois breakpoints de propósito — só o gap encolhe. */
 @media (max-width: 560px) {
   .intro__word {
     gap: var(--space-8);
