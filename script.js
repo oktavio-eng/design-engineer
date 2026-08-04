@@ -60,7 +60,6 @@ sweepFavicons();
   // Latin scripts ride on Inter; the rest fall through to system-ui, which
   // carries CJK on every platform we target.
   const GREETINGS = [
-    "Ciao",
     "Hola",
     "Bonjour",
     "Olá",
