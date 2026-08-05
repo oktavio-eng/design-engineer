@@ -72,6 +72,21 @@ Regra pra manter isso limpo: **todo valor novo de cor, timing, espaçamento, tip
 
 **Tooltips de glossário** (`.gloss` / `.gloss-tip`): termos técnicos (ex. "OKLCH", "cmdk") têm span com tooltip explicativo, acessível via `tabindex="0"`.
 
+**Foco por vizinhança nas listas** (bloco único em `main.css`, logo depois das regras de `.row`): com o mouse dentro de uma lista, os itens que não estão sob o cursor caem pra `opacity: 0.3`. Vale pros `.row` das seções, pros `li` de cada `.phase ul`, pros `.item` do painel/modal e pros `.cmd__item` do palette. Dois detalhes que parecem arbitrários e não são:
+- **A opacidade dos `.row` vai no filho (`.row > *`), não na linha.** As réguas (`border-bottom`) continuam em cheio, então a lista não se desmonta quando você entra nela — só o texto recua. E `.row.extra` é dono de `opacity` pela animação `enter` (que roda com `forwards`): mirando a linha, a regra só funcionaria com `!important` e ainda brigaria com o stagger.
+- **O gatilho é `:has()` no container, não `:hover`.** A lista só apaga quando o cursor está de fato sobre um item — passar pelo `h2` ou pela folga entre linhas não dispara nada.
+- Quem participa do dim precisa de `opacity` na sua `transition-property`. As regras existentes (`p`, `.row .what`, `.row .status`, `.phase li`, `.cmd__item`) foram estendidas em vez de sobrescritas por um bloco genérico — `.row .what` tem especificidade maior que `.row > *` e ganharia de qualquer jeito.
+
+## Experimento em curso: tipografia plana (`styles/experiments/flat-type.css`)
+
+Ligado por um `<link>` no `<head>` do `index.html`, **depois** do `main.css`. Achata a escala tipográfica inteira num tamanho só (1.1rem) e num peso só (500), deixando toda a hierarquia por conta do cinza, do espaço e do ritmo. É uma pergunta de craft, não um estado estável do design system.
+
+- **Como reverter:** apague a linha do `<link>`. Nada em `main.css` nem em `tokens/` foi apagado ou reescrito por causa dele — o arquivo só redeclara tokens depois deles.
+- **Não "limpe" esse arquivo achando que é duplicação de token.** A redundância aparente (seis `--fs-*` com o mesmo valor) é o ponto: os nomes ficam de pé pra que reverter seja tirar um arquivo, não caçar cem pontos de consumo.
+- Achatar `--fw-*` não basta: `main.css` só declara `font-weight` onde queria subir do normal, então a maior parte do texto nunca passa por um token. O peso único nasce no `body`, e controles de formulário (`button`, `input`, `textarea`, `select`) precisam de `font-weight: inherit` — o UA stylesheet planta 400 neles e `font-family: inherit` não cobre peso.
+- `--muted` desce de 0.52 pra 0.48 no experimento. Sem tamanho e sem peso, a rampa de três tons precisa abrir mais — e de quebra o texto corrido sobe de ~4.6:1 pra ~5.3:1 de contraste.
+- Validado em Chrome real via CDP: 207/207 elementos de texto em 17.6px/500, sem overflow horizontal no mobile.
+
 **Intro "hello screensaver"** (`.intro` no HTML, bloco `.intro*` em `main.css`, IIFE no topo do `script.js`): saudação em 5 idiomas antes do conteúdo, terminando em "Hello" e na bandeirinha, ordem ocidental → não-latino → "Hello". Total ≈ 4.55s (era ~17s com 20 idiomas e hold de 320ms/palavra, depois ~7.15s com 10 idiomas, depois ~5.6s com 7 idiomas, depois ~5.1s com 6 — cortado a pedido em quatro passos, ver conta abaixo). Decisões que parecem estranhas e são de propósito:
 - **A classe `.intro-playing` nasce no `<html>` do markup**, não no JS. É isso que faz o overlay pintar no primeiro frame — o `script.js` é `defer`, então qualquer classe que ele adicionasse chegaria depois do primeiro paint e daria flash do conteúdo. O JS só *remove* a classe. Consequência: todo caminho de saída (fim, skip, já visto nesta sessão, reduced motion) tem que tirar a classe, senão a página fica presa atrás de uma folha branca. O `<noscript>` no `<head>` cobre o caso sem JS.
 - **O stagger do conteúdo é segurado com `animation-name: none`, não com `animation-play-state: paused`.** Pausar depende de retomar uma timeline que começou antes da página estar visível; zerar o `animation-name` faz o `enter` começar limpo quando a classe `.intro-done` entra. Não troque de volta.
