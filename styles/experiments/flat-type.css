@@ -31,12 +31,16 @@
   --fs-15: 1.1rem;
   --fs-16: 1.1rem;
 
-  /* E os três pesos viram um. Inter é carregada em 400..600, então 500 é um
-     corte real da variável, não peso sintetizado (`font-synthesis: none` no
-     `body` recusaria o falso de qualquer jeito). */
-  --fw-regular: 500;
-  --fw-medium: 500;
-  --fw-semibold: 500;
+  /* E os três pesos viram um. 460, e não 500, porque Geist entra pelo Google
+     Fonts como variável de verdade (`font-weight: 100 900` no `@font-face`):
+     qualquer número do intervalo é uma instância real, interpolada no eixo
+     `wght`, não um peso sintetizado — o `font-synthesis: none` do `body`
+     recusaria o falso de qualquer jeito. 460 fica um fio abaixo do medium e
+     tira do texto corrido o peso a mais que 500 deixava numa página inteira
+     sem contraste de tamanho. */
+  --fw-regular: 460;
+  --fw-medium: 460;
+  --fw-semibold: 460;
 
   /* Sem tamanho e sem peso, o cinza é o único eixo que sobrou — e a rampa
      original foi calibrada para dividir o trabalho com os outros dois. `--ink`
@@ -78,10 +82,14 @@ select {
   white-space: nowrap;
 }
 
-/* O único `font-size` literal de `main.css` — a palavra da intro, fixada em
-   1.2rem numa decisão anterior. Reapontada para o token só enquanto o
-   experimento estiver ligado: mexer no número acima e esquecer da intro
-   deixaria a saudação fora do compasso do resto. Reverter devolve o 1.2rem. */
-.intro__word {
-  font-size: var(--fs-16);
-}
+/* EXCEÇÃO PROPOSITAL: a intro fica de fora.
+
+   `.intro__word` é o único `font-size` literal de `main.css` (1.2rem), e
+   continua sendo — este arquivo não o toca. A saudação não divide página com
+   nada: é uma palavra sozinha num overlay de tela cheia, antes do conteúdo
+   existir. Ela não participa da hierarquia que o experimento está testando, e
+   por isso não tem por que encolher junto.
+
+   Consequência prática de não haver regra aqui: mexer nos `--fs-*` acima não
+   move a intro. É de propósito — se um dia o experimento virar o padrão, a
+   decisão de alinhar (ou não) a intro é uma conversa separada. */
