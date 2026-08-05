@@ -26,12 +26,12 @@
      script.js reads these same custom properties back through getComputedStyle
      to schedule the sequence, so the numbers only live here.
 
-     180ms comes off a real measurement of the reference page (~182-183ms between
-     swaps, dead consistent). It lands on --duration-180 instead of a literal
-     183ms because the 3ms difference is a fifth of a frame at 60Hz — under what
-     setTimeout can honour, let alone what an eye can see — and the scale already
-     had the step. */
-  --intro-step: var(--duration-180);
+     The reference page measures ~182-183ms between swaps, and 180ms was tried
+     here first — it read as too fast in place, so the step sits one notch up the
+     scale at 200ms. Measurement set the order of magnitude; the eye picked the
+     number. Don't "restore" it to the measured value on the strength of the
+     measurement alone. */
+  --intro-step: var(--duration-200);
   /* The extra beat the last greeting holds, on top of --intro-step. At this
      cadence the six words read as a shuffle, and a shuffle needs somewhere to
      land: without this, "Hello" flashes by like the rest and the mark arrives on

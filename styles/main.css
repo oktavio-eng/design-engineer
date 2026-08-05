@@ -919,10 +919,19 @@ a.note-open.note-empty:hover {
 /* Every greeting sits stacked in a single grid cell, all six in the DOM from the
    start: the row's width settles on the widest word and never moves again. The
    old cross-fade hid that reflow behind an empty frame between words — a cut has
-   no empty frame, and without this the bullet would hop sideways every second. */
+   no empty frame, and at a 200ms cadence a bullet hopping on every swap reads as
+   tremor, not as movement. */
 .intro__langs {
   display: grid;
-  place-items: center;
+  align-items: center;
+  /* Start-aligned, not centered. The stack is as wide as the widest greeting
+     (こんにちは), so centering the words inside it pushed the short ones ~35px off
+     the bullet — the distance between bullet and first letter has to be `gap`
+     and nothing else, identical in every language. The cost is that the row is
+     centred as a whole, so a short word sits a hair left of the optical centre;
+     that's the cheapest of the three prices here, the other two being a gap that
+     changes per word or a bullet that hops on every cut. */
+  justify-items: start;
 }
 .intro__lang {
   grid-area: 1 / 1;
