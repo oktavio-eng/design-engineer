@@ -1,0 +1,87 @@
+/* ===========================================================================
+   EXPERIMENTO — tipografia plana (05/08/2026)
+
+   Um tamanho só, um peso só. Toda a hierarquia passa a ser carregada por tom
+   de cinza, espaço e ritmo — nada de escala, nada de peso. É uma pergunta de
+   craft ("o documento se sustenta sem os dois eixos mais óbvios?"), não um
+   estado estável do design system.
+
+   COMO REVERTER: apague a linha
+
+       <link rel="stylesheet" href="/styles/experiments/flat-type.css">
+
+   do <head> do index.html (e, se quiser, este arquivo). Nada em `main.css` nem
+   em `tokens/` foi apagado ou reescrito por causa disto — este arquivo só
+   redeclara tokens depois deles, então tirar o <link> devolve o site ao estado
+   anterior sem nenhum outro passo.
+
+   O <link> precisa vir DEPOIS de main.css. Não dá pra fazer isto com @import
+   dentro de main.css: `@import` tem que preceder todas as regras do arquivo, e
+   aí os tokens originais é que ganhariam por ordem de cascata.
+   =========================================================================== */
+
+:root {
+  /* A escala inteira colapsa num degrau só. Os nomes ficam (`--fs-11` etc.)
+     porque `main.css` os consome por toda parte — o experimento é achatar os
+     valores, não reescrever os pontos de consumo. */
+  --fs-11: 1.1rem;
+  --fs-12: 1.1rem;
+  --fs-13: 1.1rem;
+  --fs-14: 1.1rem;
+  --fs-15: 1.1rem;
+  --fs-16: 1.1rem;
+
+  /* E os três pesos viram um. Inter é carregada em 400..600, então 500 é um
+     corte real da variável, não peso sintetizado (`font-synthesis: none` no
+     `body` recusaria o falso de qualquer jeito). */
+  --fw-regular: 500;
+  --fw-medium: 500;
+  --fw-semibold: 500;
+
+  /* Sem tamanho e sem peso, o cinza é o único eixo que sobrou — e a rampa
+     original foi calibrada para dividir o trabalho com os outros dois. `--ink`
+     fica onde estava (título/nome/link) e `--faint` também (meta: status,
+     label, numeração, footer); o degrau do meio desce de 0.52 pra 0.48 para
+     abrir a distância até `--faint` e deixar os três níveis lidos de relance.
+     De quebra o texto corrido ganha contraste em vez de perder: ~5.3:1 contra
+     o fundo, onde antes eram ~4.6:1. */
+  --muted: oklch(0.48 0 0);
+}
+
+/* Achatar `--fw-*` não basta: `main.css` só declara `font-weight` onde queria
+   subir do normal, então a maior parte do texto nunca passa por um token — cai
+   no `normal` (400) que o browser herda. O peso único tem que nascer no `body`,
+   de onde todo mundo herda, e os tokens acima cuidam de quem redeclara. */
+body {
+  font-weight: var(--fw-medium);
+}
+
+/* Controles de formulário não herdam tipografia do documento — o UA stylesheet
+   planta `font: 400 <tamanho> <família>` neles. `main.css` já reescreve família
+   e tamanho um a um (`font-family: inherit`), mas nunca precisou tocar no peso,
+   porque 400 era mesmo o peso de corpo. Agora que não é, o `.see-more` ficava
+   sozinho em regular no meio da página. */
+button,
+input,
+textarea,
+select {
+  font-weight: inherit;
+}
+
+/* Com 17.6px o nome de uma pessoa deixa de caber na linha do palette e quebra
+   em duas, empurrando a altura do item. A peça desenhada pra ceder ali é o
+   `.what` do lado (já tem `flex-shrink` e ellipsis) — só faltava dizer que o
+   nome não cede. Mora aqui, e não em `main.css`, porque o aperto é do
+   experimento: em 15px a linha cabia inteira. */
+.cmd__item > span:first-child {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+/* O único `font-size` literal de `main.css` — a palavra da intro, fixada em
+   1.2rem numa decisão anterior. Reapontada para o token só enquanto o
+   experimento estiver ligado: mexer no número acima e esquecer da intro
+   deixaria a saudação fora do compasso do resto. Reverter devolve o 1.2rem. */
+.intro__word {
+  font-size: var(--fs-16);
+}

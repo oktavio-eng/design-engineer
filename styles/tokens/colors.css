@@ -24,7 +24,7 @@
   --glass-bg: color-mix(in srgb, var(--bg) 72%, transparent);
   --glass-blur-sm: 18px;
   --glass-blur: 24px;
-  --glass-blur-lg: 36px;
+  --glass-blur-lg: 27px;
   --glass-sat: 150%;
   --shadow-glass-core: inset 0 1px 0 0 oklch(1 0 0 / 0.4), 0 0 2px oklch(0 0 0 / 0.008),
     0 0 6px oklch(0 0 0 / 0.012);

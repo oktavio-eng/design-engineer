@@ -59,7 +59,7 @@ p {
   color: var(--muted);
   text-wrap: pretty;
   cursor: pointer;
-  transition-property: color;
+  transition-property: color, opacity;
   transition-duration: var(--duration-250);
   transition-timing-function: var(--ease);
 }
@@ -110,6 +110,9 @@ a:active {
 .row .who {
   font-weight: var(--fw-medium);
   white-space: nowrap;
+  transition-property: opacity;
+  transition-duration: var(--duration-250);
+  transition-timing-function: var(--ease);
 }
 .row .what {
   color: var(--muted);
@@ -117,7 +120,7 @@ a:active {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  transition-property: color;
+  transition-property: color, opacity;
   transition-duration: var(--duration-250);
   transition-timing-function: var(--ease);
 }
@@ -125,12 +128,36 @@ a:active {
   color: var(--ink);
 }
 .row .status {
-  transition-property: color;
+  transition-property: color, opacity;
   transition-duration: var(--duration-250);
   transition-timing-function: var(--ease);
 }
 .row:hover .status {
   color: var(--muted);
+}
+/* ---------------------------------------------------------------------------
+   Foco por vizinhança — com o mouse dentro de uma lista, os itens que não estão
+   sob o cursor caem pra 30% e só o de baixo dele fica em cheio. A lista inteira
+   recua, o item lido avança; nenhum destaque novo é pintado, é só o resto que
+   sai da frente.
+
+   Nos `.row` a opacidade vai no *conteúdo* (`.row > *`), não na linha inteira,
+   por dois motivos. As réguas (`border-bottom`) continuam de pé, então a lista
+   não se desmonta quando você entra nela — só o texto recua. E `.row.extra` é
+   dono de `opacity` pela animação `enter` (que roda com `forwards`, e por isso
+   ganha de qualquer declaração nossa que não seja `!important`): mirando o
+   filho, a regra não encosta na animação do stagger.
+
+   `:has()` em vez de `:hover` no container de propósito — a lista só apaga
+   quando o cursor está de fato sobre um item, não quando passa pelo h2 ou pela
+   folga entre as linhas.
+--------------------------------------------------------------------------- */
+section:has(.row:hover) .row:not(:hover) > *,
+.phase ul:has(li:hover) li:not(:hover),
+.panel:has(.item:hover) .item:not(:hover),
+.cmd-modal:has(.item:hover) .item:not(:hover),
+.cmd__list:has(.cmd__item:hover) .cmd__item:not(:hover) {
+  opacity: 0.3;
 }
 .extras {
   display: grid;
@@ -257,7 +284,7 @@ a:active {
   margin-bottom: var(--space-6);
   text-wrap: pretty;
   cursor: pointer;
-  transition-property: color;
+  transition-property: color, opacity;
   transition-duration: var(--duration-250);
   transition-timing-function: var(--ease);
 }
@@ -1011,8 +1038,8 @@ body.about-open .about-modal {
   margin-bottom: var(--space-28);
 }
 .profile__avatar {
-  width: var(--space-52);
-  height: var(--space-52);
+  width: var(--space-57);
+  height: var(--space-57);
   border-radius: var(--radius-full);
   overflow: hidden;
   padding: 0;
@@ -1333,7 +1360,9 @@ body.cmd-open .cmd {
   font-size: var(--fs-15);
   color: var(--ink);
   cursor: pointer;
-  transition: background var(--duration-120) var(--ease);
+  transition:
+    background var(--duration-120) var(--ease),
+    opacity var(--duration-250) var(--ease);
 }
 .cmd__item[aria-selected="true"] {
   background: var(--ink-a5);
