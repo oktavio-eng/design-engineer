@@ -84,6 +84,7 @@ Ligado por um `<link>` no `<head>` do `index.html`, **depois** do `main.css`. Ac
 - **Como reverter:** apague a linha do `<link>`. Nada em `main.css` nem em `tokens/` foi apagado ou reescrito por causa dele — o arquivo só redeclara tokens depois deles.
 - **Não "limpe" esse arquivo achando que é duplicação de token.** A redundância aparente (seis `--fs-*` com o mesmo valor) é o ponto: os nomes ficam de pé pra que reverter seja tirar um arquivo, não caçar cem pontos de consumo.
 - Achatar `--fw-*` não basta: `main.css` só declara `font-weight` onde queria subir do normal, então a maior parte do texto nunca passa por um token. O peso único nasce no `body`, e controles de formulário (`button`, `input`, `textarea`, `select`) precisam de `font-weight: inherit` — o UA stylesheet planta 400 neles e `font-family: inherit` não cobre peso.
+- **A intro fica de fora, de propósito.** `.intro__word` continua em `1.2rem` literal em `main.css` — o experimento não toca nela. A saudação é uma palavra sozinha num overlay de tela cheia, antes do conteúdo existir: não participa da hierarquia que o experimento está testando. Mexer nos `--fs-*` do experimento não move a intro, e isso não é um esquecimento.
 - `--muted` desce de 0.52 pra 0.48 no experimento. Sem tamanho e sem peso, a rampa de três tons precisa abrir mais — e de quebra o texto corrido sobe de ~4.6:1 pra ~5.3:1 de contraste.
 - Validado em Chrome real via CDP: 207/207 elementos de texto em 17.6px/500, sem overflow horizontal no mobile.
 

@@ -78,10 +78,14 @@ select {
   white-space: nowrap;
 }
 
-/* O único `font-size` literal de `main.css` — a palavra da intro, fixada em
-   1.2rem numa decisão anterior. Reapontada para o token só enquanto o
-   experimento estiver ligado: mexer no número acima e esquecer da intro
-   deixaria a saudação fora do compasso do resto. Reverter devolve o 1.2rem. */
-.intro__word {
-  font-size: var(--fs-16);
-}
+/* EXCEÇÃO PROPOSITAL: a intro fica de fora.
+
+   `.intro__word` é o único `font-size` literal de `main.css` (1.2rem), e
+   continua sendo — este arquivo não o toca. A saudação não divide página com
+   nada: é uma palavra sozinha num overlay de tela cheia, antes do conteúdo
+   existir. Ela não participa da hierarquia que o experimento está testando, e
+   por isso não tem por que encolher junto.
+
+   Consequência prática de não haver regra aqui: mexer nos `--fs-*` acima não
+   move a intro. É de propósito — se um dia o experimento virar o padrão, a
+   decisão de alinhar (ou não) a intro é uma conversa separada. */
