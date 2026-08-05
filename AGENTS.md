@@ -110,6 +110,16 @@ Ligado por um `<link>` no `<head>` do `index.html`, **depois** do `main.css`. Ac
 - [ ] Nenhum "ver mais/menos" ou fallback de imagem voltou pro padrão antigo (`display:none` seco, placeholder quebrado)
 - [ ] Nenhuma API inexistente no browser reintroduzida (`window.storage` e afins)
 
+## Depois do push: sempre me mande o link do PR
+
+Todo trabalho aqui passa por PR no GitHub — eu aprovo e faço squash & merge no site, nunca na linha de comando. **Termine sempre entregando o link, na última mensagem, sem eu precisar pedir.** Sem o link eu tenho que sair caçando o branch na interface, e a revisão para antes de começar.
+
+- Se o `gh` estiver disponível: `gh pr create` e mande a URL que ele devolve.
+- Se não estiver (é o caso hoje — o `gh` **não** está instalado nesta máquina): o `git push` de um branch novo já imprime a URL de "Create a pull request" no output do remote. Pegue ela e mande. O formato é `https://github.com/oktavio-eng/design-engineer/pull/new/<branch>`.
+- Se o PR já existia, mande a URL dele (`.../pull/<n>`), não a de criar um novo.
+
+Um PR por assunto. Antes de criar o branch, confira se o que já está em cima não é trabalho meu ainda não mergeado — se for, saia da `main` (`git checkout -b <novo> origin/main`) pra eu não acabar aprovando duas coisas de uma vez sem perceber.
+
 ## Seja flexível quando eu pedir
 
 As regras acima são o "estado estável" do craft — não são pra travar exploração. Quando eu pedir explicitamente pra:
