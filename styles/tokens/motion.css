@@ -20,16 +20,32 @@
   --duration-640: 640ms;
   --duration-1000: 1000ms;
 
-  /* Intro screensaver. One greeting per --intro-fade + --intro-hold + --intro-fade
-     cycle (~520ms). script.js reads these same custom properties back through
-     getComputedStyle to schedule the sequence, so the numbers only live here. */
+  /* Intro screensaver. The languages don't cross-fade into each other — each one
+     cuts to the next on a metronome, one word per --intro-step, the way Apple's
+     setup greeting reads. Dial the whole rhythm from this single number.
+     script.js reads these same custom properties back through getComputedStyle
+     to schedule the sequence, so the numbers only live here.
+
+     180ms comes off a real measurement of the reference page (~182-183ms between
+     swaps, dead consistent). It lands on --duration-180 instead of a literal
+     183ms because the 3ms difference is a fifth of a frame at 60Hz — under what
+     setTimeout can honour, let alone what an eye can see — and the scale already
+     had the step. */
+  --intro-step: var(--duration-180);
+  /* The extra beat the last greeting holds, on top of --intro-step. At this
+     cadence the six words read as a shuffle, and a shuffle needs somewhere to
+     land: without this, "Hello" flashes by like the rest and the mark arrives on
+     top of a flicker. A change-based measurement can't see this beat — nothing
+     mutates while a word simply sits there — so its absence from the reference
+     numbers says nothing either way. Set it to 0 for a flat metronome. */
+  --intro-hold-last: var(--duration-640);
+  /* The only fade left inside the sequence: the last greeting dissolving as the
+     mark arrives. Also the duration of the cut when the intro is skipped. */
   --intro-fade: var(--duration-200);
-  --intro-hold: var(--duration-120);
-  --intro-hold-last: var(--duration-1000);
   --intro-reveal: var(--duration-400);
   /* How long the mark sits at rest after its own reveal before the whole
      overlay starts dissolving — deliberately its own number, not a reuse of
-     --intro-hold-last: the word's pre-reveal pause and the mark's post-reveal
+     --intro-hold-last: the word's landing beat and the mark's post-reveal
      beat are different moments and don't have to move together. */
   --intro-mark-hold: var(--duration-150);
   --intro-out: var(--duration-500);

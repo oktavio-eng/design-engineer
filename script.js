@@ -34,8 +34,9 @@ sweepFavicons();
 /* ---------------------------------------------------------------------------
    Intro — the "hello screensaver".
 
-   Greets in six languages, one word per cycle, then dissolves the word into
-   the mark and hands the page over. Every duration is read back out of
+   Greets in six languages — one cut per --intro-step, no fade between them,
+   the way Apple's setup greeting reads — then dissolves the last word into the
+   mark and hands the page over. Every duration is read back out of
    tokens/motion.css so the schedule here and the transitions in main.css can
    never drift apart. Runs once per tab session (sessionStorage), not once
    per visit — see the SESSION_KEY block below.
@@ -45,7 +46,7 @@ sweepFavicons();
    - It cannot trap the page. `.intro-playing` comes off <html> on every exit
      path — finished, skipped, already seen this session, or refused for
      reduced motion.
-   - No held state is free. Every pause (the per-word hold, the mark's beat
+   - No held state is free. Every pause (the per-word step, the mark's beat
      before the dissolve) is a deliberate number that adds to the total; when
      the total needs to move, that's the first place to look.
 
@@ -57,7 +58,7 @@ sweepFavicons();
   const intro = document.getElementById("intro");
   if (!intro) return;
 
-  // Latin scripts ride on Inter; the rest fall through to system-ui, which
+  // Latin scripts ride on Geist; the rest fall through to system-ui, which
   // carries CJK on every platform we target.
   const GREETINGS = [
     "Hola",
@@ -100,9 +101,9 @@ sweepFavicons();
     const ms = function (name) {
       return parseFloat(tokens.getPropertyValue(name)) || 0;
     };
-    const FADE = ms("--intro-fade");
-    const HOLD = ms("--intro-hold");
+    const STEP = ms("--intro-step");
     const HOLD_LAST = ms("--intro-hold-last");
+    const FADE = ms("--intro-fade");
     const REVEAL = ms("--intro-reveal");
     const MARK_HOLD = ms("--intro-mark-hold");
     const OUT = ms("--intro-out");
@@ -154,30 +155,47 @@ sweepFavicons();
       end(true);
     }
 
+    // All six greetings go into the DOM up front, stacked in one grid cell (see
+    // `.intro__langs` in main.css). Swapping is then a class toggle between two
+    // elements that are already laid out — no text measurement, no reflow, and
+    // nothing for the bullet to shift against on a cut.
+    const slots = GREETINGS.map(function (greeting) {
+      const span = document.createElement("span");
+      span.className = "intro__lang";
+      span.textContent = greeting;
+      text.appendChild(span);
+      return span;
+    });
+
     function step(i) {
-      if (i >= GREETINGS.length) {
-        mark.classList.add("visible");
+      if (i >= slots.length) {
+        // The one dissolve in the sequence: the last greeting fades out, then the
+        // mark fades in. `.dissolve` is what gives the row a transition at all, so the
+        // opacity-1 state has to be flushed under it before `visible` comes off —
+        // set both in the same frame and the browser sees a single computed
+        // change with no "before" to animate from, i.e. another cut.
+        word.classList.add("dissolve");
+        void word.offsetWidth;
+        word.classList.remove("visible");
         timer = setTimeout(function () {
-          end(false);
-        }, REVEAL + MARK_HOLD);
+          mark.classList.add("visible");
+          timer = setTimeout(function () {
+            end(false);
+          }, REVEAL + MARK_HOLD);
+        }, FADE);
         return;
       }
-      text.textContent = GREETINGS[i];
-      // Flush the opacity-0 state first. On the very first word nothing has been
-      // painted yet, and without a settled "before" the browser jumps straight to
-      // opacity 1 with no transition at all.
-      void word.offsetWidth;
-      word.classList.add("visible");
-      // "Hello" sits a beat longer than the rest — the pause before the mark.
-      const hold = i === GREETINGS.length - 1 ? HOLD_LAST : HOLD;
+      if (i > 0) slots[i - 1].classList.remove("on");
+      slots[i].classList.add("on");
+      // The row itself only cuts in once, under the first word. After that it
+      // stays put and the languages swap inside it.
+      if (i === 0) word.classList.add("visible");
+      // "Hello" is where the shuffle lands, so it holds --intro-hold-last longer
+      // than the words it just ran through.
+      const hold = i === slots.length - 1 ? STEP + HOLD_LAST : STEP;
       timer = setTimeout(function () {
-        word.classList.remove("visible");
-        // Let the word finish leaving before the next one starts arriving: the
-        // bullet shifts with every word width, and only an empty frame hides it.
-        timer = setTimeout(function () {
-          step(i + 1);
-        }, FADE);
-      }, FADE + hold);
+        step(i + 1);
+      }, hold);
     }
 
     const still = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)");
