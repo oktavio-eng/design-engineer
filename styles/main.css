@@ -849,8 +849,12 @@ a.note-open.note-empty:hover {
   }
 }
 /* ---------------------------------------------------------------------------
-   Intro — the "hello screensaver": a full-bleed greeting in five languages
+   Intro — the "hello screensaver": a full-bleed greeting in six languages
    that plays over the page before the content is revealed.
+
+   The languages cut, they don't cross-fade: one word per --intro-step, swapped
+   on a metronome. The single dissolve in the whole sequence is the last
+   greeting handing off to the mark, which then hands off to the page.
 
    The overlay is inert unless <html> carries `.intro-playing`. That class ships
    in the markup (so there is no frame of content before the intro paints) and
@@ -907,6 +911,36 @@ a.note-open.note-empty:hover {
   color: var(--ink);
   opacity: 0;
   transform: scale(0.95);
+  /* No transition here on purpose. The row cuts in with the first greeting and
+     every language after it swaps inside `.intro__langs` with no fade at all;
+     the row animates exactly once, on its way out, and `.dissolve` is what
+     grants it that transition for that one moment. */
+}
+/* Every greeting sits stacked in a single grid cell, all six in the DOM from the
+   start: the row's width settles on the widest word and never moves again. The
+   old cross-fade hid that reflow behind an empty frame between words — a cut has
+   no empty frame, and at a 200ms cadence a bullet hopping on every swap reads as
+   tremor, not as movement. */
+.intro__langs {
+  display: grid;
+  align-items: center;
+  /* Start-aligned, not centered. The stack is as wide as the widest greeting
+     (こんにちは), so centering the words inside it pushed the short ones ~35px off
+     the bullet — the distance between bullet and first letter has to be `gap`
+     and nothing else, identical in every language. The cost is that the row is
+     centred as a whole, so a short word sits a hair left of the optical centre;
+     that's the cheapest of the three prices here, the other two being a gap that
+     changes per word or a bullet that hops on every cut. */
+  justify-items: start;
+}
+.intro__lang {
+  grid-area: 1 / 1;
+  opacity: 0;
+}
+.intro__lang.on {
+  opacity: 1;
+}
+.intro__word.dissolve {
   transition:
     opacity var(--intro-fade) var(--ease-out),
     transform var(--intro-fade) var(--ease-out);
