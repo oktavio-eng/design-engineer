@@ -31,12 +31,16 @@
   --fs-15: 1.1rem;
   --fs-16: 1.1rem;
 
-  /* E os três pesos viram um. Inter é carregada em 400..600, então 500 é um
-     corte real da variável, não peso sintetizado (`font-synthesis: none` no
-     `body` recusaria o falso de qualquer jeito). */
-  --fw-regular: 500;
-  --fw-medium: 500;
-  --fw-semibold: 500;
+  /* E os três pesos viram um. 460, e não 500, porque Geist entra pelo Google
+     Fonts como variável de verdade (`font-weight: 100 900` no `@font-face`):
+     qualquer número do intervalo é uma instância real, interpolada no eixo
+     `wght`, não um peso sintetizado — o `font-synthesis: none` do `body`
+     recusaria o falso de qualquer jeito. 460 fica um fio abaixo do medium e
+     tira do texto corrido o peso a mais que 500 deixava numa página inteira
+     sem contraste de tamanho. */
+  --fw-regular: 460;
+  --fw-medium: 460;
+  --fw-semibold: 460;
 
   /* Sem tamanho e sem peso, o cinza é o único eixo que sobrou — e a rampa
      original foi calibrada para dividir o trabalho com os outros dois. `--ink`
