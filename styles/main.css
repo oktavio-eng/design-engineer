@@ -95,6 +95,14 @@ a:active {
   opacity: 0.9;
   user-select: none;
 }
+/* `overflow-x: clip` is the structural guard against sideways page scroll: a
+   flex item defaults to `min-width: auto`, so any `white-space: nowrap` child
+   refuses to shrink below its own text width and pushes the document wider than
+   the viewport. That is precisely what the tag pills did here at 375px. Clipping
+   the row on the inline axis alone means no descendant can widen the page,
+   whatever ends up inside it. Not `overflow: hidden`: that clips both axes, and
+   the favicon rides a negative `vertical-align` that would get its bottom
+   sliced off. */
 .row {
   display: flex;
   justify-content: space-between;
@@ -103,20 +111,33 @@ a:active {
   padding: var(--space-10) 0;
   border-bottom: var(--border-w) solid var(--line);
   cursor: pointer;
+  overflow-x: clip;
 }
 .row:last-child {
   border-bottom: none;
 }
+/* `flex-shrink: 0` keeps the name whole. Letting it shrink even a hair is worse
+   than it sounds: a sub-pixel deficit is enough to trigger `text-overflow`, and
+   the ellipsis then has to eat a whole cluster of real characters to make room
+   for itself — "Dominik Kandravý" renders as "Dominik Kandra…" over 0.07px. The
+   row's own `overflow-x: clip` is what catches a name too long to fit at all. */
 .row .who {
   font-weight: var(--fw-medium);
   white-space: nowrap;
+  flex-shrink: 0;
   transition-property: opacity;
   transition-duration: var(--duration-250);
   transition-timing-function: var(--ease);
 }
+/* The summary is the side that gives: `min-width: 0` (a flex item won't shrink
+   past its content otherwise) plus `overflow: hidden` lets it absorb the entire
+   deficit down to zero width and ellipsise, so narrow screens cost summary text
+   rather than names. Keeping each summary near ~35 characters is what stops it
+   from ellipsising in practice. */
 .row .what {
   color: var(--muted);
   text-align: end;
+  min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -134,52 +155,6 @@ a:active {
 }
 .row:hover .status {
   color: var(--muted);
-}
-/* Tag pills — occupy the exact slot `.what` used to: right-aligned, one line,
-   no wrap. Same row layout as every other `.row` (`justify-content:
-   space-between`), so no `:has()` override is needed here at all. */
-.row .pills {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: var(--space-6);
-  transition-property: opacity;
-  transition-duration: var(--duration-250);
-  transition-timing-function: var(--ease);
-}
-/* Shadow instead of border (better-ui: "shadows over borders") — a 1px ring
-   plus a barely-there lift, both riding the project's own alpha tokens
-   (`--ink-a5`/`--ink-a7` for the ring, `--shadow-a02`/`--shadow-a04` for the
-   lift already used by `--shadow-card`). A hard `border` would read the same
-   on this all-white page, but the shadow is what stays correct if the pill
-   ever sits on something other than `--bg`.
-   Concentric radius doesn't apply here on purpose: `.pill` has no rounded
-   parent to match against (`.row`/`.pills` are both square, borderless flex
-   containers), and `--radius-full` (999px) already produces a true stadium
-   shape at any height/padding combination, so there's no pair of radii to
-   reconcile. */
-.pill {
-  font-size: var(--fs-11);
-  font-weight: var(--fw-medium);
-  color: var(--muted);
-  background: var(--ink-a5);
-  border-radius: var(--radius-full);
-  padding: var(--space-3) var(--space-8);
-  white-space: nowrap;
-  user-select: none;
-  box-shadow:
-    0 0 0 1px var(--ink-a5),
-    0 1px 2px -1px var(--shadow-a02);
-  transition-property: background-color, box-shadow, color;
-  transition-duration: var(--duration-200);
-  transition-timing-function: var(--ease);
-}
-.pill:hover {
-  background: var(--ink-a7);
-  color: var(--ink);
-  box-shadow:
-    0 0 0 1px var(--ink-a7),
-    0 1px 2px -1px var(--shadow-a04);
 }
 /* ---------------------------------------------------------------------------
    Foco por vizinhança — com o mouse dentro de uma lista, os itens que não estão
@@ -1010,6 +985,23 @@ a.note-open.note-empty:hover {
 @media (max-width: 560px) {
   .intro__word {
     gap: var(--space-8);
+  }
+  /* The tip is anchored to the glossed word (`left: 0` on a `position:
+     relative` inline span) and is up to 220px wide, so a word in the right half
+     of a 375px screen throws it past the viewport edge — laid out even at
+     `opacity: 0`, which is enough to make the page scroll sideways. Below 560px
+     it anchors to the list item instead and spans its full width, which is both
+     inside the viewport by construction and easier to read on a phone. */
+  .phase li {
+    position: relative;
+  }
+  .phase li .gloss {
+    position: static;
+  }
+  .phase li .gloss-tip {
+    right: 0;
+    width: auto;
+    max-width: none;
   }
 }
 @supports (corner-shape: superellipse(1)) {
