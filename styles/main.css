@@ -135,6 +135,52 @@ a:active {
 .row:hover .status {
   color: var(--muted);
 }
+/* Tag pills — occupy the exact slot `.what` used to: right-aligned, one line,
+   no wrap. Same row layout as every other `.row` (`justify-content:
+   space-between`), so no `:has()` override is needed here at all. */
+.row .pills {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-6);
+  transition-property: opacity;
+  transition-duration: var(--duration-250);
+  transition-timing-function: var(--ease);
+}
+/* Shadow instead of border (better-ui: "shadows over borders") — a 1px ring
+   plus a barely-there lift, both riding the project's own alpha tokens
+   (`--ink-a5`/`--ink-a7` for the ring, `--shadow-a02`/`--shadow-a04` for the
+   lift already used by `--shadow-card`). A hard `border` would read the same
+   on this all-white page, but the shadow is what stays correct if the pill
+   ever sits on something other than `--bg`.
+   Concentric radius doesn't apply here on purpose: `.pill` has no rounded
+   parent to match against (`.row`/`.pills` are both square, borderless flex
+   containers), and `--radius-full` (999px) already produces a true stadium
+   shape at any height/padding combination, so there's no pair of radii to
+   reconcile. */
+.pill {
+  font-size: var(--fs-11);
+  font-weight: var(--fw-medium);
+  color: var(--muted);
+  background: var(--ink-a5);
+  border-radius: var(--radius-full);
+  padding: var(--space-3) var(--space-8);
+  white-space: nowrap;
+  user-select: none;
+  box-shadow:
+    0 0 0 1px var(--ink-a5),
+    0 1px 2px -1px var(--shadow-a02);
+  transition-property: background-color, box-shadow, color;
+  transition-duration: var(--duration-200);
+  transition-timing-function: var(--ease);
+}
+.pill:hover {
+  background: var(--ink-a7);
+  color: var(--ink);
+  box-shadow:
+    0 0 0 1px var(--ink-a7),
+    0 1px 2px -1px var(--shadow-a04);
+}
 /* ---------------------------------------------------------------------------
    Foco por vizinhança — com o mouse dentro de uma lista, os itens que não estão
    sob o cursor caem pra 30% e só o de baixo dele fica em cheio. A lista inteira
