@@ -349,6 +349,120 @@ const people = {
         ["Y Combinator", "https://www.ycombinator.com"],
       ],
     },
+    rasmus: {
+      name: "Rasmus Andersson",
+      role: "Designer/Engineer · creator of Inter",
+      bio: "Designer/Engineer · creator of Inter",
+      links: [["Site", "https://rsms.me"]],
+    },
+    levon: {
+      name: "Levon Tutundzhian",
+      role: "Craft Product Designer · Hamburg",
+      bio: "Craft Product Designer · Hamburg",
+      links: [["Site", "https://tutundzhian.com"]],
+    },
+    taras: {
+      name: "Taras Migulko",
+      role: "Product Designer, Shopify · micro-interactions",
+      bio: "Product Designer, Shopify · micro-interactions",
+      links: [["Site", "http://www.migulko.cz"]],
+    },
+    shivani: {
+      name: "Shivani Matlapudi",
+      role: "Product Designer · ex-CRED, frog · editorial UX",
+      bio: "Product Designer · ex-CRED, frog · editorial UX",
+      links: [["Site", "https://www.shivanimatlapudi.com"]],
+    },
+    lichin: {
+      name: "Lichin Lin",
+      role: "Design Engineer, GitHub Copilot · Figma plugins",
+      bio: "Design Engineer, GitHub Copilot · Figma plugins",
+      links: [["Site", "https://designtips.today"]],
+    },
+    danmarek: {
+      name: "Dan Marek",
+      role: "Product Designer · design lead at Spruce · web &amp; motion",
+      bio: "Product Designer · design lead at Spruce · web &amp; motion",
+      links: [["Site", "https://dan-marek.framer.website"]],
+    },
+    peterd: {
+      name: "Peter Damrongpiriyapong",
+      role: "Engineer, Figma · Sites, Slides, FigJam AI",
+      bio: "Engineer, Figma · Sites, Slides, FigJam AI",
+      links: [["Site", "https://www.peterdpong.com"]],
+    },
+    gabriel: {
+      name: "Gabriel",
+      role: "Design Engineer, Rava Labs · automotive HMI · ex-Porsche, Audi",
+      bio: "Design Engineer, Rava Labs · automotive HMI · ex-Porsche, Audi",
+      links: [["Site", "https://ravalabs.com"]],
+    },
+    zahra: {
+      name: "Zahra Jabini",
+      role: "Director of Design Engineering, Vercel",
+      bio: "Director of Design Engineering, Vercel",
+      links: [["LinkedIn", "https://www.linkedin.com/in/zahraj"]],
+    },
+    karenlou: {
+      name: "Karen Lou",
+      role: "Internet artist &amp; designer · ex-Browser Company, Figma",
+      bio: "Internet artist &amp; designer · ex-Browser Company, Figma",
+      links: [["Site", "https://karenlou.com"]],
+    },
+    lucasquan: {
+      name: "Lucas Quan",
+      role: "Founder, Hard Launch · launch &amp; growth design",
+      bio: "Founder, Hard Launch · launch &amp; growth design",
+      links: [["Site", "https://lucasquan.com"]],
+    },
+    hardlaunch: {
+      name: "Hard Launch Company",
+      role: "Launch design studio",
+      bio: "Launch design studio",
+      links: [["Site", "https://hardlaunchcompany.com"]],
+    },
+    arjun: {
+      name: "Arjun Mahesh",
+      role: "Head of Design, Hebbia · ex-Stripe · architect",
+      bio: "Head of Design, Hebbia · ex-Stripe · architect",
+      links: [["Site", "https://arjunmahesh.com"]],
+    },
+    oldfriends: {
+      name: "Old Friends",
+      role: "Engineering studio · custom sites for craft-driven teams",
+      bio: "Engineering studio · custom sites for craft-driven teams",
+      links: [["Site", "https://www.oldfriends.studio"]],
+    },
+    glennh: {
+      name: "Glenn Hitchcock",
+      role: "Creative Director, Poolside · ex-Vercel, Sketch · Index",
+      bio: "Creative Director, Poolside · ex-Vercel, Sketch · Index",
+      links: [["Site", "https://glenn.me"]],
+    },
+    alasdairm: {
+      name: "Alasdair Monk",
+      role: "Co-founder, Superlogical · ex-VP Design Vercel · founding Poolside",
+      bio: "Co-founder, Superlogical · ex-VP Design Vercel · founding Poolside",
+      links: [["Site", "https://www.alasdairmonk.com"]],
+    },
+    johnpham: {
+      name: "John Pham",
+      role: "Lead Design Engineer, Vercel · ex-SF Compute, Highlight",
+      bio: "Lead Design Engineer, Vercel · ex-SF Compute, Highlight",
+      links: [["Site", "https://pham.codes"]],
+    },
+    hectors: {
+      name: "Hector Simpson",
+      role: "Interface designer &amp; developer · ex-Vercel, Poolside · Sleeve",
+      bio: "Interface designer &amp; developer · ex-Vercel, Poolside · Sleeve",
+      links: [["Site", "https://hector.me"]],
+    },
+    janikb: {
+      name: "Janik Baumgartner",
+      role: "Icon designer · Sketch toolbar &amp; app icons",
+      bio: "Icon designer · Sketch toolbar &amp; app icons",
+      links: [["Site", "https://kinaj.com"]],
+    },
   },
   phases = {
     f1: {
@@ -503,6 +617,24 @@ const people = {
         ["YouTube", "https://www.youtube.com/@jarekceborski"],
       ],
     },
+    jace: {
+      name: "Jace",
+      role: "Designer, Figma-native · apps, browsers, plugins, icons · ex-Browser Company",
+      bio: "Designer, Figma-native · apps, browsers, plugins, icons · ex-Browser Company",
+      links: [["Site", "https://ja.mt"]],
+    },
+    jacobsargent: {
+      name: "Jacob Sargent",
+      role: "Design engineer, London · full-stack + product · CompaniesBoard",
+      bio: "Design engineer, London · full-stack + product · CompaniesBoard",
+      links: [["Site", "https://jacobsargent.co.uk"]],
+    },
+    nikhilr: {
+      name: "Nikhil Rajpurohit",
+      role: "Software engineer, Pune · full-stack + AI · nmemo, Zellr",
+      bio: "Software engineer, Pune · full-stack + AI · nmemo, Zellr",
+      links: [["Site", "https://nikhilwho.in"]],
+    },
   },
   courses = {
     interfacecraft: {
@@ -540,6 +672,12 @@ const people = {
       role: "Dmytro · timing, states, feedback · Evaluate",
       bio: "A course on the hard-to-explain part: timing, states, feedback, the weight of a click. Same author as lucide-animated.",
       links: [["Open", "https://invisibledetails.com"]],
+    },
+    indexcourse: {
+      name: "Index",
+      role: "Emil Kowalski &amp; Glenn Hitchcock · UI craft education · Evaluate",
+      bio: "A UI craft education platform from Emil Kowalski and Glenn Hitchcock, launching fall 2026.",
+      links: [["Open", "https://index.how"]],
     },
   },
   readings = {
