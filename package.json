@@ -1,0 +1,12 @@
+{
+  "name": "design-engineer-wiki",
+  "private": true,
+  "scripts": {
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
+  },
+  "devDependencies": {
+    "@storybook/html-vite": "10.5.7",
+    "storybook": "10.5.7"
+  }
+}
