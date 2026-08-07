@@ -1002,17 +1002,21 @@ rows.forEach(function (e, t) {
         (n.preventDefault(), n.stopPropagation(), activeRow !== e ? openAt("people", t) : close());
     });
 });
-const peopleSection = document.getElementById("people"),
-  peopleSeeMore = document.getElementById("peopleSeeMore");
-peopleSeeMore.addEventListener("click", function () {
-  const e = peopleSection.classList.toggle("expanded");
-  peopleSeeMore.textContent = e ? "show less" : "show more";
+function wireSeeMore(sectionId) {
+  const section = document.getElementById(sectionId),
+    seeMore = document.getElementById(sectionId + "SeeMore");
+  if (!section || !seeMore) return;
+  seeMore.addEventListener("click", function () {
+    const e = section.classList.toggle("expanded");
+    seeMore.textContent = e ? "show less" : "show more";
+  });
+}
+["people", "courses", "references"].forEach(wireSeeMore);
+lists.phase.els.forEach(function (e, t) {
+  e.querySelector(".phase-head").addEventListener("click", function () {
+    activeRow !== e ? openAt("phase", t) : close();
+  });
 }),
-  lists.phase.els.forEach(function (e, t) {
-    e.querySelector(".phase-head").addEventListener("click", function () {
-      activeRow !== e ? openAt("phase", t) : close();
-    });
-  }),
   ["ref", "course", "reading"].forEach(function (e) {
     lists[e].els.forEach(function (t, n) {
       t.addEventListener("click", function () {
