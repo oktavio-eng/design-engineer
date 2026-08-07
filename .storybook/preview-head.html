@@ -1,0 +1,32 @@
+<script>
+  (function () {
+    try {
+      var globals = new URLSearchParams(location.search).get("globals") || "";
+      var requested = globals.match(/(?:^|;)theme:([^;]+)/);
+      var theme = requested ? requested[1] : localStorage.getItem("storybook-theme");
+      var dark = theme && theme !== "system"
+        ? theme === "dark"
+        : matchMedia("(prefers-color-scheme: dark)").matches;
+      if (dark) document.documentElement.setAttribute("data-theme", "dark");
+    } catch (e) {}
+  })();
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="/styles/main.css">
+<link id="storybook-flat-type" rel="stylesheet" href="/styles/experiments/flat-type.css" disabled>
+<script>
+  (function () {
+    try {
+      var globals = new URLSearchParams(location.search).get("globals") || "";
+      var requested = globals.match(/(?:^|;)flatType:([^;]+)/);
+      var state = requested ? requested[1] : localStorage.getItem("storybook-flat-type");
+      if (state === "on") {
+        document.getElementById("storybook-flat-type").disabled = false;
+      }
+    } catch (e) {}
+  })();
+</script>
