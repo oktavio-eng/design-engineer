@@ -1,3 +1,5 @@
+import { expect, waitFor } from "storybook/test";
+
 function patternShell(title, description, content) {
   const root = document.createElement("div");
   root.className = "sb-inventory";
@@ -18,6 +20,13 @@ export default {
 };
 
 export const Rows = {
+  parameters: {
+    a11y: {
+      // `.status` uses the production `--faint` color, which is below the AA
+      // text contrast threshold. Keep the debt visible without changing CSS.
+      test: "todo",
+    },
+  },
   render: () =>
     patternShell(
       "Rows",
@@ -57,11 +66,18 @@ export const Rows = {
 
 export const PhaseAndGlossary = {
   name: "Phase · Glossary",
+  parameters: {
+    a11y: {
+      // `.phase-num` intentionally mirrors the production `--faint` text.
+      test: "todo",
+    },
+  },
   render: () =>
     patternShell(
       "Phase and glossary",
       "The .phase planning pattern with the existing keyboard-focusable .gloss tooltip. Hover list items or focus the underlined term with the keyboard.",
       `
+        <h2>Plan</h2>
         <div class="phases">
           <div class="phase">
             <div class="phase-head">
@@ -91,4 +107,86 @@ export const PhaseAndGlossary = {
         </div>
       `,
     ),
+  play: async ({ canvas, userEvent, step }) => {
+    const glossary = canvas.getByText("OKLCH", { selector: ".gloss" });
+    const tooltip = glossary.querySelector(".gloss-tip");
+
+    await step("Tab to the glossary term", async () => {
+      await userEvent.tab();
+      await expect(glossary).toHaveFocus();
+    });
+
+    await step("Expose the tooltip without a pointer", async () => {
+      await waitFor(() => expect(tooltip).toBeVisible());
+    });
+  },
+};
+
+export const ExpandablePeople = {
+  name: "Expandable people",
+  parameters: {
+    a11y: {
+      // `.see-more` intentionally mirrors the production `--faint` text.
+      test: "todo",
+    },
+  },
+  render: () => {
+    const root = patternShell(
+      "Expandable people",
+      "The production .extras grid transition, driven by one class and a native button.",
+      `
+        <section class="people" id="storybookPeople">
+          <h2>People</h2>
+          <div class="row">
+            <span class="who"><a href="#rauno">Rauno Freiberg</a></span>
+            <span class="what">Staff Design Engineer, Vercel</span>
+          </div>
+          <div class="extras">
+            <div class="extras-inner">
+              <div class="row extra">
+                <span class="who"><a href="#emil">Emil Kowalski</a></span>
+                <span class="what">Design Engineer, Linear</span>
+              </div>
+              <div class="row extra">
+                <span class="who"><a href="#jakub">Jakub Krehel</a></span>
+                <span class="what">Founding Design Engineer, Interfere</span>
+              </div>
+            </div>
+          </div>
+          <button class="see-more" type="button">show more</button>
+        </section>
+      `,
+    );
+    const section = root.querySelector(".people");
+    const button = root.querySelector(".see-more");
+
+    button.addEventListener("click", () => {
+      const expanded = section.classList.toggle("expanded");
+      button.textContent = expanded ? "show less" : "show more";
+    });
+
+    return root;
+  },
+  play: async ({ canvas, userEvent, step }) => {
+    const section = canvas.getByRole("heading", { name: "People" }).closest(".people");
+    const firstLink = canvas.getByRole("link", { name: "Rauno Freiberg" });
+    const button = canvas.getByRole("button", { name: "show more" });
+
+    await step("Activate the native button from the keyboard", async () => {
+      await userEvent.tab();
+      await expect(firstLink).toHaveFocus();
+      await userEvent.tab();
+      await expect(button).toHaveFocus();
+      await userEvent.keyboard("{Enter}");
+      await expect(section).toHaveClass("expanded");
+      await expect(button).toHaveTextContent("show less");
+    });
+
+    await step("Collapse without leaving the keyboard", async () => {
+      await userEvent.keyboard("{Enter}");
+      await expect(section).not.toHaveClass("expanded");
+      await expect(button).toHaveTextContent("show more");
+      await expect(button).toHaveFocus();
+    });
+  },
 };
