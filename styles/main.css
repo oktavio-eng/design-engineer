@@ -331,6 +331,15 @@ footer {
   justify-content: space-between;
   font-variant-numeric: tabular-nums;
 }
+/* Groups the changelog link with the version button so the footer keeps its
+   two-item `space-between` (name on the left, everything else on the right)
+   instead of a three-way split that would land the middle item nowhere in
+   particular. */
+.footer__right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-16);
+}
 body {
   transition-property: padding-right, background-color, color;
   transition-duration: var(--duration-250);
@@ -1616,4 +1625,83 @@ body.cmd-detail-open .cmd-modal {
   * {
     transition: none !important;
   }
+}
+/* ---------------------------------------------------------------------------
+   Changelog page (`/changelog`, `changelog.html`) — a GitHub-style vertical
+   timeline: one rail on the left connecting a dot per entry, content running
+   beside it. Only these selectors are new; everything else on the page (the
+   topbar, `.stagger`/`enter`, `h1`/`.subtitle`, `.about-trigger`, `.label`,
+   `p`) is reused as-is from the rest of the site. No new tokens were needed —
+   every value below already existed in `tokens/spacing.css`.
+
+   Each `.timeline__entry` is a flex row of two columns: a fixed-width rail
+   and the content. The connecting line is the rail's own `::before`, sized
+   `top: 0; bottom: 0`, so it stretches to match whatever height the sibling
+   content column forces on the row (flex's default `align-items: stretch`) —
+   consecutive entries chain into one continuous line down the list without
+   any manual height math. The marker sits after the line in source order
+   inside the same rail, so it paints on top; its `box-shadow` punches a
+   `--bg`-colored ring around it, breaking the line at the dot the way
+   GitHub's does.
+--------------------------------------------------------------------------- */
+.timeline {
+  list-style: none;
+  margin-top: var(--space-48);
+}
+.timeline__entry {
+  display: flex;
+  gap: var(--space-16);
+}
+.timeline__rail {
+  position: relative;
+  width: var(--space-20);
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+}
+.timeline__rail::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: var(--border-w);
+  background: var(--line);
+}
+/* The last entry's rail has nothing below it to connect to — stop the line
+   just past the dot instead of running it out past the last row. */
+.timeline__entry:last-child .timeline__rail::before {
+  bottom: auto;
+  height: var(--space-14);
+}
+.timeline__marker {
+  position: relative;
+  width: var(--space-8);
+  height: var(--space-8);
+  margin-top: var(--space-6);
+  border-radius: var(--radius-full);
+  background: var(--faint);
+  box-shadow: 0 0 0 var(--space-4) var(--bg);
+  transition-property: background, box-shadow;
+  transition-duration: var(--duration-250);
+  transition-timing-function: var(--ease);
+}
+.timeline__entry:hover .timeline__marker {
+  background: var(--ink);
+}
+.timeline__content {
+  flex: 1;
+  min-width: 0;
+  padding-bottom: var(--space-40);
+}
+.timeline__entry:last-child .timeline__content {
+  padding-bottom: 0;
+}
+.timeline__date {
+  display: block;
+  font-variant-numeric: tabular-nums;
+  margin-bottom: var(--space-4);
+}
+.timeline__title {
+  color: var(--ink);
+  margin-bottom: var(--space-4);
 }

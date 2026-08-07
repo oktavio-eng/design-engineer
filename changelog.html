@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<!-- No-flash dark mode: identical, byte-for-byte, to the snippet in
+     index.html's <head>. Runs synchronously before main.css even starts
+     downloading, so <html> already carries the right data-theme by the time
+     anything paints. Stored choice wins; first visit falls back to the OS
+     preference. Both pages read/write the same "theme" key in localStorage,
+     so a choice made on one carries over to the other. -->
+<script>
+(function () {
+  try {
+    var stored = localStorage.getItem("theme");
+    var dark = stored ? stored === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+    if (dark) document.documentElement.setAttribute("data-theme", "dark");
+  } catch (e) {}
+})();
+</script>
+<title>Changelog — Design Engineer, Plan</title>
+<meta name="description" content="A running log of what shipped on this site, newest first. By Otavio, GOW Studio.">
+
+<link rel="icon" type="image/png" href="/new-favicon.png">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://design-engineer-phi.vercel.app/changelog">
+<meta property="og:site_name" content="Design Engineer, Plan">
+<meta property="og:title" content="Changelog — Design Engineer, Plan">
+<meta property="og:description" content="A running log of what shipped on this site, newest first.">
+<meta property="og:image" content="https://design-engineer-phi.vercel.app/og.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="628">
+<meta property="og:image:alt" content="GOW Studio mark on a white field">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Changelog — Design Engineer, Plan">
+<meta name="twitter:description" content="A running log of what shipped on this site, newest first.">
+<meta name="twitter:image" content="https://design-engineer-phi.vercel.app/og.jpg">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- O range `wght@100..900` é o que faz o Google Fonts servir o arquivo variável em
+     vez de instâncias estáticas. Sem ele não existe peso 460. -->
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="/styles/main.css">
+<!-- EXPERIMENTO (tipografia plana): ligado no index.html hoje, então fica ligado
+     aqui também para as duas páginas lerem como o mesmo sistema. Se a linha sair
+     de index.html, tire daqui junto. -->
+<link rel="stylesheet" href="/styles/experiments/flat-type.css">
+<!-- Sem <script src="/script.js">, de propósito: script.js é um monólito que
+     assume a estrutura de DOM da homepage a partir da linha 1 (ex.: liga
+     `panelResize.addEventListener(...)` e `closeBtn.addEventListener(...)` sem
+     nenhum guard de null) — incluí-lo aqui inteiro quebraria no primeiro elemento
+     que não existe nesta página e abortaria tudo depois dele, inclusive o toggle
+     de tema. Um equivalente pequeno e local, no fim do <body>, cobre só o que
+     esta página precisa. -->
+</head>
+<body>
+<div class="topbar visible" aria-hidden="false">
+  <a href="/" class="topbar__logo" aria-label="Home"><svg width="162" height="208" viewBox="0 0 44 56" fill="none" xmlns="http://www.w3.org/2000/svg"><g filter="url(#filter0_i_changelog_logo)"><path d="M22.2308 41.1974C33.2757 41.1974 42.2294 44.2682 42.2296 48.0565C42.2296 51.8448 33.2759 54.9158 22.2308 54.9158C11.1857 54.9158 2.23175 51.8448 2.23175 48.0565C2.23194 44.2682 11.1858 41.1974 22.2308 41.1974Z" fill="black"/><path d="M26.01 1.13301C26.8922 0.942593 27.8093 1.19536 28.4739 1.76271C29.0102 2.26793 29.2628 2.93249 29.1696 3.59316V3.58922L27.5607 15.87L25.0656 37.7187L22.4774 38.3834L24.8753 17.0747L18.6882 17.5177L18.2452 20.6425C18.183 21.2759 17.74 21.7459 17.1727 21.781L2.77784 23.1063C1.98892 23.1374 1.29326 22.5389 1.35544 21.8433L2.33482 12.0887C2.36591 11.6145 2.74666 11.2375 3.25188 11.1093L7.44915 10.0366C7.51132 10.0366 7.60837 10.0366 7.67053 10.0055L9.46996 9.53149L14.6466 8.23739C14.9614 8.1441 15.214 7.82525 15.214 7.47939C15.2139 7.44827 15.1827 7.38607 15.1827 7.32006C15.0583 6.94315 14.6775 6.69045 14.2656 6.78371L9.62534 7.98473L9.78467 6.1853C9.84687 5.23706 10.6049 4.44806 11.6464 4.22654L26.01 1.13301Z" fill="black"/></g><path d="M22.2305 41.3779C27.7385 41.3779 32.7178 42.1437 36.3135 43.377C38.1122 43.9939 39.5555 44.724 40.5449 45.5264C41.5357 46.3299 42.0498 47.1863 42.0498 48.0566C42.0497 48.927 41.5358 49.7834 40.5449 50.5869C39.5555 51.3893 38.1122 52.1194 36.3135 52.7363C32.7178 53.9696 27.7385 54.7353 22.2305 54.7354C16.7225 54.7353 11.7432 53.9696 8.14746 52.7363C6.34902 52.1195 4.9064 51.3891 3.91699 50.5869C2.9261 49.7834 2.41218 48.927 2.41211 48.0566C2.41215 47.1862 2.92601 46.3299 3.91699 45.5264C4.90639 44.7241 6.34898 43.9938 8.14746 43.377C11.7431 42.1438 16.7225 41.378 22.2305 41.3779ZM15.3623 7.29102L15.3535 7.26367C15.2033 6.80859 14.7378 6.49243 14.2256 6.6084L14.2207 6.60938L9.82715 7.74609L9.96387 6.20117V6.19727C10.0199 5.34353 10.7064 4.61026 11.6836 4.40234H11.6846L26.0479 1.30859C26.8705 1.13103 27.7285 1.36558 28.3516 1.89453C28.8491 2.36376 29.0743 2.97056 28.9912 3.56543L27.3818 15.8467V15.8496L24.9004 37.5742L22.6846 38.1436L25.0537 17.0947L25.0781 16.8799L24.8623 16.8955L18.6758 17.3379L18.5303 17.3486L18.5098 17.4922L18.0674 20.6172H18.0664V20.625C18.0113 21.1856 17.6263 21.5727 17.1621 21.6016H17.1562L2.7627 22.9258C2.05239 22.9496 1.48463 22.4128 1.53418 21.8584L2.51367 12.1064L2.51465 12.1006C2.53934 11.724 2.84556 11.3986 3.2959 11.2842H3.29688L7.47461 10.2148C7.50322 10.2147 7.53975 10.2155 7.57715 10.2119C7.61565 10.2082 7.66555 10.1978 7.71582 10.1787L7.7168 10.1797L9.51562 9.70605L9.51465 9.70508L14.6904 8.41211L14.6982 8.41016C15.0865 8.29488 15.3945 7.90773 15.3945 7.47949C15.3945 7.44701 15.3861 7.41785 15.3828 7.40527C15.3795 7.39259 15.3744 7.37235 15.3721 7.36426C15.3651 7.33963 15.3623 7.3272 15.3623 7.32031V7.29102Z" stroke="url(#paint0_linear_changelog_logo)" style="mix-blend-mode:overlay" stroke-width="0.360118"/><defs><filter id="filter0_i_changelog_logo" x="1.35156" y="1.07031" width="40.875" height="55.9976" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/><feOffset dy="2.15385"/><feGaussianBlur stdDeviation="1.07692"/><feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/><feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.28 0"/><feBlend mode="normal" in2="shape" result="effect1_innerShadow_changelog_logo"/></filter><linearGradient id="paint0_linear_changelog_logo" x1="21.7906" y1="1.07031" x2="21.7906" y2="54.9158" gradientUnits="userSpaceOnUse"><stop stop-color="white" stop-opacity="0.5"/><stop offset="1" stop-color="white" stop-opacity="0.2"/></linearGradient></defs></svg></a>
+  <div class="topbar__social">
+    <button class="topbar__icon theme-toggle" id="themeTrigger" type="button" aria-label="Toggle dark mode" data-mode="light"><svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="4.25"/><path d="M12 3v1.6M12 19.4V21M4.6 12H3M21 12h-1.6M6.1 6.1l1.15 1.15M16.75 16.75l1.15 1.15M6.1 17.9l1.15-1.15M16.75 7.25l1.15-1.15"/></svg><svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a6.8 6.8 0 0 0 10.5 10.5Z"/></svg></button>
+  </div>
+</div>
+<main>
+<section class="stagger">
+<a href="/" class="about-trigger">&larr; Plan</a>
+<h1>Changelog</h1>
+<p class="subtitle">What shipped on this site, newest first.</p>
+</section>
+<section class="stagger">
+<ol class="timeline">
+<li class="timeline__entry">
+<div class="timeline__rail"><span class="timeline__marker"></span></div>
+<div class="timeline__content">
+<time class="label timeline__date" datetime="2026-08-07">Aug 7</time>
+<h3 class="timeline__title">Dark mode, and the tools behind the scenes</h3>
+<p>A theme toggle that follows the OS live until you override it, with no flash on load — the choice is read and applied before any stylesheet paints. Alongside it, a Storybook MVP: a visual inventory for development only, not a rewrite of the site into components.</p>
+</div>
+</li>
+<li class="timeline__entry">
+<div class="timeline__rail"><span class="timeline__marker"></span></div>
+<div class="timeline__content">
+<time class="label timeline__date" datetime="2026-08-06">Aug 6</time>
+<h3 class="timeline__title">Nineteen more names</h3>
+<p>The people, references, and courses lists grew: 19 more people, 3 craft references, a new course entry. A tag-pill experiment on those rows got reverted back to plain text summaries after it broke horizontal scroll on mobile.</p>
+</div>
+</li>
+<li class="timeline__entry">
+<div class="timeline__rail"><span class="timeline__marker"></span></div>
+<div class="timeline__content">
+<time class="label timeline__date" datetime="2026-08-05">Aug 5</time>
+<h3 class="timeline__title">Flat typography, on trial</h3>
+<p>An experiment collapsing every heading and paragraph to one size and one weight, testing whether gray, space, and rhythm alone can carry the whole hierarchy. Fully revertible — remove one stylesheet link and it's gone. Alongside it, hovering a list now dims every row but the one under the cursor.</p>
+</div>
+</li>
+<li class="timeline__entry">
+<div class="timeline__rail"><span class="timeline__marker"></span></div>
+<div class="timeline__content">
+<time class="label timeline__date" datetime="2026-08-04">Aug 2–4</time>
+<h3 class="timeline__title">Hello, in six languages</h3>
+<p>An Apple-style intro greeting plays once per tab before the homepage appears, cutting between languages on a metronome and landing on the mark. It shipped at 20 languages and got trimmed four times chasing the right runtime and feel — 7, then 6, then 5 — plus a Safari bug fix that had kept it from playing at all.</p>
+</div>
+</li>
+<li class="timeline__entry">
+<div class="timeline__rail"><span class="timeline__marker"></span></div>
+<div class="timeline__content">
+<time class="label timeline__date" datetime="2026-08-01">Aug 1</time>
+<h3 class="timeline__title">Recovered, split into files, tokenized</h3>
+<p>The starting point: the site recovered from production, split from one HTML file into markup, stylesheet, and script, a nonexistent browser storage API removed, and — by the end of the day — every color, timing, spacing, type, and radius value pulled out into its own token file.</p>
+</div>
+</li>
+</ol>
+</section>
+<footer class="stagger">
+<span>Otavio · GOW Studio</span>
+<a href="/" class="about-trigger">Back to the plan</a>
+</footer>
+</main>
+<script>
+/* Small local equivalent of script.js's theme-toggle block (see index.html's
+   loaded script around the THEME_KEY/themeTrigger/applyTheme functions),
+   reimplemented here rather than reused wholesale — script.js unconditionally
+   wires listeners to homepage-only elements (e.g. #panelResize, #closeBtn)
+   with no null guard, so pointing a <script src> at it from this page would
+   throw partway through and abort everything after, including this toggle.
+   Same "theme" key, same rule order: an explicit click wins forever after;
+   until then, the OS preference is followed live via matchMedia. */
+(function () {
+  var KEY = "theme";
+  var trigger = document.getElementById("themeTrigger");
+  var media = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)");
+  function readStored() {
+    try {
+      return localStorage.getItem(KEY);
+    } catch (e) {
+      return null;
+    }
+  }
+  function writeStored(value) {
+    try {
+      localStorage.setItem(KEY, value);
+    } catch (e) {}
+  }
+  function currentTheme() {
+    return document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light";
+  }
+  function applyTheme(theme) {
+    if (theme === "dark") document.documentElement.setAttribute("data-theme", "dark");
+    else document.documentElement.removeAttribute("data-theme");
+    if (trigger) trigger.setAttribute("data-mode", theme);
+  }
+  if (trigger) {
+    trigger.setAttribute("data-mode", currentTheme());
+    trigger.addEventListener("click", function () {
+      var next = currentTheme() === "dark" ? "light" : "dark";
+      applyTheme(next);
+      writeStored(next);
+    });
+  }
+  if (media) {
+    var followSystemTheme = function (e) {
+      if (readStored()) return; // an explicit click already overrode this
+      applyTheme(e.matches ? "dark" : "light");
+    };
+    if (media.addEventListener) media.addEventListener("change", followSystemTheme);
+    else if (media.addListener) media.addListener(followSystemTheme);
+  }
+})();
+</script>
+</body>
+</html>
