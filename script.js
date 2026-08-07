@@ -736,6 +736,59 @@ function writeStored(key, value) {
   } catch (e) {}
 }
 
+/* ---------------------------------------------------------------------------
+   Dark mode toggle. The theme itself is already applied to <html> by the
+   inline script at the top of <head> before this file even downloads (that's
+   what avoids a light-mode flash on load) — all this does is sync the
+   button's icon to whatever was already decided, flip + persist an explicit
+   choice on click, and keep following the OS theme live for anyone who
+   hasn't clicked the toggle yet. Key is plain "theme" (not versioned like
+   plan-comments-v2): the value space is just "dark"/"light"/absent, nothing
+   to migrate.
+
+   Two sources can set the theme, and they rank in this order:
+   1. An explicit click — stored, and wins forever after (until clicked
+      again).
+   2. The OS preference — read once by the inline head script on load, and
+      then tracked live here via matchMedia's `change` event, so switching
+      the system theme while the tab is open (or between visits, before ever
+      touching the toggle) moves the page without a reload.
+   `getStoredTheme()` returning non-null is what tells the two apart: it's
+   only ever written by the click handler below.
+--------------------------------------------------------------------------- */
+const THEME_KEY = "theme",
+  themeTrigger = document.getElementById("themeTrigger"),
+  themeMedia = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)");
+function getStoredTheme() {
+  return readStored(THEME_KEY);
+}
+function currentTheme() {
+  return document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light";
+}
+function applyTheme(theme) {
+  if (theme === "dark") document.documentElement.setAttribute("data-theme", "dark");
+  else document.documentElement.removeAttribute("data-theme");
+  if (themeTrigger) themeTrigger.setAttribute("data-mode", theme);
+}
+if (themeTrigger) {
+  themeTrigger.setAttribute("data-mode", currentTheme());
+  themeTrigger.addEventListener("click", function () {
+    const next = currentTheme() === "dark" ? "light" : "dark";
+    applyTheme(next);
+    writeStored(THEME_KEY, next);
+  });
+}
+if (themeMedia) {
+  const followSystemTheme = function (e) {
+    if (getStoredTheme()) return; // an explicit click already overrode this
+    applyTheme(e.matches ? "dark" : "light");
+  };
+  // `addEventListener` on a MediaQueryList is unsupported in Safari <14;
+  // `addListener` is its deprecated-but-still-there predecessor there.
+  if (themeMedia.addEventListener) themeMedia.addEventListener("change", followSystemTheme);
+  else if (themeMedia.addListener) themeMedia.addListener(followSystemTheme);
+}
+
 function panelWMax() {
   return Math.min(640, window.innerWidth - 80);
 }
