@@ -1,9 +1,16 @@
 :root {
+  color-scheme: light;
   --bg: oklch(0.991 0 0);
   --ink: oklch(0.173 0 0);
   --muted: oklch(0.52 0 0);
   --faint: oklch(0.68 0 0);
   --line: oklch(0.94 0 0);
+  /* `--white` does double duty: solid card/modal surfaces (.composer,
+     .cmd__card) AND the contrast color for text sitting on an ink-filled
+     button (.composer__send). Both readings point the same direction in dark
+     mode too — an elevated dark surface reads correctly as a card, and it's
+     dark enough to sit on the (now light) --ink button text. One override
+     below covers both call sites; don't split it into two tokens. */
   --white: oklch(1 0 0);
   --white-a40: oklch(1 0 0 / 0.4);
   --white-a50: oklch(1 0 0 / 0.5);
@@ -35,4 +42,43 @@
   --shadow-modal:
     var(--shadow-glass-core),
     0 24px 64px var(--shadow-a05);
+}
+/* ---------------------------------------------------------------------------
+   Dark mode — every component in main.css already reads color through these
+   tokens (var(), never a literal), so re-pointing the palette here is the
+   whole job; nothing in main.css itself needs to know a theme exists.
+   `--ink-a5`, `--ink-a7`, `--wash-bg` and `--glass-bg` are left out on
+   purpose: they're `color-mix()` against `--ink`/`--bg`, so they re-resolve
+   for free the moment those two flip. `--shadow-card`/`--shadow-modal` are
+   the same story one level up — they're built from the `--shadow-a*` tokens
+   below, not from literals.
+
+   `[data-theme="dark"]` is set on <html> by a small inline script at the top
+   of <head> (reads localStorage, falls back to prefers-color-scheme) before
+   any stylesheet paints, so there's no light-mode flash on load. script.js
+   only handles the click-to-toggle after that. See the toggle button
+   (#themeTrigger) in the topbar and its wiring in script.js. */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: oklch(0.16 0 0);
+  --ink: oklch(0.96 0 0);
+  --muted: oklch(0.66 0 0);
+  --faint: oklch(0.46 0 0);
+  --line: oklch(0.27 0 0);
+  --white: oklch(0.22 0 0);
+  --white-a40: oklch(1 0 0 / 0.06);
+  --white-a50: oklch(1 0 0 / 0.05);
+  --white-a60: oklch(1 0 0 / 0.08);
+  --gray-870: oklch(0.42 0 0);
+  --gray-955: oklch(0.28 0 0);
+  --bg-a90: oklch(0.16 0 0 / 0.9);
+  --shadow-a0086: oklch(0 0 0 / 0.3);
+  --shadow-a0128: oklch(0 0 0 / 0.35);
+  --shadow-a0214: oklch(0 0 0 / 0.4);
+  --shadow-a02: oklch(0 0 0 / 0.24);
+  --shadow-a04: oklch(0 0 0 / 0.32);
+  --shadow-a05: oklch(0 0 0 / 0.4);
+  --shadow-a08: oklch(0 0 0 / 0.5);
+  --shadow-glass-core: inset 0 1px 0 0 oklch(1 0 0 / 0.06), 0 0 2px oklch(0 0 0 / 0.3),
+    0 0 6px oklch(0 0 0 / 0.35);
 }

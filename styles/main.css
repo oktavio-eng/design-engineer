@@ -332,9 +332,19 @@ footer {
   font-variant-numeric: tabular-nums;
 }
 body {
-  transition-property: padding-right;
+  transition-property: padding-right, background-color, color;
   transition-duration: var(--duration-250);
   transition-timing-function: var(--ease);
+}
+/* The mark's two shapes are baked as `fill="black"` in the SVG markup itself
+   (it's shared between the intro overlay and the topbar logo), so a plain
+   `var(--ink)` on the wrapping element wouldn't touch them — `fill` doesn't
+   inherit through an explicit attribute the way `color` does. Overriding the
+   attribute-selector match keeps the mark dark-on-light and light-on-dark
+   without touching the SVG file itself. */
+.intro__mark path[fill="black"],
+.topbar__logo path[fill="black"] {
+  fill: var(--ink);
 }
 body.panel-open {
   padding-right: var(--panel-w);
@@ -718,6 +728,42 @@ body.cpanel-open .cpanel {
 .topbar__icon svg {
   width: var(--space-17);
   height: var(--space-17);
+}
+/* Same stacked-icon crossfade as `.composer__send` (icon-send/icon-close):
+   both svgs sit on top of each other via `position: absolute` on a
+   `position: relative` button, so swapping which one is visible never
+   reflows the row of icons. `data-mode` mirrors the *current* theme, set by
+   script.js — showing the moon in light mode (an invitation to go dark) and
+   the sun in dark mode (an invitation to go back), same convention every OS
+   dark-mode switch uses. */
+.theme-toggle {
+  position: relative;
+}
+.theme-toggle svg {
+  position: absolute;
+  transition-property: opacity, scale, filter;
+  transition-duration: var(--duration-200);
+  transition-timing-function: var(--ease);
+}
+.theme-toggle .icon-moon {
+  opacity: 1;
+  scale: 1;
+  filter: blur(0);
+}
+.theme-toggle .icon-sun {
+  opacity: 0;
+  scale: 0.25;
+  filter: blur(var(--space-4));
+}
+.theme-toggle[data-mode="dark"] .icon-moon {
+  opacity: 0;
+  scale: 0.25;
+  filter: blur(var(--space-4));
+}
+.theme-toggle[data-mode="dark"] .icon-sun {
+  opacity: 1;
+  scale: 1;
+  filter: blur(0);
 }
 .topbar__nav {
   display: flex;
