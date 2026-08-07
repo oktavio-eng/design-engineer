@@ -17,6 +17,12 @@ Um site pessoal single-page do Otavio (GOW Studio) — um "plano de transição 
 - **URL de produção:** `design-engineer-phi.vercel.app`
 - **Repo:** conectado ao GitHub (`oktavio-eng/design-engineer`) — push na `main` dispara deploy automático.
 
+## Storybook MVP (`feature/storybook`)
+
+O Storybook é um inventário visual de desenvolvimento, sem refatorar o site para componentes: configuração em `.storybook/`, stories em `stories/` e dependências/scripts em `package.json`. Ele importa diretamente `styles/main.css`, os tokens existentes e, opcionalmente, `styles/experiments/flat-type.css`; não mantém cópia dos estilos do site. Rode localmente com `npm run storybook` e gere o build isolado com `npm run build-storybook` (`storybook-static/`, ignorado pelo Git).
+
+É tooling de dev: o runtime e o deploy principal continuam sendo o site estático HTML/CSS/Vanilla JS, sem build de produção novo. O dry-run da Vercel confirmou que o Framework Preset permanece **Other** e que `storybook-static/` não entra no manifesto de um worktree limpo antes do build local. A branch já está no remoto; o PR para `main` ainda não foi aberto e é a única etapa restante para concluir a integração.
+
 ## Regras inegociáveis
 
 1. **Nunca crie um novo projeto Vercel.** Sempre atualize o `design-engineer` existente.
