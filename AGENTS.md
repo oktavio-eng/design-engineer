@@ -17,11 +17,39 @@ Um site pessoal single-page do Otavio (GOW Studio) — um "plano de transição 
 - **URL de produção:** `design-engineer-phi.vercel.app`
 - **Repo:** conectado ao GitHub (`oktavio-eng/design-engineer`) — push na `main` dispara deploy automático.
 
-## Storybook MVP (`feature/storybook`)
+## Storybook e testes de UI
 
-O Storybook é um inventário visual de desenvolvimento, sem refatorar o site para componentes: configuração em `.storybook/`, stories em `stories/` e dependências/scripts em `package.json`. Ele importa diretamente `styles/main.css`, os tokens existentes e, opcionalmente, `styles/experiments/flat-type.css`; não mantém cópia dos estilos do site. Rode localmente com `npm run storybook` e gere o build isolado com `npm run build-storybook` (`storybook-static/`, ignorado pelo Git).
+O Storybook é o inventário visual e a primeira rede de segurança de UI, sem refatorar o site para componentes: configuração em `.storybook/`, stories em `stories/`, runner em `vitest.config.mjs` e dependências/scripts em `package.json`. Ele importa diretamente `styles/main.css`, os tokens existentes e, opcionalmente, `styles/experiments/flat-type.css`; não mantém cópia dos estilos do site.
 
-É tooling de dev: o runtime e o deploy principal continuam sendo o site estático HTML/CSS/Vanilla JS, sem build de produção novo. O dry-run da Vercel confirmou que o Framework Preset permanece **Other** e que `storybook-static/` não entra no manifesto de um worktree limpo antes do build local. A branch já está no remoto; o PR para `main` ainda não foi aberto e é a única etapa restante para concluir a integração.
+Comandos:
+
+- `npm run storybook` — inventário e painel de testes em `http://localhost:6006`.
+- `npm run build-storybook` — build isolado em `storybook-static/` (ignorado pelo Git).
+- `npm run test-storybook` — smoke tests, funções `play` e axe em Chromium headless, uma vez.
+- `npm run test-storybook:watch` — o mesmo runner em watch mode. No macOS, `vitest.config.mjs` usa o Google Chrome instalado quando ele está disponível; nos demais ambientes usa o Chromium do Playwright. Se esse binário não existir, rode uma única vez `npx playwright install chromium`; nunca dispare duas instalações concorrentes.
+
+O `@storybook/addon-a11y` roda axe e `parameters.a11y.test = "error"` é o padrão global: uma violação nova falha localmente e no CI. Exceções precisam ser locais à story, usar `todo` (nunca `off` sem justificativa) e explicar em comentário qual dívida de produção está sendo preservada. As baselines atuais são explícitas: `Rows`, `Phase · Glossary` e `Expandable people` preservam textos `--faint` abaixo do contraste AA; o command menu mantém controles focáveis dentro dos diálogos inativos marcados com `aria-hidden`. Corrigir essas dívidas exige uma mudança de produto coordenada, não uma maquiagem no fixture.
+
+As stories interativas são harnesses isolados porque `script.js` consulta e inicializa a página inteira no carregamento; importar esse arquivo numa story não é seguro. Copie só o menor markup/contrato necessário, use as classes reais de `main.css` e mantenha o controlador da story pequeno. Isso testa o CSS, os estados, a semântica e o contrato de teclado, mas não substitui um E2E da página completa. Se um controlador de produção for extraído para um módulo reutilizável no futuro, a story deve passar a importar esse módulo e apagar a cópia.
+
+Cobertura interativa inicial:
+
+- `.gloss`: entrada na ordem de Tab, foco visível e tooltip exposto sem mouse.
+- `.extras` / `.see-more`: ativação por teclado, classe `expanded` e texto show more/show less.
+- command menu: Ctrl/⌘ K, foco inicial, filtro, cursor com setas, `aria-selected`/`aria-activedescendant`, abertura do detalhe e Escape por camada.
+
+O workflow `.github/workflows/storybook.yml` roda `npm ci`, build e testes em todo pull request, usando a imagem Playwright que corresponde à versão fixada no `package.json`. É tooling de dev: o runtime e o deploy principal continuam sendo o site estático HTML/CSS/Vanilla JS, sem build de produção novo. O Framework Preset da Vercel permanece **Other** e `storybook-static/` não entra no deploy principal.
+
+### Definition of Done para mudanças de UI
+
+- [ ] A story existente foi atualizada ou uma story pequena cobre o novo estado relevante.
+- [ ] Interações com estado têm `play`; caminhos de ponteiro importantes também passam por teclado quando aplicável.
+- [ ] O teste confirma foco inicial, movimento de foco e retorno de foco para overlays quando esse contrato existir.
+- [ ] Nome, role e estado acessíveis dos controles são verificáveis; axe passa sem nova exceção `todo`.
+- [ ] `npm run build-storybook` passa.
+- [ ] `npm run test-storybook` passa em Chromium.
+- [ ] A story foi inspecionada no browser em light/dark e, quando afetada, com Flat type e viewport estreito.
+- [ ] Nenhum arquivo gerado de `storybook-static/` entrou no commit e nenhum comportamento de produção mudou só para satisfazer o harness.
 
 ## Regras inegociáveis
 
