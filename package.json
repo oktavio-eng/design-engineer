@@ -5,7 +5,8 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "test-storybook": "vitest --project=storybook --run",
-    "test-storybook:watch": "vitest --project=storybook"
+    "test-storybook:watch": "vitest --project=storybook",
+    "test:product-ui": "node --test tests/ui/command-menu.test.mjs"
   },
   "devDependencies": {
     "@storybook/addon-a11y": "10.5.7",

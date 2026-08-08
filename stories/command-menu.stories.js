@@ -55,8 +55,10 @@ function renderCommandMenu() {
             aria-label="Search Craft Wiki"
             aria-controls="storybookCmdList"
             aria-expanded="false"
+            aria-describedby="storybookCmdHint"
           >
-          <span class="cmd__esc">ESC</span>
+          <span class="cmd__esc" aria-hidden="true">⌘K</span>
+          <span class="sr-only" id="storybookCmdHint">Press Command K or Control K to close</span>
         </div>
         <div class="cmd__rule"></div>
         <div class="cmd__list" id="storybookCmdList" role="listbox" aria-label="Results"></div>
@@ -81,6 +83,39 @@ function renderCommandMenu() {
   let results = [];
   let cursor = 0;
   let lastCursor = 0;
+  let opener = null;
+  let pendingFocusTimer = null;
+
+  function cancelPendingFocus() {
+    if (pendingFocusTimer !== null) {
+      clearTimeout(pendingFocusTimer);
+      pendingFocusTimer = null;
+    }
+  }
+
+  function blurIfInside(container) {
+    if (container.contains(document.activeElement)) document.activeElement.blur();
+  }
+
+  function isExposedFocusable(element) {
+    if (!element || !document.contains(element) || typeof element.focus !== "function") {
+      return false;
+    }
+    if (element.closest('[aria-hidden="true"], [inert]') || element.hasAttribute("disabled")) {
+      return false;
+    }
+    const naturallyFocusable =
+      ["BUTTON", "INPUT", "SELECT", "TEXTAREA"].includes(element.tagName) ||
+      (element.tagName === "A" && element.hasAttribute("href"));
+    const tabIndex = element.getAttribute("tabindex");
+    return naturallyFocusable || (tabIndex !== null && Number.parseInt(tabIndex, 10) >= 0);
+  }
+
+  function returnFocus() {
+    const target = isExposedFocusable(opener) ? opener : trigger;
+    opener = null;
+    if (isExposedFocusable(target)) target.focus();
+  }
 
   function syncActiveDescendant() {
     const option = list.querySelector('[aria-selected="true"]');
@@ -137,7 +172,13 @@ function renderCommandMenu() {
   }
 
   function openCommand(keepQuery = false) {
+    const isFreshOpen =
+      !document.body.classList.contains("cmd-open") &&
+      !document.body.classList.contains("cmd-detail-open");
+    if (isFreshOpen) opener = document.activeElement;
+    cancelPendingFocus();
     document.body.classList.remove("cmd-detail-open");
+    blurIfInside(detail);
     detail.setAttribute("aria-hidden", "true");
     document.body.classList.add("cmd-open");
     wash.setAttribute("aria-hidden", "false");
@@ -146,20 +187,31 @@ function renderCommandMenu() {
     if (!keepQuery) input.value = "";
     renderResults();
     if (keepQuery) setCursor(lastCursor);
-    setTimeout(() => input.focus(), 0);
+    pendingFocusTimer = setTimeout(() => {
+      pendingFocusTimer = null;
+      if (document.body.classList.contains("cmd-open") && isExposedFocusable(input)) {
+        input.focus();
+      }
+    }, 60);
   }
 
-  function closeCommand() {
+  function closeCommand(restore = true) {
+    cancelPendingFocus();
     document.body.classList.remove("cmd-open");
+    blurIfInside(command);
     wash.setAttribute("aria-hidden", "true");
     command.setAttribute("aria-hidden", "true");
     input.setAttribute("aria-expanded", "false");
+    if (restore) returnFocus();
   }
 
   function closeDetail() {
+    cancelPendingFocus();
     document.body.classList.remove("cmd-detail-open");
+    blurIfInside(detail);
     wash.setAttribute("aria-hidden", "true");
     detail.setAttribute("aria-hidden", "true");
+    returnFocus();
   }
 
   function openDetail(entry) {
@@ -169,10 +221,11 @@ function renderCommandMenu() {
       <p class="role">${escapeHtml(entry.what)}</p>
       <p class="bio">${escapeHtml(entry.bio)}</p>
     `;
-    closeCommand();
+    closeCommand(false);
     document.body.classList.add("cmd-detail-open");
     wash.setAttribute("aria-hidden", "false");
     detail.setAttribute("aria-hidden", "false");
+    close.focus();
   }
 
   function backToCommand() {
@@ -284,6 +337,7 @@ export const KeyboardFlow = {
         expect(canvas.getByRole("dialog", { name: "Details" })).toBeVisible(),
       );
       await expect(canvas.getByRole("heading", { name: "Emil Kowalski" })).toBeVisible();
+      await expect(canvas.getByRole("button", { name: "Close" })).toHaveFocus();
     });
 
     await step("Peel back one layer at a time with Escape", async () => {
@@ -294,6 +348,26 @@ export const KeyboardFlow = {
       await userEvent.keyboard("{Escape}");
       await expect(canvas.queryByRole("dialog", { name: "Search" })).not.toBeInTheDocument();
       await expect(canvas.queryByRole("dialog", { name: "Details" })).not.toBeInTheDocument();
+      await expect(trigger).toHaveFocus();
+    });
+
+    await step("Cancel delayed focus when dismissal wins the race", async () => {
+      await userEvent.keyboard("{Control>}k{/Control}{Escape}");
+      await new Promise((resolve) => setTimeout(resolve, 80));
+      await expect(trigger).toHaveFocus();
+      await expect(search.closest('[aria-hidden="true"]')).not.toBeNull();
+    });
+
+    await step("Move focus to detail when it opens inside the delay", async () => {
+      await userEvent.keyboard("{Control>}k{/Control}");
+      canvas.getAllByRole("option", { hidden: true })[0].click();
+      await new Promise((resolve) => setTimeout(resolve, 80));
+      await expect(canvas.getByRole("button", { name: "Close" })).toHaveFocus();
+      await expect(document.activeElement.closest('[aria-hidden="true"], [inert]')).toBeNull();
+      await userEvent.keyboard("{Escape}");
+      await waitFor(() => expect(search).toHaveFocus());
+      await userEvent.keyboard("{Escape}");
+      await waitFor(() => expect(trigger).toHaveFocus());
     });
 
   },
