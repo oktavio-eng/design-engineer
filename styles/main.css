@@ -188,7 +188,7 @@ section:has(.row:hover) .row:not(:hover) > *,
     grid-template-rows var(--duration-320) var(--ease),
     visibility 0s linear var(--duration-320);
 }
-.people.expanded .extras {
+.expanded .extras {
   grid-template-rows: 1fr;
   visibility: visible;
   transition:
@@ -205,27 +205,27 @@ section:has(.row:hover) .row:not(:hover) > *,
   transition-duration: var(--duration-240);
   transition-timing-function: var(--ease);
 }
-.people.expanded .row.extra {
+.expanded .row.extra {
   transform: translateY(var(--space-12));
   filter: blur(var(--space-4));
   animation: enter var(--duration-400) var(--ease-out) forwards;
 }
-.people.expanded .row.extra:first-of-type {
+.expanded .row.extra:first-of-type {
   animation-delay: 0s;
 }
-.people.expanded .row.extra:nth-of-type(2) {
+.expanded .row.extra:nth-of-type(2) {
   animation-delay: var(--duration-40);
 }
-.people.expanded .row.extra:nth-of-type(3) {
+.expanded .row.extra:nth-of-type(3) {
   animation-delay: var(--duration-80);
 }
-.people.expanded .row.extra:nth-of-type(4) {
+.expanded .row.extra:nth-of-type(4) {
   animation-delay: var(--duration-120);
 }
-.people.expanded .row.extra:nth-of-type(5) {
+.expanded .row.extra:nth-of-type(5) {
   animation-delay: var(--duration-160);
 }
-.people.expanded .row.extra:nth-of-type(6) {
+.expanded .row.extra:nth-of-type(6) {
   animation-delay: var(--duration-200);
 }
 .see-more {
@@ -1612,6 +1612,18 @@ body.cmd-detail-open .cmd-modal {
     opacity: 1;
     transform: translateX(-50%);
     pointer-events: auto;
+  }
+  /* `.expanded .row.extra` enters via `animation` (enter, 400ms, translateY +
+     blur), not `transition` — the `* { transition: none !important }` below
+     never touches it. Collapsed state (`.row.extra` outside `.expanded`) is
+     already invisible through `.extras`'s `visibility: hidden` + 0fr grid
+     row, so it needs no explicit override here; only the expanded/entering
+     state has an effect to cancel. */
+  .expanded .row.extra {
+    animation: none;
+    opacity: 1;
+    transform: none;
+    filter: none;
   }
   * {
     transition: none !important;
