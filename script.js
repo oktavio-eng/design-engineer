@@ -1009,6 +1009,7 @@ function wireSeeMore(sectionId) {
   seeMore.addEventListener("click", function () {
     const e = section.classList.toggle("expanded");
     seeMore.textContent = e ? "show less" : "show more";
+    seeMore.setAttribute("aria-expanded", e ? "true" : "false");
   });
 }
 ["people", "courses", "references"].forEach(wireSeeMore);

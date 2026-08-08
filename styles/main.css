@@ -1698,6 +1698,18 @@ body.cmd-detail-open .cmd-modal {
     transform: translateX(-50%);
     pointer-events: auto;
   }
+  /* `.expanded .row.extra` enters via `animation` (enter, 400ms, translateY +
+     blur), not `transition` — the `* { transition: none !important }` below
+     never touches it. Collapsed state (`.row.extra` outside `.expanded`) is
+     already invisible through `.extras`'s `visibility: hidden` + 0fr grid
+     row, so it needs no explicit override here; only the expanded/entering
+     state has an effect to cancel. */
+  .expanded .row.extra {
+    animation: none;
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
   * {
     transition: none !important;
   }
