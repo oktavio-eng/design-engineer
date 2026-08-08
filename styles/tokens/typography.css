@@ -1,5 +1,7 @@
 :root {
   --font-sans: Geist, system-ui, sans-serif;
+  --font-mono: 'Geist Mono', monospace;
+  --font-pixel: 'Geist Pixel', var(--font-sans);
   --fs-11: 11px;
   --fs-12: 12px;
   --fs-13: 13px;

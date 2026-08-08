@@ -1,0 +1,2 @@
+"file:/tmp/vnu-check/index-preexisting.html":57.37122-57.37192: error: Element “img” is missing one or more of the following attributes: “src”, “srcset”.
+"file:/tmp/vnu-check/index-preexisting.html":57.37402-57.37588: error: Element “input” is missing required attribute “role”.

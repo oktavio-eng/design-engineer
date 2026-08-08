@@ -1,6 +1,7 @@
 const colorTokens = ["--bg", "--ink", "--muted", "--faint", "--line", "--white", "--glass-bg"];
 const typeSizes = ["--fs-11", "--fs-12", "--fs-13", "--fs-14", "--fs-15", "--fs-16"];
 const typeWeights = ["--fw-regular", "--fw-medium", "--fw-semibold"];
+const fontFamilies = ["--font-sans", "--font-mono", "--font-pixel"];
 const spacingTokens = ["--space-4", "--space-8", "--space-12", "--space-16", "--space-24", "--space-40", "--space-64", "--space-96"];
 const radiusTokens = ["--radius-3", "--radius-6", "--radius-12", "--radius-16", "--radius-24", "--radius-32", "--radius-full"];
 const motionTokens = ["--ease", "--ease-out", "--ease-pop", "--duration-120", "--duration-250", "--duration-400", "--duration-640"];
@@ -75,6 +76,16 @@ export const Typography = {
             ${tokenRows(
               typeWeights,
               (token) => `<span class="sb-type-sample" style="font-weight: var(${token})">Public proof over credentials</span>`,
+            )}
+          </div>
+        </section>
+        <section class="sb-inventory__section">
+          <h2>Font family</h2>
+          <p class="sb-pattern-note">--font-sans, --font-mono and --font-pixel from styles/tokens/typography.css, each set as an inline font-family so the difference is visible even though no component consumes --font-mono/--font-pixel yet.</p>
+          <div class="sb-token-list">
+            ${tokenRows(
+              fontFamilies,
+              (token) => `<span class="sb-type-sample" style="font-family: var(${token}); font-size: var(--fs-16)">Design Engineer 0123</span>`,
             )}
           </div>
         </section>

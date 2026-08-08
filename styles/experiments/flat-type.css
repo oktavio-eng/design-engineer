@@ -24,12 +24,12 @@
   /* A escala inteira colapsa num degrau só. Os nomes ficam (`--fs-11` etc.)
      porque `main.css` os consome por toda parte — o experimento é achatar os
      valores, não reescrever os pontos de consumo. */
-  --fs-11: 1.1rem;
-  --fs-12: 1.1rem;
-  --fs-13: 1.1rem;
-  --fs-14: 1.1rem;
-  --fs-15: 1.1rem;
-  --fs-16: 1.1rem;
+  --fs-11: 1.12rem;
+  --fs-12: 1.12rem;
+  --fs-13: 1.12rem;
+  --fs-14: 1.12rem;
+  --fs-15: 1.12rem;
+  --fs-16: 1.12rem;
 
   /* E os três pesos viram um. 460, e não 500, porque Geist entra pelo Google
      Fonts como variável de verdade (`font-weight: 100 900` no `@font-face`):
@@ -72,7 +72,7 @@ select {
   font-weight: inherit;
 }
 
-/* Com 17.6px o nome de uma pessoa deixa de caber na linha do palette e quebra
+/* Com 17.92px o nome de uma pessoa deixa de caber na linha do palette e quebra
    em duas, empurrando a altura do item. A peça desenhada pra ceder ali é o
    `.what` do lado (já tem `flex-shrink` e ellipsis) — só faltava dizer que o
    nome não cede. Mora aqui, e não em `main.css`, porque o aperto é do
