@@ -1,7 +1,10 @@
 // CDP driver for PR #16 revalidation — desktop, 320px reflow, cmd palette
 // states, console errors, Mac/non-Mac hints, real painted font via
-// CSS.getPlatformFontsForNode, and the accessibility tree for the
-// cmdInput <-> cmdEscHint aria-describedby pairing.
+// CSS.getPlatformFontsForNode, the accessibility tree for the cmdInput <->
+// cmdEscHint aria-describedby pairing, and — round 3 — focus restoration on
+// every complete dismissal (Meta+K, Ctrl+K, Escape, both the list and the
+// detail layer): the confirmed bug was focus staying on #cmdInput after its
+// tree went aria-hidden.
 // Resolves via normal Node module resolution (walks up from this file to the
 // repo root's node_modules/ws, installed as a Storybook transitive dep — run
 // `npm install` at the repo root first if it's missing).
@@ -11,6 +14,7 @@ const fs = require("fs");
 const path = require("path");
 
 const OUT_DIR = __dirname;
+const SCREENSHOT_DIR = path.join(OUT_DIR, "screenshots");
 const PORT = 9333;
 const SITE = "http://localhost:8794/index.html";
 
@@ -66,6 +70,7 @@ function makeSend(ws) {
 }
 
 async function main() {
+  fs.mkdirSync(SCREENSHOT_DIR, { recursive: true });
   const results = {};
   const consoleMessages = [];
   const exceptions = [];
@@ -170,7 +175,7 @@ async function main() {
   })`);
 
   await send("Page.captureScreenshot", { format: "png" }).then((r) => {
-    fs.writeFileSync(path.join(OUT_DIR, "01-desktop-1280.png"), Buffer.from(r.data, "base64"));
+    fs.writeFileSync(path.join(SCREENSHOT_DIR, "01-desktop-1280.png"), Buffer.from(r.data, "base64"));
   });
 
   // 320px reflow
@@ -188,7 +193,7 @@ async function main() {
     bodyClientWidth: document.body.clientWidth
   })`);
   await send("Page.captureScreenshot", { format: "png" }).then((r) => {
-    fs.writeFileSync(path.join(OUT_DIR, "02-mobile-320.png"), Buffer.from(r.data, "base64"));
+    fs.writeFileSync(path.join(SCREENSHOT_DIR, "02-mobile-320.png"), Buffer.from(r.data, "base64"));
   });
 
   // Back to desktop for cmd palette states
@@ -226,7 +231,7 @@ async function main() {
     };
   })()`);
   await send("Page.captureScreenshot", { format: "png" }).then((r) => {
-    fs.writeFileSync(path.join(OUT_DIR, "03-cmd-empty.png"), Buffer.from(r.data, "base64"));
+    fs.writeFileSync(path.join(SCREENSHOT_DIR, "03-cmd-empty.png"), Buffer.from(r.data, "base64"));
   });
 
   // Type a query -> results state
@@ -242,7 +247,7 @@ async function main() {
     return { listChildCount: list.children.length, firstItemText: list.children[0] ? list.children[0].textContent.trim().slice(0,60) : null };
   })()`);
   await send("Page.captureScreenshot", { format: "png" }).then((r) => {
-    fs.writeFileSync(path.join(OUT_DIR, "04-cmd-results.png"), Buffer.from(r.data, "base64"));
+    fs.writeFileSync(path.join(SCREENSHOT_DIR, "04-cmd-results.png"), Buffer.from(r.data, "base64"));
   });
 
   // Open detail (click first actual result — list also contains
@@ -262,7 +267,7 @@ async function main() {
     };
   })()`);
   await send("Page.captureScreenshot", { format: "png" }).then((r) => {
-    fs.writeFileSync(path.join(OUT_DIR, "05-cmd-detail.png"), Buffer.from(r.data, "base64"));
+    fs.writeFileSync(path.join(SCREENSHOT_DIR, "05-cmd-detail.png"), Buffer.from(r.data, "base64"));
   });
 
   // Close detail, close palette, reopen fresh for accessibility tree snapshot
@@ -306,7 +311,7 @@ async function main() {
   });
   await new Promise((r) => setTimeout(r, 300));
   await send("Page.captureScreenshot", { format: "png" }).then((r) => {
-    fs.writeFileSync(path.join(OUT_DIR, "06-cmd-mobile-320.png"), Buffer.from(r.data, "base64"));
+    fs.writeFileSync(path.join(SCREENSHOT_DIR, "06-cmd-mobile-320.png"), Buffer.from(r.data, "base64"));
   });
 
   // Non-Mac hint path: override navigator.platform/userAgent BEFORE reload
@@ -340,8 +345,137 @@ async function main() {
     };
   })()`);
   await send("Page.captureScreenshot", { format: "png" }).then((r) => {
-    fs.writeFileSync(path.join(OUT_DIR, "07-cmd-nonmac-hint.png"), Buffer.from(r.data, "base64"));
+    fs.writeFileSync(path.join(SCREENSHOT_DIR, "07-cmd-nonmac-hint.png"), Buffer.from(r.data, "base64"));
   });
+
+  // --- Round 3: focus restoration on every complete dismissal ---
+  // The confirmed bug: closeCmd() hid #cmd (aria-hidden) without ever moving
+  // focus off #cmdInput, stranding it inside a subtree assistive tech can no
+  // longer see. Continues from the non-Mac session already open above —
+  // Meta+K and Ctrl+K share the same toggle logic regardless of platform
+  // (only the *hint text* differs), so one session covers both keys.
+  async function activeInfo() {
+    return evalExpr(`(function(){
+      var a = document.activeElement;
+      var cmd = document.getElementById('cmd');
+      var modal = document.getElementById('cmdModal');
+      return {
+        id: a.id || null,
+        className: a.className || null,
+        tag: a.tagName,
+        insideCmd: cmd.contains(a),
+        insideModal: modal.contains(a),
+        isTrigger: !!(a.classList && a.classList.contains('topbar__logo'))
+      };
+    })()`);
+  }
+  async function cmdAriaState() {
+    return evalExpr(`(function(){
+      return {
+        cmdOpen: document.body.classList.contains('cmd-open'),
+        cmdDetailOpen: document.body.classList.contains('cmd-detail-open'),
+        cmdAriaHidden: document.getElementById('cmd').getAttribute('aria-hidden'),
+        modalAriaHidden: document.getElementById('cmdModal').getAttribute('aria-hidden')
+      };
+    })()`);
+  }
+  function dispatchKey(props) {
+    const p = JSON.stringify(props);
+    return evalExpr(
+      `document.dispatchEvent(new KeyboardEvent('keydown', Object.assign({ bubbles: true, cancelable: true }, ${p})))`,
+    );
+  }
+
+  results.focusRestoration = {};
+
+  // 1) Baseline: the list layer is already open from the non-Mac hint
+  // capture above — #cmdInput should have focus.
+  results.focusRestoration.listOpenBaseline = {
+    active: await activeInfo(),
+    aria: await cmdAriaState(),
+  };
+
+  // 2) Ctrl+K closes it — complete dismissal from the list layer.
+  await dispatchKey({ key: "k", ctrlKey: true });
+  results.focusRestoration.afterCtrlKClose = {
+    active: await activeInfo(),
+    aria: await cmdAriaState(),
+  };
+
+  // 3) Meta+K reopens fresh (opener re-captured off whatever Ctrl+K
+  // restored focus to) — wait for the 60ms deferred input.focus().
+  await dispatchKey({ key: "k", metaKey: true });
+  await new Promise((r) => setTimeout(r, 150));
+  results.focusRestoration.afterMetaKReopen = {
+    active: await activeInfo(),
+    aria: await cmdAriaState(),
+  };
+
+  // 4) Meta+K again closes it the other way — same complete-dismiss contract.
+  await dispatchKey({ key: "k", metaKey: true });
+  results.focusRestoration.afterMetaKClose = {
+    active: await activeInfo(),
+    aria: await cmdAriaState(),
+  };
+
+  // 5) Escape from the list layer.
+  await evalExpr(`document.querySelector('.topbar__logo').click()`);
+  await new Promise((r) => setTimeout(r, 150));
+  await dispatchKey({ key: "Escape" });
+  results.focusRestoration.afterEscapeFromList = {
+    active: await activeInfo(),
+    aria: await cmdAriaState(),
+  };
+
+  // 6) Escape peels one layer at a time from the detail view: reopen, drill
+  // into a result with the keyboard (Enter — keeps this pass keyboard-only),
+  // confirm focus lands inside the detail layer (not stranded on the now
+  // aria-hidden #cmdInput), Escape once to go back to the list (input
+  // refocused), Escape again for the full dismiss (focus back on opener).
+  await evalExpr(`document.querySelector('.topbar__logo').click()`);
+  await new Promise((r) => setTimeout(r, 150));
+  await evalExpr(`(function(){
+    var input = document.getElementById('cmdInput');
+    input.value = 'Rauno';
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+  })()`);
+  await new Promise((r) => setTimeout(r, 200));
+  await evalExpr(
+    `document.getElementById('cmdInput').dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true }))`,
+  );
+  await new Promise((r) => setTimeout(r, 200));
+  results.focusRestoration.afterEnterIntoDetail = {
+    active: await activeInfo(),
+    aria: await cmdAriaState(),
+  };
+  await dispatchKey({ key: "Escape" });
+  await new Promise((r) => setTimeout(r, 150));
+  results.focusRestoration.afterFirstEscapeFromDetail = {
+    active: await activeInfo(),
+    aria: await cmdAriaState(),
+  };
+  await dispatchKey({ key: "Escape" });
+  results.focusRestoration.afterSecondEscapeFromDetail = {
+    active: await activeInfo(),
+    aria: await cmdAriaState(),
+  };
+
+  // 7) The × button is also a complete dismissal, straight from the detail
+  // layer with no list hop — same contract, exercised via click since
+  // that's its only trigger (not a keyboard shortcut, but the same
+  // closeCmdDetail() code path this round fixed).
+  await evalExpr(`document.querySelector('.topbar__logo').click()`);
+  await new Promise((r) => setTimeout(r, 150));
+  await evalExpr(`(function(){
+    var first = document.querySelector('#cmdList .cmd__item');
+    if (first) first.click();
+  })()`);
+  await new Promise((r) => setTimeout(r, 200));
+  await evalExpr(`document.getElementById('cmdModalClose').click()`);
+  results.focusRestoration.afterModalCloseButton = {
+    active: await activeInfo(),
+    aria: await cmdAriaState(),
+  };
 
   results.consoleMessages = consoleMessages.filter((m) => m.type === "error");
   results.consoleMessagesAll = consoleMessages;
@@ -349,7 +483,7 @@ async function main() {
   results.exceptions = exceptions;
 
   fs.writeFileSync(
-    path.join(OUT_DIR, "results-round2.json"),
+    path.join(OUT_DIR, "results.json"),
     JSON.stringify(results, null, 2),
   );
   console.log("DONE");

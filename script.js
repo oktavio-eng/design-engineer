@@ -1486,8 +1486,37 @@ mailTrigger.addEventListener("click", function () {
     setCursor((cursor + delta + results.length) % results.length);
   }
 
+  // Where focus returns on a complete dismissal — whatever had it before the
+  // palette opened, not necessarily the trigger. Captured once per session
+  // (see the isFreshOpen check in openCmd) so the "back from detail" hop and
+  // the ⌘K "swap surfaces" hop don't clobber it with focus that's already
+  // inside the palette.
+  var opener = null;
+
+  // The confirmed bug: a control kept focus after its subtree went
+  // aria-hidden, which assistive tech treats as focus vanishing into the
+  // void. Blur before hiding, every time — callers that know where focus
+  // belongs next (returnFocus, or the layer that's about to take over) move
+  // it there in the same tick, before anything repaints.
+  function blurIfInside(root) {
+    if (root.contains(document.activeElement)) document.activeElement.blur();
+  }
+
+  function returnFocus() {
+    var target = opener;
+    opener = null;
+    if (!target || target === document.body || !document.contains(target)) {
+      target = trigger;
+    }
+    if (target && typeof target.focus === "function") target.focus();
+  }
+
   // keepQuery is the "back from detail" path: same query, same selected row.
   function openCmd(keepQuery) {
+    var isFreshOpen =
+      !document.body.classList.contains("cmd-open") &&
+      !document.body.classList.contains("cmd-detail-open");
+    if (isFreshOpen) opener = document.activeElement;
     close();
     closeComment();
     closeAbout();
@@ -1496,6 +1525,7 @@ mailTrigger.addEventListener("click", function () {
     // Also tears down the detail layer, so ⌘K on top of an open detail swaps
     // surfaces instead of stacking them.
     document.body.classList.remove("cmd-detail-open");
+    blurIfInside(modal);
     modal.setAttribute("aria-hidden", "true");
     document.body.classList.add("cmd-open");
     wash.setAttribute("aria-hidden", "false");
@@ -1508,15 +1538,24 @@ mailTrigger.addEventListener("click", function () {
       input.focus();
     }, 60);
   }
-  function closeCmd() {
+  // restore=false is the "hop into detail" case (openDetail() calls this to
+  // tear the list down first) — the detail layer takes focus itself right
+  // after, so returning it to the opener here would just be a flash to
+  // undo. Every other caller is a genuine complete dismissal: Meta+K/Ctrl+K
+  // toggle-close and Escape from the list both hit the default.
+  function closeCmd(restore) {
     document.body.classList.remove("cmd-open");
+    blurIfInside(cmd);
     wash.setAttribute("aria-hidden", "true");
     cmd.setAttribute("aria-hidden", "true");
+    if (restore !== false) returnFocus();
   }
   function closeCmdDetail() {
     document.body.classList.remove("cmd-detail-open");
+    blurIfInside(modal);
     wash.setAttribute("aria-hidden", "true");
     modal.setAttribute("aria-hidden", "true");
+    returnFocus();
   }
   // Back to the results. The wash stays up the whole time — both states share
   // the same rule in the CSS, so hiding and re-showing it would flash.
@@ -1559,11 +1598,14 @@ mailTrigger.addEventListener("click", function () {
     // Taken from the item, not the global cursor: a click opens a row the
     // keyboard cursor was never on.
     lastCursor = results.indexOf(item);
-    closeCmd();
+    // false: this tears the list down to swap surfaces, not to dismiss —
+    // focus moves into the detail layer below, not back to the opener.
+    closeCmd(false);
     document.body.classList.add("cmd-detail-open");
     wash.setAttribute("aria-hidden", "false");
     modal.setAttribute("aria-hidden", "false");
     modal.scrollTop = 0;
+    modalClose.focus();
   }
 
   input.addEventListener("input", render);

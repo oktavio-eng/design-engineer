@@ -1,4 +1,4 @@
-# PR #16 — validation evidence (round 2, 07/08/2026)
+# PR #16 — validation evidence (round 3, 08/08/2026)
 
 Persistent copy of the CDP validation for `feature/cmdk-modal-polish`, committed
 here because evidence living only in a session's `/tmp` scratchpad isn't
@@ -57,6 +57,30 @@ top of the script if needed, then `node validation/pr-16/cdp-driver.js`.
   fresh navigation — `07-cmd-nonmac-hint.png`, see `cmdNonMacHint` in
   `results.json`). Both render on one line (`white-space: nowrap`) with no
   reflow, confirmed at 320px too (`06-cmd-mobile-320.png`).
+- **Focus restoration on every complete dismissal** (round-3 fix —
+  `results.json` → `focusRestoration`): the confirmed bug was `closeCmd()`
+  hiding `#cmd` (`aria-hidden="true"`) without ever moving focus off
+  `#cmdInput`, stranding it inside a subtree assistive tech can no longer
+  see. The real toggle shortcut is **Meta+K / Ctrl+K** (opens when closed,
+  closes when open — same key either way, not a separate open/close pair);
+  **Escape** peels one layer at a time (detail → list → closed) rather than
+  jumping straight out. Driven with synthetic `KeyboardEvent`s (`ctrlKey`,
+  `metaKey`, `key: "Escape"`) dispatched on `document`, since that's exactly
+  what the app's own capture-phase `keydown` listener reacts to:
+  - `afterCtrlKClose` / `afterMetaKClose` / `afterEscapeFromList` — closing
+    from the list layer returns focus to `.topbar__logo` (`isTrigger: true`,
+    `insideCmd: false`, `cmdAriaHidden: "true"`).
+  - `afterEnterIntoDetail` — drilling into a result (keyboard `Enter`, not a
+    click) moves focus to `#cmdModalClose` inside the now-visible detail
+    layer, not left behind on `#cmdInput` (`insideModal: true`,
+    `cmdAriaHidden: "true"` at the same instant).
+  - `afterFirstEscapeFromDetail` — one Escape from detail returns to the
+    list with `#cmdInput` refocused (`cmdDetailOpen: false`, `cmdOpen:
+    true`); `afterSecondEscapeFromDetail` — a second Escape is the complete
+    dismissal, focus back on the trigger.
+  - `afterModalCloseButton` — the `×` button (`closeCmdDetail()`) is a
+    complete dismissal straight from the detail layer with no list hop;
+    same contract, focus back on the trigger.
 - **Console**: zero messages, zero uncaught exceptions, across every state
   above (`consoleMessages`, `exceptionsCount` in `results.json`).
 - **Accessibility tree** (finding 2 — `aria-describedby`, not a bare
@@ -89,12 +113,23 @@ top of the script if needed, then `node validation/pr-16/cdp-driver.js`.
 
 ## Files
 
-- `results.json` — raw output of the round-2 driver run (font checks,
-  overflow, palette states, both hints, console/exceptions, full AX tree dump).
-- `cdp-driver.js` — the script that produced it.
+- `results.json` — raw output of the round-3 driver run (font checks,
+  overflow, palette states, both hints, console/exceptions, full AX tree
+  dump, focus-restoration checks). Re-run in full each round rather than
+  diffed/appended, so it's always one self-consistent snapshot of the
+  commit it ships with — round-2 and round-1 findings are re-verified here
+  too, not just the round-3 delta.
+- `cdp-driver.js` — the script that produced it. Its output filename used to
+  drift from what actually got committed (`results-round2.json` in the
+  script vs. `results.json` in the tree) — fixed so the script and the
+  evidence it produces stay reproducibly in sync; `node
+  validation/pr-16/cdp-driver.js` now writes exactly the file this README
+  points at.
 - `screenshots/01`–`07` — desktop, 320px reflow, the three palette states,
   320px with the palette open, and the non-Mac hint.
 
 Round-1 evidence (the CDP pass behind the `AGENTS.md` line 100 note) was
-produced the same way but wasn't persisted to the repo — this directory is
-what closes that gap going forward.
+produced the same way but wasn't persisted to the repo — round-2 closed
+that gap by committing this directory going forward, and every round since
+(including this one) re-runs and overwrites it rather than letting evidence
+and driver drift apart again.

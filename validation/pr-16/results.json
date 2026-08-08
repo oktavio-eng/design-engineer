@@ -76,7 +76,7 @@
   "axInputPartial_RAW": {
     "nodes": [
       {
-        "nodeId": "73",
+        "nodeId": "224",
         "ignored": false,
         "role": {
           "type": "role",
@@ -202,7 +202,7 @@
               "value": "cmdEscHint",
               "relatedNodes": [
                 {
-                  "backendDOMNodeId": 732,
+                  "backendDOMNodeId": 722,
                   "idref": "cmdEscHint"
                 }
               ]
@@ -215,22 +215,22 @@
               "value": "cmdList",
               "relatedNodes": [
                 {
-                  "backendDOMNodeId": 734,
+                  "backendDOMNodeId": 724,
                   "idref": "cmdList"
                 }
               ]
             }
           }
         ],
-        "parentId": "728",
+        "parentId": "718",
         "childIds": [
-          "729",
-          "730"
+          "719",
+          "720"
         ],
-        "backendDOMNodeId": 73
+        "backendDOMNodeId": 224
       },
       {
-        "nodeId": "729",
+        "nodeId": "719",
         "ignored": true,
         "ignoredReasons": [
           {
@@ -249,12 +249,12 @@
           "type": "internalRole",
           "value": 0
         },
-        "parentId": "73",
+        "parentId": "224",
         "childIds": [],
-        "backendDOMNodeId": 729
+        "backendDOMNodeId": 719
       },
       {
-        "nodeId": "730",
+        "nodeId": "720",
         "ignored": false,
         "role": {
           "type": "role",
@@ -287,14 +287,14 @@
             }
           }
         ],
-        "parentId": "73",
+        "parentId": "224",
         "childIds": [
-          "1110"
+          "1112"
         ],
-        "backendDOMNodeId": 730
+        "backendDOMNodeId": 720
       },
       {
-        "nodeId": "728",
+        "nodeId": "718",
         "ignored": true,
         "ignoredReasons": [
           {
@@ -313,15 +313,15 @@
           "type": "internalRole",
           "value": 0
         },
-        "parentId": "727",
+        "parentId": "717",
         "childIds": [
-          "73",
-          "732"
+          "224",
+          "722"
         ],
-        "backendDOMNodeId": 728
+        "backendDOMNodeId": 718
       },
       {
-        "nodeId": "727",
+        "nodeId": "717",
         "ignored": true,
         "ignoredReasons": [
           {
@@ -340,16 +340,16 @@
           "type": "internalRole",
           "value": 0
         },
-        "parentId": "726",
+        "parentId": "716",
         "childIds": [
-          "728",
-          "733",
-          "734"
+          "718",
+          "723",
+          "724"
         ],
-        "backendDOMNodeId": 727
+        "backendDOMNodeId": 717
       },
       {
-        "nodeId": "726",
+        "nodeId": "716",
         "ignored": false,
         "role": {
           "type": "role",
@@ -395,14 +395,14 @@
             }
           }
         ],
-        "parentId": "300",
+        "parentId": "262",
         "childIds": [
-          "727"
+          "717"
         ],
-        "backendDOMNodeId": 726
+        "backendDOMNodeId": 716
       },
       {
-        "nodeId": "300",
+        "nodeId": "262",
         "ignored": true,
         "ignoredReasons": [
           {
@@ -421,44 +421,44 @@
           "type": "internalRole",
           "value": 0
         },
-        "parentId": "274",
+        "parentId": "236",
         "childIds": [
-          "303",
-          "323",
+          "293",
+          "313",
+          "314",
+          "315",
+          "316",
+          "317",
+          "318",
+          "319",
+          "321",
           "324",
-          "325",
-          "326",
           "327",
-          "328",
-          "329",
-          "331",
-          "334",
-          "337",
-          "343",
+          "333",
+          "684",
+          "685",
+          "689",
           "694",
-          "695",
-          "699",
-          "704",
-          "706",
-          "723",
-          "725",
+          "696",
+          "713",
+          "715",
+          "716",
           "726",
-          "736",
-          "739",
-          "1141",
-          "1145",
-          "1149",
-          "1153",
-          "1157",
-          "1161",
-          "744",
-          "745",
-          "748"
+          "729",
+          "1143",
+          "1147",
+          "1151",
+          "1155",
+          "1159",
+          "1163",
+          "734",
+          "735",
+          "738"
         ],
-        "backendDOMNodeId": 300
+        "backendDOMNodeId": 262
       },
       {
-        "nodeId": "274",
+        "nodeId": "236",
         "ignored": true,
         "ignoredReasons": [
           {
@@ -477,14 +477,14 @@
           "type": "internalRole",
           "value": 0
         },
-        "parentId": "273",
+        "parentId": "235",
         "childIds": [
-          "300"
+          "262"
         ],
-        "backendDOMNodeId": 274
+        "backendDOMNodeId": 236
       },
       {
-        "nodeId": "273",
+        "nodeId": "235",
         "ignored": false,
         "role": {
           "type": "internalRole",
@@ -545,16 +545,16 @@
           }
         ],
         "childIds": [
-          "274"
+          "236"
         ],
-        "backendDOMNodeId": 273,
-        "frameId": "AA76D3538789C30569E46F7788A5E892"
+        "backendDOMNodeId": 235,
+        "frameId": "0BA54998A7E381AAD4536E4E510215C9"
       }
     ]
   },
   "axInputFromFullTree_RAW": [
     {
-      "nodeId": "73",
+      "nodeId": "224",
       "ignored": false,
       "role": {
         "type": "role",
@@ -680,7 +680,7 @@
             "value": "cmdEscHint",
             "relatedNodes": [
               {
-                "backendDOMNodeId": 732,
+                "backendDOMNodeId": 722,
                 "idref": "cmdEscHint"
               }
             ]
@@ -693,19 +693,19 @@
             "value": "cmdList",
             "relatedNodes": [
               {
-                "backendDOMNodeId": 734,
+                "backendDOMNodeId": 724,
                 "idref": "cmdList"
               }
             ]
           }
         }
       ],
-      "parentId": "728",
+      "parentId": "718",
       "childIds": [
-        "729",
-        "730"
+        "719",
+        "720"
       ],
-      "backendDOMNodeId": 73
+      "backendDOMNodeId": 224
     }
   ],
   "cmdNonMacHint": {
@@ -713,6 +713,152 @@
     "escVisibleText": "Ctrl K",
     "escHintText": "Press Control K to close",
     "inputAriaDescribedby": "cmdEscHint"
+  },
+  "focusRestoration": {
+    "listOpenBaseline": {
+      "active": {
+        "id": "cmdInput",
+        "className": "cmd__input",
+        "tag": "INPUT",
+        "insideCmd": true,
+        "insideModal": false,
+        "isTrigger": false
+      },
+      "aria": {
+        "cmdOpen": true,
+        "cmdDetailOpen": false,
+        "cmdAriaHidden": "false",
+        "modalAriaHidden": "true"
+      }
+    },
+    "afterCtrlKClose": {
+      "active": {
+        "id": null,
+        "className": "topbar__logo cmd-trigger",
+        "tag": "A",
+        "insideCmd": false,
+        "insideModal": false,
+        "isTrigger": true
+      },
+      "aria": {
+        "cmdOpen": false,
+        "cmdDetailOpen": false,
+        "cmdAriaHidden": "true",
+        "modalAriaHidden": "true"
+      }
+    },
+    "afterMetaKReopen": {
+      "active": {
+        "id": "cmdInput",
+        "className": "cmd__input",
+        "tag": "INPUT",
+        "insideCmd": true,
+        "insideModal": false,
+        "isTrigger": false
+      },
+      "aria": {
+        "cmdOpen": true,
+        "cmdDetailOpen": false,
+        "cmdAriaHidden": "false",
+        "modalAriaHidden": "true"
+      }
+    },
+    "afterMetaKClose": {
+      "active": {
+        "id": null,
+        "className": "topbar__logo cmd-trigger",
+        "tag": "A",
+        "insideCmd": false,
+        "insideModal": false,
+        "isTrigger": true
+      },
+      "aria": {
+        "cmdOpen": false,
+        "cmdDetailOpen": false,
+        "cmdAriaHidden": "true",
+        "modalAriaHidden": "true"
+      }
+    },
+    "afterEscapeFromList": {
+      "active": {
+        "id": null,
+        "className": "topbar__logo cmd-trigger",
+        "tag": "A",
+        "insideCmd": false,
+        "insideModal": false,
+        "isTrigger": true
+      },
+      "aria": {
+        "cmdOpen": false,
+        "cmdDetailOpen": false,
+        "cmdAriaHidden": "true",
+        "modalAriaHidden": "true"
+      }
+    },
+    "afterEnterIntoDetail": {
+      "active": {
+        "id": "cmdModalClose",
+        "className": "panel-close cmd-modal__close",
+        "tag": "BUTTON",
+        "insideCmd": false,
+        "insideModal": true,
+        "isTrigger": false
+      },
+      "aria": {
+        "cmdOpen": false,
+        "cmdDetailOpen": true,
+        "cmdAriaHidden": "true",
+        "modalAriaHidden": "false"
+      }
+    },
+    "afterFirstEscapeFromDetail": {
+      "active": {
+        "id": "cmdInput",
+        "className": "cmd__input",
+        "tag": "INPUT",
+        "insideCmd": true,
+        "insideModal": false,
+        "isTrigger": false
+      },
+      "aria": {
+        "cmdOpen": true,
+        "cmdDetailOpen": false,
+        "cmdAriaHidden": "false",
+        "modalAriaHidden": "true"
+      }
+    },
+    "afterSecondEscapeFromDetail": {
+      "active": {
+        "id": null,
+        "className": "topbar__logo cmd-trigger",
+        "tag": "A",
+        "insideCmd": false,
+        "insideModal": false,
+        "isTrigger": true
+      },
+      "aria": {
+        "cmdOpen": false,
+        "cmdDetailOpen": false,
+        "cmdAriaHidden": "true",
+        "modalAriaHidden": "true"
+      }
+    },
+    "afterModalCloseButton": {
+      "active": {
+        "id": null,
+        "className": "topbar__logo cmd-trigger",
+        "tag": "A",
+        "insideCmd": false,
+        "insideModal": false,
+        "isTrigger": true
+      },
+      "aria": {
+        "cmdOpen": false,
+        "cmdDetailOpen": false,
+        "cmdAriaHidden": "true",
+        "modalAriaHidden": "true"
+      }
+    }
   },
   "consoleMessages": [],
   "consoleMessagesAll": [],
