@@ -1,0 +1,80 @@
+{
+  "generatedAt": "2026-08-08T15:26:07Z",
+  "base": "4a148325d5e838c32b45957cfbfe76f7c2ddac27",
+  "testedHead": "22d1d800392dc9f574b09e5b60cfdd4ae806a998",
+  "traceability": "The following commit only persists this evidence file; every executable and workflow file was tested at testedHead.",
+  "branch": "feature/storybook-safety-net",
+  "environment": {
+    "node": "24.17.0",
+    "storybook": "10.5.7",
+    "vitestBrowser": "4.1.10",
+    "playwright": "1.58.2"
+  },
+  "gate": [
+    {
+      "command": "npm ci",
+      "exitCode": 0,
+      "evidence": "148 packages installed; npm audit found 0 vulnerabilities"
+    },
+    {
+      "command": "npm run build-storybook",
+      "exitCode": 0,
+      "evidence": "Storybook build completed successfully"
+    },
+    {
+      "command": "npm run test-storybook",
+      "exitCode": 0,
+      "evidence": "3 files passed; 7 stories passed; command-menu axe baselines verified in closed, search-open, detail-open and filtered-search states"
+    },
+    {
+      "command": "npm run test:product-ui",
+      "exitCode": 0,
+      "evidence": "1 production command-palette focus test passed"
+    },
+    {
+      "command": "npm run test:visual",
+      "exitCode": 0,
+      "evidence": "7 visual cases passed locally at raw 0.000% and 2px-smoothed 0.000%; comparator limits are 4% raw and 0.8% smoothed"
+    },
+    {
+      "command": "node --check script.js",
+      "exitCode": 0,
+      "evidence": "Production JavaScript syntax remains valid"
+    },
+    {
+      "command": "git diff --exit-code origin/main -- index.html script.js favicon.svg styles",
+      "exitCode": 0,
+      "evidence": "No production file differs from the updated main base"
+    }
+  ],
+  "visualMatrix": [
+    "colors-light",
+    "colors-dark",
+    "typography-scale",
+    "typography-flat",
+    "rows-narrow",
+    "people-expanded-narrow",
+    "command-search-dark"
+  ],
+  "visualInspection": {
+    "reviewedAtOriginalResolution": true,
+    "reviewedCases": 7,
+    "peopleExpandedNarrow": "320x800; clean two-line description, no heading collision and no platform-native focus outline"
+  },
+  "accessibilityBaseline": {
+    "commandStatesScanned": ["closed", "search-open", "detail-open", "filtered-search", "closed-after-dismiss"],
+    "knownDebtCategories": ["color-contrast", "aria-hidden-focus", "aria-allowed-attr", "label-title-only", "heading-order"],
+    "unexpectedViolations": 0
+  },
+  "browserAssertions": {
+    "themes": ["light", "dark"],
+    "flatType": ["off", "on"],
+    "paintedCustomFonts": ["Geist", "Geist Mono", "Geist Pixel"],
+    "viewports": ["1024px", "320px"],
+    "reducedMotion": "reduce",
+    "horizontalOverflow": false,
+    "productConsoleErrors": 0,
+    "productExceptions": 0,
+    "focusInsideAriaHiddenOrInert": false
+  }
+}

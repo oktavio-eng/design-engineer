@@ -1,0 +1,60 @@
+name: Storybook
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: storybook-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: Build and test
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.58.2-noble
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.12.0
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Storybook
+        run: npm run build-storybook
+
+      - name: Run Storybook tests
+        run: npm run test-storybook
+
+      - name: Run production UI smoke test
+        run: npm run test:product-ui
+
+      - name: Run visual regression tests
+        run: npm run test:visual
+
+      - name: Upload built Storybook
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: storybook-static
+          path: storybook-static/
+          if-no-files-found: warn
+          retention-days: 7
+
+      - name: Upload visual evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: storybook-visual-evidence
+          path: artifacts/visual/
+          if-no-files-found: warn
+          retention-days: 7

@@ -88,6 +88,9 @@ const preview = {
     controls: {
       disable: true,
     },
+    a11y: {
+      test: "error",
+    },
   },
 };
 

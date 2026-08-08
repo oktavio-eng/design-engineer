@@ -85,7 +85,7 @@ export const Typography = {
           <div class="sb-token-list">
             ${tokenRows(
               fontFamilies,
-              (token) => `<span class="sb-type-sample" style="font-family: var(${token}); font-size: var(--fs-16)">Design Engineer 0123</span>`,
+              (token) => `<span class="sb-type-sample" data-font-token="${token}" style="font-family: var(${token}); font-size: var(--fs-16)">Design Engineer 0123</span>`,
             )}
           </div>
         </section>
