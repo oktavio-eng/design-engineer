@@ -1,0 +1,194 @@
+{
+  "fontsReady": true,
+  "fontsCheck": {
+    "sans16": true,
+    "sans400": true,
+    "mono16": true,
+    "pixel16": true
+  },
+  "documentFontsEntries": [
+    {
+      "family": "Nunito Sans",
+      "style": "normal",
+      "weight": "400",
+      "status": "unloaded"
+    },
+    {
+      "family": "Nunito Sans",
+      "style": "italic",
+      "weight": "400",
+      "status": "unloaded"
+    },
+    {
+      "family": "Nunito Sans",
+      "style": "normal",
+      "weight": "700",
+      "status": "unloaded"
+    },
+    {
+      "family": "Nunito Sans",
+      "style": "italic",
+      "weight": "700",
+      "status": "unloaded"
+    },
+    {
+      "family": "Geist",
+      "style": "normal",
+      "weight": "100 900",
+      "status": "unloaded"
+    },
+    {
+      "family": "Geist",
+      "style": "normal",
+      "weight": "100 900",
+      "status": "unloaded"
+    },
+    {
+      "family": "Geist",
+      "style": "normal",
+      "weight": "100 900",
+      "status": "unloaded"
+    },
+    {
+      "family": "Geist",
+      "style": "normal",
+      "weight": "100 900",
+      "status": "unloaded"
+    },
+    {
+      "family": "Geist",
+      "style": "normal",
+      "weight": "100 900",
+      "status": "loaded"
+    },
+    {
+      "family": "Geist Mono",
+      "style": "normal",
+      "weight": "100 900",
+      "status": "unloaded"
+    },
+    {
+      "family": "Geist Mono",
+      "style": "normal",
+      "weight": "100 900",
+      "status": "unloaded"
+    },
+    {
+      "family": "Geist Mono",
+      "style": "normal",
+      "weight": "100 900",
+      "status": "unloaded"
+    },
+    {
+      "family": "Geist Mono",
+      "style": "normal",
+      "weight": "100 900",
+      "status": "unloaded"
+    },
+    {
+      "family": "Geist Mono",
+      "style": "normal",
+      "weight": "100 900",
+      "status": "unloaded"
+    },
+    {
+      "family": "Geist Mono",
+      "style": "normal",
+      "weight": "100 900",
+      "status": "loaded"
+    },
+    {
+      "family": "Geist Pixel",
+      "style": "normal",
+      "weight": "400",
+      "status": "unloaded"
+    },
+    {
+      "family": "Geist Pixel",
+      "style": "normal",
+      "weight": "400",
+      "status": "loaded"
+    }
+  ],
+  "sampleSans": {
+    "found": true,
+    "text": "Design Engineer 0123",
+    "fontFamily": "Geist, system-ui, sans-serif",
+    "fontSize": "16px",
+    "fontWeight": "400"
+  },
+  "sampleMono": {
+    "found": true,
+    "text": "Design Engineer 0123",
+    "fontFamily": "\"Geist Mono\", monospace",
+    "fontSize": "16px",
+    "fontWeight": "400"
+  },
+  "samplePixel": {
+    "found": true,
+    "text": "Design Engineer 0123",
+    "fontFamily": "\"Geist Pixel\", Geist, system-ui, sans-serif",
+    "fontSize": "16px",
+    "fontWeight": "400"
+  },
+  "platformFontsSans": {
+    "fonts": [
+      {
+        "familyName": "Geist",
+        "postScriptName": "Geist-Regular",
+        "isCustomFont": true,
+        "glyphCount": 20
+      }
+    ]
+  },
+  "platformFontsMono": {
+    "fonts": [
+      {
+        "familyName": "Geist Mono",
+        "postScriptName": "GeistMono-Regular",
+        "isCustomFont": true,
+        "glyphCount": 20
+      }
+    ]
+  },
+  "platformFontsPixel": {
+    "fonts": [
+      {
+        "familyName": "Geist Pixel",
+        "postScriptName": "GeistPixel-Regular",
+        "isCustomFont": true,
+        "glyphCount": 20
+      }
+    ]
+  },
+  "fontNetworkRequests": [
+    {
+      "url": "https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@100..900&family=Geist+Pixel&display=swap",
+      "status": 200,
+      "mimeType": "text/css",
+      "fromCache": true
+    },
+    {
+      "url": "https://fonts.gstatic.com/s/geistmono/v6/or3nQ6H-1_WfwkMZI_qYFrcdmhHkjko.woff2",
+      "status": 200,
+      "mimeType": "font/woff2",
+      "fromCache": true
+    },
+    {
+      "url": "https://fonts.gstatic.com/s/geist/v5/gyByhwUxId8gMEwcGFWNOITd.woff2",
+      "status": 200,
+      "mimeType": "font/woff2",
+      "fromCache": true
+    },
+    {
+      "url": "https://fonts.gstatic.com/s/geistpixel/v1/CSRs4zxZluGGW3oyI0A_AN0hQBvYDU4hBmqoKzA8XT6itqLHtqCv.woff2",
+      "status": 200,
+      "mimeType": "font/woff2",
+      "fromCache": true
+    }
+  ],
+  "consoleMessages": [],
+  "consoleMessagesAll": [],
+  "exceptionsCount": 0,
+  "exceptions": []
+}

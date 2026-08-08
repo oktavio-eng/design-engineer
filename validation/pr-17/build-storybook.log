@@ -1,0 +1,59 @@
+
+> build-storybook
+> storybook build
+
+
+┌  Building storybook v10.5.7
+│
+◇  Cleaning outputDir: storybook-static
+│
+◇  Loading presets
+│
+◇  Building manager..
+│
+●  Building open services..
+│
+●  Building preview..
+│  Vite vite v8.2.1 building client environment for production...
+[2Ktransforming...│
+●  Copying static files: styles at storybook-static/styles
+✓ 27 modules transformed.
+rendering chunks...
+computing gzip size...
+│  Vite storybook-static/iframe.html                              20.25
+│  kB │ gzip:   5.69 kB
+│  storybook-static/assets/iframe-BIfD6wV8.css                1.90 kB │
+│  gzip:   0.65 kB
+│  storybook-static/assets/rolldown-runtime-Dh6celcD.js       0.62 kB │
+│  gzip:   0.41 kB
+│  storybook-static/assets/preload-helper-CNPpP6Qi.js         1.31 kB │
+│  gzip:   0.74 kB
+│  storybook-static/assets/patterns.stories-B0Cg7Lgu.js       6.08 kB │
+│  gzip:   1.28 kB
+│  storybook-static/assets/foundations.stories-DyRwRLke.js    7.36 kB │
+│  gzip:   1.79 kB
+│  storybook-static/vite-inject-mocker-entry.js              27.84 kB │
+│  gzip:   9.67 kB
+│  storybook-static/assets/iframe-CYhC0lfa.js               856.64 kB │
+│  gzip: 239.66 kB
+
+│  Vite ✓ built in 338ms
+│
+▲  Vite [plugin builtin:vite-reporter]
+│  (!) Some chunks are larger than 500 kB after minification. Consider:
+│  - Using dynamic import() to code-split the application
+│  - Use build.rolldownOptions.output.codeSplitting to improve chunking:
+│  ]8;;https://rolldown.rs/reference/OutputOptions.codeSplittinghttps://rolldown.rs/reference/OutputOptions.codeSplitting]8;;
+│  - Adjust chunk size limit for this warning via
+│  build.chunkSizeWarningLimit.
+│
+●  Storybook collects completely anonymous usage telemetry. We use it to
+│  shape Storybook's roadmap and prioritize features. You can learn more,
+│  including how to opt out, at ]8;;https://storybook.js.org/telemetryhttps://storybook.js.org/telemetry]8;;
+│
+◇  Output directory:
+│  /Users/oktavio/Desktop/design-engineer-geist/storybook-static
+│
+└  Storybook build completed successfully
+
+EXIT_CODE=0
