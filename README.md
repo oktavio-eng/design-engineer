@@ -23,7 +23,7 @@ Deploy automático na Vercel a cada push na `main`.
 
 ## Craft
 
-O design system usa tokens em OKLCH, tipografia Inter, e uma cascata de três colunas inspirada no floguo.com. Ver [`AGENTS.md`](AGENTS.md) pras regras completas de craft e convenções do projeto — leitura obrigatória antes de qualquer edição, humana ou por agente de IA.
+O design system usa tokens em OKLCH, tipografia Geist, e uma cascata de três colunas inspirada no floguo.com. Ver [`AGENTS.md`](AGENTS.md) pras regras completas de craft e convenções do projeto — leitura obrigatória antes de qualquer edição, humana ou por agente de IA.
 
 ## Roadmap
 
