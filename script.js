@@ -1362,7 +1362,39 @@ mailTrigger.addEventListener("click", function () {
     modalBody = document.getElementById("cmdModalBody"),
     modalClose = document.getElementById("cmdModalClose"),
     modalBack = document.getElementById("cmdModalBack"),
+    escHint = document.getElementById("cmdEsc"),
     trigger = document.querySelector(".topbar__logo");
+
+  // The hint badge shows the real toggle shortcut (opens when closed, closes
+  // when open — see the keydown handler below), not a decorative fragment.
+  // Mac gets the glyph; everyone else gets the word, since Ctrl has no glyph
+  // convention on the web. `userAgentData.platform` is Chromium-only, so it
+  // falls back to the deprecated-but-still-live `navigator.platform`, then to
+  // a `userAgent` string match — never assume Mac by default. Named `escHint`,
+  // not `esc`: this file already has a top-level `esc()` HTML-escaping helper,
+  // and this IIFE calls it a lot — shadowing it with a same-named element
+  // reference here silently breaks every `esc(...)` call below.
+  //
+  // The badge itself is `aria-hidden` — a bare `<span>` has no role that
+  // reliably carries an `aria-label` to assistive tech (it's inert, never
+  // focused, never visited by the accessible-name computation of anything
+  // else). The instruction lives instead in `#cmdEscHint`, a `.sr-only`
+  // sibling wired to the input via `aria-describedby` — that's the pairing
+  // (interactive control + description) screen readers actually expose.
+  if (escHint) {
+    var platform =
+      (navigator.userAgentData && navigator.userAgentData.platform) ||
+      navigator.platform ||
+      navigator.userAgent ||
+      "";
+    var isMac = /Mac|iPhone|iPad|iPod/i.test(platform);
+    escHint.textContent = isMac ? "⌘K" : "Ctrl K";
+    var escHintDesc = document.getElementById("cmdEscHint");
+    if (escHintDesc) {
+      escHintDesc.textContent =
+        "Press " + (isMac ? "Command K" : "Control K") + " to close";
+    }
+  }
 
   // One flat index over every collection already on the page. Built once: these
   // objects never change at runtime.
@@ -1454,8 +1486,88 @@ mailTrigger.addEventListener("click", function () {
     setCursor((cursor + delta + results.length) % results.length);
   }
 
+  // Where focus returns on a complete dismissal — whatever had it before the
+  // palette opened, not necessarily the trigger. Captured once per session
+  // (see the isFreshOpen check in openCmd) so the "back from detail" hop and
+  // the ⌘K "swap surfaces" hop don't clobber it with focus that's already
+  // inside the palette. Can go stale between capture and use — see
+  // isExposedFocusable — so it's re-validated at restore time, not trusted
+  // just because it was once real.
+  var opener = null;
+
+  // openCmd() waits 60ms before focusing #cmdInput (see below for why). A
+  // dismiss or a hop into detail can land inside that window; the pending
+  // timer is cancelled the instant the list layer stops being the thing on
+  // screen so it can't fire late and steal focus back onto a control that's
+  // gone dark. Belt-and-suspenders with the isExposedFocusable guard inside
+  // the callback itself, in case some future caller closes the list without
+  // going through closeCmd().
+  var pendingFocusTimer = null;
+  function cancelPendingFocus() {
+    if (pendingFocusTimer !== null) {
+      clearTimeout(pendingFocusTimer);
+      pendingFocusTimer = null;
+    }
+  }
+
+  // The confirmed bug: a control kept focus after its subtree went
+  // aria-hidden, which assistive tech treats as focus vanishing into the
+  // void. Blur before hiding, every time — callers that know where focus
+  // belongs next (returnFocus, or the layer that's about to take over) move
+  // it there in the same tick, before anything repaints.
+  function blurIfInside(root) {
+    if (root.contains(document.activeElement)) document.activeElement.blur();
+  }
+
+  // True only for an element that's reachable right now: connected, not
+  // behind an aria-hidden or inert ancestor — every surface in this file
+  // (panel, comment, about, avatar, mail, the palette itself) marks its own
+  // container aria-hidden the instant it closes, so this doubles as "not
+  // inside a surface that just closed" — and genuinely focusable, not just
+  // present in the DOM. Checked at the moment focus is about to move, never
+  // cached: the opener can go stale between capture and use (⌘K pressed
+  // from inside the mail composer closes the mail modal as a side effect of
+  // opening the palette — #mailText is still "opener", but by the time the
+  // palette itself closes it's sitting inside an aria-hidden `.mail-modal`),
+  // and the fallback trigger isn't exempt either (the topbar aria-hides
+  // itself after 1.2s idle — see scheduleNavIdle above).
+  function isExposedFocusable(el) {
+    if (!el || el.nodeType !== 1 || typeof el.focus !== "function") return false;
+    if (!document.contains(el)) return false;
+    if (el.closest('[aria-hidden="true"]')) return false;
+    if (el.closest("[inert]")) return false;
+    if (el.hasAttribute("disabled")) return false;
+    var tag = el.tagName;
+    var naturallyFocusable =
+      tag === "BUTTON" ||
+      tag === "INPUT" ||
+      tag === "SELECT" ||
+      tag === "TEXTAREA" ||
+      (tag === "A" && el.hasAttribute("href"));
+    var tabIndexAttr = el.getAttribute("tabindex");
+    var hasTabIndex = tabIndexAttr !== null && parseInt(tabIndexAttr, 10) >= 0;
+    return naturallyFocusable || hasTabIndex;
+  }
+
+  function returnFocus() {
+    var target = opener;
+    opener = null;
+    if (!isExposedFocusable(target)) target = trigger;
+    if (!isExposedFocusable(target)) target = null;
+    if (target) target.focus();
+    // Neither the opener nor the trigger is reachable right now — blurIfInside
+    // already moved focus off the closing surface above; there's nowhere
+    // safer to send it, so it stays cleared rather than forcing a hidden
+    // element to take focus just to have *a* target.
+  }
+
   // keepQuery is the "back from detail" path: same query, same selected row.
   function openCmd(keepQuery) {
+    var isFreshOpen =
+      !document.body.classList.contains("cmd-open") &&
+      !document.body.classList.contains("cmd-detail-open");
+    if (isFreshOpen) opener = document.activeElement;
+    cancelPendingFocus();
     close();
     closeComment();
     closeAbout();
@@ -1464,6 +1576,7 @@ mailTrigger.addEventListener("click", function () {
     // Also tears down the detail layer, so ⌘K on top of an open detail swaps
     // surfaces instead of stacking them.
     document.body.classList.remove("cmd-detail-open");
+    blurIfInside(modal);
     modal.setAttribute("aria-hidden", "true");
     document.body.classList.add("cmd-open");
     wash.setAttribute("aria-hidden", "false");
@@ -1472,19 +1585,33 @@ mailTrigger.addEventListener("click", function () {
     render();
     // render() rebuilds the list and resets the cursor, so restoring comes after.
     if (keepQuery) setCursor(lastCursor);
-    setTimeout(function () {
-      input.focus();
+    pendingFocusTimer = setTimeout(function () {
+      pendingFocusTimer = null;
+      // A dismiss or a hop into detail can land inside this delay — only
+      // claim focus if #cmdInput is still genuinely the thing to focus.
+      if (isExposedFocusable(input)) input.focus();
     }, 60);
   }
-  function closeCmd() {
+  // restore=false is the "hop into detail" case (openDetail() calls this to
+  // tear the list down first) — the detail layer takes focus itself right
+  // after, so returning it to the opener here would just be a flash to
+  // undo. Every other caller is a genuine complete dismissal: Meta+K/Ctrl+K
+  // toggle-close and Escape from the list both hit the default.
+  function closeCmd(restore) {
+    cancelPendingFocus();
     document.body.classList.remove("cmd-open");
+    blurIfInside(cmd);
     wash.setAttribute("aria-hidden", "true");
     cmd.setAttribute("aria-hidden", "true");
+    if (restore !== false) returnFocus();
   }
   function closeCmdDetail() {
+    cancelPendingFocus();
     document.body.classList.remove("cmd-detail-open");
+    blurIfInside(modal);
     wash.setAttribute("aria-hidden", "true");
     modal.setAttribute("aria-hidden", "true");
+    returnFocus();
   }
   // Back to the results. The wash stays up the whole time — both states share
   // the same rule in the CSS, so hiding and re-showing it would flash.
@@ -1527,11 +1654,14 @@ mailTrigger.addEventListener("click", function () {
     // Taken from the item, not the global cursor: a click opens a row the
     // keyboard cursor was never on.
     lastCursor = results.indexOf(item);
-    closeCmd();
+    // false: this tears the list down to swap surfaces, not to dismiss —
+    // focus moves into the detail layer below, not back to the opener.
+    closeCmd(false);
     document.body.classList.add("cmd-detail-open");
     wash.setAttribute("aria-hidden", "false");
     modal.setAttribute("aria-hidden", "false");
     modal.scrollTop = 0;
+    modalClose.focus();
   }
 
   input.addEventListener("input", render);

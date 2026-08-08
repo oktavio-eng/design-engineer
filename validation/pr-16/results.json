@@ -1,0 +1,1029 @@
+{
+  "fontsReady": true,
+  "geistCheckAt17_92px": true,
+  "h1Info": {
+    "text": "Design Engineer",
+    "fontSize": "17.92px",
+    "fontWeight": "460",
+    "fontFamily": "Geist, system-ui, sans-serif"
+  },
+  "rowInfo": {
+    "text": "Rauno FreibergStaff Design Engineer, Ver",
+    "fontSize": "17.92px",
+    "fontWeight": "460",
+    "fontFamily": "Geist, system-ui, sans-serif"
+  },
+  "typographySweep": {
+    "expectedSize": "17.92px",
+    "expectedWeight": "460",
+    "totalChecked": 110,
+    "matching": 110,
+    "mismatches": []
+  },
+  "platformFontsH1": {
+    "fonts": [
+      {
+        "familyName": "Geist",
+        "postScriptName": "Geist-Regular_wght1CC0000",
+        "isCustomFont": true,
+        "glyphCount": 15
+      }
+    ]
+  },
+  "platformFontsRow": {
+    "fonts": [
+      {
+        "familyName": "Geist",
+        "postScriptName": "Geist-Regular_wght1CC0000",
+        "isCustomFont": true,
+        "glyphCount": 28
+      }
+    ]
+  },
+  "platformFontsCmdInput": {
+    "fonts": [
+      {
+        "familyName": "Geist",
+        "postScriptName": "Geist-Regular_wght1CC0000",
+        "isCustomFont": true,
+        "glyphCount": 7
+      }
+    ]
+  },
+  "overflowDesktop": {
+    "htmlScrollWidth": 1265,
+    "htmlClientWidth": 1265,
+    "bodyScrollWidth": 1265,
+    "bodyClientWidth": 1265
+  },
+  "overflow320": {
+    "htmlScrollWidth": 320,
+    "htmlClientWidth": 320,
+    "bodyScrollWidth": 320,
+    "bodyClientWidth": 320
+  },
+  "cmdEmptyInfo": {
+    "cmdOpen": true,
+    "escVisibleText": "⌘K",
+    "escAriaHidden": "true",
+    "escHintText": "Press Command K to close",
+    "escHintClass": "sr-only",
+    "inputAriaDescribedby": "cmdEscHint",
+    "inputPlaceholder": "Search…",
+    "listChildCount": 62
+  },
+  "cmdResultsInfo": {
+    "listChildCount": 6,
+    "firstItemText": "People"
+  },
+  "cmdDetailInfo": {
+    "detailOpen": true,
+    "modalTitle": "Rauno Freiberg"
+  },
+  "axInputPartial_RAW": {
+    "nodes": [
+      {
+        "nodeId": "19",
+        "ignored": false,
+        "role": {
+          "type": "role",
+          "value": "textbox"
+        },
+        "chromeRole": {
+          "type": "internalRole",
+          "value": 170
+        },
+        "name": {
+          "type": "computedString",
+          "value": "Search…",
+          "sources": [
+            {
+              "type": "relatedElement",
+              "attribute": "aria-labelledby"
+            },
+            {
+              "type": "attribute",
+              "attribute": "aria-label"
+            },
+            {
+              "type": "relatedElement",
+              "nativeSource": "label"
+            },
+            {
+              "type": "attribute",
+              "attribute": "title"
+            },
+            {
+              "type": "placeholder",
+              "value": {
+                "type": "computedString",
+                "value": "Search…"
+              },
+              "attribute": "placeholder",
+              "attributeValue": {
+                "type": "string",
+                "value": "Search…"
+              }
+            },
+            {
+              "type": "placeholder",
+              "attribute": "aria-placeholder",
+              "superseded": true
+            },
+            {
+              "type": "attribute",
+              "attribute": "title",
+              "superseded": true
+            }
+          ]
+        },
+        "description": {
+          "type": "computedString",
+          "value": "Press Command K to close"
+        },
+        "value": {
+          "type": "string",
+          "value": "Rauno"
+        },
+        "properties": [
+          {
+            "name": "invalid",
+            "value": {
+              "type": "token",
+              "value": "false"
+            }
+          },
+          {
+            "name": "focusable",
+            "value": {
+              "type": "booleanOrUndefined",
+              "value": true
+            }
+          },
+          {
+            "name": "focused",
+            "value": {
+              "type": "booleanOrUndefined",
+              "value": true
+            }
+          },
+          {
+            "name": "editable",
+            "value": {
+              "type": "token",
+              "value": "plaintext"
+            }
+          },
+          {
+            "name": "settable",
+            "value": {
+              "type": "booleanOrUndefined",
+              "value": true
+            }
+          },
+          {
+            "name": "multiline",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "readonly",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "required",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "describedby",
+            "value": {
+              "type": "idrefList",
+              "value": "cmdEscHint",
+              "relatedNodes": [
+                {
+                  "backendDOMNodeId": 713,
+                  "idref": "cmdEscHint"
+                }
+              ]
+            }
+          },
+          {
+            "name": "controls",
+            "value": {
+              "type": "idrefList",
+              "value": "cmdList",
+              "relatedNodes": [
+                {
+                  "backendDOMNodeId": 715,
+                  "idref": "cmdList"
+                }
+              ]
+            }
+          }
+        ],
+        "parentId": "709",
+        "childIds": [
+          "710",
+          "711"
+        ],
+        "backendDOMNodeId": 19
+      },
+      {
+        "nodeId": "710",
+        "ignored": true,
+        "ignoredReasons": [
+          {
+            "name": "notRendered",
+            "value": {
+              "type": "boolean",
+              "value": true
+            }
+          }
+        ],
+        "role": {
+          "type": "role",
+          "value": "none"
+        },
+        "chromeRole": {
+          "type": "internalRole",
+          "value": 0
+        },
+        "parentId": "19",
+        "childIds": [],
+        "backendDOMNodeId": 710
+      },
+      {
+        "nodeId": "711",
+        "ignored": false,
+        "role": {
+          "type": "role",
+          "value": "generic"
+        },
+        "chromeRole": {
+          "type": "internalRole",
+          "value": 88
+        },
+        "name": {
+          "type": "computedString",
+          "value": "",
+          "sources": [
+            {
+              "type": "relatedElement",
+              "attribute": "aria-labelledby"
+            },
+            {
+              "type": "attribute",
+              "attribute": "aria-label"
+            }
+          ]
+        },
+        "properties": [
+          {
+            "name": "editable",
+            "value": {
+              "type": "token",
+              "value": "plaintext"
+            }
+          }
+        ],
+        "parentId": "19",
+        "childIds": [
+          "1103"
+        ],
+        "backendDOMNodeId": 711
+      },
+      {
+        "nodeId": "709",
+        "ignored": true,
+        "ignoredReasons": [
+          {
+            "name": "uninteresting",
+            "value": {
+              "type": "boolean",
+              "value": true
+            }
+          }
+        ],
+        "role": {
+          "type": "role",
+          "value": "none"
+        },
+        "chromeRole": {
+          "type": "internalRole",
+          "value": 0
+        },
+        "parentId": "708",
+        "childIds": [
+          "19",
+          "713"
+        ],
+        "backendDOMNodeId": 709
+      },
+      {
+        "nodeId": "708",
+        "ignored": true,
+        "ignoredReasons": [
+          {
+            "name": "uninteresting",
+            "value": {
+              "type": "boolean",
+              "value": true
+            }
+          }
+        ],
+        "role": {
+          "type": "role",
+          "value": "none"
+        },
+        "chromeRole": {
+          "type": "internalRole",
+          "value": 0
+        },
+        "parentId": "707",
+        "childIds": [
+          "709",
+          "714",
+          "715"
+        ],
+        "backendDOMNodeId": 708
+      },
+      {
+        "nodeId": "707",
+        "ignored": false,
+        "role": {
+          "type": "role",
+          "value": "dialog"
+        },
+        "chromeRole": {
+          "type": "internalRole",
+          "value": 35
+        },
+        "name": {
+          "type": "computedString",
+          "value": "Search",
+          "sources": [
+            {
+              "type": "relatedElement",
+              "attribute": "aria-labelledby"
+            },
+            {
+              "type": "attribute",
+              "value": {
+                "type": "computedString",
+                "value": "Search"
+              },
+              "attribute": "aria-label",
+              "attributeValue": {
+                "type": "string",
+                "value": "Search"
+              }
+            },
+            {
+              "type": "attribute",
+              "attribute": "title",
+              "superseded": true
+            }
+          ]
+        },
+        "properties": [
+          {
+            "name": "modal",
+            "value": {
+              "type": "boolean",
+              "value": true
+            }
+          }
+        ],
+        "parentId": "253",
+        "childIds": [
+          "708"
+        ],
+        "backendDOMNodeId": 707
+      },
+      {
+        "nodeId": "253",
+        "ignored": true,
+        "ignoredReasons": [
+          {
+            "name": "uninteresting",
+            "value": {
+              "type": "boolean",
+              "value": true
+            }
+          }
+        ],
+        "role": {
+          "type": "role",
+          "value": "none"
+        },
+        "chromeRole": {
+          "type": "internalRole",
+          "value": 0
+        },
+        "parentId": "227",
+        "childIds": [
+          "284",
+          "304",
+          "305",
+          "306",
+          "307",
+          "308",
+          "309",
+          "310",
+          "312",
+          "315",
+          "318",
+          "324",
+          "675",
+          "676",
+          "680",
+          "685",
+          "687",
+          "704",
+          "706",
+          "707",
+          "717",
+          "720",
+          "1134",
+          "1138",
+          "1142",
+          "1146",
+          "1150",
+          "1154",
+          "725",
+          "726",
+          "729"
+        ],
+        "backendDOMNodeId": 253
+      },
+      {
+        "nodeId": "227",
+        "ignored": true,
+        "ignoredReasons": [
+          {
+            "name": "uninteresting",
+            "value": {
+              "type": "boolean",
+              "value": true
+            }
+          }
+        ],
+        "role": {
+          "type": "role",
+          "value": "none"
+        },
+        "chromeRole": {
+          "type": "internalRole",
+          "value": 0
+        },
+        "parentId": "226",
+        "childIds": [
+          "253"
+        ],
+        "backendDOMNodeId": 227
+      },
+      {
+        "nodeId": "226",
+        "ignored": false,
+        "role": {
+          "type": "internalRole",
+          "value": "RootWebArea"
+        },
+        "chromeRole": {
+          "type": "internalRole",
+          "value": 144
+        },
+        "name": {
+          "type": "computedString",
+          "value": "Design Engineer, Plan",
+          "sources": [
+            {
+              "type": "relatedElement",
+              "attribute": "aria-labelledby"
+            },
+            {
+              "type": "attribute",
+              "attribute": "aria-label"
+            },
+            {
+              "type": "attribute",
+              "attribute": "aria-label",
+              "superseded": true
+            },
+            {
+              "type": "relatedElement",
+              "value": {
+                "type": "computedString",
+                "value": "Design Engineer, Plan"
+              },
+              "nativeSource": "title"
+            }
+          ]
+        },
+        "properties": [
+          {
+            "name": "focusable",
+            "value": {
+              "type": "booleanOrUndefined",
+              "value": true
+            }
+          },
+          {
+            "name": "focused",
+            "value": {
+              "type": "booleanOrUndefined",
+              "value": true
+            }
+          },
+          {
+            "name": "url",
+            "value": {
+              "type": "string",
+              "value": "http://localhost:8794/index.html"
+            }
+          }
+        ],
+        "childIds": [
+          "227"
+        ],
+        "backendDOMNodeId": 226,
+        "frameId": "027B7AEEC80BB8494C9CB8B6549C0FD0"
+      }
+    ]
+  },
+  "axInputFromFullTree_RAW": [
+    {
+      "nodeId": "19",
+      "ignored": false,
+      "role": {
+        "type": "role",
+        "value": "textbox"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 170
+      },
+      "name": {
+        "type": "computedString",
+        "value": "Search…",
+        "sources": [
+          {
+            "type": "relatedElement",
+            "attribute": "aria-labelledby"
+          },
+          {
+            "type": "attribute",
+            "attribute": "aria-label"
+          },
+          {
+            "type": "relatedElement",
+            "nativeSource": "label"
+          },
+          {
+            "type": "attribute",
+            "attribute": "title"
+          },
+          {
+            "type": "placeholder",
+            "value": {
+              "type": "computedString",
+              "value": "Search…"
+            },
+            "attribute": "placeholder",
+            "attributeValue": {
+              "type": "string",
+              "value": "Search…"
+            }
+          },
+          {
+            "type": "placeholder",
+            "attribute": "aria-placeholder",
+            "superseded": true
+          },
+          {
+            "type": "attribute",
+            "attribute": "title",
+            "superseded": true
+          }
+        ]
+      },
+      "description": {
+        "type": "computedString",
+        "value": "Press Command K to close"
+      },
+      "value": {
+        "type": "string",
+        "value": "Rauno"
+      },
+      "properties": [
+        {
+          "name": "invalid",
+          "value": {
+            "type": "token",
+            "value": "false"
+          }
+        },
+        {
+          "name": "focusable",
+          "value": {
+            "type": "booleanOrUndefined",
+            "value": true
+          }
+        },
+        {
+          "name": "focused",
+          "value": {
+            "type": "booleanOrUndefined",
+            "value": true
+          }
+        },
+        {
+          "name": "editable",
+          "value": {
+            "type": "token",
+            "value": "plaintext"
+          }
+        },
+        {
+          "name": "settable",
+          "value": {
+            "type": "booleanOrUndefined",
+            "value": true
+          }
+        },
+        {
+          "name": "multiline",
+          "value": {
+            "type": "boolean",
+            "value": false
+          }
+        },
+        {
+          "name": "readonly",
+          "value": {
+            "type": "boolean",
+            "value": false
+          }
+        },
+        {
+          "name": "required",
+          "value": {
+            "type": "boolean",
+            "value": false
+          }
+        },
+        {
+          "name": "describedby",
+          "value": {
+            "type": "idrefList",
+            "value": "cmdEscHint",
+            "relatedNodes": [
+              {
+                "backendDOMNodeId": 713,
+                "idref": "cmdEscHint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "controls",
+          "value": {
+            "type": "idrefList",
+            "value": "cmdList",
+            "relatedNodes": [
+              {
+                "backendDOMNodeId": 715,
+                "idref": "cmdList"
+              }
+            ]
+          }
+        }
+      ],
+      "parentId": "709",
+      "childIds": [
+        "710",
+        "711"
+      ],
+      "backendDOMNodeId": 19
+    }
+  ],
+  "cmdNonMacHint": {
+    "platform": "Win32",
+    "escVisibleText": "Ctrl K",
+    "escHintText": "Press Control K to close",
+    "inputAriaDescribedby": "cmdEscHint"
+  },
+  "focusRestoration": {
+    "listOpenBaseline": {
+      "active": {
+        "id": "cmdInput",
+        "className": "cmd__input",
+        "tag": "INPUT",
+        "insideCmd": true,
+        "insideModal": false,
+        "isTrigger": false,
+        "insideAriaHiddenAncestor": false,
+        "hiddenAncestorSelector": null,
+        "insideInertAncestor": false
+      },
+      "aria": {
+        "cmdOpen": true,
+        "cmdDetailOpen": false,
+        "cmdAriaHidden": "false",
+        "modalAriaHidden": "true"
+      }
+    },
+    "afterCtrlKClose": {
+      "active": {
+        "id": null,
+        "className": null,
+        "tag": "BODY",
+        "insideCmd": false,
+        "insideModal": false,
+        "isTrigger": false,
+        "insideAriaHiddenAncestor": false,
+        "hiddenAncestorSelector": null,
+        "insideInertAncestor": false
+      },
+      "aria": {
+        "cmdOpen": false,
+        "cmdDetailOpen": false,
+        "cmdAriaHidden": "true",
+        "modalAriaHidden": "true"
+      }
+    },
+    "afterMetaKReopen": {
+      "active": {
+        "id": "cmdInput",
+        "className": "cmd__input",
+        "tag": "INPUT",
+        "insideCmd": true,
+        "insideModal": false,
+        "isTrigger": false,
+        "insideAriaHiddenAncestor": false,
+        "hiddenAncestorSelector": null,
+        "insideInertAncestor": false
+      },
+      "aria": {
+        "cmdOpen": true,
+        "cmdDetailOpen": false,
+        "cmdAriaHidden": "false",
+        "modalAriaHidden": "true"
+      }
+    },
+    "afterMetaKClose": {
+      "active": {
+        "id": null,
+        "className": null,
+        "tag": "BODY",
+        "insideCmd": false,
+        "insideModal": false,
+        "isTrigger": false,
+        "insideAriaHiddenAncestor": false,
+        "hiddenAncestorSelector": null,
+        "insideInertAncestor": false
+      },
+      "aria": {
+        "cmdOpen": false,
+        "cmdDetailOpen": false,
+        "cmdAriaHidden": "true",
+        "modalAriaHidden": "true"
+      }
+    },
+    "afterEscapeFromList": {
+      "active": {
+        "id": null,
+        "className": null,
+        "tag": "BODY",
+        "insideCmd": false,
+        "insideModal": false,
+        "isTrigger": false,
+        "insideAriaHiddenAncestor": false,
+        "hiddenAncestorSelector": null,
+        "insideInertAncestor": false
+      },
+      "aria": {
+        "cmdOpen": false,
+        "cmdDetailOpen": false,
+        "cmdAriaHidden": "true",
+        "modalAriaHidden": "true"
+      }
+    },
+    "afterEnterIntoDetail": {
+      "active": {
+        "id": "cmdModalClose",
+        "className": "panel-close cmd-modal__close",
+        "tag": "BUTTON",
+        "insideCmd": false,
+        "insideModal": true,
+        "isTrigger": false,
+        "insideAriaHiddenAncestor": false,
+        "hiddenAncestorSelector": null,
+        "insideInertAncestor": false
+      },
+      "aria": {
+        "cmdOpen": false,
+        "cmdDetailOpen": true,
+        "cmdAriaHidden": "true",
+        "modalAriaHidden": "false"
+      }
+    },
+    "afterFirstEscapeFromDetail": {
+      "active": {
+        "id": "cmdInput",
+        "className": "cmd__input",
+        "tag": "INPUT",
+        "insideCmd": true,
+        "insideModal": false,
+        "isTrigger": false,
+        "insideAriaHiddenAncestor": false,
+        "hiddenAncestorSelector": null,
+        "insideInertAncestor": false
+      },
+      "aria": {
+        "cmdOpen": true,
+        "cmdDetailOpen": false,
+        "cmdAriaHidden": "false",
+        "modalAriaHidden": "true"
+      }
+    },
+    "afterSecondEscapeFromDetail": {
+      "active": {
+        "id": null,
+        "className": null,
+        "tag": "BODY",
+        "insideCmd": false,
+        "insideModal": false,
+        "isTrigger": false,
+        "insideAriaHiddenAncestor": false,
+        "hiddenAncestorSelector": null,
+        "insideInertAncestor": false
+      },
+      "aria": {
+        "cmdOpen": false,
+        "cmdDetailOpen": false,
+        "cmdAriaHidden": "true",
+        "modalAriaHidden": "true"
+      }
+    },
+    "afterModalCloseButton": {
+      "active": {
+        "id": null,
+        "className": null,
+        "tag": "BODY",
+        "insideCmd": false,
+        "insideModal": false,
+        "isTrigger": false,
+        "insideAriaHiddenAncestor": false,
+        "hiddenAncestorSelector": null,
+        "insideInertAncestor": false
+      },
+      "aria": {
+        "cmdOpen": false,
+        "cmdDetailOpen": false,
+        "cmdAriaHidden": "true",
+        "modalAriaHidden": "true"
+      }
+    }
+  },
+  "focusRegression": {
+    "dismissUnder60ms": {
+      "active": {
+        "id": null,
+        "className": null,
+        "tag": "BODY",
+        "insideCmd": false,
+        "insideModal": false,
+        "isTrigger": false,
+        "insideAriaHiddenAncestor": false,
+        "hiddenAncestorSelector": null,
+        "insideInertAncestor": false
+      },
+      "aria": {
+        "cmdOpen": false,
+        "cmdDetailOpen": false,
+        "cmdAriaHidden": "true",
+        "modalAriaHidden": "true"
+      }
+    },
+    "listToDetailUnder60ms": {
+      "active": {
+        "id": "cmdModalClose",
+        "className": "panel-close cmd-modal__close",
+        "tag": "BUTTON",
+        "insideCmd": false,
+        "insideModal": true,
+        "isTrigger": false,
+        "insideAriaHiddenAncestor": false,
+        "hiddenAncestorSelector": null,
+        "insideInertAncestor": false
+      },
+      "aria": {
+        "cmdOpen": false,
+        "cmdDetailOpen": true,
+        "cmdAriaHidden": "true",
+        "modalAriaHidden": "false"
+      }
+    },
+    "openerHiddenAfterOpeningPalette_preState": {
+      "id": "mailText",
+      "className": "composer__input",
+      "tag": "TEXTAREA",
+      "insideCmd": false,
+      "insideModal": false,
+      "isTrigger": false,
+      "insideAriaHiddenAncestor": false,
+      "hiddenAncestorSelector": null,
+      "insideInertAncestor": false
+    },
+    "openerHiddenAfterOpeningPalette": {
+      "active": {
+        "id": null,
+        "className": "topbar__logo cmd-trigger",
+        "tag": "A",
+        "insideCmd": false,
+        "insideModal": false,
+        "isTrigger": true,
+        "insideAriaHiddenAncestor": false,
+        "hiddenAncestorSelector": null,
+        "insideInertAncestor": false
+      },
+      "aria": {
+        "cmdOpen": false,
+        "cmdDetailOpen": false,
+        "cmdAriaHidden": "true",
+        "modalAriaHidden": "true"
+      },
+      "mailModalAriaHiddenWhileCmdWasOpen": "true"
+    },
+    "openerInertAncestor_preState": {
+      "openerHasInertAttribute": false,
+      "openerClosestInert": false,
+      "ancestorIsOpenerItself": false,
+      "ancestorTag": "DIV",
+      "ancestorClassName": "row"
+    },
+    "openerInertAncestor": {
+      "active": {
+        "id": null,
+        "className": "topbar__logo cmd-trigger",
+        "tag": "A",
+        "insideCmd": false,
+        "insideModal": false,
+        "isTrigger": true,
+        "insideAriaHiddenAncestor": false,
+        "hiddenAncestorSelector": null,
+        "insideInertAncestor": false
+      },
+      "aria": {
+        "cmdOpen": false,
+        "cmdDetailOpen": false,
+        "cmdAriaHidden": "true",
+        "modalAriaHidden": "true"
+      },
+      "inertAncestorCheck": {
+        "openerItselfHasInertAttribute": false,
+        "closestInertFound": true,
+        "closestInertIsOpener": false,
+        "closestInertTag": "DIV",
+        "closestInertClassName": "row"
+      }
+    },
+    "fallbackTriggerAlsoHidden": {
+      "active": {
+        "id": null,
+        "className": null,
+        "tag": "BODY",
+        "insideCmd": false,
+        "insideModal": false,
+        "isTrigger": false,
+        "insideAriaHiddenAncestor": false,
+        "hiddenAncestorSelector": null,
+        "insideInertAncestor": false
+      },
+      "aria": {
+        "cmdOpen": false,
+        "cmdDetailOpen": false,
+        "cmdAriaHidden": "true",
+        "modalAriaHidden": "true"
+      }
+    }
+  },
+  "focusInvariant": {
+    "checked": 14,
+    "violations": [],
+    "holds": true
+  },
+  "consoleMessages": [],
+  "consoleMessagesAll": [],
+  "exceptionsCount": 0,
+  "exceptions": []
+}
