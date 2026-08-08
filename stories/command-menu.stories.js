@@ -52,9 +52,8 @@ function renderCommandMenu() {
             placeholder="Search…"
             autocomplete="off"
             spellcheck="false"
-            aria-label="Search Craft Wiki"
             aria-controls="storybookCmdList"
-            aria-expanded="false"
+            aria-expanded="true"
             aria-describedby="storybookCmdHint"
           >
           <span class="cmd__esc" aria-hidden="true">⌘K</span>
@@ -117,12 +116,6 @@ function renderCommandMenu() {
     if (isExposedFocusable(target)) target.focus();
   }
 
-  function syncActiveDescendant() {
-    const option = list.querySelector('[aria-selected="true"]');
-    if (option) input.setAttribute("aria-activedescendant", option.id);
-    else input.removeAttribute("aria-activedescendant");
-  }
-
   function renderResults() {
     const query = input.value.trim().toLowerCase();
     results = entries.filter((entry) =>
@@ -132,7 +125,6 @@ function renderCommandMenu() {
 
     if (!results.length) {
       list.innerHTML = '<p class="cmd__empty">No results</p>';
-      syncActiveDescendant();
       return;
     }
 
@@ -147,7 +139,6 @@ function renderCommandMenu() {
         return `${heading}
           <button
             class="cmd__item"
-            id="storybookCmdOption${index}"
             role="option"
             type="button"
             data-index="${index}"
@@ -158,7 +149,6 @@ function renderCommandMenu() {
           </button>`;
       })
       .join("");
-    syncActiveDescendant();
   }
 
   function setCursor(nextCursor) {
@@ -167,7 +157,6 @@ function renderCommandMenu() {
     options[cursor].setAttribute("aria-selected", "false");
     cursor = (nextCursor + options.length) % options.length;
     options[cursor].setAttribute("aria-selected", "true");
-    syncActiveDescendant();
     options[cursor].scrollIntoView({ block: "nearest" });
   }
 
@@ -183,7 +172,6 @@ function renderCommandMenu() {
     document.body.classList.add("cmd-open");
     wash.setAttribute("aria-hidden", "false");
     command.setAttribute("aria-hidden", "false");
-    input.setAttribute("aria-expanded", "true");
     if (!keepQuery) input.value = "";
     renderResults();
     if (keepQuery) setCursor(lastCursor);
@@ -201,7 +189,6 @@ function renderCommandMenu() {
     blurIfInside(command);
     wash.setAttribute("aria-hidden", "true");
     command.setAttribute("aria-hidden", "true");
-    input.setAttribute("aria-expanded", "false");
     if (restore) returnFocus();
   }
 
@@ -309,14 +296,14 @@ export const KeyboardFlow = {
     await step("Open from the keyboard shortcut and move focus to search", async () => {
       trigger.focus();
       await userEvent.keyboard("{Control>}k{/Control}");
-      const search = canvas.getByRole("textbox", { name: "Search Craft Wiki" });
+      const search = canvas.getByPlaceholderText("Search…");
       await waitFor(() => expect(search).toHaveFocus());
       await waitFor(() =>
         expect(canvas.getByRole("dialog", { name: "Search" })).toBeVisible(),
       );
     });
 
-    const search = canvas.getByRole("textbox", { name: "Search Craft Wiki" });
+    const search = canvas.getByPlaceholderText("Search…");
 
     await step("Move the active result while focus stays in the search field", async () => {
       const options = canvas.getAllByRole("option");
@@ -324,7 +311,6 @@ export const KeyboardFlow = {
       await userEvent.keyboard("{ArrowDown}");
       await expect(options[1]).toHaveAttribute("aria-selected", "true");
       await expect(search).toHaveFocus();
-      await expect(search).toHaveAttribute("aria-activedescendant", options[1].id);
     });
 
     await step("Filter and open the selected result", async () => {

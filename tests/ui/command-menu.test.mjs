@@ -61,6 +61,12 @@ test("the production command palette preserves layered keyboard focus", { timeou
   await page.waitForFunction(() => document.activeElement?.id === "cmdInput");
   await assertSafeFocus(page, "cmdInput");
 
+  const firstResult = await page.locator('.cmd__item[aria-selected="true"] > span').first().textContent();
+  await page.keyboard.press("ArrowDown");
+  const secondResult = await page.locator('.cmd__item[aria-selected="true"] > span').first().textContent();
+  assert.notEqual(secondResult, firstResult);
+  await assertSafeFocus(page, "cmdInput");
+
   await page.locator("#cmdInput").fill("Emil");
   await page.keyboard.press("Enter");
   await assertSafeFocus(page, "cmdModalClose");

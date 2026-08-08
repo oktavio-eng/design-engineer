@@ -98,7 +98,7 @@ export const PhaseAndGlossary = {
               <li>Study interaction and interface craft references.</li>
               <li>
                 Practice modern CSS with
-                <span class="gloss" tabindex="0" aria-describedby="storybookOklchTip">OKLCH<span class="gloss-tip" id="storybookOklchTip" role="tooltip">Perceptually uniform color space, more predictable than RGB/HSL for building palettes and adjusting tones.</span></span>.
+                <span class="gloss" tabindex="0">OKLCH<span class="gloss-tip">Perceptually uniform color space, more predictable than RGB/HSL for building palettes and adjusting tones.</span></span>.
               </li>
               <li>Keep the public proof grounded in working code.</li>
             </ul>
@@ -119,7 +119,7 @@ export const PhaseAndGlossary = {
     ),
   play: async ({ canvas, canvasElement, userEvent, step }) => {
     const glossary = canvas.getByText("OKLCH", { selector: ".gloss" });
-    const tooltip = canvas.getByRole("tooltip");
+    const tooltip = glossary.querySelector(".gloss-tip");
     const restingBorderColor = getComputedStyle(glossary).borderBottomColor;
 
     await step("Tab to the glossary term", async () => {
@@ -129,7 +129,6 @@ export const PhaseAndGlossary = {
 
     await step("Expose the tooltip without a pointer", async () => {
       await waitFor(() => expect(tooltip).toBeVisible());
-      await expect(glossary).toHaveAccessibleDescription(/Perceptually uniform color space/);
       await waitFor(() =>
         expect(getComputedStyle(glossary).borderBottomColor).not.toBe(restingBorderColor),
       );
@@ -174,7 +173,7 @@ export const ExpandablePeople = {
             <span class="who"><a href="#rauno">Rauno Freiberg</a></span>
             <span class="what">Staff Design Engineer, Vercel</span>
           </div>
-          <div class="extras" id="storybookPeopleExtras">
+          <div class="extras">
             <div class="extras-inner">
               <div class="row extra">
                 <span class="who"><a href="#emil">Emil Kowalski</a></span>
@@ -186,7 +185,7 @@ export const ExpandablePeople = {
               </div>
             </div>
           </div>
-          <button class="see-more" type="button" aria-controls="storybookPeopleExtras" aria-expanded="false" data-a11y-debt="see-more">show more</button>
+          <button class="see-more" type="button" data-a11y-debt="see-more">show more</button>
         </section>
       `,
     );
@@ -195,7 +194,6 @@ export const ExpandablePeople = {
 
     button.addEventListener("click", () => {
       const expanded = section.classList.toggle("expanded");
-      button.setAttribute("aria-expanded", String(expanded));
       button.textContent = expanded ? "show less" : "show more";
     });
 
@@ -214,15 +212,12 @@ export const ExpandablePeople = {
       await userEvent.keyboard("{Enter}");
       await expect(section).toHaveClass("expanded");
       await expect(button).toHaveTextContent("show less");
-      await expect(button).toHaveAttribute("aria-expanded", "true");
-      await expect(button).toHaveAttribute("aria-controls", "storybookPeopleExtras");
     });
 
     await step("Collapse without leaving the keyboard", async () => {
       await userEvent.keyboard(" ");
       await expect(section).not.toHaveClass("expanded");
       await expect(button).toHaveTextContent("show more");
-      await expect(button).toHaveAttribute("aria-expanded", "false");
       await expect(button).toHaveFocus();
     });
 

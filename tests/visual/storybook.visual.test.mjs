@@ -109,8 +109,9 @@ async function compareScreenshot(visualCase, screenshot) {
     return;
   }
   if (!existsSync(baselinePath)) {
-    await writeFile(baselinePath, screenshot);
-    assert.fail(`Created missing baseline ${path.relative(repositoryRoot, baselinePath)}; review it and rerun`);
+    assert.fail(
+      `Missing baseline ${path.relative(repositoryRoot, baselinePath)}; generate it explicitly with UPDATE_VISUAL_BASELINES=1`,
+    );
   }
 
   const expected = PNG.sync.read(await readFile(baselinePath));
