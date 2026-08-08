@@ -10,6 +10,9 @@ const macChrome = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 const launchOptions = existsSync(macChrome) ? { executablePath: macChrome } : {};
 
 export default defineConfig({
+  optimizeDeps: {
+    include: ["axe-core"],
+  },
   test: {
     projects: [
       {

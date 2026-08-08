@@ -1,4 +1,5 @@
 import { expect, waitFor } from "storybook/test";
+import { expectOnlyA11yDebt } from "./helpers/a11y-baseline.js";
 
 const entries = [
   {
@@ -39,10 +40,10 @@ function renderCommandMenu() {
         <h1>Command menu</h1>
         <p>Open with the button or Ctrl/⌘ K, then filter and move through results without leaving the keyboard.</p>
       </header>
-      <button class="see-more sb-command-trigger" type="button">Open search</button>
+      <button class="see-more sb-command-trigger" type="button" data-a11y-debt="command-trigger">Open search</button>
     </div>
     <div class="cmd-wash" aria-hidden="true"></div>
-    <div class="cmd" role="dialog" aria-modal="true" aria-label="Search" aria-hidden="true">
+    <div class="cmd" role="dialog" aria-modal="true" aria-label="Search" aria-hidden="true" data-a11y-debt="command-dialog">
       <div class="cmd__card">
         <div class="cmd__head">
           <input
@@ -61,7 +62,7 @@ function renderCommandMenu() {
         <div class="cmd__list" id="storybookCmdList" role="listbox" aria-label="Results"></div>
       </div>
     </div>
-    <div class="cmd-modal" role="dialog" aria-modal="true" aria-label="Details" aria-hidden="true">
+    <div class="cmd-modal" role="dialog" aria-modal="true" aria-label="Details" aria-hidden="true" data-a11y-debt="detail-dialog">
       <button class="panel-close cmd-modal__back" type="button" aria-label="Back to search">←</button>
       <button class="panel-close cmd-modal__close" type="button" aria-label="Close">×</button>
       <div class="sb-command-detail"></div>
@@ -226,18 +227,31 @@ export default {
   title: "Patterns/Command menu",
   parameters: {
     a11y: {
-      // Production currently hides inactive dialog trees with aria-hidden while
-      // they still contain focusable controls. Keep that debt visible in the
-      // a11y panel without making this tooling-only branch change product code.
-      test: "todo",
+      test: "error",
+      // The play function executes both disabled rules separately and accepts
+      // only the three marked production-debt targets in the closed state.
+      options: {
+        rules: {
+          "aria-hidden-focus": { enabled: false },
+          "color-contrast": { enabled: false },
+        },
+      },
     },
   },
 };
 
 export const KeyboardFlow = {
   render: renderCommandMenu,
-  play: async ({ canvas, userEvent, step }) => {
+  play: async ({ canvas, canvasElement, userEvent, step }) => {
     const trigger = canvas.getByRole("button", { name: "Open search" });
+
+    await step("Keep the known accessibility debt exact", async () => {
+      await expectOnlyA11yDebt(canvasElement, [
+        "aria-hidden-focus:command-dialog",
+        "aria-hidden-focus:detail-dialog",
+        "color-contrast:command-trigger",
+      ]);
+    });
 
     await step("Open from the keyboard shortcut and move focus to search", async () => {
       trigger.focus();
@@ -281,5 +295,6 @@ export const KeyboardFlow = {
       await expect(canvas.queryByRole("dialog", { name: "Search" })).not.toBeInTheDocument();
       await expect(canvas.queryByRole("dialog", { name: "Details" })).not.toBeInTheDocument();
     });
+
   },
 };

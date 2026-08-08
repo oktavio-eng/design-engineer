@@ -1,4 +1,5 @@
 import { expect, waitFor } from "storybook/test";
+import { expectOnlyA11yDebt } from "./helpers/a11y-baseline.js";
 
 function patternShell(title, description, content) {
   const root = document.createElement("div");
@@ -22,9 +23,10 @@ export default {
 export const Rows = {
   parameters: {
     a11y: {
-      // `.status` uses the production `--faint` color, which is below the AA
-      // text contrast threshold. Keep the debt visible without changing CSS.
-      test: "todo",
+      test: "error",
+      // The play function runs the disabled rule separately and accepts only
+      // the two marked production-debt nodes below.
+      options: { rules: { "color-contrast": { enabled: false } } },
     },
   },
   render: () =>
@@ -52,24 +54,32 @@ export const Rows = {
           <div class="row">
             <span class="who"><a href="#">Interface Craft</a></span>
             <span class="what">Josh Puckett</span>
-            <span class="status">Bought</span>
+            <span class="status" data-a11y-debt="status-bought">Bought</span>
           </div>
           <div class="row">
             <span class="who"><a href="#">Animations.dev</a></span>
             <span class="what">Emil Kowalski · motion</span>
-            <span class="status">Evaluate</span>
+            <span class="status" data-a11y-debt="status-evaluate">Evaluate</span>
           </div>
         </section>
       `,
     ),
+  play: async ({ canvasElement }) => {
+    await expectOnlyA11yDebt(canvasElement, [
+      "color-contrast:status-bought",
+      "color-contrast:status-evaluate",
+    ]);
+  },
 };
 
 export const PhaseAndGlossary = {
   name: "Phase · Glossary",
   parameters: {
     a11y: {
-      // `.phase-num` intentionally mirrors the production `--faint` text.
-      test: "todo",
+      test: "error",
+      // Axe still runs globally; the play function narrows this one disabled
+      // rule to the marked production-debt node.
+      options: { rules: { "color-contrast": { enabled: false } } },
     },
   },
   render: () =>
@@ -81,7 +91,7 @@ export const PhaseAndGlossary = {
         <div class="phases">
           <div class="phase">
             <div class="phase-head">
-              <span class="phase-num">01</span>
+              <span class="phase-num" data-a11y-debt="phase-number-one">01</span>
               <h3>Foundation, now</h3>
             </div>
             <ul>
@@ -107,7 +117,7 @@ export const PhaseAndGlossary = {
         </div>
       `,
     ),
-  play: async ({ canvas, userEvent, step }) => {
+  play: async ({ canvas, canvasElement, userEvent, step }) => {
     const glossary = canvas.getByText("OKLCH", { selector: ".gloss" });
     const tooltip = glossary.querySelector(".gloss-tip");
 
@@ -119,6 +129,10 @@ export const PhaseAndGlossary = {
     await step("Expose the tooltip without a pointer", async () => {
       await waitFor(() => expect(tooltip).toBeVisible());
     });
+
+    await step("Keep the known contrast debt exact", async () => {
+      await expectOnlyA11yDebt(canvasElement, ["color-contrast:phase-number-one"]);
+    });
   },
 };
 
@@ -126,8 +140,10 @@ export const ExpandablePeople = {
   name: "Expandable people",
   parameters: {
     a11y: {
-      // `.see-more` intentionally mirrors the production `--faint` text.
-      test: "todo",
+      test: "error",
+      // The play function separately verifies that the disabled contrast rule
+      // reports this marked button and nothing else.
+      options: { rules: { "color-contrast": { enabled: false } } },
     },
   },
   render: () => {
@@ -153,7 +169,7 @@ export const ExpandablePeople = {
               </div>
             </div>
           </div>
-          <button class="see-more" type="button">show more</button>
+          <button class="see-more" type="button" data-a11y-debt="see-more">show more</button>
         </section>
       `,
     );
@@ -167,7 +183,7 @@ export const ExpandablePeople = {
 
     return root;
   },
-  play: async ({ canvas, userEvent, step }) => {
+  play: async ({ canvas, canvasElement, userEvent, step }) => {
     const section = canvas.getByRole("heading", { name: "People" }).closest(".people");
     const firstLink = canvas.getByRole("link", { name: "Rauno Freiberg" });
     const button = canvas.getByRole("button", { name: "show more" });
@@ -187,6 +203,10 @@ export const ExpandablePeople = {
       await expect(section).not.toHaveClass("expanded");
       await expect(button).toHaveTextContent("show more");
       await expect(button).toHaveFocus();
+    });
+
+    await step("Keep the known contrast debt exact", async () => {
+      await expectOnlyA11yDebt(canvasElement, ["color-contrast:see-more"]);
     });
   },
 };
