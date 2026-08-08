@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-08-08T15:04:53Z",
+  "generatedAt": "2026-08-08T15:26:07Z",
   "base": "4a148325d5e838c32b45957cfbfe76f7c2ddac27",
-  "testedHead": "f5680ebcf26ab9f5337ede3e8fe0e51a652011dc",
+  "testedHead": "22d1d800392dc9f574b09e5b60cfdd4ae806a998",
   "traceability": "The following commit only persists this evidence file; every executable and workflow file was tested at testedHead.",
   "branch": "feature/storybook-safety-net",
   "environment": {
@@ -24,7 +24,7 @@
     {
       "command": "npm run test-storybook",
       "exitCode": 0,
-      "evidence": "3 files passed; 7 stories passed"
+      "evidence": "3 files passed; 7 stories passed; command-menu axe baselines verified in closed, search-open, detail-open and filtered-search states"
     },
     {
       "command": "npm run test:product-ui",
@@ -34,7 +34,7 @@
     {
       "command": "npm run test:visual",
       "exitCode": 0,
-      "evidence": "7 visual cases passed locally; dual comparator limits raw mismatch to 4% and 2px-smoothed mismatch to 0.8%"
+      "evidence": "7 visual cases passed locally at raw 0.000% and 2px-smoothed 0.000%; comparator limits are 4% raw and 0.8% smoothed"
     },
     {
       "command": "node --check script.js",
@@ -59,11 +59,17 @@
   "visualInspection": {
     "reviewedAtOriginalResolution": true,
     "reviewedCases": 7,
-    "peopleExpandedNarrow": "320x800; heading at y=46 and description starts at y=76 with no collision"
+    "peopleExpandedNarrow": "320x800; clean two-line description, no heading collision and no platform-native focus outline"
+  },
+  "accessibilityBaseline": {
+    "commandStatesScanned": ["closed", "search-open", "detail-open", "filtered-search", "closed-after-dismiss"],
+    "knownDebtCategories": ["color-contrast", "aria-hidden-focus", "aria-allowed-attr", "label-title-only", "heading-order"],
+    "unexpectedViolations": 0
   },
   "browserAssertions": {
     "themes": ["light", "dark"],
     "flatType": ["off", "on"],
+    "paintedCustomFonts": ["Geist", "Geist Mono", "Geist Pixel"],
     "viewports": ["1024px", "320px"],
     "reducedMotion": "reduce",
     "horizontalOverflow": false,
