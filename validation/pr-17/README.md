@@ -43,7 +43,14 @@ this PR doesn't own the Storybook safety-net/CI front).
   (`family=Geist:wght@100..900&family=Geist+Mono:wght@100..900&family=Geist+Pixel&display=swap`)
   and all three `.woff2` files it resolves to (`fonts.gstatic.com/s/geist/…`,
   `/s/geistmono/…`, `/s/geistpixel/…|`), every one **200**, `fromCache:
-  false` — a real fetch, not a cache hit standing in for one.
+  false` — a real fetch, not a cache hit standing in for one. The driver
+  calls `Network.setCacheDisabled` before navigating (right after
+  `Network.enable`, before `Page.navigate`) specifically so this holds on
+  every run, not just a cold one: re-running the driver against an
+  already-warm Chrome profile — which is exactly what happened once during
+  this PR's own review, see git history — would otherwise silently turn
+  these into disk-cache hits with no error, and the `fromCache: false`
+  claim here would stop being true the moment anyone reproduced it.
 - **`getComputedStyle` on each token's live sample** in the Typography
   story's new "Font family" section (`results.json` → `sampleSans` /
   `sampleMono` / `samplePixel`, matched by the `<code class="sb-token-name">`

@@ -166,25 +166,25 @@
       "url": "https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@100..900&family=Geist+Pixel&display=swap",
       "status": 200,
       "mimeType": "text/css",
-      "fromCache": true
+      "fromCache": false
     },
     {
       "url": "https://fonts.gstatic.com/s/geistmono/v6/or3nQ6H-1_WfwkMZI_qYFrcdmhHkjko.woff2",
       "status": 200,
       "mimeType": "font/woff2",
-      "fromCache": true
+      "fromCache": false
     },
     {
       "url": "https://fonts.gstatic.com/s/geist/v5/gyByhwUxId8gMEwcGFWNOITd.woff2",
       "status": 200,
       "mimeType": "font/woff2",
-      "fromCache": true
+      "fromCache": false
     },
     {
       "url": "https://fonts.gstatic.com/s/geistpixel/v1/CSRs4zxZluGGW3oyI0A_AN0hQBvYDU4hBmqoKzA8XT6itqLHtqCv.woff2",
       "status": 200,
       "mimeType": "font/woff2",
-      "fromCache": true
+      "fromCache": false
     }
   ],
   "consoleMessages": [],

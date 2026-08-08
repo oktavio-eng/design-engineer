@@ -116,6 +116,14 @@ async function main() {
   await send("DOM.enable");
   await send("CSS.enable");
   await send("Network.enable");
+  // Disable cache before navigation, not just for this run but for the
+  // reproducibility contract this driver is supposed to hold: reusing an
+  // already-warm Chrome profile (e.g. re-running the driver after an
+  // unrelated code change, same headless instance) would otherwise silently
+  // turn the font requests into disk-cache hits, and the *first* run's
+  // fromCache: false would stop being reproducible on every run after it —
+  // which is exactly what happened before this fix (see PR #17 review).
+  await send("Network.setCacheDisabled", { cacheDisabled: true });
   await send("Emulation.setDeviceMetricsOverride", {
     width: 1280,
     height: 900,
