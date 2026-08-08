@@ -41,6 +41,7 @@ async function applyState(page, visualCase) {
     const button = page.locator(".see-more");
     if ((await button.getAttribute("aria-expanded")) !== "true") await button.click();
     await page.waitForFunction(() => document.querySelector(".people")?.classList.contains("expanded"));
+    await button.blur();
     await page.mouse.move(0, 0);
   }
 
@@ -48,6 +49,33 @@ async function applyState(page, visualCase) {
     await page.locator(".sb-command-trigger").focus();
     await page.keyboard.press("Control+K");
     await page.waitForFunction(() => document.activeElement?.classList.contains("cmd__input"));
+  }
+}
+
+async function assertPaintedFonts(browserContext, page, visualCase) {
+  if (visualCase.story !== "foundations--typography") return;
+
+  const session = await browserContext.newCDPSession(page);
+  await session.send("DOM.enable");
+  await session.send("CSS.enable");
+  const { root } = await session.send("DOM.getDocument", { depth: -1 });
+  const expectedFamilies = new Map([
+    ["--font-sans", "Geist"],
+    ["--font-mono", "Geist Mono"],
+    ["--font-pixel", "Geist Pixel"],
+  ]);
+
+  for (const [token, family] of expectedFamilies) {
+    const { nodeId } = await session.send("DOM.querySelector", {
+      nodeId: root.nodeId,
+      selector: `[data-font-token="${token}"]`,
+    });
+    assert.notEqual(nodeId, 0, `${token}: typography sample is missing`);
+    const { fonts } = await session.send("CSS.getPlatformFontsForNode", { nodeId });
+    assert.ok(
+      fonts.some((font) => font.familyName === family && font.isCustomFont),
+      `${token}: ${family} was not painted as a custom font (${fonts.map((font) => font.familyName).join(", ")})`,
+    );
   }
 }
 
@@ -106,7 +134,7 @@ async function compareScreenshot(visualCase, screenshot) {
   const baselinePath = path.join(baselineDirectory, `${name}.png`);
   if (updateBaselines) {
     await writeFile(baselinePath, screenshot);
-    return;
+    return { updated: true };
   }
   if (!existsSync(baselinePath)) {
     assert.fail(
@@ -120,6 +148,7 @@ async function compareScreenshot(visualCase, screenshot) {
   assert.equal(actual.width, expected.width, `${name}: screenshot width changed`);
   assert.equal(actual.height, expected.height, `${name}: screenshot height changed`);
 
+  const output = new PNG({ width: actual.width, height: actual.height });
   const rawMismatchedPixels = diff(
     expected.data,
     actual.data,
@@ -130,7 +159,6 @@ async function compareScreenshot(visualCase, screenshot) {
   );
   const expectedBlurred = blurPixels(expected.data, actual.width, actual.height);
   const actualBlurred = blurPixels(actual.data, actual.width, actual.height);
-  const output = new PNG({ width: actual.width, height: actual.height });
   const perceptualMismatchedPixels = diff(
     expectedBlurred,
     actualBlurred,
@@ -149,6 +177,7 @@ async function compareScreenshot(visualCase, screenshot) {
     rawMismatchRatio <= 0.04 && perceptualMismatchRatio <= 0.008,
     `${name}: raw ${(rawMismatchRatio * 100).toFixed(2)}% (limit 4.00%), perceptual ${(perceptualMismatchRatio * 100).toFixed(2)}% (limit 0.80%)`,
   );
+  return { rawMismatchRatio, perceptualMismatchRatio, updated: false };
 }
 
 test("Storybook visual matrix stays within reviewed baselines", { timeout: 60_000 }, async (context) => {
@@ -178,7 +207,13 @@ test("Storybook visual matrix stays within reviewed baselines", { timeout: 60_00
       Promise.all(document.getAnimations().map((animation) => animation.finished.catch(() => undefined))),
     );
     await assertContracts(page, visualCase);
-    await compareScreenshot(visualCase, await captureStable(page));
+    await assertPaintedFonts(browserContext, page, visualCase);
+    const metrics = await compareScreenshot(visualCase, await captureStable(page));
+    if (!metrics.updated) {
+      console.log(
+        `visual-metric ${visualCase.name} raw=${(metrics.rawMismatchRatio * 100).toFixed(3)}% perceptual=${(metrics.perceptualMismatchRatio * 100).toFixed(3)}%`,
+      );
+    }
     await page.close();
   }
 });

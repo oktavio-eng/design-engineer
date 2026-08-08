@@ -165,7 +165,7 @@ export const ExpandablePeople = {
   render: () => {
     const root = patternShell(
       "Expandable people",
-      "The production .extras grid transition, driven by one class and a native button.",
+      "The production .extras grid transition, driven by one class.",
       `
         <section class="people" id="storybookPeople">
           <h2>People</h2>

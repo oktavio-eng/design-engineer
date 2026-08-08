@@ -29,6 +29,12 @@ function escapeHtml(value) {
   );
 }
 
+async function waitForStoryAnimations(root) {
+  await Promise.all(
+    root.getAnimations({ subtree: true }).map((animation) => animation.finished.catch(() => undefined)),
+  );
+}
+
 function renderCommandMenu() {
   document.body.classList.remove("cmd-open", "cmd-detail-open");
 
@@ -55,8 +61,9 @@ function renderCommandMenu() {
             aria-controls="storybookCmdList"
             aria-expanded="true"
             aria-describedby="storybookCmdHint"
+            data-a11y-debt="command-input"
           >
-          <span class="cmd__esc" aria-hidden="true">⌘K</span>
+          <span class="cmd__esc" aria-hidden="true" data-a11y-debt="command-shortcut">⌘K</span>
           <span class="sr-only" id="storybookCmdHint">Press Command K or Control K to close</span>
         </div>
         <div class="cmd__rule"></div>
@@ -134,7 +141,7 @@ function renderCommandMenu() {
         const heading =
           entry.group === group
             ? ""
-            : `<div class="cmd__group">${escapeHtml(entry.group)}</div>`;
+            : `<div class="cmd__group" data-a11y-debt="command-group-${entry.group.toLowerCase()}">${escapeHtml(entry.group)}</div>`;
         group = entry.group;
         return `${heading}
           <button
@@ -204,7 +211,7 @@ function renderCommandMenu() {
   function openDetail(entry) {
     lastCursor = results.indexOf(entry);
     detailBody.innerHTML = `
-      <h3>${escapeHtml(entry.name)}</h3>
+      <h3 data-a11y-debt="command-detail-heading">${escapeHtml(entry.name)}</h3>
       <p class="role">${escapeHtml(entry.what)}</p>
       <p class="bio">${escapeHtml(entry.bio)}</p>
     `;
@@ -268,8 +275,8 @@ export default {
   parameters: {
     a11y: {
       test: "error",
-      // The play function executes both disabled rules separately and accepts
-      // only the three marked production-debt targets in the closed state.
+      // The play function executes axe in every relevant state and accepts
+      // only the marked production-debt rule/target pairs for that state.
       options: {
         rules: {
           "aria-hidden-focus": { enabled: false },
@@ -305,6 +312,18 @@ export const KeyboardFlow = {
 
     const search = canvas.getByPlaceholderText("Search…");
 
+    await step("Keep open-search accessibility debt exact", async () => {
+      await waitForStoryAnimations(canvasElement);
+      await expectOnlyA11yDebt(canvasElement, [
+        "aria-allowed-attr:command-input",
+        "color-contrast:command-trigger",
+        "color-contrast:command-group-people",
+        "color-contrast:command-group-references",
+        "color-contrast:command-shortcut",
+        "label-title-only:command-input",
+      ]);
+    });
+
     await step("Move the active result while focus stays in the search field", async () => {
       const options = canvas.getAllByRole("option");
       await expect(options[0]).toHaveAttribute("aria-selected", "true");
@@ -326,15 +345,37 @@ export const KeyboardFlow = {
       await expect(canvas.getByRole("button", { name: "Close" })).toHaveFocus();
     });
 
+    await step("Keep detail accessibility debt exact", async () => {
+      await waitForStoryAnimations(canvasElement);
+      await expectOnlyA11yDebt(canvasElement, [
+        "color-contrast:command-trigger",
+        "heading-order:command-detail-heading",
+      ]);
+    });
+
     await step("Peel back one layer at a time with Escape", async () => {
       await userEvent.keyboard("{Escape}");
       await waitFor(() => expect(canvas.getByRole("dialog", { name: "Search" })).toBeVisible());
       await waitFor(() => expect(search).toHaveFocus());
       await expect(search).toHaveValue("Emil");
+      await waitForStoryAnimations(canvasElement);
+      await expectOnlyA11yDebt(canvasElement, [
+        "aria-allowed-attr:command-input",
+        "color-contrast:command-trigger",
+        "color-contrast:command-group-people",
+        "color-contrast:command-shortcut",
+        "label-title-only:command-input",
+      ]);
       await userEvent.keyboard("{Escape}");
       await expect(canvas.queryByRole("dialog", { name: "Search" })).not.toBeInTheDocument();
       await expect(canvas.queryByRole("dialog", { name: "Details" })).not.toBeInTheDocument();
       await expect(trigger).toHaveFocus();
+      await waitForStoryAnimations(canvasElement);
+      await expectOnlyA11yDebt(canvasElement, [
+        "aria-hidden-focus:command-dialog",
+        "aria-hidden-focus:detail-dialog",
+        "color-contrast:command-trigger",
+      ]);
     });
 
     await step("Cancel delayed focus when dismissal wins the race", async () => {
