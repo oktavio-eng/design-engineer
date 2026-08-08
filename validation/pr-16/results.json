@@ -13,6 +13,13 @@
     "fontWeight": "460",
     "fontFamily": "Geist, system-ui, sans-serif"
   },
+  "typographySweep": {
+    "expectedSize": "17.92px",
+    "expectedWeight": "460",
+    "totalChecked": 110,
+    "matching": 110,
+    "mismatches": []
+  },
   "platformFontsH1": {
     "fonts": [
       {
@@ -76,7 +83,7 @@
   "axInputPartial_RAW": {
     "nodes": [
       {
-        "nodeId": "224",
+        "nodeId": "19",
         "ignored": false,
         "role": {
           "type": "role",
@@ -202,7 +209,7 @@
               "value": "cmdEscHint",
               "relatedNodes": [
                 {
-                  "backendDOMNodeId": 722,
+                  "backendDOMNodeId": 713,
                   "idref": "cmdEscHint"
                 }
               ]
@@ -215,22 +222,22 @@
               "value": "cmdList",
               "relatedNodes": [
                 {
-                  "backendDOMNodeId": 724,
+                  "backendDOMNodeId": 715,
                   "idref": "cmdList"
                 }
               ]
             }
           }
         ],
-        "parentId": "718",
+        "parentId": "709",
         "childIds": [
-          "719",
-          "720"
+          "710",
+          "711"
         ],
-        "backendDOMNodeId": 224
+        "backendDOMNodeId": 19
       },
       {
-        "nodeId": "719",
+        "nodeId": "710",
         "ignored": true,
         "ignoredReasons": [
           {
@@ -249,12 +256,12 @@
           "type": "internalRole",
           "value": 0
         },
-        "parentId": "224",
+        "parentId": "19",
         "childIds": [],
-        "backendDOMNodeId": 719
+        "backendDOMNodeId": 710
       },
       {
-        "nodeId": "720",
+        "nodeId": "711",
         "ignored": false,
         "role": {
           "type": "role",
@@ -287,14 +294,14 @@
             }
           }
         ],
-        "parentId": "224",
+        "parentId": "19",
         "childIds": [
-          "1112"
+          "1103"
         ],
-        "backendDOMNodeId": 720
+        "backendDOMNodeId": 711
       },
       {
-        "nodeId": "718",
+        "nodeId": "709",
         "ignored": true,
         "ignoredReasons": [
           {
@@ -313,15 +320,15 @@
           "type": "internalRole",
           "value": 0
         },
-        "parentId": "717",
+        "parentId": "708",
         "childIds": [
-          "224",
-          "722"
+          "19",
+          "713"
         ],
-        "backendDOMNodeId": 718
+        "backendDOMNodeId": 709
       },
       {
-        "nodeId": "717",
+        "nodeId": "708",
         "ignored": true,
         "ignoredReasons": [
           {
@@ -340,16 +347,16 @@
           "type": "internalRole",
           "value": 0
         },
-        "parentId": "716",
+        "parentId": "707",
         "childIds": [
-          "718",
-          "723",
-          "724"
+          "709",
+          "714",
+          "715"
         ],
-        "backendDOMNodeId": 717
+        "backendDOMNodeId": 708
       },
       {
-        "nodeId": "716",
+        "nodeId": "707",
         "ignored": false,
         "role": {
           "type": "role",
@@ -395,14 +402,14 @@
             }
           }
         ],
-        "parentId": "262",
+        "parentId": "255",
         "childIds": [
-          "717"
+          "708"
         ],
-        "backendDOMNodeId": 716
+        "backendDOMNodeId": 707
       },
       {
-        "nodeId": "262",
+        "nodeId": "255",
         "ignored": true,
         "ignoredReasons": [
           {
@@ -421,44 +428,44 @@
           "type": "internalRole",
           "value": 0
         },
-        "parentId": "236",
+        "parentId": "229",
         "childIds": [
-          "293",
-          "313",
+          "286",
+          "306",
+          "307",
+          "308",
+          "309",
+          "310",
+          "311",
+          "312",
           "314",
-          "315",
-          "316",
           "317",
-          "318",
-          "319",
-          "321",
-          "324",
-          "327",
-          "333",
-          "684",
+          "320",
+          "326",
+          "675",
+          "676",
+          "680",
           "685",
-          "689",
-          "694",
-          "696",
-          "713",
-          "715",
-          "716",
+          "687",
+          "704",
+          "706",
+          "707",
+          "717",
+          "720",
+          "1134",
+          "1138",
+          "1142",
+          "1146",
+          "1150",
+          "1154",
+          "725",
           "726",
-          "729",
-          "1143",
-          "1147",
-          "1151",
-          "1155",
-          "1159",
-          "1163",
-          "734",
-          "735",
-          "738"
+          "729"
         ],
-        "backendDOMNodeId": 262
+        "backendDOMNodeId": 255
       },
       {
-        "nodeId": "236",
+        "nodeId": "229",
         "ignored": true,
         "ignoredReasons": [
           {
@@ -477,14 +484,14 @@
           "type": "internalRole",
           "value": 0
         },
-        "parentId": "235",
+        "parentId": "226",
         "childIds": [
-          "262"
+          "255"
         ],
-        "backendDOMNodeId": 236
+        "backendDOMNodeId": 229
       },
       {
-        "nodeId": "235",
+        "nodeId": "226",
         "ignored": false,
         "role": {
           "type": "internalRole",
@@ -545,16 +552,16 @@
           }
         ],
         "childIds": [
-          "236"
+          "229"
         ],
-        "backendDOMNodeId": 235,
-        "frameId": "0BA54998A7E381AAD4536E4E510215C9"
+        "backendDOMNodeId": 226,
+        "frameId": "86156E5DA28E3F9D7CAE2E197B03DDB3"
       }
     ]
   },
   "axInputFromFullTree_RAW": [
     {
-      "nodeId": "224",
+      "nodeId": "19",
       "ignored": false,
       "role": {
         "type": "role",
@@ -680,7 +687,7 @@
             "value": "cmdEscHint",
             "relatedNodes": [
               {
-                "backendDOMNodeId": 722,
+                "backendDOMNodeId": 713,
                 "idref": "cmdEscHint"
               }
             ]
@@ -693,19 +700,19 @@
             "value": "cmdList",
             "relatedNodes": [
               {
-                "backendDOMNodeId": 724,
+                "backendDOMNodeId": 715,
                 "idref": "cmdList"
               }
             ]
           }
         }
       ],
-      "parentId": "718",
+      "parentId": "709",
       "childIds": [
-        "719",
-        "720"
+        "710",
+        "711"
       ],
-      "backendDOMNodeId": 224
+      "backendDOMNodeId": 19
     }
   ],
   "cmdNonMacHint": {
@@ -722,7 +729,10 @@
         "tag": "INPUT",
         "insideCmd": true,
         "insideModal": false,
-        "isTrigger": false
+        "isTrigger": false,
+        "insideAriaHiddenAncestor": false,
+        "hiddenAncestorSelector": null,
+        "insideInertAncestor": false
       },
       "aria": {
         "cmdOpen": true,
@@ -734,11 +744,14 @@
     "afterCtrlKClose": {
       "active": {
         "id": null,
-        "className": "topbar__logo cmd-trigger",
-        "tag": "A",
+        "className": null,
+        "tag": "BODY",
         "insideCmd": false,
         "insideModal": false,
-        "isTrigger": true
+        "isTrigger": false,
+        "insideAriaHiddenAncestor": false,
+        "hiddenAncestorSelector": null,
+        "insideInertAncestor": false
       },
       "aria": {
         "cmdOpen": false,
@@ -754,7 +767,10 @@
         "tag": "INPUT",
         "insideCmd": true,
         "insideModal": false,
-        "isTrigger": false
+        "isTrigger": false,
+        "insideAriaHiddenAncestor": false,
+        "hiddenAncestorSelector": null,
+        "insideInertAncestor": false
       },
       "aria": {
         "cmdOpen": true,
@@ -766,11 +782,14 @@
     "afterMetaKClose": {
       "active": {
         "id": null,
-        "className": "topbar__logo cmd-trigger",
-        "tag": "A",
+        "className": null,
+        "tag": "BODY",
         "insideCmd": false,
         "insideModal": false,
-        "isTrigger": true
+        "isTrigger": false,
+        "insideAriaHiddenAncestor": false,
+        "hiddenAncestorSelector": null,
+        "insideInertAncestor": false
       },
       "aria": {
         "cmdOpen": false,
@@ -782,11 +801,14 @@
     "afterEscapeFromList": {
       "active": {
         "id": null,
-        "className": "topbar__logo cmd-trigger",
-        "tag": "A",
+        "className": null,
+        "tag": "BODY",
         "insideCmd": false,
         "insideModal": false,
-        "isTrigger": true
+        "isTrigger": false,
+        "insideAriaHiddenAncestor": false,
+        "hiddenAncestorSelector": null,
+        "insideInertAncestor": false
       },
       "aria": {
         "cmdOpen": false,
@@ -802,7 +824,10 @@
         "tag": "BUTTON",
         "insideCmd": false,
         "insideModal": true,
-        "isTrigger": false
+        "isTrigger": false,
+        "insideAriaHiddenAncestor": false,
+        "hiddenAncestorSelector": null,
+        "insideInertAncestor": false
       },
       "aria": {
         "cmdOpen": false,
@@ -818,7 +843,10 @@
         "tag": "INPUT",
         "insideCmd": true,
         "insideModal": false,
-        "isTrigger": false
+        "isTrigger": false,
+        "insideAriaHiddenAncestor": false,
+        "hiddenAncestorSelector": null,
+        "insideInertAncestor": false
       },
       "aria": {
         "cmdOpen": true,
@@ -830,11 +858,14 @@
     "afterSecondEscapeFromDetail": {
       "active": {
         "id": null,
-        "className": "topbar__logo cmd-trigger",
-        "tag": "A",
+        "className": null,
+        "tag": "BODY",
         "insideCmd": false,
         "insideModal": false,
-        "isTrigger": true
+        "isTrigger": false,
+        "insideAriaHiddenAncestor": false,
+        "hiddenAncestorSelector": null,
+        "insideInertAncestor": false
       },
       "aria": {
         "cmdOpen": false,
@@ -846,11 +877,14 @@
     "afterModalCloseButton": {
       "active": {
         "id": null,
-        "className": "topbar__logo cmd-trigger",
-        "tag": "A",
+        "className": null,
+        "tag": "BODY",
         "insideCmd": false,
         "insideModal": false,
-        "isTrigger": true
+        "isTrigger": false,
+        "insideAriaHiddenAncestor": false,
+        "hiddenAncestorSelector": null,
+        "insideInertAncestor": false
       },
       "aria": {
         "cmdOpen": false,
@@ -859,6 +893,120 @@
         "modalAriaHidden": "true"
       }
     }
+  },
+  "focusRegression": {
+    "dismissUnder60ms": {
+      "active": {
+        "id": null,
+        "className": null,
+        "tag": "BODY",
+        "insideCmd": false,
+        "insideModal": false,
+        "isTrigger": false,
+        "insideAriaHiddenAncestor": false,
+        "hiddenAncestorSelector": null,
+        "insideInertAncestor": false
+      },
+      "aria": {
+        "cmdOpen": false,
+        "cmdDetailOpen": false,
+        "cmdAriaHidden": "true",
+        "modalAriaHidden": "true"
+      }
+    },
+    "listToDetailUnder60ms": {
+      "active": {
+        "id": "cmdModalClose",
+        "className": "panel-close cmd-modal__close",
+        "tag": "BUTTON",
+        "insideCmd": false,
+        "insideModal": true,
+        "isTrigger": false,
+        "insideAriaHiddenAncestor": false,
+        "hiddenAncestorSelector": null,
+        "insideInertAncestor": false
+      },
+      "aria": {
+        "cmdOpen": false,
+        "cmdDetailOpen": true,
+        "cmdAriaHidden": "true",
+        "modalAriaHidden": "false"
+      }
+    },
+    "openerHiddenAfterOpeningPalette_preState": {
+      "id": "mailText",
+      "className": "composer__input",
+      "tag": "TEXTAREA",
+      "insideCmd": false,
+      "insideModal": false,
+      "isTrigger": false,
+      "insideAriaHiddenAncestor": false,
+      "hiddenAncestorSelector": null,
+      "insideInertAncestor": false
+    },
+    "openerHiddenAfterOpeningPalette": {
+      "active": {
+        "id": null,
+        "className": "topbar__logo cmd-trigger",
+        "tag": "A",
+        "insideCmd": false,
+        "insideModal": false,
+        "isTrigger": true,
+        "insideAriaHiddenAncestor": false,
+        "hiddenAncestorSelector": null,
+        "insideInertAncestor": false
+      },
+      "aria": {
+        "cmdOpen": false,
+        "cmdDetailOpen": false,
+        "cmdAriaHidden": "true",
+        "modalAriaHidden": "true"
+      },
+      "mailModalAriaHiddenWhileCmdWasOpen": "true"
+    },
+    "openerInertAncestor": {
+      "active": {
+        "id": null,
+        "className": "topbar__logo cmd-trigger",
+        "tag": "A",
+        "insideCmd": false,
+        "insideModal": false,
+        "isTrigger": true,
+        "insideAriaHiddenAncestor": false,
+        "hiddenAncestorSelector": null,
+        "insideInertAncestor": false
+      },
+      "aria": {
+        "cmdOpen": false,
+        "cmdDetailOpen": false,
+        "cmdAriaHidden": "true",
+        "modalAriaHidden": "true"
+      }
+    },
+    "fallbackTriggerAlsoHidden": {
+      "active": {
+        "id": null,
+        "className": null,
+        "tag": "BODY",
+        "insideCmd": false,
+        "insideModal": false,
+        "isTrigger": false,
+        "insideAriaHiddenAncestor": false,
+        "hiddenAncestorSelector": null,
+        "insideInertAncestor": false
+      },
+      "aria": {
+        "cmdOpen": false,
+        "cmdDetailOpen": false,
+        "cmdAriaHidden": "true",
+        "modalAriaHidden": "true"
+      }
+    }
+  },
+  "focusInvariant": {
+    "checked": 14,
+    "violations": [],
+    "holds": true
   },
   "consoleMessages": [],
   "consoleMessagesAll": [],

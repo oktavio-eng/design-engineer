@@ -145,6 +145,52 @@ async function main() {
     return { text: a.textContent.trim().slice(0,40), fontSize: cs.fontSize, fontWeight: cs.fontWeight, fontFamily: cs.fontFamily };
   })()`);
 
+  // Round 4: the site-wide sweep AGENTS.md has quoted as "185/185" since
+  // round 1 was never actually run by this driver or persisted anywhere —
+  // it was a narrated number, not committed evidence. Every element that
+  // carries its own visible text (a direct, non-whitespace text node) is
+  // checked against the flat-type scale; elements inside an aria-hidden
+  // ancestor are skipped on purpose — a closed surface in this codebase
+  // (palette, panel, mail composer, ...) keeps its layout and just goes
+  // opacity:0/aria-hidden, so without this it isn't a *visible*-text sweep.
+  // Run before any modal/palette has been touched, so nothing is open to
+  // exclude yet.
+  results.typographySweep = await evalExpr(`(function(){
+    var EXPECTED_SIZE = '17.92px', EXPECTED_WEIGHT = '460';
+    var all = document.querySelectorAll('body *');
+    var checked = [], mismatches = [];
+    for (var i = 0; i < all.length; i++) {
+      var el = all[i];
+      if (el.closest('[aria-hidden="true"]')) continue;
+      var hasOwnText = false;
+      for (var c = 0; c < el.childNodes.length; c++) {
+        var n = el.childNodes[c];
+        if (n.nodeType === 3 && n.textContent.trim().length > 0) { hasOwnText = true; break; }
+      }
+      if (!hasOwnText) continue;
+      if (!el.getClientRects().length) continue;
+      var cs = getComputedStyle(el);
+      if (cs.display === 'none' || cs.visibility === 'hidden') continue;
+      var entry = {
+        tag: el.tagName,
+        id: el.id || null,
+        className: el.className || null,
+        text: el.textContent.trim().slice(0, 30),
+        fontSize: cs.fontSize,
+        fontWeight: cs.fontWeight
+      };
+      checked.push(entry);
+      if (cs.fontSize !== EXPECTED_SIZE || cs.fontWeight !== EXPECTED_WEIGHT) mismatches.push(entry);
+    }
+    return {
+      expectedSize: EXPECTED_SIZE,
+      expectedWeight: EXPECTED_WEIGHT,
+      totalChecked: checked.length,
+      matching: checked.length - mismatches.length,
+      mismatches: mismatches.slice(0, 20)
+    };
+  })()`);
+
   // NEW LAYER: real painted font via CSS.getPlatformFontsForNode, not just
   // getComputedStyle/document.fonts.check (those confirm the declaration and
   // that a face with that name is loaded, not that it's the face actually
@@ -359,13 +405,29 @@ async function main() {
       var a = document.activeElement;
       var cmd = document.getElementById('cmd');
       var modal = document.getElementById('cmdModal');
+      // General-purpose check, not scoped to #cmd/#cmdModal specifically:
+      // is the actual focused node sitting inside ANY aria-hidden ancestor
+      // right now, regardless of which surface put it there (palette, mail
+      // composer, panel, ...). This is the one invariant every scenario
+      // below cares about — round-2's activeInfo only checked the two
+      // palette containers by name, which can't see focus stranded inside
+      // an unrelated closed surface (the mail composer, say).
+      var hiddenAncestor = a.closest ? a.closest('[aria-hidden="true"]') : null;
+      var inertAncestor = a.closest ? a.closest('[inert]') : null;
       return {
         id: a.id || null,
         className: a.className || null,
         tag: a.tagName,
         insideCmd: cmd.contains(a),
         insideModal: modal.contains(a),
-        isTrigger: !!(a.classList && a.classList.contains('topbar__logo'))
+        isTrigger: !!(a.classList && a.classList.contains('topbar__logo')),
+        insideAriaHiddenAncestor: !!hiddenAncestor,
+        hiddenAncestorSelector: hiddenAncestor
+          ? hiddenAncestor.id
+            ? "#" + hiddenAncestor.id
+            : hiddenAncestor.className || hiddenAncestor.tagName
+          : null,
+        insideInertAncestor: !!inertAncestor
       };
     })()`);
   }
@@ -475,6 +537,176 @@ async function main() {
   results.focusRestoration.afterModalCloseButton = {
     active: await activeInfo(),
     aria: await cmdAriaState(),
+  };
+
+  // --- Round 4: the edge cases round 3 didn't reach ---
+  // A stale opener, a hidden fallback, and the two sub-60ms races round 3's
+  // generous waits always let resolve before checking — so the race was
+  // asserted against, never actually forced to happen. Fresh reload for a
+  // clean baseline (this target still has the non-Mac UA override from
+  // above — Page.addScriptToEvaluateOnNewDocument persists across
+  // navigations by design — harmless here, nothing below depends on the
+  // hint text, only on ctrlKey/metaKey both working).
+  //
+  // Discovered while writing this section, not assumed going in: `.topbar`
+  // ships `aria-hidden="true"` in the static HTML and only becomes reachable
+  // after a real `scroll` event (showNav(), see script.js) — so the trigger
+  // itself is *not* a given fallback target, it depends on nav state. Every
+  // case below that wants the trigger to be a genuinely exposed fallback
+  // establishes that on purpose via wakeNav() (a real `scroll` dispatch —
+  // the same event showNav() listens for, not a synthetic hook) rather than
+  // leaning on the incidental scroll-into-view side effect of an unrelated
+  // .focus() call, which is what first surfaced this and would have made
+  // the suite's outcomes depend on element layout instead of being
+  // deterministic. Everything else is real user-observable state: clicks,
+  // dispatched KeyboardEvents, and — for the topbar-hides-mid-session case —
+  // the exact DOM mutation scheduleNavIdle()'s callback performs. Nothing
+  // pokes the closured openCmd/closeCmd/returnFocus functions directly.
+  await send("Page.navigate", { url: SITE });
+  await new Promise((r) => setTimeout(r, 3600));
+
+  async function wakeNav() {
+    await evalExpr(`window.dispatchEvent(new Event('scroll'))`);
+  }
+
+  results.focusRegression = {};
+
+  // A) Dismiss inside the 60ms window openCmd() waits before focusing
+  // #cmdInput — open and close in the same synchronous tick (0ms elapsed,
+  // reliably inside the window, not a timing gamble), then wait past 60ms
+  // and confirm the stale timer didn't claim focus back for a #cmdInput
+  // that's since gone aria-hidden. Doesn't wake nav first: this is the
+  // "user hits Ctrl+K right after landing on the page, before ever
+  // scrolling" case, so the trigger is legitimately unreachable too — the
+  // assertion that matters is that focus isn't left on #cmdInput or inside
+  // any hidden ancestor, not which exact element it lands on.
+  await evalExpr(`(function(){
+    document.querySelector('.topbar__logo').click();
+    document.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', ctrlKey: true, bubbles: true, cancelable: true }));
+  })()`);
+  await new Promise((r) => setTimeout(r, 200));
+  results.focusRegression.dismissUnder60ms = {
+    active: await activeInfo(),
+    aria: await cmdAriaState(),
+  };
+
+  // B) Same race, hopping into the detail layer instead of dismissing —
+  // open, type, and Enter into the first result all in one synchronous
+  // tick, then confirm the stale timer didn't refocus the now-hidden
+  // #cmdInput out from under the detail view 60ms later.
+  await evalExpr(`(function(){
+    document.querySelector('.topbar__logo').click();
+    var input = document.getElementById('cmdInput');
+    input.value = 'Rauno';
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true }));
+  })()`);
+  await new Promise((r) => setTimeout(r, 200));
+  results.focusRegression.listToDetailUnder60ms = {
+    active: await activeInfo(),
+    aria: await cmdAriaState(),
+  };
+  // Back to a clean closed baseline: Escape once (detail -> list), once more
+  // (list -> closed).
+  await dispatchKey({ key: "Escape" });
+  await new Promise((r) => setTimeout(r, 150));
+  await dispatchKey({ key: "Escape" });
+  await new Promise((r) => setTimeout(r, 150));
+
+  // C) The opener itself can go stale: focus something inside a different
+  // surface, open the palette from there (openCmd()'s own closeMail() call
+  // closes that surface as a side effect), then dismiss and confirm focus
+  // does NOT return to a control now sitting inside an aria-hidden
+  // `.mail-modal` — and, with nav explicitly woken first, DOES land on the
+  // exposed trigger rather than merely "somewhere safe".
+  await wakeNav();
+  await evalExpr(`document.getElementById('mailTrigger').click()`);
+  await new Promise((r) => setTimeout(r, 350)); // openMail()'s own 260ms focus delay
+  results.focusRegression.openerHiddenAfterOpeningPalette_preState = await activeInfo();
+  await evalExpr(
+    `document.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', metaKey: true, bubbles: true, cancelable: true }))`,
+  );
+  await new Promise((r) => setTimeout(r, 200));
+  const mailAriaWhileCmdOpen = await evalExpr(
+    `document.getElementById('mailModal').getAttribute('aria-hidden')`,
+  );
+  await dispatchKey({ key: "k", ctrlKey: true });
+  await new Promise((r) => setTimeout(r, 150));
+  results.focusRegression.openerHiddenAfterOpeningPalette = {
+    active: await activeInfo(),
+    aria: await cmdAriaState(),
+    mailModalAriaHiddenWhileCmdWasOpen: mailAriaWhileCmdOpen,
+  };
+
+  // D) The opener's own container can gain `inert` while the palette stays
+  // open — nothing in this app uses `inert` today, but isExposedFocusable()
+  // treats it exactly like aria-hidden; prove that branch explicitly rather
+  // than leaving it dark just because production doesn't exercise it yet.
+  // Nav woken first for the same reason as (C): isolates "opener rejected"
+  // from "fallback also unreachable", which is its own case (E).
+  await wakeNav();
+  await evalExpr(`document.querySelector('.row a').focus()`);
+  await evalExpr(
+    `document.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', metaKey: true, bubbles: true, cancelable: true }))`,
+  );
+  await new Promise((r) => setTimeout(r, 200));
+  await evalExpr(`document.querySelector('.row a').setAttribute('inert', '')`);
+  await dispatchKey({ key: "Escape" });
+  await new Promise((r) => setTimeout(r, 150));
+  results.focusRegression.openerInertAncestor = {
+    active: await activeInfo(),
+    aria: await cmdAriaState(),
+  };
+  await evalExpr(`document.querySelector('.row a').removeAttribute('inert')`);
+
+  // E) The fallback can be hidden too: wake nav and open normally (opener
+  // === trigger, the ordinary case, confirmed exposed at capture time),
+  // then — while the palette is still open — simulate the topbar's own
+  // 1.2s scroll-idle auto-hide: the exact aria-hidden and class toggle
+  // scheduleNavIdle()'s callback performs, not a synthetic hook. Neither
+  // the opener nor the fallback is reachable at dismiss time; the invariant
+  // is just that focus doesn't get forced onto a trigger that's gone dark.
+  await wakeNav();
+  await evalExpr(`document.querySelector('.topbar__logo').click()`);
+  await new Promise((r) => setTimeout(r, 200));
+  await evalExpr(`(function(){
+    var tb = document.querySelector('.topbar');
+    tb.classList.remove('visible');
+    tb.setAttribute('aria-hidden', 'true');
+  })()`);
+  await dispatchKey({ key: "Escape" });
+  await new Promise((r) => setTimeout(r, 150));
+  results.focusRegression.fallbackTriggerAlsoHidden = {
+    active: await activeInfo(),
+    aria: await cmdAriaState(),
+  };
+  await evalExpr(`(function(){
+    var tb = document.querySelector('.topbar');
+    tb.classList.add('visible');
+    tb.setAttribute('aria-hidden', 'false');
+  })()`);
+
+  // Explicit invariant, not a narrative one: no activeInfo() snapshot taken
+  // anywhere in this run — round 3's happy-path dismissals or round 4's
+  // edge cases — should ever show focus inside an aria-hidden or inert
+  // ancestor. Collected after the fact so results.json carries one flag
+  // that answers "did this actually hold" without re-deriving it by hand
+  // from the raw snapshots.
+  const allSnapshots = [];
+  Object.keys(results.focusRestoration).forEach((k) => {
+    allSnapshots.push([`focusRestoration.${k}`, results.focusRestoration[k].active]);
+  });
+  Object.keys(results.focusRegression).forEach((k) => {
+    const v = results.focusRegression[k];
+    if (v && v.active) allSnapshots.push([`focusRegression.${k}`, v.active]);
+  });
+  const invariantViolations = allSnapshots
+    .filter(([, a]) => a.insideAriaHiddenAncestor || a.insideInertAncestor)
+    .map(([label, a]) => Object.assign({ label: label }, a));
+  results.focusInvariant = {
+    checked: allSnapshots.length,
+    violations: invariantViolations,
+    holds: invariantViolations.length === 0,
   };
 
   results.consoleMessages = consoleMessages.filter((m) => m.type === "error");

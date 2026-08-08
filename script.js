@@ -1490,8 +1490,25 @@ mailTrigger.addEventListener("click", function () {
   // palette opened, not necessarily the trigger. Captured once per session
   // (see the isFreshOpen check in openCmd) so the "back from detail" hop and
   // the ⌘K "swap surfaces" hop don't clobber it with focus that's already
-  // inside the palette.
+  // inside the palette. Can go stale between capture and use — see
+  // isExposedFocusable — so it's re-validated at restore time, not trusted
+  // just because it was once real.
   var opener = null;
+
+  // openCmd() waits 60ms before focusing #cmdInput (see below for why). A
+  // dismiss or a hop into detail can land inside that window; the pending
+  // timer is cancelled the instant the list layer stops being the thing on
+  // screen so it can't fire late and steal focus back onto a control that's
+  // gone dark. Belt-and-suspenders with the isExposedFocusable guard inside
+  // the callback itself, in case some future caller closes the list without
+  // going through closeCmd().
+  var pendingFocusTimer = null;
+  function cancelPendingFocus() {
+    if (pendingFocusTimer !== null) {
+      clearTimeout(pendingFocusTimer);
+      pendingFocusTimer = null;
+    }
+  }
 
   // The confirmed bug: a control kept focus after its subtree went
   // aria-hidden, which assistive tech treats as focus vanishing into the
@@ -1502,13 +1519,46 @@ mailTrigger.addEventListener("click", function () {
     if (root.contains(document.activeElement)) document.activeElement.blur();
   }
 
+  // True only for an element that's reachable right now: connected, not
+  // behind an aria-hidden or inert ancestor — every surface in this file
+  // (panel, comment, about, avatar, mail, the palette itself) marks its own
+  // container aria-hidden the instant it closes, so this doubles as "not
+  // inside a surface that just closed" — and genuinely focusable, not just
+  // present in the DOM. Checked at the moment focus is about to move, never
+  // cached: the opener can go stale between capture and use (⌘K pressed
+  // from inside the mail composer closes the mail modal as a side effect of
+  // opening the palette — #mailText is still "opener", but by the time the
+  // palette itself closes it's sitting inside an aria-hidden `.mail-modal`),
+  // and the fallback trigger isn't exempt either (the topbar aria-hides
+  // itself after 1.2s idle — see scheduleNavIdle above).
+  function isExposedFocusable(el) {
+    if (!el || el.nodeType !== 1 || typeof el.focus !== "function") return false;
+    if (!document.contains(el)) return false;
+    if (el.closest('[aria-hidden="true"]')) return false;
+    if (el.closest("[inert]")) return false;
+    if (el.hasAttribute("disabled")) return false;
+    var tag = el.tagName;
+    var naturallyFocusable =
+      tag === "BUTTON" ||
+      tag === "INPUT" ||
+      tag === "SELECT" ||
+      tag === "TEXTAREA" ||
+      (tag === "A" && el.hasAttribute("href"));
+    var tabIndexAttr = el.getAttribute("tabindex");
+    var hasTabIndex = tabIndexAttr !== null && parseInt(tabIndexAttr, 10) >= 0;
+    return naturallyFocusable || hasTabIndex;
+  }
+
   function returnFocus() {
     var target = opener;
     opener = null;
-    if (!target || target === document.body || !document.contains(target)) {
-      target = trigger;
-    }
-    if (target && typeof target.focus === "function") target.focus();
+    if (!isExposedFocusable(target)) target = trigger;
+    if (!isExposedFocusable(target)) target = null;
+    if (target) target.focus();
+    // Neither the opener nor the trigger is reachable right now — blurIfInside
+    // already moved focus off the closing surface above; there's nowhere
+    // safer to send it, so it stays cleared rather than forcing a hidden
+    // element to take focus just to have *a* target.
   }
 
   // keepQuery is the "back from detail" path: same query, same selected row.
@@ -1517,6 +1567,7 @@ mailTrigger.addEventListener("click", function () {
       !document.body.classList.contains("cmd-open") &&
       !document.body.classList.contains("cmd-detail-open");
     if (isFreshOpen) opener = document.activeElement;
+    cancelPendingFocus();
     close();
     closeComment();
     closeAbout();
@@ -1534,8 +1585,11 @@ mailTrigger.addEventListener("click", function () {
     render();
     // render() rebuilds the list and resets the cursor, so restoring comes after.
     if (keepQuery) setCursor(lastCursor);
-    setTimeout(function () {
-      input.focus();
+    pendingFocusTimer = setTimeout(function () {
+      pendingFocusTimer = null;
+      // A dismiss or a hop into detail can land inside this delay — only
+      // claim focus if #cmdInput is still genuinely the thing to focus.
+      if (isExposedFocusable(input)) input.focus();
     }, 60);
   }
   // restore=false is the "hop into detail" case (openDetail() calls this to
@@ -1544,6 +1598,7 @@ mailTrigger.addEventListener("click", function () {
   // undo. Every other caller is a genuine complete dismissal: Meta+K/Ctrl+K
   // toggle-close and Escape from the list both hit the default.
   function closeCmd(restore) {
+    cancelPendingFocus();
     document.body.classList.remove("cmd-open");
     blurIfInside(cmd);
     wash.setAttribute("aria-hidden", "true");
@@ -1551,6 +1606,7 @@ mailTrigger.addEventListener("click", function () {
     if (restore !== false) returnFocus();
   }
   function closeCmdDetail() {
+    cancelPendingFocus();
     document.body.classList.remove("cmd-detail-open");
     blurIfInside(modal);
     wash.setAttribute("aria-hidden", "true");
