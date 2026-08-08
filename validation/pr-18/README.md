@@ -12,4 +12,4 @@ npm run test:ui
 
 The product-real smoke serves the repository over loopback HTTP and does not mutate product files. Visual references are updated only with `UPDATE_VISUAL_BASELINES=1 npm run test:visual`, followed by manual PNG inspection and a normal comparison run.
 
-See `results.json` for the exact base, matrix and exit codes from the final local gate.
+See `results.json` for the exact base, tested code HEAD, matrix and exit codes from the final local gate. The evidence-only commit that contains `results.json` necessarily comes after `testedHead`; no executable or workflow file changes in that final evidence commit.
