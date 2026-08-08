@@ -1,0 +1,4 @@
+"file:/Users/oktavio/Desktop/design-engineer-geist/storybook-static/iframe.html":5.5-5.28: info: Trailing slash on void elements has no effect and interacts badly with unquoted attribute values.
+"file:/Users/oktavio/Desktop/design-engineer-geist/storybook-static/iframe.html":7.5-7.74: info: Trailing slash on void elements has no effect and interacts badly with unquoted attribute values.
+"file:/Users/oktavio/Desktop/design-engineer-geist/storybook-static/iframe.html":60.5-60.29: info: Trailing slash on void elements has no effect and interacts badly with unquoted attribute values.
+"file:/Users/oktavio/Desktop/design-engineer-geist/storybook-static/iframe.html":679.5-679.27: info warning: Empty heading.

@@ -1,0 +1,2 @@
+"file:/Users/oktavio/Desktop/design-engineer-geist/index.html":59.37122-59.37192: error: Element “img” is missing one or more of the following attributes: “src”, “srcset”.
+"file:/Users/oktavio/Desktop/design-engineer-geist/index.html":59.37402-59.37588: error: Element “input” is missing required attribute “role”.
