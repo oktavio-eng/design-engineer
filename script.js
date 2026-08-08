@@ -1362,7 +1362,31 @@ mailTrigger.addEventListener("click", function () {
     modalBody = document.getElementById("cmdModalBody"),
     modalClose = document.getElementById("cmdModalClose"),
     modalBack = document.getElementById("cmdModalBack"),
+    escHint = document.getElementById("cmdEsc"),
     trigger = document.querySelector(".topbar__logo");
+
+  // The hint badge shows the real toggle shortcut (opens when closed, closes
+  // when open — see the keydown handler below), not a decorative fragment.
+  // Mac gets the glyph; everyone else gets the word, since Ctrl has no glyph
+  // convention on the web. `userAgentData.platform` is Chromium-only, so it
+  // falls back to the deprecated-but-still-live `navigator.platform`, then to
+  // a `userAgent` string match — never assume Mac by default. Named `escHint`,
+  // not `esc`: this file already has a top-level `esc()` HTML-escaping helper,
+  // and this IIFE calls it a lot — shadowing it with a same-named element
+  // reference here silently breaks every `esc(...)` call below.
+  if (escHint) {
+    var platform =
+      (navigator.userAgentData && navigator.userAgentData.platform) ||
+      navigator.platform ||
+      navigator.userAgent ||
+      "";
+    var isMac = /Mac|iPhone|iPad|iPod/i.test(platform);
+    escHint.textContent = isMac ? "⌘K" : "Ctrl K";
+    escHint.setAttribute(
+      "aria-label",
+      "Press " + (isMac ? "Command K" : "Control K") + " to close",
+    );
+  }
 
   // One flat index over every collection already on the page. Built once: these
   // objects never change at runtime.

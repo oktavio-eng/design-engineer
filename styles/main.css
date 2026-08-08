@@ -1436,6 +1436,7 @@ body.cmd-open .cmd {
   background: var(--ink-a5);
   border-radius: var(--radius-6);
   padding: var(--space-4) var(--space-8);
+  white-space: nowrap;
   user-select: none;
 }
 .cmd__rule {
