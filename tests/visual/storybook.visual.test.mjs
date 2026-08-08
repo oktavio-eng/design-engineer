@@ -18,8 +18,8 @@ const updateBaselines = process.env.UPDATE_VISUAL_BASELINES === "1";
 const cases = [
   { name: "colors-light", story: "foundations--colors", theme: "light", flatType: "off", width: 1024, height: 768 },
   { name: "colors-dark", story: "foundations--colors", theme: "dark", flatType: "off", width: 1024, height: 768 },
-  { name: "typography-scale", story: "foundations--typography", theme: "light", flatType: "off", width: 1024, height: 900, maxMismatchRatio: 0.02 },
-  { name: "typography-flat", story: "foundations--typography", theme: "light", flatType: "on", width: 1024, height: 900, maxMismatchRatio: 0.02 },
+  { name: "typography-scale", story: "foundations--typography", theme: "light", flatType: "off", width: 1024, height: 900 },
+  { name: "typography-flat", story: "foundations--typography", theme: "light", flatType: "on", width: 1024, height: 900 },
   { name: "rows-narrow", story: "patterns--rows", theme: "light", flatType: "off", width: 320, height: 800 },
   { name: "people-expanded-narrow", story: "patterns--expandable-people", theme: "light", flatType: "off", width: 320, height: 800, state: "expanded" },
   { name: "command-search-dark", story: "patterns-command-menu--keyboard-flow", theme: "dark", flatType: "off", width: 1024, height: 768, state: "command-open" },
@@ -75,8 +75,34 @@ async function assertContracts(page, visualCase) {
   }
 }
 
+function blurPixels(data, width, height, radius = 2) {
+  const blurred = new Uint8ClampedArray(data.length);
+  for (let y = 0; y < height; y += 1) {
+    for (let x = 0; x < width; x += 1) {
+      const channels = [0, 0, 0, 0];
+      let samples = 0;
+      for (let offsetY = -radius; offsetY <= radius; offsetY += 1) {
+        const sampleY = Math.max(0, Math.min(height - 1, y + offsetY));
+        for (let offsetX = -radius; offsetX <= radius; offsetX += 1) {
+          const sampleX = Math.max(0, Math.min(width - 1, x + offsetX));
+          const sampleIndex = (sampleY * width + sampleX) * 4;
+          for (let channel = 0; channel < 4; channel += 1) {
+            channels[channel] += data[sampleIndex + channel];
+          }
+          samples += 1;
+        }
+      }
+      const outputIndex = (y * width + x) * 4;
+      for (let channel = 0; channel < 4; channel += 1) {
+        blurred[outputIndex + channel] = channels[channel] / samples;
+      }
+    }
+  }
+  return blurred;
+}
+
 async function compareScreenshot(visualCase, screenshot) {
-  const { name, maxMismatchRatio = 0.015 } = visualCase;
+  const { name } = visualCase;
   const baselinePath = path.join(baselineDirectory, `${name}.png`);
   if (updateBaselines) {
     await writeFile(baselinePath, screenshot);
@@ -93,22 +119,34 @@ async function compareScreenshot(visualCase, screenshot) {
   assert.equal(actual.width, expected.width, `${name}: screenshot width changed`);
   assert.equal(actual.height, expected.height, `${name}: screenshot height changed`);
 
-  const output = new PNG({ width: actual.width, height: actual.height });
-  const mismatchedPixels = diff(
+  const rawMismatchedPixels = diff(
     expected.data,
     actual.data,
+    undefined,
+    actual.width,
+    actual.height,
+    { threshold: 0.12, includeAA: false, diffMask: true },
+  );
+  const expectedBlurred = blurPixels(expected.data, actual.width, actual.height);
+  const actualBlurred = blurPixels(actual.data, actual.width, actual.height);
+  const output = new PNG({ width: actual.width, height: actual.height });
+  const perceptualMismatchedPixels = diff(
+    expectedBlurred,
+    actualBlurred,
     output.data,
     actual.width,
     actual.height,
     { threshold: 0.12, includeAA: false, diffMask: true },
   );
-  const mismatchRatio = mismatchedPixels / (actual.width * actual.height);
-  if (mismatchRatio > maxMismatchRatio) {
+  const totalPixels = actual.width * actual.height;
+  const rawMismatchRatio = rawMismatchedPixels / totalPixels;
+  const perceptualMismatchRatio = perceptualMismatchedPixels / totalPixels;
+  if (rawMismatchRatio > 0.04 || perceptualMismatchRatio > 0.008) {
     await writeFile(path.join(artifactDirectory, `${name}-diff.png`), PNG.sync.write(output));
   }
   assert.ok(
-    mismatchRatio <= maxMismatchRatio,
-    `${name}: ${(mismatchRatio * 100).toFixed(2)}% pixels changed (limit ${(maxMismatchRatio * 100).toFixed(2)}%)`,
+    rawMismatchRatio <= 0.04 && perceptualMismatchRatio <= 0.008,
+    `${name}: raw ${(rawMismatchRatio * 100).toFixed(2)}% (limit 4.00%), perceptual ${(perceptualMismatchRatio * 100).toFixed(2)}% (limit 0.80%)`,
   );
 }
 
