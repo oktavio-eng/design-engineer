@@ -1374,6 +1374,13 @@ mailTrigger.addEventListener("click", function () {
   // not `esc`: this file already has a top-level `esc()` HTML-escaping helper,
   // and this IIFE calls it a lot — shadowing it with a same-named element
   // reference here silently breaks every `esc(...)` call below.
+  //
+  // The badge itself is `aria-hidden` — a bare `<span>` has no role that
+  // reliably carries an `aria-label` to assistive tech (it's inert, never
+  // focused, never visited by the accessible-name computation of anything
+  // else). The instruction lives instead in `#cmdEscHint`, a `.sr-only`
+  // sibling wired to the input via `aria-describedby` — that's the pairing
+  // (interactive control + description) screen readers actually expose.
   if (escHint) {
     var platform =
       (navigator.userAgentData && navigator.userAgentData.platform) ||
@@ -1382,10 +1389,11 @@ mailTrigger.addEventListener("click", function () {
       "";
     var isMac = /Mac|iPhone|iPad|iPod/i.test(platform);
     escHint.textContent = isMac ? "⌘K" : "Ctrl K";
-    escHint.setAttribute(
-      "aria-label",
-      "Press " + (isMac ? "Command K" : "Control K") + " to close",
-    );
+    var escHintDesc = document.getElementById("cmdEscHint");
+    if (escHintDesc) {
+      escHintDesc.textContent =
+        "Press " + (isMac ? "Command K" : "Control K") + " to close";
+    }
   }
 
   // One flat index over every collection already on the page. Built once: these

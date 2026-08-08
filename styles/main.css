@@ -1427,6 +1427,24 @@ body.cmd-open .cmd {
 .cmd__input::placeholder {
   color: var(--faint);
 }
+/* Canonical visually-hidden pattern: stays in the accessibility tree (unlike
+   `display: none`/`visibility: hidden`) while taking no visual space. 1px
+   boxes, not 0 — some screen readers skip zero-sized elements. Backs
+   `#cmdEscHint`, the `aria-describedby` target for `.cmd__input` (see
+   `.cmd__esc` below and the comment in `script.js`), and is generic enough
+   to reuse anywhere else a control needs a description with no visible text. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
 .cmd__esc {
   flex-shrink: 0;
   font-size: var(--fs-11);

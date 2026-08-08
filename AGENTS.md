@@ -89,7 +89,7 @@ Regra pra manter isso limpo: **todo valor novo de cor, timing, espaçamento, tip
 
 ## Experimento em curso: tipografia plana (`styles/experiments/flat-type.css`)
 
-Ligado por um `<link>` no `<head>` do `index.html`, **depois** do `main.css`. Achata a escala tipográfica inteira num tamanho só (1.12rem) e num peso só (500), deixando toda a hierarquia por conta do cinza, do espaço e do ritmo. É uma pergunta de craft, não um estado estável do design system.
+Ligado por um `<link>` no `<head>` do `index.html`, **depois** do `main.css`. Achata a escala tipográfica inteira num tamanho só (1.12rem) e num peso só (460), deixando toda a hierarquia por conta do cinza, do espaço e do ritmo. É uma pergunta de craft, não um estado estável do design system.
 
 - **Como reverter:** apague a linha do `<link>`. Nada em `main.css` nem em `tokens/` foi apagado ou reescrito por causa dele — o arquivo só redeclara tokens depois deles.
 - **Não "limpe" esse arquivo achando que é duplicação de token.** A redundância aparente (seis `--fs-*` com o mesmo valor) é o ponto: os nomes ficam de pé pra que reverter seja tirar um arquivo, não caçar cem pontos de consumo.
