@@ -638,26 +638,64 @@ async function main() {
     mailModalAriaHiddenWhileCmdWasOpen: mailAriaWhileCmdOpen,
   };
 
-  // D) The opener's own container can gain `inert` while the palette stays
-  // open — nothing in this app uses `inert` today, but isExposedFocusable()
-  // treats it exactly like aria-hidden; prove that branch explicitly rather
-  // than leaving it dark just because production doesn't exercise it yet.
-  // Nav woken first for the same reason as (C): isolates "opener rejected"
-  // from "fallback also unreachable", which is its own case (E).
+  // D) An ANCESTOR of the opener — not the opener element itself — can gain
+  // `inert` while the palette stays open. Marking the opener directly would
+  // only prove the self-match half of `closest("[inert]")`; the point of
+  // this case is the ancestor walk, since that's the shape the real
+  // isExposedFocusable() check depends on (a container going inert, the
+  // link inside it along for the ride). Nothing in this app uses `inert`
+  // today, but isExposedFocusable() treats it exactly like aria-hidden;
+  // prove that branch explicitly rather than leaving it dark just because
+  // production doesn't exercise it yet. Nav woken first for the same reason
+  // as (C): isolates "opener rejected" from "fallback also unreachable",
+  // which is its own case (E).
   await wakeNav();
   await evalExpr(`document.querySelector('.row a').focus()`);
+  // Pre-state, persisted: the opener itself carries no `inert` and isn't
+  // inside one yet — establishes the ancestor-only precondition before the
+  // rest of this case claims to test it.
+  results.focusRegression.openerInertAncestor_preState = await evalExpr(`(function(){
+    var opener = document.querySelector('.row a');
+    var ancestor = opener.closest('.row');
+    return {
+      openerHasInertAttribute: opener.hasAttribute('inert'),
+      openerClosestInert: !!opener.closest('[inert]'),
+      ancestorIsOpenerItself: ancestor === opener,
+      ancestorTag: ancestor.tagName,
+      ancestorClassName: ancestor.className
+    };
+  })()`);
   await evalExpr(
     `document.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', metaKey: true, bubbles: true, cancelable: true }))`,
   );
   await new Promise((r) => setTimeout(r, 200));
-  await evalExpr(`document.querySelector('.row a').setAttribute('inert', '')`);
+  // `.closest('.row')` from the opener, not the opener itself — the anchor
+  // lives inside `<div class="row" data-person="rauno"><span class="who">
+  // <a>...`, so this is a real two-level-up ancestor, not a same-element
+  // no-op.
+  await evalExpr(`document.querySelector('.row a').closest('.row').setAttribute('inert', '')`);
+  // Confirmed, not assumed: the opener itself still has no `inert`
+  // attribute, but the ancestor walk now finds one — and it's the ancestor,
+  // not the opener, that `closest` returned.
+  const inertAncestorCheck = await evalExpr(`(function(){
+    var opener = document.querySelector('.row a');
+    var found = opener.closest('[inert]');
+    return {
+      openerItselfHasInertAttribute: opener.hasAttribute('inert'),
+      closestInertFound: !!found,
+      closestInertIsOpener: found === opener,
+      closestInertTag: found ? found.tagName : null,
+      closestInertClassName: found ? found.className : null
+    };
+  })()`);
   await dispatchKey({ key: "Escape" });
   await new Promise((r) => setTimeout(r, 150));
   results.focusRegression.openerInertAncestor = {
     active: await activeInfo(),
     aria: await cmdAriaState(),
+    inertAncestorCheck: inertAncestorCheck,
   };
-  await evalExpr(`document.querySelector('.row a').removeAttribute('inert')`);
+  await evalExpr(`document.querySelector('.row a').closest('.row').removeAttribute('inert')`);
 
   // E) The fallback can be hidden too: wake nav and open normally (opener
   // === trigger, the ordinary case, confirmed exposed at capture time),

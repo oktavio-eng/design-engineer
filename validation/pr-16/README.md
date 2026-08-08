@@ -95,9 +95,19 @@ top of the script if needed, then `node validation/pr-16/cdp-driver.js`.
     `openerHiddenAfterOpeningPalette`: focus doesn't return to `#mailText`
     (`mailModalAriaHiddenWhileCmdWasOpen: "true"`), it correctly falls back
     to the still-reachable trigger. `openerInertAncestor` proves the same
-    check against `inert` specifically (nothing in this app uses `inert`
-    yet — the branch was dark until this test set an opener's ancestor
-    `inert` directly).
+    check against `inert` specifically — on a real ancestor of the opener
+    (`.closest('.row')`, two levels up from the `<a>`, not the opener
+    element itself; a self-match wouldn't exercise the ancestor walk
+    `closest()` actually does), confirmed both ways:
+    `openerInertAncestor_preState` persists that the opener carries no
+    `inert` and isn't inside one yet before the ancestor is marked, and
+    `inertAncestorCheck` (nested inside `openerInertAncestor`) persists that
+    afterwards the opener itself still has no `inert` attribute
+    (`openerItselfHasInertAttribute: false`) while
+    `opener.closest("[inert]")` finds the ancestor and not the opener
+    (`closestInertFound: true`, `closestInertIsOpener: false`,
+    `closestInertClassName: "row"`). Nothing in this app uses `inert`
+    yet — the branch was otherwise dark.
   - **The fallback isn't a given either.** Discovered while writing these
     tests, not assumed going in: `.topbar` (the trigger's container) ships
     `aria-hidden="true"` in the static HTML and only becomes reachable after

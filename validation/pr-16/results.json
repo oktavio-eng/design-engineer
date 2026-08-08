@@ -402,14 +402,14 @@
             }
           }
         ],
-        "parentId": "255",
+        "parentId": "253",
         "childIds": [
           "708"
         ],
         "backendDOMNodeId": 707
       },
       {
-        "nodeId": "255",
+        "nodeId": "253",
         "ignored": true,
         "ignoredReasons": [
           {
@@ -428,20 +428,20 @@
           "type": "internalRole",
           "value": 0
         },
-        "parentId": "229",
+        "parentId": "227",
         "childIds": [
-          "286",
+          "284",
+          "304",
+          "305",
           "306",
           "307",
           "308",
           "309",
           "310",
-          "311",
           "312",
-          "314",
-          "317",
-          "320",
-          "326",
+          "315",
+          "318",
+          "324",
           "675",
           "676",
           "680",
@@ -462,10 +462,10 @@
           "726",
           "729"
         ],
-        "backendDOMNodeId": 255
+        "backendDOMNodeId": 253
       },
       {
-        "nodeId": "229",
+        "nodeId": "227",
         "ignored": true,
         "ignoredReasons": [
           {
@@ -486,9 +486,9 @@
         },
         "parentId": "226",
         "childIds": [
-          "255"
+          "253"
         ],
-        "backendDOMNodeId": 229
+        "backendDOMNodeId": 227
       },
       {
         "nodeId": "226",
@@ -552,10 +552,10 @@
           }
         ],
         "childIds": [
-          "229"
+          "227"
         ],
         "backendDOMNodeId": 226,
-        "frameId": "86156E5DA28E3F9D7CAE2E197B03DDB3"
+        "frameId": "027B7AEEC80BB8494C9CB8B6549C0FD0"
       }
     ]
   },
@@ -964,6 +964,13 @@
       },
       "mailModalAriaHiddenWhileCmdWasOpen": "true"
     },
+    "openerInertAncestor_preState": {
+      "openerHasInertAttribute": false,
+      "openerClosestInert": false,
+      "ancestorIsOpenerItself": false,
+      "ancestorTag": "DIV",
+      "ancestorClassName": "row"
+    },
     "openerInertAncestor": {
       "active": {
         "id": null,
@@ -981,6 +988,13 @@
         "cmdDetailOpen": false,
         "cmdAriaHidden": "true",
         "modalAriaHidden": "true"
+      },
+      "inertAncestorCheck": {
+        "openerItselfHasInertAttribute": false,
+        "closestInertFound": true,
+        "closestInertIsOpener": false,
+        "closestInertTag": "DIV",
+        "closestInertClassName": "row"
       }
     },
     "fallbackTriggerAlsoHidden": {
