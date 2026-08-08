@@ -27,18 +27,24 @@ Comandos:
 - `npm run build-storybook` — build isolado em `storybook-static/` (ignorado pelo Git).
 - `npm run test-storybook` — smoke tests, funções `play` e axe em Chromium headless, uma vez.
 - `npm run test-storybook:watch` — o mesmo runner em watch mode. No macOS, `vitest.config.mjs` usa o Google Chrome instalado quando ele está disponível; nos demais ambientes usa o Chromium do Playwright. Se esse binário não existir, rode uma única vez `npx playwright install chromium`; nunca dispare duas instalações concorrentes.
+- `npm run test:product-ui` — smoke read-only do command palette na página real (`index.html` + `script.js`), servido por HTTP: Ctrl/⌘K, camadas de Escape, list→detail, races do foco atrasado, restauração do opener e invariante contra foco dentro de `aria-hidden`/`inert`.
+- `npm run test:visual` — compara sete capturas do build em `storybook-static/` com `tests/visual/baselines/`; por isso exige `npm run build-storybook` antes. Para uma mudança visual intencional, rode `UPDATE_VISUAL_BASELINES=1 npm run test:visual`, inspecione cada PNG e então rode o comando normal de novo.
+- `npm run test:ui` — gate de testes depois do build: stories/axe, smoke da página real e regressão visual.
 
-O `@storybook/addon-a11y` roda axe e `parameters.a11y.test = "error"` é o padrão global: uma violação nova falha localmente e no CI. Exceções precisam ser locais à story, usar `todo` (nunca `off` sem justificativa) e explicar em comentário qual dívida de produção está sendo preservada. As baselines atuais são explícitas: `Rows`, `Phase · Glossary` e `Expandable people` preservam textos `--faint` abaixo do contraste AA; o command menu mantém controles focáveis dentro dos diálogos inativos marcados com `aria-hidden`. Corrigir essas dívidas exige uma mudança de produto coordenada, não uma maquiagem no fixture.
+O `@storybook/addon-a11y` roda axe e `parameters.a11y.test = "error"` é o padrão global: uma violação nova falha localmente e no CI. Uma dívida conhecida nunca libera a story inteira com `todo`/`off`: desabilite somente a regra no addon para aquela story, marque cada alvo com `data-a11y-debt` e use `expectOnlyA11yDebt()` no `play` para exigir a lista exata de `regra:alvo`. Se aparecer outra regra, outro alvo ou se uma dívida sumir, o teste falha e a baseline precisa ser reavaliada. As dívidas atuais são contraste de textos `--faint` e controles focáveis nos diálogos inativos do command menu; corrigi-las continua exigindo uma mudança de produto coordenada, não maquiagem no fixture.
 
 As stories interativas são harnesses isolados porque `script.js` consulta e inicializa a página inteira no carregamento; importar esse arquivo numa story não é seguro. Copie só o menor markup/contrato necessário, use as classes reais de `main.css` e mantenha o controlador da story pequeno. Isso testa o CSS, os estados, a semântica e o contrato de teclado, mas não substitui um E2E da página completa. Se um controlador de produção for extraído para um módulo reutilizável no futuro, a story deve passar a importar esse módulo e apagar a cópia.
 
 Cobertura interativa inicial:
 
-- `.gloss`: entrada na ordem de Tab, foco visível e tooltip exposto sem mouse.
-- `.extras` / `.see-more`: ativação por teclado, classe `expanded` e texto show more/show less.
-- command menu: Ctrl/⌘ K, foco inicial, filtro, cursor com setas, `aria-selected`/`aria-activedescendant`, abertura do detalhe e Escape por camada.
+- `.gloss`: ordem de Tab, foco visual, tooltip por teclado e ponteiro, role e descrição acessível.
+- `.extras` / `.see-more`: Enter e Space, foco preservado, classe `expanded`, `aria-expanded`, `aria-controls` e texto show more/show less.
+- command menu (fixture): Ctrl/⌘K, foco inicial, filtro, cursor com setas, `aria-selected`/`aria-activedescendant`, foco no detalhe, Escape por camada, restauração do opener e races menores que o delay de foco.
+- command menu (página real): o mesmo contrato frágil é exercitado sobre o HTML/JS de produção; a story continua sendo inventário visual, não substituto desse smoke.
 
-O workflow `.github/workflows/storybook.yml` roda `npm ci`, build e testes em todo pull request, usando a imagem Playwright que corresponde à versão fixada no `package.json`. É tooling de dev: o runtime e o deploy principal continuam sendo o site estático HTML/CSS/Vanilla JS, sem build de produção novo. O Framework Preset da Vercel permanece **Other** e `storybook-static/` não entra no deploy principal.
+A regressão visual usa apenas Playwright + o comparador já trazido pelo Vitest Browser. A matriz cobre tokens em light/dark, tipografia normal/Flat type, 320px, disclosure expandido e command palette aberto. Todas as capturas rodam com `prefers-reduced-motion: reduce`, esperam fontes, animações e dois frames idênticos, e aceitam no máximo 1,5% de pixels diferentes para absorver antialiasing entre Chrome/macOS e Chromium/Linux sem esconder mudanças de layout, tema ou escala. Em falha, `artifacts/visual/` recebe `actual` e `diff`; o diretório é ignorado pelo Git e publicado pelo CI.
+
+O workflow `.github/workflows/storybook.yml` roda `npm ci`, build, stories/axe, smoke da página real e regressão visual em todo pull request, usando a imagem Playwright que corresponde à versão fixada no `package.json`. O build isolado e as capturas reais são publicados como artifacts por sete dias para revisão. É tooling de dev: o runtime e o deploy principal continuam sendo o site estático HTML/CSS/Vanilla JS, sem build de produção novo. O Framework Preset da Vercel permanece **Other** e `storybook-static/` não entra no deploy principal.
 
 ### Definition of Done para mudanças de UI
 
@@ -47,8 +53,9 @@ O workflow `.github/workflows/storybook.yml` roda `npm ci`, build e testes em to
 - [ ] O teste confirma foco inicial, movimento de foco e retorno de foco para overlays quando esse contrato existir.
 - [ ] Nome, role e estado acessíveis dos controles são verificáveis; axe passa sem nova exceção `todo`.
 - [ ] `npm run build-storybook` passa.
-- [ ] `npm run test-storybook` passa em Chromium.
-- [ ] A story foi inspecionada no browser em light/dark e, quando afetada, com Flat type e viewport estreito.
+- [ ] `npm run test:ui` passa em Chromium depois do build; se a mudança toca um controlador da página, o smoke product-real correspondente também foi atualizado.
+- [ ] A matriz visual relevante cobre light/dark, Flat type, viewport estreito e reduced-motion; toda baseline atualizada foi inspecionada, não apenas regenerada.
+- [ ] Foco por teclado nunca termina dentro de um ancestral `aria-hidden`/`inert`, e overlays restauram o opener após dismiss completo.
 - [ ] Nenhum arquivo gerado de `storybook-static/` entrou no commit e nenhum comportamento de produção mudou só para satisfazer o harness.
 
 ## Regras inegociáveis
