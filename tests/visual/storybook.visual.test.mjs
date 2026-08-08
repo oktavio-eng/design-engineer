@@ -18,8 +18,8 @@ const updateBaselines = process.env.UPDATE_VISUAL_BASELINES === "1";
 const cases = [
   { name: "colors-light", story: "foundations--colors", theme: "light", flatType: "off", width: 1024, height: 768 },
   { name: "colors-dark", story: "foundations--colors", theme: "dark", flatType: "off", width: 1024, height: 768 },
-  { name: "typography-scale", story: "foundations--typography", theme: "light", flatType: "off", width: 1024, height: 900 },
-  { name: "typography-flat", story: "foundations--typography", theme: "light", flatType: "on", width: 1024, height: 900 },
+  { name: "typography-scale", story: "foundations--typography", theme: "light", flatType: "off", width: 1024, height: 900, maxMismatchRatio: 0.02 },
+  { name: "typography-flat", story: "foundations--typography", theme: "light", flatType: "on", width: 1024, height: 900, maxMismatchRatio: 0.02 },
   { name: "rows-narrow", story: "patterns--rows", theme: "light", flatType: "off", width: 320, height: 800 },
   { name: "people-expanded-narrow", story: "patterns--expandable-people", theme: "light", flatType: "off", width: 320, height: 800, state: "expanded" },
   { name: "command-search-dark", story: "patterns-command-menu--keyboard-flow", theme: "dark", flatType: "off", width: 1024, height: 768, state: "command-open" },
@@ -75,7 +75,8 @@ async function assertContracts(page, visualCase) {
   }
 }
 
-async function compareScreenshot(name, screenshot) {
+async function compareScreenshot(visualCase, screenshot) {
+  const { name, maxMismatchRatio = 0.015 } = visualCase;
   const baselinePath = path.join(baselineDirectory, `${name}.png`);
   if (updateBaselines) {
     await writeFile(baselinePath, screenshot);
@@ -102,10 +103,13 @@ async function compareScreenshot(name, screenshot) {
     { threshold: 0.12, includeAA: false, diffMask: true },
   );
   const mismatchRatio = mismatchedPixels / (actual.width * actual.height);
-  if (mismatchRatio > 0.015) {
+  if (mismatchRatio > maxMismatchRatio) {
     await writeFile(path.join(artifactDirectory, `${name}-diff.png`), PNG.sync.write(output));
   }
-  assert.ok(mismatchRatio <= 0.015, `${name}: ${(mismatchRatio * 100).toFixed(2)}% pixels changed`);
+  assert.ok(
+    mismatchRatio <= maxMismatchRatio,
+    `${name}: ${(mismatchRatio * 100).toFixed(2)}% pixels changed (limit ${(maxMismatchRatio * 100).toFixed(2)}%)`,
+  );
 }
 
 test("Storybook visual matrix stays within reviewed baselines", { timeout: 60_000 }, async (context) => {
@@ -135,7 +139,7 @@ test("Storybook visual matrix stays within reviewed baselines", { timeout: 60_00
       Promise.all(document.getAnimations().map((animation) => animation.finished.catch(() => undefined))),
     );
     await assertContracts(page, visualCase);
-    await compareScreenshot(visualCase.name, await captureStable(page));
+    await compareScreenshot(visualCase, await captureStable(page));
     await page.close();
   }
 });

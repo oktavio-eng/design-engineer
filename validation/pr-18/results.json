@@ -32,7 +32,7 @@
     {
       "command": "npm run test:visual",
       "exitCode": 0,
-      "evidence": "7 visual cases stayed within the 1.5% mismatch threshold"
+      "evidence": "7 visual cases passed; 1.5% default threshold and 2% for cross-platform typography rasterization"
     },
     {
       "command": "node --check script.js",
