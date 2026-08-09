@@ -22,6 +22,11 @@ const cases = [
   { name: "typography-flat", story: "foundations--typography", theme: "light", flatType: "on", width: 1024, height: 900 },
   { name: "rows-narrow", story: "patterns--rows", theme: "light", flatType: "off", width: 320, height: 800 },
   { name: "people-expanded-narrow", story: "patterns--expandable-people", theme: "light", flatType: "off", width: 320, height: 800, state: "expanded" },
+  // The disclosure generalized from People to Courses and References: the CSS
+  // is keyed on `.expanded` alone now, so this captures two sections that do
+  // not carry `.people` opening the same way, in the theme and width the
+  // single-section case above does not cover.
+  { name: "sections-expanded-narrow", story: "patterns--see-more-sections", theme: "dark", flatType: "off", width: 320, height: 800, state: "sections-expanded" },
   { name: "people-selected-dark", story: "patterns--people-selection", theme: "dark", flatType: "off", width: 1024, height: 400, state: "people-selected" },
   { name: "command-search-dark", story: "patterns-command-menu--keyboard-flow", theme: "dark", flatType: "off", width: 1024, height: 768, state: "command-open" },
 ];
@@ -43,6 +48,19 @@ async function applyState(page, visualCase) {
     if ((await button.getAttribute("aria-expanded")) !== "true") await button.click();
     await page.waitForFunction(() => document.querySelector(".people")?.classList.contains("expanded"));
     await button.blur();
+    await page.mouse.move(0, 0);
+  }
+
+  if (visualCase.state === "sections-expanded") {
+    const buttons = await page.locator(".see-more").all();
+    for (const button of buttons) {
+      if ((await button.getAttribute("aria-expanded")) !== "true") await button.click();
+    }
+    await page.waitForFunction(
+      (expected) => document.querySelectorAll("section.expanded").length === expected,
+      buttons.length,
+    );
+    await page.locator(".see-more").last().blur();
     await page.mouse.move(0, 0);
   }
 

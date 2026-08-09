@@ -20,6 +20,58 @@ export default {
   title: "Patterns",
 };
 
+/**
+ * Mirrors production's `wireSeeMore(sectionId)` in script.js: same id
+ * convention (`<sectionId>` + `<sectionId>SeeMore`), same null guard, same
+ * three writes on click — `classList.toggle("expanded")`, the show more/show
+ * less label and `aria-expanded`. The only difference is the lookup root:
+ * production reads `document.getElementById` because the page is already
+ * parsed when the deferred script runs, while a story's fixture is not in the
+ * document yet at render time. Nothing else is re-implemented; if that
+ * controller is ever extracted into a module, this copy goes away and the
+ * stories import it (see AGENTS.md, "Storybook e testes de UI").
+ */
+function wireSeeMore(root, sectionId) {
+  const section = root.querySelector(`#${sectionId}`);
+  const seeMore = root.querySelector(`#${sectionId}SeeMore`);
+  if (!section || !seeMore) return;
+  seeMore.addEventListener("click", () => {
+    const expanded = section.classList.toggle("expanded");
+    seeMore.textContent = expanded ? "show less" : "show more";
+    seeMore.setAttribute("aria-expanded", expanded ? "true" : "false");
+  });
+}
+
+function rowMarkup({ name, what, extra = false }) {
+  const anchor = name.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+  return `
+    <div class="row${extra ? " extra" : ""}">
+      <span class="who"><a href="#${anchor}">${name}</a></span>
+      <span class="what">${what}</span>
+    </div>`;
+}
+
+/**
+ * The production shape of a see-more section: visible rows, then
+ * `.extras > .extras-inner > .row.extra`, then the `.see-more` button that
+ * owns `aria-expanded`/`aria-controls`. `sectionClass` is the whole point of
+ * this fixture — People carries `.people`, Courses and References do not, and
+ * the CSS that drives the disclosure is keyed on `.expanded` alone.
+ */
+function seeMoreSectionMarkup({ id, sectionClass, heading, rows, extras, debtMarker }) {
+  return `
+    <section class="${sectionClass}" id="${id}">
+      <h2>${heading}</h2>
+      ${rows.map((row) => rowMarkup(row)).join("")}
+      <div class="extras" id="${id}Extras">
+        <div class="extras-inner">
+          ${extras.map((row) => rowMarkup({ ...row, extra: true })).join("")}
+        </div>
+      </div>
+      <button class="see-more" id="${id}SeeMore" type="button" aria-expanded="false" aria-controls="${id}Extras" data-a11y-debt="${debtMarker}">show more</button>
+    </section>`;
+}
+
 export const Rows = {
   parameters: {
     a11y: {
@@ -173,7 +225,7 @@ export const ExpandablePeople = {
             <span class="who"><a href="#rauno">Rauno Freiberg</a></span>
             <span class="what">Staff Design Engineer, Vercel</span>
           </div>
-          <div class="extras">
+          <div class="extras" id="storybookPeopleExtras">
             <div class="extras-inner">
               <div class="row extra">
                 <span class="who"><a href="#emil">Emil Kowalski</a></span>
@@ -185,17 +237,15 @@ export const ExpandablePeople = {
               </div>
             </div>
           </div>
-          <button class="see-more" type="button" data-a11y-debt="see-more">show more</button>
+          <button class="see-more" id="storybookPeopleSeeMore" type="button" aria-expanded="false" aria-controls="storybookPeopleExtras" data-a11y-debt="see-more">show more</button>
         </section>
       `,
     );
-    const section = root.querySelector(".people");
-    const button = root.querySelector(".see-more");
-
-    button.addEventListener("click", () => {
-      const expanded = section.classList.toggle("expanded");
-      button.textContent = expanded ? "show less" : "show more";
-    });
+    // aria-expanded/aria-controls used to be deliberately absent here because
+    // production did not have them yet (AGENTS.md: never give the fixture ARIA
+    // the site lacks). script.js now writes aria-expanded on every see-more and
+    // index.html ships aria-controls, so the story carries the same contract.
+    wireSeeMore(root, "storybookPeople");
 
     return root;
   },
@@ -203,6 +253,14 @@ export const ExpandablePeople = {
     const section = canvas.getByRole("heading", { name: "People" }).closest(".people");
     const firstLink = canvas.getByRole("link", { name: "Rauno Freiberg" });
     const button = canvas.getByRole("button", { name: "show more" });
+
+    await step("The collapsed button announces its state and a target that exists", async () => {
+      await expect(button).toHaveAttribute("aria-expanded", "false");
+      // aria-controls is only worth anything if it resolves: look the id up the
+      // way an assistive technology does instead of comparing two strings.
+      const controlled = document.getElementById(button.getAttribute("aria-controls"));
+      await expect(controlled).toBe(section.querySelector(".extras"));
+    });
 
     await step("Activate the native button from the keyboard", async () => {
       await userEvent.tab();
@@ -212,18 +270,166 @@ export const ExpandablePeople = {
       await userEvent.keyboard("{Enter}");
       await expect(section).toHaveClass("expanded");
       await expect(button).toHaveTextContent("show less");
+      await expect(button).toHaveAttribute("aria-expanded", "true");
     });
 
     await step("Collapse without leaving the keyboard", async () => {
       await userEvent.keyboard(" ");
       await expect(section).not.toHaveClass("expanded");
       await expect(button).toHaveTextContent("show more");
+      await expect(button).toHaveAttribute("aria-expanded", "false");
       await expect(button).toHaveFocus();
     });
 
     await step("Keep the known contrast debt exact", async () => {
       await expectOnlyA11yDebt(canvasElement, ["color-contrast:see-more"]);
     });
+  },
+};
+
+// Summaries are kept short enough to fit at 320px without truncating. The
+// ellipsis of a truncated .what lands on a different glyph under
+// Chromium/Linux than under Chrome/macOS, and this fixture is captured at that
+// width by sections-expanded-narrow; text that never reaches the boundary
+// keeps the capture's diff down to plain glyph rasterization.
+//
+// This is a one-off exception to the fixture mirroring production content,
+// granted only because truncation already has a dedicated owner: rows-narrow
+// captures it deliberately, at content chosen to truncate. That is what makes
+// dodging the boundary here safe rather than silent coverage loss. It is not
+// a precedent — a future fixture with a cross-platform diff at its truncation
+// boundary needs its own owning baseline before shortening text to route
+// around it, the same way rows-narrow does here.
+const SEE_MORE_SECTIONS = [
+  {
+    id: "sbSeeMorePeople",
+    // The only section that still carries `.people`. Everything below it has
+    // to work without that class for the pattern to be a pattern at all.
+    sectionClass: "people",
+    heading: "People",
+    debtMarker: "see-more-people",
+    rows: [{ name: "Rauno Freiberg", what: "Vercel" }],
+    extras: [{ name: "floguo", what: "Paradigm" }],
+  },
+  {
+    id: "sbSeeMoreCourses",
+    sectionClass: "",
+    heading: "Courses & materials",
+    debtMarker: "see-more-courses",
+    rows: [{ name: "Interface Craft", what: "Josh Puckett" }],
+    extras: [{ name: "Invisible Details", what: "Rauno" }],
+  },
+  {
+    id: "sbSeeMoreReferences",
+    sectionClass: "",
+    heading: "Craft references",
+    debtMarker: "see-more-references",
+    rows: [{ name: "Jordan Jenkins", what: "Jkane" }],
+    extras: [{ name: "Nev Flynn", what: "ElevenLabs" }],
+  },
+];
+
+export const SeeMoreSections = {
+  name: "See more — people, courses, references",
+  parameters: {
+    a11y: {
+      test: "error",
+      // Same known --faint debt as the single-section story, once per button.
+      // The play function pins the exact list in both collapsed and expanded
+      // state, since the addon's own scan only sees the state play() ends in.
+      options: { rules: { "color-contrast": { enabled: false } } },
+    },
+  },
+  render: () => {
+    // The blurb stays to one short, deliberately unwrapped sentence because
+    // this story is captured at 320px by the visual matrix
+    // (sections-expanded-narrow). A longer paragraph re-wraps at different
+    // words under Chromium/Linux than under Chrome/macOS — measured on CI at
+    // raw 4.72% / perceptual 1.27% against a macOS-generated baseline, over
+    // both limits — and that is a rendering-environment artifact, not a UI
+    // regression. The reasoning that used to live here is in the comments
+    // around SEE_MORE_SECTIONS and wireSeeMore above, where it costs no pixels.
+    const root = patternShell(
+      "See more — people, courses, references",
+      "One disclosure pattern, three sections.",
+      SEE_MORE_SECTIONS.map(seeMoreSectionMarkup).join(""),
+    );
+
+    SEE_MORE_SECTIONS.forEach(({ id }) => wireSeeMore(root, id));
+
+    return root;
+  },
+  play: async ({ canvas, canvasElement, userEvent, step }) => {
+    const sections = SEE_MORE_SECTIONS.map(({ id, heading, debtMarker }) => ({
+      heading,
+      debtMarker,
+      element: canvasElement.querySelector(`#${id}`),
+      extras: canvasElement.querySelector(`#${id}Extras`),
+      button: canvasElement.querySelector(`#${id}SeeMore`),
+    }));
+    const openHeightOf = (extras) => getComputedStyle(extras).gridTemplateRows;
+
+    await step("All three sections start collapsed and closed to assistive tech", async () => {
+      // Role-based, so this fails if a see-more ever stops being a real button.
+      await expect(canvas.getAllByRole("button", { name: "show more" })).toHaveLength(3);
+      for (const { element, extras, button } of sections) {
+        await expect(element).not.toHaveClass("expanded");
+        await expect(button).toHaveAttribute("aria-expanded", "false");
+        // Resolve aria-controls through the document, not by string compare:
+        // a target id that does not exist is the failure mode worth catching.
+        await expect(document.getElementById(button.getAttribute("aria-controls"))).toBe(extras);
+        await expect(getComputedStyle(extras).visibility).toBe("hidden");
+        await expect(openHeightOf(extras)).toBe("0px");
+      }
+    });
+
+    await step("Known contrast debt is exact while collapsed", async () => {
+      await expectOnlyA11yDebt(
+        canvasElement,
+        sections.map(({ debtMarker }) => `color-contrast:${debtMarker}`),
+      );
+    });
+
+    for (const { heading, element, extras, button } of sections) {
+      await step(`Expanding ${heading} opens its extras and flips the announced state`, async () => {
+        await userEvent.click(button);
+        await expect(element).toHaveClass("expanded");
+        await expect(button).toHaveTextContent("show less");
+        await expect(button).toHaveAttribute("aria-expanded", "true");
+        await expect(getComputedStyle(extras).visibility).toBe("visible");
+        // The 320ms grid-template-rows transition is still running right after
+        // the class flip; wait for the settled, non-zero track.
+        await waitFor(() => expect(openHeightOf(extras)).not.toBe("0px"));
+        // And the stagger the disclosure exists for: `.expanded .row.extra`
+        // ends the `enter` animation at opacity 1 (forwards), which is the
+        // rule the reduced-motion block has to cancel.
+        for (const extraRow of extras.querySelectorAll(".row.extra")) {
+          await waitFor(() => expect(getComputedStyle(extraRow).opacity).toBe("1"));
+        }
+      });
+    }
+
+    await step("Known contrast debt is still exact with every section open", async () => {
+      await expect(canvas.getAllByRole("button", { name: "show less" })).toHaveLength(3);
+      await expectOnlyA11yDebt(
+        canvasElement,
+        sections.map(({ debtMarker }) => `color-contrast:${debtMarker}`),
+      );
+    });
+
+    for (const { heading, element, extras, button } of sections) {
+      await step(`Collapsing ${heading} returns it to the initial contract`, async () => {
+        await userEvent.click(button);
+        await expect(element).not.toHaveClass("expanded");
+        await expect(button).toHaveTextContent("show more");
+        await expect(button).toHaveAttribute("aria-expanded", "false");
+        await waitFor(() => expect(openHeightOf(extras)).toBe("0px"));
+        // visibility flips back only after the 320ms height transition
+        // (transition: visibility 0s linear var(--duration-320)), so the rows
+        // never disappear before the list has finished closing.
+        await waitFor(() => expect(getComputedStyle(extras).visibility).toBe("hidden"));
+      });
+    }
   },
 };
 
@@ -387,5 +593,178 @@ export const PeopleSelection = {
     });
 
     await expectOnlyA11yDebt(canvasElement, []);
+  },
+};
+
+export const SelectedExtraRow = {
+  name: "People — show more + selected extra row",
+  parameters: {
+    a11y: {
+      test: "error",
+      // Only the see-more button's known --faint debt, same as the other
+      // disclosure stories. The play function pins the exact list while a row
+      // revealed by show more is selected — the state this story exists for.
+      options: { rules: { "color-contrast": { enabled: false } } },
+    },
+  },
+  render: () => {
+    // Same reset precedent as the command menu and PeopleSelection fixtures.
+    document.body.classList.remove("panel-open");
+
+    const root = patternShell(
+      "People — show more + selected extra row",
+      "Where the two features meet: a row that only exists after show more is still a .people .row, so selecting it opens the sidebar, holds --ink while the rest falls to --row-dim, and leaves the list expanded. The enter animation ends at opacity 1 (forwards) and must not fight the opacity: 1 pin that keeps the dim a pure color change.",
+      `
+        <section class="people" id="sbExtraSelection">
+          <h2>People</h2>
+          <div class="row" data-person="rauno">
+            <span class="who"><a href="#rauno">Rauno Freiberg</a></span>
+            <span class="what">Staff Design Engineer, Vercel</span>
+          </div>
+          <div class="row" data-person="emil">
+            <span class="who"><a href="#emil">Emil Kowalski</a></span>
+            <span class="what">Design Engineer, Linear</span>
+          </div>
+          <div class="extras" id="sbExtraSelectionExtras">
+            <div class="extras-inner">
+              <div class="row extra" data-person="floguo">
+                <span class="who"><a href="#floguo">floguo</a></span>
+                <span class="what">Founding DE, Paradigm · ex-Vercel</span>
+              </div>
+              <div class="row extra" data-person="janikb">
+                <span class="who"><a href="#janikb">Janik Baumgartner</a></span>
+                <span class="what">Icon designer · Sketch icons</span>
+              </div>
+            </div>
+          </div>
+          <button class="see-more" id="sbExtraSelectionSeeMore" type="button" aria-expanded="false" aria-controls="sbExtraSelectionExtras" data-a11y-debt="see-more">show more</button>
+        </section>
+        <div class="sb-people-panel-stub">
+          <button class="panel-close sb-people-close" type="button" aria-label="Close panel">&times;</button>
+        </div>
+      `,
+    );
+
+    wireSeeMore(root, "sbExtraSelection");
+
+    // The same open/close mirror PeopleSelection uses: production's rows list
+    // is document.querySelectorAll(".people .row"), which already includes the
+    // .row.extra elements, so a revealed row goes through the exact same
+    // openAt("people", index) path as a visible one. Only the two flags CSS
+    // reads move here — body.panel-open and .row.active.
+    const rows = Array.from(root.querySelectorAll(".people .row"));
+    const closeButton = root.querySelector(".sb-people-close");
+    let activeRow = null;
+
+    function openRow(row) {
+      if (activeRow) activeRow.classList.remove("active");
+      activeRow = row;
+      activeRow.classList.add("active");
+      document.body.classList.add("panel-open");
+    }
+
+    function closePanel() {
+      if (activeRow) activeRow.classList.remove("active");
+      activeRow = null;
+      document.body.classList.remove("panel-open");
+    }
+
+    rows.forEach((row) => {
+      row.querySelector("a").addEventListener("click", (event) => {
+        event.preventDefault();
+        activeRow !== row ? openRow(row) : closePanel();
+      });
+    });
+    closeButton.addEventListener("click", closePanel);
+
+    return root;
+  },
+  play: async ({ canvas, canvasElement, userEvent, step }) => {
+    const section = canvasElement.querySelector("#sbExtraSelection");
+    const extras = canvasElement.querySelector("#sbExtraSelectionExtras");
+    const button = canvasElement.querySelector("#sbExtraSelectionSeeMore");
+    const rauno = canvas.getByRole("link", { name: "Rauno Freiberg" }).closest(".row");
+    const emil = canvas.getByRole("link", { name: "Emil Kowalski" }).closest(".row");
+    const closeButton = canvas.getByRole("button", { name: "Close panel" });
+    // Deliberately not resolved yet: while the list is collapsed, `.extras` is
+    // visibility: hidden, so the extra rows are outside the accessibility tree
+    // and getByRole cannot see them. Resolving them only after the disclosure
+    // opens is itself the assertion that show more actually exposes them.
+    let floguo;
+    let janik;
+    // Resolve --row-dim through a probe instead of hardcoding a color, same
+    // as PeopleSelection above.
+    const probe = document.createElement("span");
+    probe.style.color = "var(--row-dim)";
+    canvasElement.appendChild(probe);
+    const dimColor = getComputedStyle(probe).color;
+    probe.remove();
+    const whoColorOf = (row) => getComputedStyle(row.querySelector(".who a")).color;
+    const whatColorOf = (row) => getComputedStyle(row.querySelector(".what")).color;
+
+    await step("Reveal the extra rows and let the stagger settle", async () => {
+      await expect(canvas.queryByRole("link", { name: "floguo" })).toBe(null);
+      await userEvent.click(button);
+      await expect(section).toHaveClass("expanded");
+      await expect(button).toHaveAttribute("aria-expanded", "true");
+      floguo = (await canvas.findByRole("link", { name: "floguo" })).closest(".row");
+      janik = (await canvas.findByRole("link", { name: "Janik Baumgartner" })).closest(".row");
+      await waitFor(() => expect(getComputedStyle(floguo).opacity).toBe("1"));
+      await waitFor(() => expect(getComputedStyle(janik).opacity).toBe("1"));
+    });
+
+    await step("Selecting a revealed row opens the sidebar like any other row", async () => {
+      await userEvent.click(canvas.getByRole("link", { name: "floguo" }));
+      await userEvent.unhover(floguo);
+      await expect(document.body).toHaveClass("panel-open");
+      await expect(floguo).toHaveClass("active");
+      await waitFor(() => expect(whoColorOf(floguo)).not.toBe(dimColor));
+      await waitFor(() => expect(whoColorOf(rauno)).toBe(dimColor));
+      await waitFor(() => expect(whatColorOf(rauno)).toBe(dimColor));
+      await waitFor(() => expect(whoColorOf(emil)).toBe(dimColor));
+      await waitFor(() => expect(whoColorOf(janik)).toBe(dimColor));
+      await waitFor(() => expect(whatColorOf(janik)).toBe(dimColor));
+    });
+
+    await step("The list stays open and the dim stays a pure color change", async () => {
+      await expect(section).toHaveClass("expanded");
+      await expect(button).toHaveAttribute("aria-expanded", "true");
+      await expect(getComputedStyle(extras).visibility).toBe("visible");
+      await expect(getComputedStyle(extras).gridTemplateRows).not.toBe("0px");
+      // The `enter` animation runs with `forwards`, so it — not the
+      // `body.panel-open .people:has(.row.active) .row > *` pin — owns the
+      // row's own opacity once it lands. Both have to read 1, otherwise a
+      // dimmed extra row would blend toward --bg and reopen the contrast
+      // violation the solid --row-dim exists to avoid.
+      await expect(getComputedStyle(janik).opacity).toBe("1");
+      await expect(getComputedStyle(janik.querySelector(".who")).opacity).toBe("1");
+      await expect(getComputedStyle(floguo.querySelector(".what")).opacity).toBe("1");
+    });
+
+    await step("Axe passes in the expanded + selected state, not just after closing", async () => {
+      await expectOnlyA11yDebt(canvasElement, ["color-contrast:see-more"]);
+    });
+
+    // Collapsing the list while an extra row is still selected is not asserted
+    // in this fixture: the outcome depends on the document-level outside-click
+    // handler in script.js (predates this feature — present since the repo's
+    // very first commit), which this Storybook harness does not reproduce.
+    // Verified directly against the real page instead (mouse and Space-key
+    // activation of the see-more button): the handler already treats a click
+    // on `#peopleSeeMore` as "outside", so close() runs — the panel closes,
+    // the row deactivates, and the section collapses, all in the same click.
+    // No orphaned panel.
+
+    await step("Closing the sidebar restores the expanded list to its plain state", async () => {
+      await userEvent.click(closeButton);
+      await expect(document.body).not.toHaveClass("panel-open");
+      await expect(floguo).not.toHaveClass("active");
+      await expect(section).toHaveClass("expanded");
+      await waitFor(() => expect(whoColorOf(rauno)).not.toBe(dimColor));
+      await waitFor(() => expect(whoColorOf(janik)).not.toBe(dimColor));
+      await waitFor(() => expect(whatColorOf(janik)).not.toBe(dimColor));
+    });
+
+    await expectOnlyA11yDebt(canvasElement, ["color-contrast:see-more"]);
   },
 };
