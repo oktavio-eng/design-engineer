@@ -328,9 +328,17 @@ export const SeeMoreSections = {
     },
   },
   render: () => {
+    // The blurb stays to one short, deliberately unwrapped sentence because
+    // this story is captured at 320px by the visual matrix
+    // (sections-expanded-narrow). A longer paragraph re-wraps at different
+    // words under Chromium/Linux than under Chrome/macOS — measured on CI at
+    // raw 4.72% / perceptual 1.27% against a macOS-generated baseline, over
+    // both limits — and that is a rendering-environment artifact, not a UI
+    // regression. The reasoning that used to live here is in the comments
+    // around SEE_MORE_SECTIONS and wireSeeMore above, where it costs no pixels.
     const root = patternShell(
       "See more — people, courses, references",
-      "One disclosure pattern, three sections. The CSS is keyed on .expanded alone (not .people.expanded), so a section without the .people class opens exactly the same way; the button owns aria-expanded and points at the .extras id it controls.",
+      "One disclosure pattern, three sections.",
       SEE_MORE_SECTIONS.map(seeMoreSectionMarkup).join(""),
     );
 

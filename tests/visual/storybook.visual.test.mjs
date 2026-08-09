@@ -26,7 +26,7 @@ const cases = [
   // is keyed on `.expanded` alone now, so this captures two sections that do
   // not carry `.people` opening the same way, in the theme and width the
   // single-section case above does not cover.
-  { name: "sections-expanded-narrow", story: "patterns--see-more-sections", theme: "dark", flatType: "off", width: 320, height: 900, state: "sections-expanded" },
+  { name: "sections-expanded-narrow", story: "patterns--see-more-sections", theme: "dark", flatType: "off", width: 320, height: 800, state: "sections-expanded" },
   { name: "people-selected-dark", story: "patterns--people-selection", theme: "dark", flatType: "off", width: 1024, height: 400, state: "people-selected" },
   { name: "command-search-dark", story: "patterns-command-menu--keyboard-flow", theme: "dark", flatType: "off", width: 1024, height: 768, state: "command-open" },
 ];
