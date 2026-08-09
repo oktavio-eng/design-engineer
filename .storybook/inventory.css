@@ -115,6 +115,17 @@ body {
   cursor: default;
 }
 
+/* Production's .panel-close is position:absolute against #panel (the real
+   sidebar column). The People selection harness reuses that same class for
+   its close affordance without rebuilding the sidebar, so it needs its own
+   positioning context here — otherwise the button falls back to the
+   viewport's top-right corner and sits on top of the row list, stealing
+   hover/pointer target from whatever row happens to render underneath it. */
+.sb-people-panel-stub {
+  position: relative;
+  height: var(--space-64);
+}
+
 @media (max-width: 560px) {
   .sb-inventory {
     padding-top: var(--space-40);
