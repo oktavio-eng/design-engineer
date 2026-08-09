@@ -22,6 +22,7 @@ const cases = [
   { name: "typography-flat", story: "foundations--typography", theme: "light", flatType: "on", width: 1024, height: 900 },
   { name: "rows-narrow", story: "patterns--rows", theme: "light", flatType: "off", width: 320, height: 800 },
   { name: "people-expanded-narrow", story: "patterns--expandable-people", theme: "light", flatType: "off", width: 320, height: 800, state: "expanded" },
+  { name: "people-selected-dark", story: "patterns--people-selection", theme: "dark", flatType: "off", width: 1024, height: 400, state: "people-selected" },
   { name: "command-search-dark", story: "patterns-command-menu--keyboard-flow", theme: "dark", flatType: "off", width: 1024, height: 768, state: "command-open" },
 ];
 
@@ -42,6 +43,14 @@ async function applyState(page, visualCase) {
     if ((await button.getAttribute("aria-expanded")) !== "true") await button.click();
     await page.waitForFunction(() => document.querySelector(".people")?.classList.contains("expanded"));
     await button.blur();
+    await page.mouse.move(0, 0);
+  }
+
+  if (visualCase.state === "people-selected") {
+    await page.locator('.people .row[data-person="rauno"] a').click();
+    await page.waitForFunction(() => document.body.classList.contains("panel-open"));
+    // Pointer away from the whole list so the capture proves the highlight
+    // persists on body.panel-open/.row.active alone, not on :hover.
     await page.mouse.move(0, 0);
   }
 

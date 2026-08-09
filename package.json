@@ -6,7 +6,7 @@
     "build-storybook": "storybook build",
     "test-storybook": "vitest --project=storybook --run",
     "test-storybook:watch": "vitest --project=storybook",
-    "test:product-ui": "node --test tests/ui/command-menu.test.mjs",
+    "test:product-ui": "node --test tests/ui/*.test.mjs",
     "test:visual": "node --test tests/visual/storybook.visual.test.mjs",
     "test:ui": "npm run test-storybook && npm run test:product-ui && npm run test:visual"
   },

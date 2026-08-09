@@ -519,6 +519,53 @@ body.panel-open.cpanel-open #panel {
 .row.active .who a {
   color: var(--ink);
 }
+/* Estado persistente da lista People: enquanto o sidebar de uma pessoa está
+   aberto (body.panel-open), a mesma lógica de foco por vizinhança acima passa
+   a valer sem depender de hover. `open()`/`close()` em script.js já são a
+   única fonte de verdade — body.panel-open e .row.active (setados ali) — não
+   existe estado novo aqui, só uma regra de CSS mais específica que a de hover
+   pra manter a leitura enquanto o ponteiro sai da lista.
+   A row ativa fica em opacidade cheia mesmo se outra row for hovered (por
+   isso a regra dela não leva :not(:hover)); as demais caem exceto a que está
+   sob o cursor no momento (:not(:hover) nela preserva o hover atual sem
+   regressão). Fechar o painel remove body.panel-open e o .people volta a
+   depender só de :hover, como antes.
+   Só .who dima, e só até 0.6 — não 0.3 como o dim momentâneo de hover acima.
+   Esse dim aqui é sustentado (dura enquanto o painel ficar aberto, não só
+   enquanto o mouse passa), e a régua de contraste muda com a duração: rodar
+   axe nesse estado (não só no estado de descanso) achou 1.99:1/1.5:1 reais
+   contra --bg em 0.3 — falha AA (4.5:1) em .who *e* .what. .what já nasce em
+   --muted (~5.37:1 em light, o piso realista da paleta pro corpo do texto:
+   ficar mais claro que isso já não sobra margem) e não teria opacidade
+   nenhuma sobrando pra dar sem furar contraste de novo, por isso não entra
+   nessa regra. .who nasce em --ink (~18.5:1), com folga de sobra: 0.6 mede
+   ~4.94:1 em light e ~6.58:1 em dark (WCAG relative luminance calculado a
+   partir dos tokens OKLCH e conferido com axe-core real contra o build da
+   story — ver stories/patterns.stories.js e
+   tests/ui/people-persistent-selection.test.mjs), a mistura mais escura que
+   passa AA nos dois temas com margem — não é o número "que ainda parece
+   dimmed o bastante".
+   A segunda regra abaixo (.what sempre em 1 aqui dentro) existe por causa da
+   regra de hover mais antiga logo acima (foco por vizinhança, `section:has(
+   .row:hover) .row:not(:hover) > *`, 0.3, documentada em AGENTS.md e usada
+   em toda lista do site — não é desta feature e não é pra "consertar" aqui).
+   Com o painel aberto, passar o mouse por uma *outra* row da lista ainda
+   ativa aquela regra antiga pro resto — inclusive pra uma row que já faz
+   parte deste estado persistente — e ela pega `.what` (0.3, o mesmo furo de
+   contraste de cima). Como `.what` não tem margem pra dar (ver acima), a regra
+   seguinte devolve `.what` pra opacidade cheia sempre que body.panel-open e
+   uma seleção existirem, não deixando a regra antiga vencer por cima dela
+   nesse escopo — sem tocar no comportamento dela em qualquer lista fora
+   dessa seleção persistente. */
+body.panel-open .people:has(.row.active) .row:not(.active):not(:hover) .who {
+  opacity: 0.6;
+}
+body.panel-open .people:has(.row.active) .row .what {
+  opacity: 1;
+}
+body.panel-open .people:has(.row.active) .row.active > * {
+  opacity: 1;
+}
 .cpanel {
   width: var(--cpanel-w);
   z-index: 11;
