@@ -46,6 +46,44 @@ A regressão visual usa apenas Playwright + o comparador já trazido pelo Vitest
 
 O workflow `.github/workflows/storybook.yml` roda `npm ci`, build, stories/axe, smoke da página real e regressão visual em todo pull request, usando a imagem Playwright que corresponde à versão fixada no `package.json`. O build isolado e as capturas reais são publicados como artifacts por sete dias para revisão. É tooling de dev: o runtime e o deploy principal continuam sendo o site estático HTML/CSS/Vanilla JS, sem build de produção novo. O Framework Preset da Vercel permanece **Other** e `storybook-static/` não entra no deploy principal.
 
+### UI / Storybook Contract
+
+Storybook is not a parallel implementation of the UI. It renders and
+tests the same production code whenever the architecture allows —
+never a re-styled or re-built copy.
+
+**Mental model:**
+Figma defines design intent. Storybook exposes and validates the
+real implementation's behavior in isolation. Production is the
+single source of truth for behavior.
+
+**When a change touches an existing component/pattern/state:**
+Its story and tests must be kept in sync in the same PR. A change
+is exempt only if it is style-only (color, spacing, typography)
+with no new state, variant, or interaction added.
+
+**When a change introduces something new, evaluate it for Storybook
+inclusion if it meets any of:**
+
+- reused in 2+ places in the app
+- lives in `/components` or `/patterns` (not page-local markup)
+- has multiple distinct visual/interactive states worth reviewing
+  in isolation
+
+**When in doubt:**
+Prefer deterministic validation over additional judgment whenever
+an applicable check already exists. If no deterministic Storybook
+coverage check exists yet, explicitly determine whether the change
+meets the inclusion or exemption criteria above rather than
+silently skipping Storybook updates.
+
+**Discovery loop:**
+Storybook isn't only a documentation step after implementation. If
+isolating a component in Storybook surfaces a missing or ambiguous
+state (e.g. "selected + sidebar open" persisting after pointer
+leave), that goes back into the real implementation — Storybook
+found a gap, it doesn't just record one.
+
 ### Definition of Done para mudanças de UI
 
 - [ ] A story existente foi atualizada ou uma story pequena cobre o novo estado relevante.
