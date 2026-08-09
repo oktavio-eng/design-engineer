@@ -50,12 +50,14 @@
      de index.html, tire daqui junto. -->
 <link rel="stylesheet" href="/styles/experiments/flat-type.css">
 <!-- Sem <script src="/script.js">, de propósito: script.js é um monólito que
-     assume a estrutura de DOM da homepage a partir da linha 1 (ex.: liga
+     assume a estrutura de DOM da homepage (ex.: liga
      `panelResize.addEventListener(...)` e `closeBtn.addEventListener(...)` sem
-     nenhum guard de null) — incluí-lo aqui inteiro quebraria no primeiro elemento
-     que não existe nesta página e abortaria tudo depois dele, inclusive o toggle
-     de tema. Um equivalente pequeno e local, no fim do <body>, cobre só o que
-     esta página precisa. -->
+     nenhum guard de null) — incluí-lo aqui inteiro quebraria nesse ponto (o
+     toggle de tema é ligado antes e sobreviveria) e abortaria, sem tratamento,
+     as ~870 linhas seguintes do arquivo — todo o resto do que script.js faz,
+     inclusive em elementos que esta página realmente tem. Um equivalente
+     pequeno e local, no fim do <body>, cobre só o que esta página precisa,
+     sem depender da ordem das linhas em script.js pra não quebrar. -->
 </head>
 <body>
 <div class="topbar visible" aria-hidden="false">
@@ -124,8 +126,12 @@
    loaded script around the THEME_KEY/themeTrigger/applyTheme functions),
    reimplemented here rather than reused wholesale — script.js unconditionally
    wires listeners to homepage-only elements (e.g. #panelResize, #closeBtn)
-   with no null guard, so pointing a <script src> at it from this page would
-   throw partway through and abort everything after, including this toggle.
+   with no null guard. Pointing a <script src> at it from this page would
+   throw right there — the theme toggle itself is wired earlier and would
+   survive — but the throw aborts, uncaught, the ~870 lines after it: the
+   rest of what script.js does, including to elements this page actually
+   has. A small local equivalent avoids depending on script.js's line order
+   to not break.
    Same "theme" key, same rule order: an explicit click wins forever after;
    until then, the OS preference is followed live via matchMedia. */
 (function () {
