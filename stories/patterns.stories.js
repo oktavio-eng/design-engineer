@@ -297,13 +297,24 @@ export const PeopleSelection = {
     const emil = canvas.getByRole("link", { name: "Emil Kowalski" }).closest(".row");
     const jakub = canvas.getByRole("link", { name: "Jakub Krehel" }).closest(".row");
     const closeButton = canvas.getByRole("button", { name: "Close panel" });
+    // The dim is a solid color (--row-dim), not opacity — see main.css above
+    // .row.active for why opacity alone can't hit AA contrast here. A probe
+    // element resolves --row-dim to the same rgb() string getComputedStyle
+    // reports on real text, so the assertions below don't hardcode a color.
+    const probe = document.createElement("span");
+    probe.style.color = "var(--row-dim)";
+    canvasElement.appendChild(probe);
+    const dimColor = getComputedStyle(probe).color;
+    probe.remove();
+    const whoColorOf = (row) => getComputedStyle(row.querySelector(".who a")).color;
+    const whatColorOf = (row) => getComputedStyle(row.querySelector(".what")).color;
     const opacityOf = (row) => getComputedStyle(row.querySelector(".who")).opacity;
 
     await step("Normal list: nothing selected, nothing dimmed", async () => {
       await expect(document.body).not.toHaveClass("panel-open");
       await expect(rauno).not.toHaveClass("active");
-      await expect(opacityOf(rauno)).toBe("1");
-      await expect(opacityOf(emil)).toBe("1");
+      await expect(whoColorOf(rauno)).not.toBe(dimColor);
+      await expect(whatColorOf(emil)).not.toBe(dimColor);
     });
 
     await step("Selecting a person opens the sidebar and persists without a pointer over the list", async () => {
@@ -311,15 +322,19 @@ export const PeopleSelection = {
       await userEvent.unhover(rauno);
       await expect(document.body).toHaveClass("panel-open");
       await expect(rauno).toHaveClass("active");
-      // .who carries opacity in its transition-property (same rows used for
-      // the pre-existing hover dim), so the 250ms dim is still in flight
-      // right after the class change — wait for the settled value like the
-      // rest of the file does for other CSS transitions. Only .who dims (see
-      // main.css above .row.active): .what stays at full opacity because
-      // --muted has no contrast headroom left to give up.
-      await waitFor(() => expect(opacityOf(rauno)).toBe("1"));
-      await waitFor(() => expect(opacityOf(emil)).toBe("0.6"));
-      await waitFor(() => expect(opacityOf(jakub)).toBe("0.6"));
+      // a's transition-property already covers color (main.css, top of file)
+      // and .what carries its own color transition too, so the 200ms/250ms
+      // fade is still in flight right after the class change — wait for the
+      // settled value like the rest of the file does for other transitions.
+      // opacity stays pinned at 1 throughout this feature now (see main.css):
+      // the dim is entirely a color change, never an alpha blend toward --bg.
+      await waitFor(() => expect(whoColorOf(rauno)).not.toBe(dimColor));
+      await waitFor(() => expect(whoColorOf(emil)).toBe(dimColor));
+      await waitFor(() => expect(whatColorOf(emil)).toBe(dimColor));
+      await waitFor(() => expect(whoColorOf(jakub)).toBe(dimColor));
+      await waitFor(() => expect(whatColorOf(jakub)).toBe(dimColor));
+      await expect(opacityOf(rauno)).toBe("1");
+      await expect(opacityOf(emil)).toBe("1");
     });
 
     await step("Axe passes while the selection is persisted, not just after closing", async () => {
@@ -336,9 +351,9 @@ export const PeopleSelection = {
       await expect(document.body).toHaveClass("panel-open");
       await expect(emil).toHaveClass("active");
       await expect(rauno).not.toHaveClass("active");
-      await waitFor(() => expect(opacityOf(emil)).toBe("1"));
-      await waitFor(() => expect(opacityOf(rauno)).toBe("0.6"));
-      await waitFor(() => expect(opacityOf(jakub)).toBe("0.6"));
+      await waitFor(() => expect(whoColorOf(emil)).not.toBe(dimColor));
+      await waitFor(() => expect(whoColorOf(rauno)).toBe(dimColor));
+      await waitFor(() => expect(whatColorOf(rauno)).toBe(dimColor));
     });
 
     await step("Axe still passes after switching the persisted selection", async () => {
@@ -349,10 +364,10 @@ export const PeopleSelection = {
     // non-active row while body.panel-open/.row.active hold) is intentionally
     // not exercised here: @testing-library/user-event's hover() dispatches
     // synthetic pointer events that do not reliably set real CSS :hover in a
-    // Chromium tab (confirmed independently — a hovered row's opacity never
-    // moved across a 2s poll even though document.elementFromPoint located
-    // the right row). That interplay — active row at full opacity, the
-    // actually-hovered row also at full opacity, everyone else at 0.6, axe
+    // Chromium tab (confirmed independently — a hovered row's dim never
+    // cleared across a 2s poll even though document.elementFromPoint located
+    // the right row). That interplay — active row undimmed, the
+    // actually-hovered row also undimmed, everyone else at --row-dim, axe
     // clean throughout — is covered deterministically instead by
     // tests/ui/people-persistent-selection.test.mjs, which drives real
     // script.js/main.css on the production page with genuine OS-level pointer
@@ -363,9 +378,12 @@ export const PeopleSelection = {
       await userEvent.click(closeButton);
       await expect(document.body).not.toHaveClass("panel-open");
       await expect(emil).not.toHaveClass("active");
-      await waitFor(() => expect(opacityOf(emil)).toBe("1"));
-      await waitFor(() => expect(opacityOf(rauno)).toBe("1"));
-      await waitFor(() => expect(opacityOf(jakub)).toBe("1"));
+      await waitFor(() => expect(whoColorOf(emil)).not.toBe(dimColor));
+      await waitFor(() => expect(whoColorOf(rauno)).not.toBe(dimColor));
+      await waitFor(() => expect(whoColorOf(jakub)).not.toBe(dimColor));
+      await expect(whatColorOf(rauno)).not.toBe(dimColor);
+      await expect(whatColorOf(emil)).not.toBe(dimColor);
+      await expect(whatColorOf(jakub)).not.toBe(dimColor);
     });
 
     await expectOnlyA11yDebt(canvasElement, []);

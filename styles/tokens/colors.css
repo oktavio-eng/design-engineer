@@ -4,6 +4,16 @@
   --ink: oklch(0.173 0 0);
   --muted: oklch(0.52 0 0);
   --faint: oklch(0.68 0 0);
+  /* Persisted People-list dim (styles/main.css, `.people:has(.row.active)`):
+     the lightest gray this palette allows against --bg while still clearing
+     WCAG AA (4.5:1) for body text, with a small margin. It is *not* derived
+     from --muted (which itself sits close to that same floor, only ~5.37:1
+     here) — it's calibrated directly against --bg so both .who and .what can
+     share one color at the edge of what's legible, instead of opacity fading
+     toward --bg (which is what produced 1.99:1/1.5:1 failures at the old
+     0.3). Measured 4.75:1 with axe-core against the real page, not just
+     computed — see main.css and tests/ui/people-persistent-selection.test.mjs. */
+  --row-dim: oklch(0.547 0 0);
   --line: oklch(0.94 0 0);
   /* `--white` does double duty: solid card/modal surfaces (.composer,
      .cmd__card) AND the contrast color for text sitting on an ink-filled
@@ -64,6 +74,10 @@
   --ink: oklch(0.96 0 0);
   --muted: oklch(0.66 0 0);
   --faint: oklch(0.46 0 0);
+  /* Same floor as light mode's --row-dim above, recalculated against dark's
+     own --bg (0.16) — the two lightness numbers aren't meant to match, only
+     the contrast ratio they land on (measured 4.78:1). */
+  --row-dim: oklch(0.594 0 0);
   --line: oklch(0.27 0 0);
   --white: oklch(0.22 0 0);
   --white-a40: oklch(1 0 0 / 0.06);

@@ -523,48 +523,58 @@ body.panel-open.cpanel-open #panel {
    aberto (body.panel-open), a mesma lógica de foco por vizinhança acima passa
    a valer sem depender de hover. `open()`/`close()` em script.js já são a
    única fonte de verdade — body.panel-open e .row.active (setados ali) — não
-   existe estado novo aqui, só uma regra de CSS mais específica que a de hover
-   pra manter a leitura enquanto o ponteiro sai da lista.
-   A row ativa fica em opacidade cheia mesmo se outra row for hovered (por
-   isso a regra dela não leva :not(:hover)); as demais caem exceto a que está
-   sob o cursor no momento (:not(:hover) nela preserva o hover atual sem
+   existe estado novo aqui, só CSS mais específico que o de hover pra manter
+   a leitura enquanto o ponteiro sai da lista.
+   A row ativa fica em cheio mesmo se outra row for hovered (por isso a regra
+   dela não leva :not(:hover)); as demais dimam exceto a que está sob o
+   cursor no momento (:not(:hover) nela preserva o hover atual sem
    regressão). Fechar o painel remove body.panel-open e o .people volta a
    depender só de :hover, como antes.
-   Só .who dima, e só até 0.6 — não 0.3 como o dim momentâneo de hover acima.
-   Esse dim aqui é sustentado (dura enquanto o painel ficar aberto, não só
-   enquanto o mouse passa), e a régua de contraste muda com a duração: rodar
-   axe nesse estado (não só no estado de descanso) achou 1.99:1/1.5:1 reais
-   contra --bg em 0.3 — falha AA (4.5:1) em .who *e* .what. .what já nasce em
-   --muted (~5.37:1 em light, o piso realista da paleta pro corpo do texto:
-   ficar mais claro que isso já não sobra margem) e não teria opacidade
-   nenhuma sobrando pra dar sem furar contraste de novo, por isso não entra
-   nessa regra. .who nasce em --ink (~18.5:1), com folga de sobra: 0.6 mede
-   ~4.94:1 em light e ~6.58:1 em dark (WCAG relative luminance calculado a
-   partir dos tokens OKLCH e conferido com axe-core real contra o build da
-   story — ver stories/patterns.stories.js e
-   tests/ui/people-persistent-selection.test.mjs), a mistura mais escura que
-   passa AA nos dois temas com margem — não é o número "que ainda parece
-   dimmed o bastante".
-   A segunda regra abaixo (.what sempre em 1 aqui dentro) existe por causa da
-   regra de hover mais antiga logo acima (foco por vizinhança, `section:has(
-   .row:hover) .row:not(:hover) > *`, 0.3, documentada em AGENTS.md e usada
-   em toda lista do site — não é desta feature e não é pra "consertar" aqui).
-   Com o painel aberto, passar o mouse por uma *outra* row da lista ainda
-   ativa aquela regra antiga pro resto — inclusive pra uma row que já faz
-   parte deste estado persistente — e ela pega `.what` (0.3, o mesmo furo de
-   contraste de cima). Como `.what` não tem margem pra dar (ver acima), a regra
-   seguinte devolve `.what` pra opacidade cheia sempre que body.panel-open e
-   uma seleção existirem, não deixando a regra antiga vencer por cima dela
-   nesse escopo — sem tocar no comportamento dela em qualquer lista fora
-   dessa seleção persistente. */
-body.panel-open .people:has(.row.active) .row:not(.active):not(:hover) .who {
-  opacity: 0.6;
-}
-body.panel-open .people:has(.row.active) .row .what {
+
+   Dim é cor sólida (--row-dim), não opacidade — segunda volta nisso depois
+   que a primeira (opacity: 0.6 só em .who, .what sem tocar) saiu sutil
+   demais pedindo pra ler tão apagado quanto o 0.3 do hover comum. Opacidade
+   fatalmente empurra a cor pra perto de --bg (é matemática de alpha
+   compositing, não capricho): a 0.3, .who mede 1.99:1 e .what 1.5:1 reais
+   contra --bg — os dois abaixo de AA (4.5:1), foi o que a rodada anterior
+   corrigiu subindo pra 0.6 só em .who. Mas 0.6 não é opaco o bastante pra
+   "parecer" 0.3 — e não tem opacidade nenhuma que sirva os dois lados: ler
+   apagado precisa de baixo contraste, ser legível precisa do oposto, e os
+   dois quiseram o mesmo canal.
+   --row-dim resolve isso saindo do canal de opacidade: é a cor mais clara
+   (contraste mais baixo) que essa paleta permite contra --bg mantendo AA
+   com folga, calibrada direto contra --bg em cada tema (não é --muted, que
+   por acaso já mede perto desse mesmo piso, ~5.37:1 em light — --row-dim é
+   ~0.55L ali, uma migalha mais claro que --muted, porque essa migalha é
+   literalmente todo o espaço que sobra antes de furar contraste de novo).
+   Sem opacidade nenhuma envolvida, mesma cor serve .who *e* .what — os dois
+   agora dimam, o que a rodada anterior não fazia (só .who mudava; .what
+   ficava sempre em cheio, e foi metade do porquê de ter saído sutil). Medido
+   com axe-core real contra a página/story, não só calculado — ver
+   tests/ui/people-persistent-selection.test.mjs: 4.75:1 em light, 4.78:1 em
+   dark, sem hover e com hover cruzado em outra row.
+   Isso é o teto físico de "apagado" que dá pra ter em texto cinza AA nessa
+   paleta — não chega no visual quase-invisível do 0.3 (que só existe porque
+   ele fura contraste), mas é o mais apagado que da pra ficar sem reabrir a
+   violação.
+
+   Opacidade em si só aparece aqui pra neutralizar a regra de hover mais
+   antiga (foco por vizinhança, `section:has(.row:hover) .row:not(:hover) >
+   *`, 0.3, documentada em AGENTS.md e usada em toda lista do site — não é
+   desta feature e não é pra "consertar" aqui). Com o painel aberto, passar o
+   mouse por uma *outra* row ainda ativa aquela regra antiga pro resto —
+   inclusive pra uma row que já faz parte deste estado persistente — e ela
+   reintroduziria opacity: 0.3 por cima da nossa cor sólida, furando
+   contraste de novo por um caminho diferente. A primeira regra abaixo
+   trava opacity: 1 em todo filho de row dentro deste escopo (ativa, hovered
+   ou dimmed) antes da regra antiga ter chance de aplicar; a segunda pinta o
+   dim de fato só nas rows que não são a ativa nem a hovered. */
+body.panel-open .people:has(.row.active) .row > * {
   opacity: 1;
 }
-body.panel-open .people:has(.row.active) .row.active > * {
-  opacity: 1;
+body.panel-open .people:has(.row.active) .row:not(.active):not(:hover) .who a,
+body.panel-open .people:has(.row.active) .row:not(.active):not(:hover) .what {
+  color: var(--row-dim);
 }
 .cpanel {
   width: var(--cpanel-w);
