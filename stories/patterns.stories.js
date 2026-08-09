@@ -291,8 +291,15 @@ export const ExpandablePeople = {
 // ellipsis of a truncated .what lands on a different glyph under
 // Chromium/Linux than under Chrome/macOS, and this fixture is captured at that
 // width by sections-expanded-narrow; text that never reaches the boundary
-// keeps the capture's diff down to plain glyph rasterization. Truncation
-// itself is not lost coverage — rows-narrow already captures it.
+// keeps the capture's diff down to plain glyph rasterization.
+//
+// This is a one-off exception to the fixture mirroring production content,
+// granted only because truncation already has a dedicated owner: rows-narrow
+// captures it deliberately, at content chosen to truncate. That is what makes
+// dodging the boundary here safe rather than silent coverage loss. It is not
+// a precedent — a future fixture with a cross-platform diff at its truncation
+// boundary needs its own owning baseline before shortening text to route
+// around it, the same way rows-narrow does here.
 const SEE_MORE_SECTIONS = [
   {
     id: "sbSeeMorePeople",
@@ -738,9 +745,15 @@ export const SelectedExtraRow = {
       await expectOnlyA11yDebt(canvasElement, ["color-contrast:see-more"]);
     });
 
-    // Collapsing the list while an extra row is still selected is intentionally
-    // not asserted: production leaves the panel open with its row hidden, and
-    // pinning that here would freeze an interaction nobody has reviewed yet.
+    // Collapsing the list while an extra row is still selected is not asserted
+    // in this fixture: the outcome depends on the document-level outside-click
+    // handler in script.js (predates this feature — present since the repo's
+    // very first commit), which this Storybook harness does not reproduce.
+    // Verified directly against the real page instead (mouse and Space-key
+    // activation of the see-more button): the handler already treats a click
+    // on `#peopleSeeMore` as "outside", so close() runs — the panel closes,
+    // the row deactivates, and the section collapses, all in the same click.
+    // No orphaned panel.
 
     await step("Closing the sidebar restores the expanded list to its plain state", async () => {
       await userEvent.click(closeButton);
