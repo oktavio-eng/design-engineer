@@ -44,11 +44,13 @@ async function opacityOf(page, person) {
 // the older, sitewide "focus by neighborhood" hover-dim
 // (`section:has(.row:hover) .row:not(:hover) > *` in main.css, documented in
 // AGENTS.md as an existing pattern used by every .row/.phase li/.item/
-// .cmd__item list on the page), which dims .what to 0.3 for *every other* row
-// in the section — including ones this feature never touches. That dim is
-// momentary (only while the mouse is over the list) and predates this
-// change; fixing its contrast is a sitewide, unrelated refactor, not part of
-// the persisted-selection feature under test here.
+// .cmd__item list on the page), which used to dim .what to 0.3 for *every
+// other* row in the section. Since the contrast fix, .what is forced back to
+// opacity 1 whenever body.panel-open and a row is active, so that dim no
+// longer reaches .what within this feature's scope; the older rule still
+// applies unchanged outside that scope (panel closed), but that's a
+// sitewide, unrelated concern, not part of the persisted-selection feature
+// under test here.
 async function scanPeopleSection(page, persons) {
   await page.addScriptTag({ path: axeScriptPath });
   return page.evaluate(async (personKeys) => {
