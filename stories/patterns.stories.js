@@ -287,6 +287,12 @@ export const ExpandablePeople = {
   },
 };
 
+// Summaries are kept short enough to fit at 320px without truncating. The
+// ellipsis of a truncated .what lands on a different glyph under
+// Chromium/Linux than under Chrome/macOS, and this fixture is captured at that
+// width by sections-expanded-narrow; text that never reaches the boundary
+// keeps the capture's diff down to plain glyph rasterization. Truncation
+// itself is not lost coverage — rows-narrow already captures it.
 const SEE_MORE_SECTIONS = [
   {
     id: "sbSeeMorePeople",
@@ -295,8 +301,8 @@ const SEE_MORE_SECTIONS = [
     sectionClass: "people",
     heading: "People",
     debtMarker: "see-more-people",
-    rows: [{ name: "Rauno Freiberg", what: "Staff Design Engineer, Vercel" }],
-    extras: [{ name: "floguo", what: "Founding DE, Paradigm · ex-Vercel" }],
+    rows: [{ name: "Rauno Freiberg", what: "Vercel" }],
+    extras: [{ name: "floguo", what: "Paradigm" }],
   },
   {
     id: "sbSeeMoreCourses",
@@ -304,15 +310,15 @@ const SEE_MORE_SECTIONS = [
     heading: "Courses & materials",
     debtMarker: "see-more-courses",
     rows: [{ name: "Interface Craft", what: "Josh Puckett" }],
-    extras: [{ name: "Invisible Details", what: "Rauno Freiberg" }],
+    extras: [{ name: "Invisible Details", what: "Rauno" }],
   },
   {
     id: "sbSeeMoreReferences",
     sectionClass: "",
     heading: "Craft references",
     debtMarker: "see-more-references",
-    rows: [{ name: "Jordan Jenkins", what: "Jkane · brand identity" }],
-    extras: [{ name: "Nev Flynn", what: "Leading Design, ElevenLabs" }],
+    rows: [{ name: "Jordan Jenkins", what: "Jkane" }],
+    extras: [{ name: "Nev Flynn", what: "ElevenLabs" }],
   },
 ];
 
