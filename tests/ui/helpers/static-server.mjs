@@ -7,6 +7,7 @@ const mimeTypes = new Map([
   [".css", "text/css; charset=utf-8"],
   [".html", "text/html; charset=utf-8"],
   [".js", "text/javascript; charset=utf-8"],
+  [".mjs", "text/javascript; charset=utf-8"],
   [".json", "application/json; charset=utf-8"],
   [".svg", "image/svg+xml"],
   [".webp", "image/webp"],
@@ -18,14 +19,23 @@ export async function serveDirectory(rootDirectory) {
     try {
       const pathname = decodeURIComponent(new URL(request.url, "http://localhost").pathname);
       const relativePath = pathname === "/" ? "index.html" : pathname.replace(/^\/+/, "");
-      const filePath = path.resolve(root, relativePath);
+      let filePath = path.resolve(root, relativePath);
 
       if (filePath !== root && !filePath.startsWith(`${root}${path.sep}`)) {
         response.writeHead(403).end("Forbidden");
         return;
       }
 
-      const fileStat = await stat(filePath);
+      let fileStat;
+      try {
+        fileStat = await stat(filePath);
+      } catch (error) {
+        // Mirrors Vercel's `cleanUrls: true` for local product-page tests:
+        // `/prompts` resolves `prompts.html`, while asset paths stay literal.
+        if (path.extname(relativePath)) throw error;
+        filePath = path.resolve(root, `${relativePath}.html`);
+        fileStat = await stat(filePath);
+      }
       if (!fileStat.isFile()) throw new Error("Not a file");
       response.writeHead(200, {
         "cache-control": "no-store",

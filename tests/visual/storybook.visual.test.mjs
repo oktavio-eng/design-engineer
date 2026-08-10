@@ -29,13 +29,15 @@ const cases = [
   { name: "sections-expanded-narrow", story: "patterns--see-more-sections", theme: "dark", flatType: "off", width: 320, height: 800, state: "sections-expanded" },
   { name: "people-selected-dark", story: "patterns--people-selection", theme: "dark", flatType: "off", width: 1024, height: 400, state: "people-selected" },
   { name: "command-search-dark", story: "patterns-command-menu--keyboard-flow", theme: "dark", flatType: "off", width: 1024, height: 768, state: "command-open" },
+  { name: "prompts-entry-light", story: "patterns-prompts--search-and-copy", theme: "light", flatType: "off", width: 1024, height: 900, state: "prompt-entry", fullPage: false },
+  { name: "prompts-empty-dark", story: "patterns-prompts--search-and-copy", theme: "dark", flatType: "on", width: 320, height: 800, state: "prompt-empty", fullPage: false },
 ];
 
-async function captureStable(page) {
-  let previous = await page.screenshot({ fullPage: true });
+async function captureStable(page, fullPage = true) {
+  let previous = await page.screenshot({ fullPage });
   for (let attempt = 0; attempt < 5; attempt += 1) {
     await page.waitForTimeout(100);
-    const current = await page.screenshot({ fullPage: true });
+    const current = await page.screenshot({ fullPage });
     if (Buffer.compare(previous, current) === 0) return current;
     previous = current;
   }
@@ -76,6 +78,24 @@ async function applyState(page, visualCase) {
     await page.locator(".sb-command-trigger").focus();
     await page.keyboard.press("Control+K");
     await page.waitForFunction(() => document.activeElement?.classList.contains("cmd__input"));
+  }
+
+  if (visualCase.state === "prompt-empty") {
+    await page.getByRole("searchbox", { name: "Search prompts" }).fill("no results");
+    await page.waitForFunction(() => !document.querySelector("[data-prompts-empty]")?.hidden);
+    await page.mouse.move(0, 0);
+  }
+
+  if (visualCase.state === "prompt-entry") {
+    const searchbox = page.getByRole("searchbox", { name: "Search prompts" });
+    await searchbox.fill("");
+    await searchbox.blur();
+    await page.locator(".prompt-copy").evaluate((button) => {
+      button.textContent = "Copy prompt";
+      button.closest(".prompt-entry").querySelector(".prompt-copy__status").textContent = "";
+      button.blur();
+    });
+    await page.mouse.move(0, 0);
   }
 }
 
@@ -235,7 +255,10 @@ test("Storybook visual matrix stays within reviewed baselines", { timeout: 60_00
     );
     await assertContracts(page, visualCase);
     await assertPaintedFonts(browserContext, page, visualCase);
-    const metrics = await compareScreenshot(visualCase, await captureStable(page));
+    const metrics = await compareScreenshot(
+      visualCase,
+      await captureStable(page, visualCase.fullPage !== false),
+    );
     if (!metrics.updated) {
       console.log(
         `visual-metric ${visualCase.name} raw=${(metrics.rawMismatchRatio * 100).toFixed(3)}% perceptual=${(metrics.perceptualMismatchRatio * 100).toFixed(3)}%`,
