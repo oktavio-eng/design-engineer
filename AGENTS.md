@@ -2,6 +2,21 @@
 
 Contexto para qualquer agente de IA (Cursor, Claude Code, etc.) que for editar este repositório. Leia isto antes de mexer no `index.html`, `styles/` ou `script.js`.
 
+## Skills compartilhadas
+
+As skills pessoais instaladas nesta máquina ficam fora do repositório, mas Codex e Claude Code devem carregá-las quando o pedido corresponder ao escopo descrito aqui. O `AGENTS.md` só define o roteamento; as instruções completas e as fontes canônicas continuam dentro de cada skill.
+
+### `vocabulary` — vocabulário preciso de design e UI
+
+Carregue a skill `vocabulary` **antes de responder ou editar** quando a tarefa envolver:
+
+- descobrir o nome exato de um conceito descrito de forma vaga ("como chama aquele espaço entre duas letras?");
+- distinguir termos próximos ou frequentemente confundidos, como kerning/tracking, badge/tag, tooltip/popover, opacity/visibility, modal/sheet/drawer, voice/tone ou variables/tokens;
+- escrever ou revisar specs, documentação, comentários, nomes de componentes ou commits em que terminologia de design/UI imprecisa possa gerar ambiguidade;
+- validar o uso de termos de tipografia, cor, iconografia, layout, interação, motion, acessibilidade, arquitetura da informação, copywriting, análise ou componentes.
+
+No Codex, invoque como `$vocabulary`; no Claude Code, como `/vocabulary`. A invocação implícita também é esperada quando o pedido corresponder ao escopo acima. Use a definição exata da fonte canônica da skill e exponha a distinção relevante entre termos próximos; não force jargão quando linguagem simples for mais clara e não invente um termo se a skill não trouxer um correspondente. Se a skill não estiver disponível na máquina ou sessão atual, informe isso brevemente em vez de fingir que consultou a fonte.
+
 ## O que é este projeto
 
 Um site pessoal single-page do Otavio (GOW Studio) — um "plano de transição de carreira" pra design engineer, com estudo de referências (Rauno Freiberg, Emil Kowalski, Jakub Krehel, floguo, Paco Coursey, shadcn, etc.), cursos, leituras e craft references. Também funciona como prova pública de trabalho (portfolio > diploma).
