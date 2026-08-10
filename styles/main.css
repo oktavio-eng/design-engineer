@@ -86,6 +86,17 @@ a {
 a:active {
   color: var(--muted);
 }
+.inline-link {
+  text-decoration: underline;
+  text-decoration-color: var(--line);
+  text-underline-offset: var(--space-3);
+  transition-property: color, text-decoration-color;
+  transition-duration: var(--duration-200);
+  transition-timing-function: var(--ease);
+}
+.inline-link:hover {
+  text-decoration-color: var(--ink);
+}
 .fav {
   width: var(--space-13);
   height: var(--space-13);

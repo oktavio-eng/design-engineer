@@ -1035,7 +1035,10 @@ lists.phase.els.forEach(function (e, t) {
 const nvLinks = document.querySelectorAll(".topbar__nav a"),
   nvMap = {};
 nvLinks.forEach(function (e) {
-  nvMap[e.getAttribute("href").slice(1)] = e;
+  const t = e.getAttribute("href");
+  // Only in-page anchors get scroll-spy; cross-page links (e.g. /changelog)
+  // stay out of the map so they never claim an "on" state.
+  "#" === t.charAt(0) && (nvMap[t.slice(1)] = e);
 });
 const nvIO = new IntersectionObserver(
   function (e) {
