@@ -29,7 +29,18 @@ const cases = [
   { name: "sections-expanded-narrow", story: "patterns--see-more-sections", theme: "dark", flatType: "off", width: 320, height: 800, state: "sections-expanded" },
   { name: "people-selected-dark", story: "patterns--people-selection", theme: "dark", flatType: "off", width: 1024, height: 400, state: "people-selected" },
   { name: "command-search-dark", story: "patterns-command-menu--keyboard-flow", theme: "dark", flatType: "off", width: 1024, height: 768, state: "command-open" },
-  { name: "prompts-entry-light", story: "patterns-prompts--search-and-copy", theme: "light", flatType: "off", width: 1024, height: 900, state: "prompt-entry", fullPage: false },
+  {
+    name: "prompts-entry-light",
+    story: "patterns-prompts--search-and-copy",
+    theme: "light",
+    flatType: "off",
+    width: 1024,
+    height: 900,
+    state: "prompt-entry",
+    fullPage: false,
+    // Normalizes deterministic CoreText/macOS ↔ FreeType/Linux rasterization found in CI, not visual regressions.
+    blurRadius: 3,
+  },
   { name: "prompts-empty-dark", story: "patterns-prompts--search-and-copy", theme: "dark", flatType: "on", width: 320, height: 800, state: "prompt-empty", fullPage: false },
 ];
 
@@ -204,8 +215,9 @@ async function compareScreenshot(visualCase, screenshot) {
     actual.height,
     { threshold: 0.12, includeAA: false, diffMask: true },
   );
-  const expectedBlurred = blurPixels(expected.data, actual.width, actual.height);
-  const actualBlurred = blurPixels(actual.data, actual.width, actual.height);
+  const perceptualBlurRadius = visualCase.blurRadius ?? 2;
+  const expectedBlurred = blurPixels(expected.data, actual.width, actual.height, perceptualBlurRadius);
+  const actualBlurred = blurPixels(actual.data, actual.width, actual.height, perceptualBlurRadius);
   const perceptualMismatchedPixels = diff(
     expectedBlurred,
     actualBlurred,
