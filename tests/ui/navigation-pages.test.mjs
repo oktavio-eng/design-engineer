@@ -45,11 +45,24 @@ test("page links stay out of homepage scroll-spy and clean URLs keep sibling pag
   await page.waitForFunction(() => !document.documentElement.classList.contains("intro-playing"));
 
   const pageLinks = page.locator('.topbar__nav a[href^="/"]');
-  assert.deepEqual(await pageLinks.allTextContents(), ["prompts", "changelog"]);
+  assert.deepEqual(await pageLinks.allTextContents(), ["index", "changelog", "prompts"]);
   assert.deepEqual(await pageLinks.evaluateAll((links) => links.map((link) => link.getAttribute("href"))), [
-    "/prompts",
+    "/",
     "/changelog",
+    "/prompts",
   ]);
+  // The whole navbar is page links now — no in-page anchors left for the
+  // scroll-spy to claim.
+  assert.equal(await page.locator(".topbar__nav a").count(), 3);
+
+  // "portfólio" is announced but not navigable yet: a non-interactive span
+  // carrying the coming-soon tag, never a link or a Tab stop.
+  const soon = page.locator(".topbar__soon");
+  assert.equal(await soon.count(), 1);
+  assert.match(await soon.textContent(), /portfólio/);
+  assert.equal(await soon.locator(".topbar__soon-tag").textContent(), "coming soon");
+  assert.equal(await soon.evaluate((element) => element.tagName), "SPAN");
+  assert.equal(await soon.evaluate((element) => element.hasAttribute("tabindex")), false);
 
   const topbarBounds = await page.locator(".topbar").boundingBox();
   assert.ok(topbarBounds, "desktop topbar is rendered");
@@ -64,7 +77,7 @@ test("page links stay out of homepage scroll-spy and clean URLs keep sibling pag
     await page.waitForTimeout(100);
     assert.deepEqual(
       await pageLinks.evaluateAll((links) => links.map((link) => link.classList.contains("on"))),
-      [false, false],
+      [false, false, false],
       `cross-page links stay inactive while #${id} intersects`,
     );
   }
