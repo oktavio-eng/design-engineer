@@ -867,6 +867,31 @@ body.cpanel-open .cpanel {
   color: var(--ink);
   background: var(--ink-a7);
 }
+/* "portfólio" is announced before the page exists: a non-interactive item in
+   the same pill metrics as the links — a span on purpose, so there is no
+   href, no Tab stop and no hover invitation — carrying a small status tag.
+   Tag recipe matches `.cmd__esc` (size, weight, tracking, ink-a5 fill), just
+   pill-rounded like everything else in the topbar. */
+.topbar__soon {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+  font-size: var(--fs-13);
+  color: var(--faint);
+  white-space: nowrap;
+  user-select: none;
+  cursor: default;
+  padding: var(--space-8) var(--space-16);
+}
+.topbar__soon-tag {
+  font-size: var(--fs-11);
+  font-weight: var(--fw-medium);
+  letter-spacing: var(--ls-wide);
+  color: var(--faint);
+  background: var(--ink-a5);
+  border-radius: var(--radius-full);
+  padding: var(--space-2) var(--space-8);
+}
 @media (max-width: 900px) {
   .topbar {
     top: max(var(--space-16), env(safe-area-inset-top));
@@ -2013,18 +2038,6 @@ body.cmd-detail-open .cmd-modal {
 .prompt-clear {
   margin-top: var(--space-8);
 }
-/* Eight primary links no longer fit with the default pill padding just above
-   the mobile cutoff. Compact only that narrow desktop range; mobile keeps the
-   established hidden navbar and uses the footer links instead. */
-@media (min-width: 901px) and (max-width: 1040px) {
-  .topbar {
-    gap: var(--space-4);
-  }
-  .topbar__nav a {
-    padding-inline: var(--space-8);
-  }
-}
-
 @media (max-width: 560px) {
   footer {
     flex-direction: column;
