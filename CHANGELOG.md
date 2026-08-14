@@ -2,6 +2,24 @@
 
 Notable changes to this site, in the order they landed on `main`. Newest first. This is the technical log — for the narrated version, see `/changelog` on the site itself. See `AGENTS.md` for the deeper "why" behind several of these; a few entries below only summarize it.
 
+## 2026-08-14
+
+- Redesign `/prompts`: each prompt is now a `.row` that opens a shared `.cmd-wash`/`.cmd-modal` detail surface — same wash, motion curve, Escape handling, and focus restoration as the ⌘K command palette — instead of rendering the full prompt body down the page. The search field switches from a bordered input to a navbar-style pill (`--radius-full`, `--topbar-h`, `--glass-bg`) with an inline Phosphor "X" clear button in gray, replacing the browser's default blue one. Story, product smoke, and the visual matrix moved together; two baselines were regenerated and inspected. (#30, superseded — merged against an already-merged base and never reached `main`; landed for real via #32)
+- Slim the primary navbar from eight items (six in-page anchors plus two pages) to three real pages — index, changelog, prompts — plus a non-interactive "portfólio" `<span>` (no href, no Tab stop) carrying a small "coming soon" tag styled after `.cmd__esc`. Drops the 901–1040px compact-nav override, which existed only to fit the eight-item version. (#31)
+
+## 2026-08-11
+
+- Normalize a deterministic CoreText/macOS ↔ FreeType/Linux font-rasterization difference in the Prompts visual-regression case by raising its perceptual blur radius to 3 (default stays 2 everywhere else); test-only, no product behavior changed. (#29)
+
+## 2026-08-10
+
+- Add `/prompts`: a clean-URL page rendering prompts from a structured data model, with instant metadata/content search, exact raw-multiline clipboard copy with keyboard-accessible feedback, and full Storybook/browser/accessibility/visual-regression coverage. (#28)
+- Move the changelog link from the footer into the primary navbar (replacing "aesthetics"), and add a short section under "The principle" explaining why the log exists. `nvMap`'s scroll-spy now only maps `#`-anchors, so the new page link never falsely lights up. (#27)
+
+## 2026-08-09
+
+- Trim Dominik Kandravý's `#references` row summary from 47 characters to within the ~35-character budget the row layout ellipsizes at, without adding any fact the unchanged bio doesn't already state. (#20)
+
 ## 2026-08-07
 
 - Add dark mode with a toggle that also follows the OS theme live (`prefers-color-scheme`). No-flash on load via a synchronous inline script in `<head>` that sets `data-theme` before any stylesheet paints; an explicit click on the toggle wins forever after, until clicked again. (#14)
