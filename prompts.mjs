@@ -139,12 +139,27 @@ function makeElement(tagName, className, text) {
   return element;
 }
 
+// The list shows one row per prompt (title + category, the shared `.row`
+// layout); everything else lives in the detail modal a row opens.
 function renderPrompt(prompt) {
-  const entry = makeElement("article", "prompt-entry");
-  entry.id = prompt.slug;
-  entry.dataset.searchText = searchText(prompt);
+  const row = makeElement("button", "row prompt-row");
+  row.type = "button";
+  row.id = prompt.slug;
+  row.dataset.promptSlug = prompt.slug;
+  row.dataset.searchText = searchText(prompt);
+  row.setAttribute("aria-haspopup", "dialog");
+  row.appendChild(makeElement("span", "who", prompt.title));
+  row.appendChild(makeElement("span", "what", prompt.category));
+  return row;
+}
 
-  const eyebrow = makeElement("div", "prompt-entry__eyebrow");
+// Rebuilt on every open, so the `.p-stagger` enter animation replays the same
+// way the ⌘K detail's does.
+function renderDetail(prompt) {
+  const fragment = document.createDocumentFragment();
+
+  const head = makeElement("div", "p-stagger");
+  const eyebrow = makeElement("div", "prompt-modal__eyebrow");
   eyebrow.appendChild(makeElement("span", "label", prompt.category));
 
   const copyButton = makeElement("button", "txtbtn prompt-copy", "Copy prompt");
@@ -156,22 +171,22 @@ function renderPrompt(prompt) {
   copyStatus.setAttribute("role", "status");
   copyStatus.setAttribute("aria-live", "polite");
   eyebrow.appendChild(copyStatus);
-  entry.appendChild(eyebrow);
+  head.appendChild(eyebrow);
+  head.appendChild(makeElement("h2", "prompt-modal__title", prompt.title));
+  fragment.appendChild(head);
 
-  const title = makeElement("h2", "prompt-entry__title", prompt.title);
-  entry.appendChild(title);
-  entry.appendChild(makeElement("p", "prompt-entry__description", prompt.description));
+  fragment.appendChild(makeElement("p", "prompt-modal__description p-stagger", prompt.description));
 
-  const tags = makeElement("ul", "prompt-tags");
+  const tags = makeElement("ul", "prompt-tags p-stagger");
   tags.setAttribute("aria-label", "Tags");
   prompt.tags.forEach((tag) => tags.appendChild(makeElement("li", "prompt-tag", tag)));
-  entry.appendChild(tags);
+  fragment.appendChild(tags);
 
-  const content = makeElement("pre", "prompt-entry__content", prompt.prompt);
+  const content = makeElement("pre", "prompt-modal__content p-stagger", prompt.prompt);
   content.dataset.promptContent = prompt.slug;
-  entry.appendChild(content);
+  fragment.appendChild(content);
 
-  return entry;
+  return fragment;
 }
 
 async function writeClipboard(text) {
@@ -196,16 +211,36 @@ export function initPromptsPage(root, options = {}) {
   const copy = options.writeClipboard || writeClipboard;
   const form = root.querySelector("[data-prompts-form]");
   const input = root.querySelector("[data-prompts-search]");
+  const clearField = root.querySelector("[data-prompts-clear-field]");
   const collection = root.querySelector("[data-prompts-collection]");
   const resultStatus = root.querySelector("[data-prompts-status]");
   const empty = root.querySelector("[data-prompts-empty]");
   const emptyMessage = root.querySelector("[data-prompts-empty-message]");
   const clearButton = root.querySelector("[data-prompts-clear]");
+  const wash = root.querySelector("[data-prompt-wash]");
+  const modal = root.querySelector("[data-prompt-modal]");
+  const modalBody = root.querySelector("[data-prompt-modal-body]");
+  const modalClose = root.querySelector("[data-prompt-modal-close]");
 
-  if (!form || !input || !collection || !resultStatus || !empty || !emptyMessage || !clearButton) return null;
+  if (
+    !form ||
+    !input ||
+    !clearField ||
+    !collection ||
+    !resultStatus ||
+    !empty ||
+    !emptyMessage ||
+    !clearButton ||
+    !wash ||
+    !modal ||
+    !modalBody ||
+    !modalClose
+  ) {
+    return null;
+  }
 
   collection.replaceChildren(...prompts.map(renderPrompt));
-  const entries = Array.from(collection.querySelectorAll(".prompt-entry"));
+  const entries = Array.from(collection.querySelectorAll(".prompt-row"));
 
   function update() {
     const query = input.value.trim();
@@ -218,35 +253,87 @@ export function initPromptsPage(root, options = {}) {
       if (matches) visibleCount += 1;
     });
 
+    // `.visible` drives the fade; `tabIndex` leaves the tab order immediately —
+    // the exit animation holds `visibility` for its duration, which would
+    // otherwise keep a fading-out button as a Tab stop.
+    const hasQuery = input.value.length > 0;
+    clearField.classList.toggle("visible", hasQuery);
+    clearField.tabIndex = hasQuery ? 0 : -1;
     resultStatus.textContent = `${visibleCount} ${visibleCount === 1 ? "prompt" : "prompts"}`;
     empty.hidden = visibleCount !== 0;
     if (!visibleCount) emptyMessage.textContent = `No prompts found for “${query}”.`;
   }
 
-  form.addEventListener("submit", (event) => event.preventDefault());
-  input.addEventListener("input", update);
-  clearButton.addEventListener("click", () => {
+  function clearSearch() {
     input.value = "";
     update();
     input.focus();
+  }
+
+  // Same body switch (`cmd-detail-open`) and aria choreography as the ⌘K
+  // detail in script.js, so the two dialogs move and dismiss identically.
+  // `inert` (cleared only while open) is what keeps the closed dialog's ×
+  // out of the tab order and out of axe's aria-hidden-focus rule.
+  let opener = null;
+
+  function isModalOpen() {
+    return document.body.classList.contains("cmd-detail-open");
+  }
+
+  function openModal(prompt, trigger) {
+    opener = trigger || null;
+    modalBody.replaceChildren(renderDetail(prompt));
+    modal.setAttribute("aria-label", prompt.title);
+    modal.inert = false;
+    modal.setAttribute("aria-hidden", "false");
+    wash.setAttribute("aria-hidden", "false");
+    document.body.classList.add("cmd-detail-open");
+    modal.scrollTop = 0;
+    modalClose.focus();
+  }
+
+  function closeModal() {
+    if (!isModalOpen()) return;
+    document.body.classList.remove("cmd-detail-open");
+    if (modal.contains(document.activeElement)) document.activeElement.blur();
+    modal.inert = true;
+    modal.setAttribute("aria-hidden", "true");
+    wash.setAttribute("aria-hidden", "true");
+    const target = opener;
+    opener = null;
+    if (target && target.isConnected && !target.hidden) target.focus();
+  }
+
+  form.addEventListener("submit", (event) => event.preventDefault());
+  input.addEventListener("input", update);
+  clearField.addEventListener("click", clearSearch);
+  clearButton.addEventListener("click", clearSearch);
+
+  collection.addEventListener("click", (event) => {
+    const row = event.target.closest(".prompt-row");
+    if (!row || !collection.contains(row)) return;
+    const prompt = prompts.find(({ slug }) => slug === row.dataset.promptSlug);
+    if (prompt) openModal(prompt, row);
   });
 
-  collection.addEventListener("click", async (event) => {
+  wash.addEventListener("click", closeModal);
+  modalClose.addEventListener("click", closeModal);
+  document.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape") return;
+    if (!root.isConnected || !isModalOpen()) return;
+    closeModal();
+  });
+
+  modal.addEventListener("click", async (event) => {
     const button = event.target.closest(".prompt-copy");
-    if (!button || !collection.contains(button)) return;
+    if (!button) return;
 
     const prompt = prompts.find(({ slug }) => slug === button.dataset.promptSlug);
     if (!prompt) return;
 
-    const status = button.closest(".prompt-entry").querySelector(".prompt-copy__status");
+    const status = modal.querySelector(".prompt-copy__status");
     try {
       await copy(prompt.prompt);
-      collection.querySelectorAll(".prompt-copy").forEach((candidate) => {
-        if (candidate !== button) candidate.textContent = "Copy prompt";
-      });
-      collection.querySelectorAll(".prompt-copy__status").forEach((candidate) => {
-        if (candidate !== status) candidate.textContent = "";
-      });
       button.textContent = "Copied";
       status.textContent = "Prompt copied to clipboard.";
     } catch (error) {
@@ -256,7 +343,7 @@ export function initPromptsPage(root, options = {}) {
   });
 
   update();
-  return { update, entries };
+  return { update, entries, openModal, closeModal };
 }
 
 if (typeof document !== "undefined") {

@@ -30,18 +30,18 @@ const cases = [
   { name: "people-selected-dark", story: "patterns--people-selection", theme: "dark", flatType: "off", width: 1024, height: 400, state: "people-selected" },
   { name: "command-search-dark", story: "patterns-command-menu--keyboard-flow", theme: "dark", flatType: "off", width: 1024, height: 768, state: "command-open" },
   {
-    name: "prompts-entry-light",
-    story: "patterns-prompts--search-and-copy",
+    name: "prompts-modal-light",
+    story: "patterns-prompts--search-and-open",
     theme: "light",
     flatType: "off",
     width: 1024,
     height: 900,
-    state: "prompt-entry",
+    state: "prompt-modal",
     fullPage: false,
     // Normalizes deterministic CoreText/macOS ↔ FreeType/Linux rasterization found in CI, not visual regressions.
     blurRadius: 3,
   },
-  { name: "prompts-empty-dark", story: "patterns-prompts--search-and-copy", theme: "dark", flatType: "on", width: 320, height: 800, state: "prompt-empty", fullPage: false },
+  { name: "prompts-empty-dark", story: "patterns-prompts--search-and-open", theme: "dark", flatType: "on", width: 320, height: 800, state: "prompt-empty", fullPage: false },
 ];
 
 async function captureStable(page, fullPage = true) {
@@ -97,15 +97,12 @@ async function applyState(page, visualCase) {
     await page.mouse.move(0, 0);
   }
 
-  if (visualCase.state === "prompt-entry") {
-    const searchbox = page.getByRole("searchbox", { name: "Search prompts" });
-    await searchbox.fill("");
-    await searchbox.blur();
-    await page.locator(".prompt-copy").evaluate((button) => {
-      button.textContent = "Copy prompt";
-      button.closest(".prompt-entry").querySelector(".prompt-copy__status").textContent = "";
-      button.blur();
-    });
+  if (visualCase.state === "prompt-modal") {
+    await page.locator(".prompt-row").click();
+    await page.waitForFunction(() => document.body.classList.contains("cmd-detail-open"));
+    // Capture the resting surface: no focus ring on the close control, no
+    // pointer anywhere near the wash or rows.
+    await page.evaluate(() => document.activeElement?.blur());
     await page.mouse.move(0, 0);
   }
 }

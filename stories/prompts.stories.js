@@ -1,5 +1,5 @@
 import axe from "axe-core";
-import { expect } from "storybook/test";
+import { expect, waitFor } from "storybook/test";
 import { PROMPTS, initPromptsPage } from "../prompts.mjs";
 
 async function expectAxeClean(root) {
@@ -17,6 +17,9 @@ async function expectAxeClean(root) {
   ).toEqual([]);
 }
 
+// Mirrors prompts.html: pill search with its own clear control, prompt rows,
+// and the cmd-style wash + detail modal the rows open. The controller is the
+// real production module (prompts.mjs), not a copy.
 function promptsFixture(writeClipboard) {
   const root = document.createElement("div");
   root.className = "sb-inventory prompts-page";
@@ -28,8 +31,13 @@ function promptsFixture(writeClipboard) {
       </header>
       <section class="prompt-search" aria-label="Search prompts">
         <form role="search" data-prompts-form>
-          <label class="prompt-search__label" for="storybookPromptSearch">Search prompts</label>
-          <input class="prompt-search__input" id="storybookPromptSearch" name="query" type="search" placeholder="Try “fintech”" autocomplete="off" spellcheck="false" data-prompts-search>
+          <label class="sr-only" for="storybookPromptSearch">Search prompts</label>
+          <div class="prompt-search__pill">
+            <input class="prompt-search__input" id="storybookPromptSearch" name="query" type="search" placeholder="Try “fintech”" autocomplete="off" spellcheck="false" data-prompts-search>
+            <button class="prompt-search__clear" type="button" aria-label="Clear search" data-prompts-clear-field>
+              <svg viewBox="0 0 256 256" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z"/></svg>
+            </button>
+          </div>
         </form>
         <p class="prompt-search__status" role="status" aria-live="polite" data-prompts-status></p>
       </section>
@@ -40,6 +48,11 @@ function promptsFixture(writeClipboard) {
           <button class="txtbtn prompt-clear" type="button" data-prompts-clear>Clear search</button>
         </div>
       </section>
+      <div class="cmd-wash" data-prompt-wash aria-hidden="true"></div>
+      <div class="cmd-modal prompt-modal" role="dialog" aria-modal="true" aria-label="Prompt" aria-hidden="true" inert data-prompt-modal>
+        <button class="panel-close cmd-modal__close" type="button" aria-label="Close" data-prompt-modal-close>×</button>
+        <div data-prompt-modal-body></div>
+      </div>
     </main>
   `;
   initPromptsPage(root, { writeClipboard });
@@ -50,8 +63,8 @@ export default {
   title: "Patterns/Prompts",
 };
 
-export const SearchAndCopy = {
-  name: "Search and copy",
+export const SearchAndOpen = {
+  name: "Search and open",
   parameters: {
     a11y: {
       test: "error",
@@ -66,47 +79,78 @@ export const SearchAndCopy = {
   },
   play: async ({ canvas, canvasElement, userEvent, step }) => {
     const input = canvas.getByRole("searchbox", { name: "Search prompts" });
+    const row = () => canvas.getByRole("button", { name: new RegExp(PROMPTS[0].title) });
 
-    await step("The real prompt model renders in the initial state", async () => {
-      await expect(canvas.getByRole("heading", { name: PROMPTS[0].title })).toBeVisible();
+    await step("The collection renders as rows, not full entries", async () => {
+      await expect(row()).toBeVisible();
       await expect(canvasElement.querySelector(".prompt-search__status")).toHaveTextContent("1 prompt");
+      await expect(canvasElement.querySelector(".prompt-modal__content")).toBeNull();
       await expectAxeClean(canvasElement);
     });
 
     await step("Search covers metadata and prompt content without submitting", async () => {
       await userEvent.click(input);
       await userEvent.type(input, "transactions");
-      await expect(canvas.getByRole("heading", { name: PROMPTS[0].title })).toBeVisible();
+      await expect(row()).toBeVisible();
       await expect(canvas.getByText("1 prompt", { selector: ".prompt-search__status" })).toBeVisible();
+      await expect(canvasElement.querySelector(".prompt-search__clear")).toHaveClass("visible");
     });
 
     await step("An unmatched query exposes an actionable empty state", async () => {
       await userEvent.clear(input);
       await userEvent.type(input, "cinematic storyboard");
       await expect(canvas.getByText("No prompts found for “cinematic storyboard”.")).toBeVisible();
-      await expect(canvas.getByRole("button", { name: "Clear search" })).toBeVisible();
+      await expect(canvasElement.querySelector(".prompt-clear")).toBeVisible();
       await expectAxeClean(canvasElement);
     });
 
-    await step("Clearing restores the collection and returns focus to search", async () => {
-      await userEvent.click(canvas.getByRole("button", { name: "Clear search" }));
+    await step("The field's own clear pill empties the query and refocuses", async () => {
+      await userEvent.click(canvasElement.querySelector(".prompt-search__clear"));
       await expect(input).toHaveFocus();
       await expect(input).toHaveValue("");
-      await expect(canvas.getByRole("heading", { name: PROMPTS[0].title })).toBeVisible();
+      await expect(canvasElement.querySelector(".prompt-search__clear")).not.toHaveClass("visible");
+      await expect(row()).toBeVisible();
     });
 
-    await step("The keyboard copy action receives only the raw prompt", async () => {
+    await step("Enter on a focused row opens the detail modal", async () => {
       await userEvent.tab();
-      const copyButton = canvas.getByRole("button", { name: "Copy prompt" });
-      await expect(copyButton).toHaveFocus();
+      await expect(row()).toHaveFocus();
       await userEvent.keyboard("{Enter}");
-      await expect(copyButton).toHaveTextContent("Copied");
+      await expect(document.body.classList.contains("cmd-detail-open")).toBe(true);
+      const modal = canvasElement.querySelector("[data-prompt-modal]");
+      await expect(modal.getAttribute("aria-hidden")).toBe("false");
+      // The surface fades in over --duration-200; visibility must be polled.
+      await waitFor(async () => {
+        await expect(canvas.getByRole("heading", { level: 2, name: PROMPTS[0].title })).toBeVisible();
+      });
+      await expect(canvasElement.querySelector(".prompt-modal__content")).toHaveTextContent(
+        "Clone the overall information architecture",
+      );
+      await expect(canvasElement.querySelector("[data-prompt-modal-close]")).toHaveFocus();
+      await expectAxeClean(canvasElement);
+    });
+
+    await step("The copy action inside the modal receives only the raw prompt", async () => {
+      const copyButton = canvas.getByRole("button", { name: "Copy prompt" });
+      await userEvent.click(copyButton);
+      await waitFor(async () => {
+        await expect(copyButton).toHaveTextContent("Copied");
+      });
       await expect(canvasElement.querySelector(".sb-inventory").copiedPrompts).toEqual([
         PROMPTS[0].prompt,
       ]);
       await expect(canvasElement.querySelector(".prompt-copy__status")).toHaveTextContent(
         "Prompt copied to clipboard.",
       );
+    });
+
+    await step("Escape dismisses the modal and hands focus back to the row", async () => {
+      await userEvent.keyboard("{Escape}");
+      await expect(document.body.classList.contains("cmd-detail-open")).toBe(false);
+      const modal = canvasElement.querySelector("[data-prompt-modal]");
+      await expect(modal.getAttribute("aria-hidden")).toBe("true");
+      await expect(modal.inert).toBe(true);
+      await expect(row()).toHaveFocus();
       await expectAxeClean(canvasElement);
     });
   },
