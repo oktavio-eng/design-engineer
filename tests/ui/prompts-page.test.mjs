@@ -67,7 +67,7 @@ async function assertReadableContrast(page, theme) {
   );
 }
 
-test("/prompts searches, clears, copies the exact raw prompt, and survives responsive themes", { timeout: 60_000 }, async (context) => {
+test("/prompts lists rows, opens the detail modal, copies the exact raw prompt, and survives responsive themes", { timeout: 60_000 }, async (context) => {
   const server = await serveDirectory(repositoryRoot);
   const browser = await launchChromium();
   context.after(async () => {
@@ -111,18 +111,20 @@ test("/prompts searches, clears, copies the exact raw prompt, and survives respo
   });
 
   await page.goto(`${server.origin}/prompts`, { waitUntil: "domcontentloaded" });
-  await page.waitForSelector(".prompt-entry");
+  await page.waitForSelector(".prompt-row");
   assert.equal(new URL(page.url()).pathname, "/prompts", "clean URL stays extensionless");
   assert.equal(await page.locator("h1").textContent(), "Prompts");
-  assert.equal(await page.locator(".prompt-entry__content").textContent(), PROMPTS[0].prompt);
-  assert.equal(await page.locator(".prompt-entry__title").textContent(), PROMPTS[0].title);
-  assert.equal(await page.locator(".prompt-entry__description").textContent(), PROMPTS[0].description);
-  assert.deepEqual(await page.locator(".prompt-tag").allTextContents(), PROMPTS[0].tags);
+
+  // The collection is a list of rows now — the full prompt only exists once a
+  // row opens the detail modal.
+  assert.equal(await page.locator(".prompt-row .who").textContent(), PROMPTS[0].title);
+  assert.equal(await page.locator(".prompt-row .what").textContent(), PROMPTS[0].category);
+  assert.equal(await page.locator(".prompt-modal__content").count(), 0);
 
   const search = page.getByRole("searchbox", { name: "Search prompts" });
   for (const query of ["wise", "framer", "fintech", "transactions"]) {
     await search.fill(query);
-    assert.equal(await page.locator(".prompt-entry").isVisible(), true, `${query}: prompt remains visible`);
+    assert.equal(await page.locator(".prompt-row").isVisible(), true, `${query}: prompt remains visible`);
     assert.equal(await page.locator(".prompt-search__status").textContent(), "1 prompt");
   }
 
@@ -131,7 +133,7 @@ test("/prompts searches, clears, copies the exact raw prompt, and survives respo
   await scanAxe(page, "filtered results");
 
   await search.fill("no matching workflow");
-  assert.equal(await page.locator(".prompt-entry").isVisible(), false);
+  assert.equal(await page.locator(".prompt-row").isVisible(), false);
   assert.equal(await page.locator("[data-prompts-empty]").isVisible(), true);
   assert.equal(
     await page.locator("[data-prompts-empty-message]").textContent(),
@@ -139,21 +141,59 @@ test("/prompts searches, clears, copies the exact raw prompt, and survives respo
   );
   await scanAxe(page, "empty results");
 
-  await page.getByRole("button", { name: "Clear search" }).click();
+  await page.locator(".prompt-clear").click();
   assert.equal(await search.inputValue(), "");
   assert.equal(await search.evaluate((element) => element === document.activeElement), true);
-  assert.equal(await page.locator(".prompt-entry").isVisible(), true);
+  assert.equal(await page.locator(".prompt-row").isVisible(), true);
 
+  // The pill's own clear control: appears with a query, wipes it, refocuses
+  // the field, and leaves the tab order once hidden again.
   await search.fill("framer");
+  const fieldClear = page.locator(".prompt-search__clear");
+  assert.equal(await fieldClear.evaluate((element) => element.classList.contains("visible")), true);
+  await fieldClear.click();
+  assert.equal(await search.inputValue(), "");
+  assert.equal(await search.evaluate((element) => element === document.activeElement), true);
+  assert.equal(await fieldClear.evaluate((element) => element.classList.contains("visible")), false);
+
+  // Keyboard path into the modal: Tab lands on the row (the hidden clear
+  // control must not be a stop), Enter opens the cmd+k-style detail.
   await search.focus();
   await page.keyboard.press("Tab");
-  const copyButton = page.getByRole("button", { name: "Copy prompt" });
-  assert.equal(await copyButton.evaluate((element) => element === document.activeElement), true);
+  const row = page.locator(".prompt-row");
+  assert.equal(await row.evaluate((element) => element === document.activeElement), true);
   await page.keyboard.press("Enter");
+  await page.waitForFunction(() => document.body.classList.contains("cmd-detail-open"));
+  const modal = page.locator("[data-prompt-modal]");
+  assert.equal(await modal.getAttribute("aria-hidden"), "false");
+  assert.equal(await modal.getAttribute("aria-label"), PROMPTS[0].title);
+  assert.equal(
+    await modal.locator("[data-prompt-modal-close]").evaluate((element) => element === document.activeElement),
+    true,
+    "the modal's close control takes focus on open",
+  );
+  assert.equal(await page.locator(".prompt-modal__title").textContent(), PROMPTS[0].title);
+  assert.equal(await page.locator(".prompt-modal__description").textContent(), PROMPTS[0].description);
+  assert.deepEqual(await page.locator(".prompt-tag").allTextContents(), PROMPTS[0].tags);
+  assert.equal(await page.locator(".prompt-modal__content").textContent(), PROMPTS[0].prompt);
+  await scanAxe(page, "open detail modal");
+
+  const copyButton = page.getByRole("button", { name: "Copy prompt" });
+  await copyButton.click();
   await page.getByRole("button", { name: "Copied" }).waitFor();
   assert.equal(await page.evaluate(() => navigator.clipboard.readText()), PROMPTS[0].prompt);
   assert.equal(await page.locator(".prompt-copy__status").textContent(), "Prompt copied to clipboard.");
-  await scanAxe(page, "copied feedback");
+
+  await page.keyboard.press("Escape");
+  await page.waitForFunction(() => !document.body.classList.contains("cmd-detail-open"));
+  assert.equal(await modal.getAttribute("aria-hidden"), "true");
+  assert.equal(await modal.evaluate((element) => element.inert), true);
+  assert.equal(
+    await row.evaluate((element) => element === document.activeElement),
+    true,
+    "dismissing the modal restores focus to the opening row",
+  );
+  await scanAxe(page, "dismissed modal");
 
   assert.equal(await page.evaluate(() => document.documentElement.hasAttribute("data-theme")), false);
   await page.getByRole("button", { name: "Toggle dark mode" }).click();
@@ -168,7 +208,7 @@ test("/prompts searches, clears, copies the exact raw prompt, and survives respo
     "320px viewport has no page-level horizontal overflow",
   );
   assert.equal(await search.evaluate((element) => getComputedStyle(element).fontSize), "17.92px");
-  assert.equal(await page.locator(".prompt-copy").isVisible(), true);
+  assert.equal(await page.locator(".prompt-row").isVisible(), true);
   await scanAxe(page, "dark theme at 320px");
 
   assert.deepEqual(pageErrors, []);
