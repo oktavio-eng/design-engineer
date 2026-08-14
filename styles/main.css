@@ -1830,7 +1830,11 @@ body.cmd-detail-open .cmd-modal {
 
 /* ---------------------------------------------------------------------------
    Prompts page (`/prompts`, `prompts.html`). The page keeps changelog's shell
-   and type hierarchy; these selectors only cover its search and prompt entry.
+   and type hierarchy; these selectors cover the pill search field, the prompt
+   rows, and the detail modal. The modal reuses `.cmd-wash`/`.cmd-modal` (and
+   the `body.cmd-detail-open` switch) wholesale so the prompt detail and the
+   ⌘K detail share one surface and one motion contract — only measurements
+   are overridden here.
 --------------------------------------------------------------------------- */
 .prompts-page {
   color: var(--ink);
@@ -1838,35 +1842,93 @@ body.cmd-detail-open .cmd-modal {
 .prompt-search {
   margin-top: var(--space-48);
 }
-.prompt-search__label {
-  display: block;
-  margin-bottom: var(--space-8);
-  color: var(--ink);
-  font-weight: var(--fw-medium);
+/* Same recipe as the topbar pills — glass fill, full radius, the shared
+   glass-core shadow, `--topbar-h` tall. The input inside is transparent;
+   the pill itself is the field. */
+.prompt-search__pill {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  height: var(--topbar-h);
+  padding: 0 var(--space-8) 0 var(--space-20);
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur-sm)) saturate(var(--glass-sat));
+  -webkit-backdrop-filter: blur(var(--glass-blur-sm)) saturate(var(--glass-sat));
+  border-radius: var(--radius-full);
+  box-shadow:
+    var(--shadow-glass-core),
+    0 4px 16px var(--shadow-a02);
+}
+/* The ring belongs to the pill, not the transparent input — outlining the
+   input would paint a rectangle inside the capsule. */
+.prompt-search__pill:has(.prompt-search__input:focus-visible) {
+  outline: var(--space-2) solid var(--ink);
+  outline-offset: var(--space-2);
 }
 .prompt-search__input {
-  width: 100%;
+  flex: 1;
+  min-width: 0;
   min-height: var(--space-44);
-  padding: var(--space-10) var(--space-12);
-  border: var(--border-w) solid var(--line);
-  border-radius: var(--radius-6);
+  border: none;
   background: transparent;
   color: var(--ink);
   font: inherit;
-  transition-property: border-color, background-color;
-  transition-duration: var(--duration-200);
-  transition-timing-function: var(--ease);
+  outline: 0;
 }
 .prompt-search__input::placeholder {
   color: var(--muted);
   opacity: 1;
 }
-.prompt-search__input:hover {
-  border-color: var(--faint);
+/* The pill brings its own clear control; the UA's (blue on WebKit) would
+   double it. */
+.prompt-search__input::-webkit-search-cancel-button,
+.prompt-search__input::-webkit-search-decoration {
+  -webkit-appearance: none;
+  appearance: none;
 }
-.prompt-search__input:focus-visible {
-  outline: var(--space-2) solid var(--ink);
-  outline-offset: var(--space-2);
+/* Enters and exits with the stacked-icon recipe (opacity/scale/blur).
+   `visibility` keeps the hidden button out of the tab order; its transition
+   delay holds it visible until the fade-out finishes, and `.visible` zeroes
+   the delay so the fade-in starts immediately. */
+.prompt-search__clear {
+  flex-shrink: 0;
+  width: var(--space-40);
+  height: var(--space-40);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  background: 0 0;
+  border-radius: var(--radius-full);
+  color: var(--faint);
+  cursor: pointer;
+  opacity: 0;
+  scale: 0.25;
+  filter: blur(var(--space-4));
+  visibility: hidden;
+  transition-property: opacity, scale, filter, color, background, visibility;
+  transition-duration: var(--duration-200);
+  transition-timing-function: var(--ease);
+  transition-delay: 0s, 0s, 0s, 0s, 0s, var(--duration-200);
+}
+.prompt-search__clear.visible {
+  opacity: 1;
+  scale: 1;
+  filter: blur(0);
+  visibility: visible;
+  transition-delay: 0s;
+}
+.prompt-search__clear:hover {
+  color: var(--muted);
+  background: var(--ink-a5);
+}
+.prompt-search__clear.visible:active {
+  scale: 0.96;
+}
+.prompt-search__clear svg {
+  width: var(--space-16);
+  height: var(--space-16);
 }
 .prompt-search__status {
   min-height: var(--space-24);
@@ -1878,31 +1940,50 @@ body.cmd-detail-open .cmd-modal {
 .prompt-results {
   margin-top: var(--space-32);
 }
-.prompt-list {
-  display: grid;
-  gap: var(--space-72);
+/* Prompt rows are buttons wearing the shared `.row` costume: reset the UA
+   button chrome, let `.row` do the layout. Unlike the site lists, here the
+   title is the side that gives — a nowrap title would clip at 320px, while
+   the short category can stay whole. */
+.prompt-row {
+  width: 100%;
+  border: none;
+  border-bottom: var(--border-w) solid var(--line);
+  background: 0 0;
+  color: var(--ink);
+  font: inherit;
 }
-.prompt-entry {
+/* `.row`'s `display: flex` outranks the UA's `[hidden] { display: none }`,
+   so the search filter's `hidden` needs restating. */
+.prompt-row[hidden] {
+  display: none;
+}
+.prompt-row .who {
+  flex-shrink: 1;
   min-width: 0;
-  padding-top: var(--space-24);
-  border-top: var(--border-w) solid var(--line);
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
-.prompt-entry__eyebrow {
+.prompt-row .what {
+  flex-shrink: 0;
+}
+/* Long-form prompt text needs a wider sheet than the ⌘K person card. */
+.prompt-modal {
+  width: min(var(--space-620), calc(100vw - var(--space-48)));
+}
+.prompt-modal h2 {
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-tight);
+  margin-top: var(--space-4);
+}
+.prompt-modal__eyebrow {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--space-16);
 }
-.prompt-copy,
-.prompt-clear {
-  min-height: var(--space-44);
-}
-.prompt-entry__title {
-  margin-top: var(--space-4);
-  margin-bottom: var(--space-8);
-}
-.prompt-entry__description {
+.prompt-modal__description {
   color: var(--muted);
+  margin-top: var(--space-8);
   cursor: default;
 }
 .prompt-tags {
@@ -1922,7 +2003,21 @@ body.cmd-detail-open .cmd-modal {
   margin-inline-start: var(--space-12);
   color: var(--line);
 }
-.prompt-entry > .prompt-entry__eyebrow > .label,
+.prompt-modal__content {
+  max-width: 100%;
+  margin-top: var(--space-32);
+  padding-top: var(--space-24);
+  border-top: var(--border-w) solid var(--line);
+  color: var(--muted);
+  font: inherit;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.prompt-copy,
+.prompt-clear {
+  min-height: var(--space-44);
+}
+.prompt-modal__eyebrow > .label,
 .prompts-page .about-trigger,
 .prompts-page footer > span {
   color: var(--muted);
@@ -1932,16 +2027,6 @@ body.cmd-detail-open .cmd-modal {
 }
 .prompts-page .txtbtn {
   color: var(--ink);
-}
-.prompt-entry__content {
-  max-width: 100%;
-  margin-top: var(--space-32);
-  padding-top: var(--space-24);
-  border-top: var(--border-w) solid var(--line);
-  color: var(--muted);
-  font: inherit;
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
 }
 .prompt-empty {
   margin-top: var(--space-40);
@@ -1962,10 +2047,16 @@ body.cmd-detail-open .cmd-modal {
     flex-wrap: wrap;
     gap: var(--space-12) var(--space-16);
   }
-  .prompt-entry__eyebrow {
+  .prompt-modal__eyebrow {
     align-items: flex-start;
   }
+  .prompt-search__clear {
+    width: var(--space-44);
+    height: var(--space-44);
+  }
+  /* 16px floor keeps iOS from zooming the focused field; with Flat type on,
+     inherit already lands above it, so this is the no-experiment guard. */
   .prompt-search__input {
-    font-size: var(--fs-16);
+    font-size: max(var(--fs-16), 1rem);
   }
 }
