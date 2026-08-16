@@ -28,9 +28,15 @@ import { PROMPTS, renderPromptDetail, attachPromptCopy } from "/prompts.mjs";
 
 const PAGES = [
   { name: "The plan", what: "index", href: "/" },
+  { name: "Portfolio", what: "client work, personal projects, life", href: "/portfolio" },
   { name: "Changelog", what: "what changed, day by day", href: "/changelog" },
   { name: "Prompts", what: "prompts used in real work", href: "/prompts" },
 ];
+
+// Portfolio drafts (placeholder client entries — see portfolio-content.js)
+// stay out of the index unless the page itself is showing them.
+const showDrafts =
+  /^(localhost|127\.0\.0\.1)$/.test(location.hostname) || new URLSearchParams(location.search).has("draft");
 
 function esc(value) {
   return String(value)
@@ -119,18 +125,27 @@ export function initCommandMenu() {
   // change at runtime. `what` is the secondary line in the row; `text` is
   // extra searchable material (tags, descriptions) that isn't shown.
   const index = [];
-  function add(group, map) {
+  // `collection` is the key of the map on the content object ("clients",
+  // "people"…) — what `[data-open="collection:key"]` on a page row refers to.
+  function add(group, map, collection) {
     for (const key in map) {
       const e = map[key];
-      index.push({ group, kind: "entry", key, name: e.name, what: e.role || "", text: "", entry: e });
+      if (e.draft && !showDrafts) continue;
+      index.push({ group, collection, kind: "entry", key, name: e.name, what: e.role || "", text: e.bio || "", entry: e });
     }
   }
   const content = window.SITE_CONTENT || {};
-  add("People", content.people || {});
-  add("Plan", content.phases || {});
-  add("References", content.refs || {});
-  add("Courses", content.courses || {});
-  add("Reading", content.readings || {});
+  add("People", content.people || {}, "people");
+  add("Plan", content.phases || {}, "phases");
+  add("References", content.refs || {}, "refs");
+  add("Courses", content.courses || {}, "courses");
+  add("Reading", content.readings || {}, "readings");
+  // Portfolio collections (portfolio-content.js) — loaded on every page, so a
+  // client project is one ⌘K away from the plan page too.
+  const portfolio = window.PORTFOLIO_CONTENT || {};
+  add("Client work", portfolio.clients || {}, "clients");
+  add("Personal projects", portfolio.personal || {}, "personal");
+  add("Life", portfolio.life || {}, "life");
   PROMPTS.forEach((prompt) => {
     index.push({
       group: "Prompts",
@@ -155,7 +170,11 @@ export function initCommandMenu() {
     // dialog that toggles `cmd-detail-open` too, and Escape must only reach
     // for the layer this module actually put up.
     listOpen = false,
-    detailOpen = false;
+    detailOpen = false,
+    // True when the detail was opened straight from a page row (`[data-open]`),
+    // not from the results list: there is no list to go "back" to, so the
+    // back button hides and Escape/wash dismiss outright.
+    directOpen = false;
 
   function score(item, q) {
     const n = item.name.toLowerCase(),
@@ -314,6 +333,8 @@ export function initCommandMenu() {
     // Also tears down the detail layer, so ⌘K on top of an open detail swaps
     // surfaces instead of stacking them.
     detailOpen = false;
+    directOpen = false;
+    modal.classList.remove("cmd-modal--direct");
     document.body.classList.remove("cmd-detail-open");
     blurIfInside(modal);
     modal.inert = true;
@@ -355,6 +376,8 @@ export function initCommandMenu() {
   function closeCmdDetail() {
     cancelPendingFocus();
     detailOpen = false;
+    directOpen = false;
+    modal.classList.remove("cmd-modal--direct");
     document.body.classList.remove("cmd-detail-open");
     blurIfInside(modal);
     wash.setAttribute("aria-hidden", "true");
@@ -365,6 +388,8 @@ export function initCommandMenu() {
   // Back to the results. The wash stays up the whole time — both states share
   // the same rule in the CSS, so hiding and re-showing it would flash.
   function backToCmd() {
+    // A directly-opened detail has no list behind it — dismiss instead.
+    if (directOpen) return closeCmdDetail();
     openCmd(true);
   }
 
@@ -407,7 +432,8 @@ export function initCommandMenu() {
     return here === there;
   }
 
-  function openDetail(item) {
+  function openDetail(item, options) {
+    const direct = !!(options && options.direct);
     // Pages are actions, not records: pick one and go there. Picking the
     // page you're already on just dismisses — nothing to navigate to.
     if (item.kind === "page") {
@@ -415,6 +441,14 @@ export function initCommandMenu() {
       if (!samePage(item.entry.href)) location.assign(item.entry.href);
       return;
     }
+    if (direct) {
+      // Same choreography as a fresh open: the page folds its layers and the
+      // opener (the row) is what focus returns to.
+      document.dispatchEvent(new CustomEvent("cmd:beforeopen"));
+      opener = document.activeElement;
+    }
+    directOpen = direct;
+    modal.classList.toggle("cmd-modal--direct", direct);
     if (item.kind === "prompt") {
       // The prompt detail is the /prompts modal's own renderer, so the two
       // never diverge. `.prompt-modal` widens the sheet for long-form text.
@@ -461,6 +495,19 @@ export function initCommandMenu() {
   list.addEventListener("click", function (ev) {
     const b = ev.target.closest(".cmd__item");
     if (b) openDetail(results[+b.dataset.i]);
+  });
+
+  // Page rows that open a record directly: `data-open="Group:key"` (the
+  // portfolio's client/personal/life rows). Same detail card as a palette
+  // result, minus the back button.
+  document.addEventListener("click", function (ev) {
+    const el = ev.target.closest("[data-open]");
+    if (!el) return;
+    const [collection, key] = String(el.dataset.open).split(":");
+    const item = index.find((i) => i.kind === "entry" && i.collection === collection && i.key === key);
+    if (!item) return;
+    ev.preventDefault();
+    openDetail(item, { direct: true });
   });
 
   // The homepage logo is the trigger. It's an anchor to "#", which would jump

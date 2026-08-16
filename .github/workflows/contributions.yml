@@ -1,0 +1,37 @@
+# Refreshes data/contributions.json (the portfolio's GitHub graph) once a day
+# from the public contributions calendar — no token needed, see
+# scripts/fetch-contributions.mjs for why and for the guardrails. Commits
+# straight to main only when the numbers actually changed; a push to main is
+# what triggers the Vercel deploy, so the graph on the site follows within
+# minutes. Also runnable by hand from the Actions tab.
+name: Contributions
+
+on:
+  schedule:
+    - cron: "17 3 * * *" # 03:17 UTC daily — off the hour, GitHub asks for that
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Fetch the last year of contributions
+        run: node scripts/fetch-contributions.mjs oktavio-eng
+      - name: Commit if changed
+        run: |
+          if git diff --quiet -- data/contributions.json; then
+            echo "No change."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/contributions.json
+          git commit -m "Refresh contributions data ($(date -u +%Y-%m-%d))"
+          git push

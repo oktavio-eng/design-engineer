@@ -9,12 +9,17 @@ Documenta a estratégia, referências de craft, cursos, leituras e o plano de 4 
 Zero-dependency, sem build step:
 
 ```
-index.html    — markup
-content.js    — as coleções (people, phases, refs, courses, readings) → window.SITE_CONTENT
-script.js     — a interação da homepage (painel, modais, animações)
-cmd.mjs       — busca ⌘K, em todas as páginas (indexa content.js + prompts.mjs)
-favicons.js   — favicon() + cascata de fallback, compartilhados
-prompts.mjs   — dados e página /prompts
+index.html            — a home (o plano)
+changelog.html        — /changelog
+prompts.html          — /prompts (dados + página em prompts.mjs)
+portfolio.html        — /portfolio (dados em portfolio-content.js, página em portfolio.mjs)
+content.js            — as coleções da home → window.SITE_CONTENT
+portfolio-content.js  — as coleções do portfólio → window.PORTFOLIO_CONTENT
+script.js             — a interação da home (painel, modais, animações)
+chrome.js             — tema + navbar nas outras páginas
+cmd.mjs               — busca ⌘K, em todas as páginas
+contrib.mjs           — gráfico de contribuições (dados em data/contributions.json)
+favicons.js           — favicon() + cascata de fallback
 styles/
   main.css      — componentes, importa os tokens
   tokens/       — cores, tipografia, motion, spacing, radius

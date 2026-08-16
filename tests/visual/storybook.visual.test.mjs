@@ -48,6 +48,7 @@ const cases = [
   // get wrong (it climbs toward light there).
   { name: "portfolio-writing-light", story: "patterns-portfolio--writing-list", theme: "light", flatType: "on", width: 1024, height: 700 },
   { name: "portfolio-contrib-dark", story: "patterns-portfolio--contributions", theme: "dark", flatType: "on", width: 1024, height: 700 },
+  { name: "portfolio-gallery-light", story: "patterns-portfolio--gallery", theme: "light", flatType: "on", width: 1024, height: 700 },
 ];
 
 async function captureStable(page, fullPage = true) {

@@ -1,10 +1,31 @@
-# Roteiro — Portfolio sobre a estrutura deste site
+# Portfólio — `/portfolio`, construído em 16/08/2026
 
-Task futura. Reaproveitar **exatamente** o design system e a máquina deste site (`design-engineer`), trocando o conteúdo: em vez de pessoas/cursos/leituras/referências, entram **projetos de clientes**, **projetos pessoais**, **vida** e uma **galeria de fotos**.
+**Estado:** a página existe e está no ar como `/portfolio` (link "portfólio" na navbar de todas as páginas). Decisão de 16/08/2026: mora **neste site**, não num repo/projeto Vercel novo — o roteiro abaixo (§1–§8) foi escrito antes de o JS virar compartilhado (`content.js`, `favicons.js`, `cmd.mjs`, `chrome.js`) e previa cópia; hoje o portfólio reusa tudo isso sem duplicar nada. Se um dia for pra um domínio próprio, é mover arquivos, não refazer.
 
-Leia o [AGENTS.md](AGENTS.md) antes — ele descreve o craft que este roteiro assume como dado.
+## 0. O que existe e onde
+
+| Peça | Arquivo | Notas |
+| --- | --- | --- |
+| Página | `portfolio.html` | Mesmo head/topbar das outras páginas; seções: perfil, What I do, Writing, Contributions, Client work, Personal projects, Life, Gallery. Seções nascem `hidden` e só aparecem quando têm conteúdo. |
+| Conteúdo | `portfolio-content.js` | `window.PORTFOLIO_CONTENT = { clients, personal, life, writing, gallery }`. **Os três `clients` são `draft: true` — templates pra você trocar** (ver §9). Drafts só aparecem em localhost ou com `?draft` na URL; em produção a seção some. |
+| Página (JS) | `portfolio.mjs` | Renderiza listas/writing/galeria, busca `data/contributions.json`, e é dono do lightbox. |
+| Detalhe de projeto | `cmd.mjs` | Clicar numa linha (`data-open="clients:key"`) abre o **mesmo modal do ⌘K** direto (sem botão de voltar — `.cmd-modal--direct`). ⌘K também indexa Client work / Personal projects / Life em toda página. |
+| Gráfico GitHub | `contrib.mjs` + `data/contributions.json` + `scripts/fetch-contributions.mjs` + `.github/workflows/contributions.yml` | Dados **reais** de `oktavio-eng`, lidos do calendário público (sem token). A Action roda 1×/dia e commita só se mudou; commit em `main` dispara o deploy. Rodar à mão: `node scripts/fetch-contributions.mjs`. |
+| Galeria + lightbox | `.gallery*` / `.lightbox*` em `main.css`, `portfolio.mjs` | Grid 3 col (2 no celular), `aspect-ratio` fixo, mesma casca "lift" do ícone de doc e do gráfico. Lightbox: wash + figura, Escape/wash/× fecham, foco volta pra miniatura, ⌘K por cima fecha. Imagem que falha some da grade. |
+| Cromo | `chrome.js` | Tema + navbar reveal-on-scroll, compartilhado por changelog/prompts/portfolio (era inline em cada uma). |
+| Testes | `tests/ui/portfolio-page.test.mjs`, `stories/portfolio.stories.js` (Writing, Contributions, Gallery), 3 casos visuais | Cobrem: seções, gráfico do JSON, linha→modal direto, galeria→lightbox, ⌘K, drafts escondidos em produção (servido como `portfolio.test`), 320px, axe. |
+
+## 9. O que só você faz (o gargalo real)
+
+- [ ] **Trocar os três `clients` de `portfolio-content.js`** por projetos reais (com permissão de publicar): `name`, `role` ("o que era · ano"), `bio` (problema → resultado), `items` (2–4 decisões de craft), `links`. Tirar `draft: true`. Enquanto isso a seção "Client work" não aparece no site publicado; pra revisar os templates no ar: `/portfolio?draft`.
+- [ ] Revisar os textos de **What I do**, **Personal projects** e **Life** — escrevi com o que sei; é sua voz que tem que estar ali.
+- [ ] **Writing**: hoje aponta pras páginas que existem (plano, changelog, prompts). Quando houver artigo de verdade, é `{title, description, href}` no array.
+- [ ] **Galeria**: as três imagens são as únicas do repo (avatar, marca, card do site). Fotos reais vão em `/photos/*.webp`, tratadas, com `width`/`height` e legenda; ver a regra de peso em §4.
+- [ ] `og.jpg`/`favicon`: decidir se o portfólio usa a marca GOW (hoje usa).
 
 ---
+
+*O roteiro original segue abaixo, como registro do plano — os pontos que mudaram estão anotados.*
 
 ## 1. O que se copia sem pensar
 
@@ -44,7 +65,7 @@ Pra um projeto de cliente isso vira: `name` = cliente/projeto, `role` = "o que e
 Além das coleções, o index do portfólio ganha duas seções que o site atual não tem, e os componentes já existem em `styles/main.css` (bloco "Portfolio components") + Storybook (`stories/portfolio.stories.js`, "Patterns/Portfolio"):
 
 - **Writing** — lista de artigos no formato do jakub.kr: `.doc-list > a.doc-item` com o ícone de documento (`.doc-icon > .doc-icon__page > 5× .doc-icon__line`), título (`.doc-item__title`) e resumo de uma linha (`.doc-item__desc`). A linha inteira é o link; hover é preenchimento instantâneo, sem transição, de propósito. Marcação de referência está na story.
-- **Contributions** — o gráfico de contribuições do GitHub como no site do Noé Chagué, no azul do site (`--contrib-0…4`, nível 3 = `#00B9FF`). Marcação `.contrib > .contrib__card > .contrib__grid + .contrib__meta`; `contrib.mjs` exporta `renderContributions(root, days)` e preenche a grade a partir de um array de `{date, count}` (371 dias). **Dado ainda não decidido/implementado:** o site não tem servidor e o calendário do GitHub não é lido do browser sem token — o plano é um JSON no repo (`data/contributions.json`) atualizado por uma GitHub Action agendada (1×/dia) via GraphQL `contributionsCollection`, e a página lê esse arquivo. Isso é o passo seguinte quando o portfólio nascer; o componente já está pronto pra receber.
+- **Contributions** — o gráfico de contribuições do GitHub como no site do Noé Chagué, no azul do site (`--contrib-0…4`, nível 3 = `#00B9FF`). Marcação `.contrib > .contrib__card > .contrib__grid + .contrib__meta`; `contrib.mjs` exporta `renderContributions(root, days)` e preenche a grade a partir de um array de `{date, count}` (371 dias). **Dado: resolvido** — `data/contributions.json` vem do calendário público (`scripts/fetch-contributions.mjs`, sem token), atualizado 1×/dia pela Action `contributions.yml`; ver §0.
 
 ## 3. Os cinco pontos de extensão do código
 
@@ -64,7 +85,7 @@ O `AGENTS.md` diz, com todas as letras: *"Sem ícones decorativos, sem imagens d
 
 A saída que preserva a coerência: **a foto é conteúdo, não decoração**. O índice tipográfico continua puro; a galeria é uma superfície própria onde a imagem é o assunto. Concretamente:
 
-- **Aba = seção com âncora** (`#galeria` na nav), não um segundo arquivo HTML. Motivo técnico duro: o `script.js` pega elementos por ID no topo e chama `.addEventListener` neles ([script.js:432](script.js#L432), [script.js:487](script.js#L487)) — numa página que não tenha esses IDs ele estoura `TypeError` e **nada** funciona. Um segundo arquivo exigiria separar o JS em compartilhado + por página. Fica pra depois, se um dia valer.
+- ~~**Aba = seção com âncora**~~ Superado: com o JS compartilhado, `/portfolio` é uma página própria e a galeria é uma seção dela. O motivo original: o `script.js` pega elementos por ID no topo e chama `.addEventListener` neles ([script.js:432](script.js#L432), [script.js:487](script.js#L487)) — numa página que não tenha esses IDs ele estoura `TypeError` e **nada** funciona. Um segundo arquivo exigiria separar o JS em compartilhado + por página. Fica pra depois, se um dia valer.
 - **O lightbox já existe.** `avatar-wash` + `avatar-viewer` ([script.js:882-905](script.js#L882-L905)) é um visualizador de imagem cheio, com wash, Escape e clique-fora prontos. Hoje ele é hard-wired numa imagem só (`avatarBig.src` é setado uma vez no load). Vira `openAvatar(src, alt)` e serve a galeria inteira — não escreva um lightbox novo.
 - **Grid:** CSS Grid com `aspect-ratio` fixo por célula. `aspect-ratio` não é opcional: sem ele o layout pula conforme as fotos carregam, e "toda transição interrompível" não sobrevive a um salto de layout.
 - **Peso.** Hoje o site inteiro tem ~90KB. Uma galeria é outra ordem de grandeza. `.webp`, `width`/`height` no `<img>`, `loading="lazy"` em tudo abaixo da dobra, e um teto consciente de quantas fotos entram.
@@ -80,9 +101,9 @@ A saída que preserva a coerência: **a foto é conteúdo, não decoração**. O
 
 
 
-## 6. Repo e deploy
+## 6. Repo e deploy (superado — ver topo)
 
-- **Repo novo**, cópia dos arquivos. Não é fork nem branch deste — os dois vão divergir no primeiro dia.
+- ~~**Repo novo**, cópia dos arquivos.~~ Decisão de 16/08/2026: página neste site. Não é fork nem branch deste — os dois vão divergir no primeiro dia.
 - **Projeto Vercel novo.** A regra 1 do AGENTS.md ("nunca crie um projeto novo na Vercel") vale **só pro** `design-engineer`; um site novo é um projeto novo, e é o certo. Deixar isso escrito no AGENTS.md do repo novo, senão um agente futuro lê a regra fora de contexto e trava.
 - Copiar o `AGENTS.md` adaptado junto. Ele é o que impede a próxima IA de desfazer o craft.
 

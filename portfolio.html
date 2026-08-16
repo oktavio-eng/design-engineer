@@ -14,24 +14,24 @@
   } catch (e) {}
 })();
 </script>
-<title>Prompts — Design Engineer, Plan</title>
-<meta name="description" content="Prompts used in real design, engineering, AI, and creative workflows. By Otavio, GOW Studio.">
+<title>Portfolio — Otavio, GOW Studio</title>
+<meta name="description" content="Otavio Alexandre — visual designer becoming a design engineer. Client and personal projects, writing, and the work in public. GOW Studio.">
 
 <link rel="icon" type="image/png" href="/new-favicon.png">
 
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://design-engineer-phi.vercel.app/prompts">
+<meta property="og:url" content="https://design-engineer-phi.vercel.app/portfolio">
 <meta property="og:site_name" content="Design Engineer, Plan">
-<meta property="og:title" content="Prompts — Design Engineer, Plan">
-<meta property="og:description" content="Prompts used in real design, engineering, AI, and creative workflows.">
+<meta property="og:title" content="Portfolio — Otavio, GOW Studio">
+<meta property="og:description" content="Client and personal projects, writing, and the work in public.">
 <meta property="og:image" content="https://design-engineer-phi.vercel.app/og.jpg">
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="628">
 <meta property="og:image:alt" content="GOW Studio mark on a white field">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Prompts — Design Engineer, Plan">
-<meta name="twitter:description" content="Prompts used in real design, engineering, AI, and creative workflows.">
+<meta name="twitter:title" content="Portfolio — Otavio, GOW Studio">
+<meta name="twitter:description" content="Client and personal projects, writing, and the work in public.">
 <meta name="twitter:image" content="https://design-engineer-phi.vercel.app/og.jpg">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,7 +41,7 @@
 <link rel="stylesheet" href="/styles/main.css">
 <link rel="stylesheet" href="/styles/experiments/flat-type.css">
 </head>
-<body class="prompts-page">
+<body class="portfolio-page">
 <header class="topbar" aria-hidden="true" inert>
   <a href="/" class="topbar__logo" aria-label="Home">
     <svg width="44" height="56" viewBox="0 0 44 56" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -58,59 +58,97 @@
   </div>
 </header>
 
-<main data-prompts-root>
+<main data-portfolio-root>
   <section class="stagger">
-    <a href="/" class="about-trigger">&larr; Plan</a>
-    <h1>Prompts</h1>
-    <p class="subtitle">Prompts used in real design, engineering, AI, and creative work — kept with the context that made them useful.</p>
-  </section>
-
-  <section class="stagger prompt-search" aria-label="Search prompts">
-    <form role="search" data-prompts-form>
-      <label class="sr-only" for="promptSearch">Search prompts</label>
-      <div class="prompt-search__pill">
-        <input class="prompt-search__input" id="promptSearch" name="query" type="search" placeholder="Try “fintech”" autocomplete="off" spellcheck="false" data-prompts-search>
-        <!-- Phosphor "X" (regular), inlined — the site ships no icon CDN. -->
-        <button class="prompt-search__clear" type="button" aria-label="Clear search" data-prompts-clear-field>
-          <svg viewBox="0 0 256 256" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z"/></svg>
-        </button>
+    <div class="profile">
+      <button class="profile__avatar" type="button" aria-label="Enlarge photo of Oktavio Alexandre" data-lightbox-src="/avatar.webp" data-lightbox-alt="Oktavio Alexandre" data-lightbox-caption="Otavio">
+        <img src="/avatar.webp" alt="Oktavio Alexandre" width="52" height="52">
+      </button>
+      <div class="profile__id">
+        <div class="profile__name">Oktavio Alexandre</div>
+        <div class="profile__role">Visual Designer · GOW Studio</div>
       </div>
-    </form>
-    <p class="prompt-search__status" role="status" aria-live="polite" data-prompts-status></p>
-  </section>
-
-  <section class="stagger prompt-results" aria-label="Prompt collection">
-    <div class="prompt-list" data-prompts-collection></div>
-    <div class="prompt-empty" data-prompts-empty hidden>
-      <p data-prompts-empty-message>No prompts found.</p>
-      <button class="txtbtn prompt-clear" type="button" data-prompts-clear>Clear search</button>
     </div>
-    <noscript><p class="prompt-empty">Enable JavaScript to search and read the prompt collection.</p></noscript>
+    <h1>Portfolio</h1>
+    <p class="subtitle">Client work, personal projects, and the work in public.</p>
   </section>
 
-  <div class="cmd-wash" data-prompt-wash aria-hidden="true"></div>
-  <div class="cmd-modal prompt-modal" role="dialog" aria-modal="true" aria-label="Prompt" aria-hidden="true" inert data-prompt-modal>
-    <button class="panel-close cmd-modal__close" type="button" aria-label="Close" data-prompt-modal-close>×</button>
-    <div data-prompt-modal-body></div>
-  </div>
+  <section class="stagger" id="positioning">
+    <h2>What I do</h2>
+    <p>I design interfaces and, increasingly, build them: visual design first, moving toward design engineering — the same eye for type, color, spacing and motion, now with the code to carry a decision all the way to the screen. I work remotely from Brazil, mostly with product teams and small studios that care about how software feels, not only that it works.</p>
+    <p>The plan for that transition is public, and this site is its first proof: everything here — the palette, the ⌘K search, the tests behind it — is written down as it ships. <a href="/" class="inline-link">Read the plan</a> or <a href="/changelog" class="inline-link">the changelog</a>.</p>
+  </section>
+
+  <section class="stagger" id="writing">
+    <h2>Writing</h2>
+    <div class="doc-list" data-writing></div>
+  </section>
+
+  <section class="stagger" id="contributions" hidden>
+    <h2>Contributions</h2>
+    <div class="contrib" data-contrib>
+      <div class="contrib__card">
+        <div class="contrib__grid" aria-hidden="true"></div>
+        <div class="contrib__meta">
+          <span data-contrib-total></span>
+          <span class="contrib__legend" aria-hidden="true">Less
+            <span class="contrib__cell" data-level="0"></span>
+            <span class="contrib__cell" data-level="1"></span>
+            <span class="contrib__cell" data-level="2"></span>
+            <span class="contrib__cell" data-level="3"></span>
+            <span class="contrib__cell" data-level="4"></span>
+          More</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="stagger" id="clients" hidden>
+    <h2>Client work</h2>
+    <div data-list="clients"></div>
+  </section>
+
+  <section class="stagger" id="personal" hidden>
+    <h2>Personal projects</h2>
+    <div data-list="personal"></div>
+  </section>
+
+  <section class="stagger" id="life" hidden>
+    <h2>Life</h2>
+    <div data-list="life"></div>
+  </section>
+
+  <section class="stagger" id="gallery" hidden>
+    <h2>Gallery</h2>
+    <div class="gallery" data-gallery></div>
+  </section>
 
   <footer class="stagger">
     <span>Otavio · GOW Studio</span>
     <div class="footer__right">
       <a href="/changelog" class="about-trigger">Changelog</a>
-      <a href="/" class="about-trigger">Back to the plan</a>
+      <a href="/prompts" class="about-trigger">Prompts</a>
+      <a href="/" class="about-trigger">The plan</a>
     </div>
   </footer>
 </main>
 
+<div class="cmd-wash lightbox-wash" data-lightbox-wash aria-hidden="true"></div>
+<div class="lightbox" role="dialog" aria-modal="true" aria-label="Photo" aria-hidden="true" inert data-lightbox>
+  <button class="panel-close lightbox__close" type="button" aria-label="Close" data-lightbox-close>×</button>
+  <figure class="lightbox__figure">
+    <img class="lightbox__img" alt="" data-lightbox-img>
+    <figcaption class="lightbox__caption" data-lightbox-text></figcaption>
+  </figure>
+</div>
+
 <script src="/chrome.js" defer></script>
-<script type="module" src="/prompts.mjs"></script>
-<!-- ⌘K palette on this page too (see cmd.mjs). favicons.js + content.js are
-     the same classic scripts index.html loads before script.js — the palette
-     needs the collections and the favicon builder, not the homepage script. -->
+<!-- Same shared trio every page loads for the ⌘K palette (see cmd.mjs), plus
+     the portfolio's own collections and its page module. -->
 <script src="/favicons.js" defer></script>
 <script src="/content.js" defer></script>
 <script src="/portfolio-content.js" defer></script>
+<script type="module" src="/portfolio.mjs"></script>
 <script type="module" src="/cmd.mjs"></script>
 </body>
 </html>
