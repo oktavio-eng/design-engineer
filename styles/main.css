@@ -47,15 +47,18 @@ h1 {
   font-weight: var(--fw-semibold);
   letter-spacing: var(--ls-tight);
 }
-/* Section rhythm follows the emilkowal.ski measurement (16/08/2026): 128px
-   between sections, 24px title → prose, 16px title → list. Sections used to
-   sit 72px apart and it was the single biggest reason the page read as
-   crammed — everything else in this pass is a step or two on the scale. */
+/* Section rhythm after the emilkowal.ski audit (16/08/2026): 24px title →
+   prose, 16px title → list; the between-section gap is explained below. */
 h2 {
   font-size: var(--fs-15);
   font-weight: var(--fw-semibold);
   letter-spacing: var(--ls-tight);
-  margin-top: var(--space-128);
+  /* 72px between sections (16/08/2026, evening): the 128px measured on
+     emilkowal.ski was tried for a day of real use and read too loose on a
+     page with eight sections and short lists — 56px came off at Otavio's
+     request. Same number the site had before the audit, kept now on
+     purpose rather than by default. */
+  margin-top: var(--space-72);
   margin-bottom: var(--space-24);
 }
 /* Rows carry their own top padding, so the title sits closer to a list than
@@ -2245,6 +2248,16 @@ body.mail-open .mail-modal {
   .doc-item:hover {
     background: var(--gray-955);
   }
+}
+/* The portfolio's Writing rows are buttons (they open the shared modal);
+   same look as the anchor form. */
+.doc-item--btn {
+  width: calc(100% + 2 * var(--space-8));
+  border: none;
+  background: 0 0;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
 }
 .doc-item:focus-visible {
   outline: var(--space-2) solid var(--faint);

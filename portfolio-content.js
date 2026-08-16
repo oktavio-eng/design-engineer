@@ -110,26 +110,30 @@
     },
   };
 
-  // Writing — the doc-icon list (jakub.kr's row). Each entry is a link; there
-  // is no article body on this site yet, so the first ones point at the pages
-  // that already exist. Add real posts as {title, description, href}.
-  const writing = [
-    {
-      title: "Design Engineer — a transition plan",
-      description: "The plan itself: principle, phases, people, and what got discarded.",
-      href: "/",
+  // Writing — the doc-icon list (jakub.kr's row). Each entry opens in the
+  // same modal as a project (title, summary, then the link to read it), so
+  // clicking never leaves the page. Same shape as everything else: `bio` is
+  // the summary shown in the row, `links` carries where the piece lives.
+  const writing = {
+    plan: {
+      name: "Design Engineer — a transition plan",
+      role: "Writing · 2026",
+      bio: "The plan itself: principle, phases, people, and what got discarded.",
+      links: [["Read", "/"]],
     },
-    {
-      title: "Changelog, as a habit",
-      description: "Every change written down as it ships — building in public only counts if the record is public too.",
-      href: "/changelog",
+    changelog: {
+      name: "Changelog, as a habit",
+      role: "Writing · 2026",
+      bio: "Every change written down as it ships — building in public only counts if the record is public too.",
+      links: [["Read", "/changelog"]],
     },
-    {
-      title: "Prompts used in real work",
-      description: "Kept with the context that made them useful.",
-      href: "/prompts",
+    prompts: {
+      name: "Prompts used in real work",
+      role: "Writing · 2026",
+      bio: "Kept with the context that made them useful.",
+      links: [["Read", "/prompts"]],
     },
-  ];
+  };
 
   // Gallery — photos are content, not decoration (PORTFOLIO.md §4). Each item
   // is {src, alt, caption, width, height}; width/height are the intrinsic

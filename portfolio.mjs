@@ -73,20 +73,26 @@ function docIcon() {
 
 export function renderWriting(root) {
   const host = root.querySelector("[data-writing]");
-  const list = content.writing || [];
+  const map = content.writing || {};
   if (!host) return 0;
-  host.innerHTML = list
-    .map(
-      (post) =>
-        '<a class="doc-item" href="' + esc(post.href) + '">' +
+  // Buttons, not links: a piece opens in the shared modal (cmd.mjs,
+  // `data-open`), and the modal carries the link to read it.
+  host.innerHTML = Object.keys(map)
+    .filter((key) => showDrafts || !map[key].draft)
+    .map((key) => {
+      const post = map[key];
+      return (
+        '<button class="doc-item doc-item--btn" type="button" data-open="writing:' + key + '" aria-haspopup="dialog">' +
         docIcon() +
-        '<span class="doc-item__text"><span class="doc-item__title">' + esc(post.title) + "</span>" +
-        (post.description ? '<span class="doc-item__desc">' + esc(post.description) + "</span>" : "") +
-        "</span></a>",
-    )
+        '<span class="doc-item__text"><span class="doc-item__title">' + esc(post.name) + "</span>" +
+        (post.bio ? '<span class="doc-item__desc">' + esc(post.bio) + "</span>" : "") +
+        "</span></button>"
+      );
+    })
     .join("");
-  if (list.length) reveal(host.closest("section"));
-  return list.length;
+  const count = host.children.length;
+  if (count) reveal(host.closest("section"));
+  return count;
 }
 
 // ---- Contributions ---------------------------------------------------------

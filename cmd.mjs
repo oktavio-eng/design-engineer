@@ -146,6 +146,7 @@ export function initCommandMenu() {
   add("Client work", portfolio.clients || {}, "clients");
   add("Personal projects", portfolio.personal || {}, "personal");
   add("Life", portfolio.life || {}, "life");
+  add("Writing", portfolio.writing || {}, "writing");
   PROMPTS.forEach((prompt) => {
     index.push({
       group: "Prompts",
