@@ -132,19 +132,39 @@ a:active {
    the favicon rides a negative `vertical-align` that would get its bottom
    sliced off. */
 /* No rule between rows (16/08/2026): the hairlines read as clutter once the
-   page opened up, so vertical rhythm carries the separation alone — 14px of
-   padding each side, so two adjacent rows keep ~28px of air between their
-   text (emilkowal.ski keeps 16px between two-line blocks; ours are one line,
-   so they need a touch more). Neighbor-dim still targets `.row > *`, not the
-   row, for the `.row.extra` opacity/animation reason noted below. */
+   page opened up, so vertical rhythm carries the separation alone — 12px of
+   padding each side, ~24px of air between adjacent rows' text (tried 14/28
+   first; it read a touch loose without the rule, so it came down one step —
+   emilkowal.ski keeps 16px between two-line blocks). Neighbor-dim still
+   targets `.row > *`, not the row, for the `.row.extra` opacity/animation
+   reason noted below. */
 .row {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
   gap: var(--space-16);
-  padding: var(--space-14) 0;
+  padding: var(--space-12) 0;
   cursor: pointer;
   overflow-x: clip;
+}
+/* Hover on the page lists = the jakub.kr Writing row (16/08/2026): the row
+   fills with the lightest gray, corners at 16px, and the fill bleeds 8px past
+   the column on each side (padding-inline + negative margin, so the text
+   itself never moves). Instant — no transition — the same reason `.doc-item`
+   gives: this is a row you pass over dozens of times. Scoped to `main >
+   section` so the link rows inside the panel/⌘K detail (which are `.row`
+   too, cursor default) keep their plain layout. This replaces the
+   neighborhood dim for these lists; the dim stays on phase items, panel
+   items and palette results, where nothing else marks the hovered one. */
+main > section .row {
+  padding-inline: var(--space-8);
+  margin-inline: calc(-1 * var(--space-8));
+  border-radius: var(--radius-16);
+}
+@media (hover: hover) and (pointer: fine) {
+  main > section .row:hover {
+    background: var(--gray-955);
+  }
 }
 /* `flex-shrink: 0` keeps the name whole. Letting it shrink even a hair is worse
    than it sounds: a sub-pixel deficit is enough to trigger `text-overflow`, and
@@ -192,18 +212,16 @@ a:active {
    recua, o item lido avança; nenhum destaque novo é pintado, é só o resto que
    sai da frente.
 
-   Nos `.row` a opacidade vai no *conteúdo* (`.row > *`), não na linha inteira,
-   por dois motivos. As réguas (`border-bottom`) continuam de pé, então a lista
-   não se desmonta quando você entra nela — só o texto recua. E `.row.extra` é
-   dono de `opacity` pela animação `enter` (que roda com `forwards`, e por isso
-   ganha de qualquer declaração nossa que não seja `!important`): mirando o
-   filho, a regra não encosta na animação do stagger.
+   Desde 16/08/2026 isto NÃO vale mais pros `.row` das seções da página: lá o
+   hover virou o preenchimento instantâneo do jakub.kr (ver `main > section
+   .row:hover` acima), e apagar o resto por cima disso era efeito demais. Vale
+   pros itens das fases, do painel e do palette, onde nada mais marca o item
+   sob o cursor.
 
    `:has()` em vez de `:hover` no container de propósito — a lista só apaga
    quando o cursor está de fato sobre um item, não quando passa pelo h2 ou pela
    folga entre as linhas.
 --------------------------------------------------------------------------- */
-section:has(.row:hover) .row:not(:hover) > *,
 .phase ul:has(li:hover) li:not(:hover),
 .panel:has(.item:hover) .item:not(:hover),
 .cmd-modal:has(.item:hover) .item:not(:hover),
@@ -2045,7 +2063,9 @@ body.mail-open .mail-modal {
    title is the side that gives — a nowrap title would clip at 320px, while
    the short category can stay whole. */
 .prompt-row {
-  width: 100%;
+  /* Buttons don't stretch like block divs: the width has to include the
+     8px the hover fill bleeds past the column on each side. */
+  width: calc(100% + 2 * var(--space-8));
   border: none;
   background: 0 0;
   color: var(--ink);
@@ -2177,5 +2197,165 @@ body.mail-open .mail-modal {
      inherit already lands above it, so this is the no-experiment guard. */
   .prompt-search__input {
     font-size: max(var(--fs-16), 1rem);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Portfolio components (16/08/2026) — built ahead of the portfolio page they
+   are for (see PORTFOLIO.md), so they ship here as design-system pieces with
+   a Storybook story and no consumer yet. Two references, both measured in a
+   real Chrome rather than eyeballed:
+
+   - `.doc-item` is jakub.kr's Writing row: a document icon that is a raised
+     shell (padding 2, radius 8, `--shadow-lift`) around a white 44×52 page
+     with a 1px rule and five 3px "lines of text"; title + one-line summary
+     beside it; the whole row is the link, with 8px padding bleeding 8px past
+     the column so the hover fill hugs the text. Hover has NO transition on
+     purpose — it's the instant fill Jakub uses, and it's a row you'll pass
+     over dozens of times, which is exactly where motion should get out of
+     the way.
+   - `.contrib` is the GitHub contribution graph as noechague.vercel.app draws
+     it — same two-layer shell (radius 16 + padding 4 + `--shadow-lift`
+     around a `--white` card with a `--line` border, radius 12, padding 16),
+     a 7 × 53 grid of 9px cells with 2px gaps flowing by column, and a
+     footer with the total and the Less→More legend. Colors come from the
+     `--contrib-*` ramp in tokens/colors.css (the site's blue, not GitHub's
+     green). The grid is `aria-hidden`; the total in the footer is the
+     accessible summary. It scrolls sideways below ~600px rather than
+     shrinking the cells. `contrib.mjs` fills the grid from a 371-day array.
+--------------------------------------------------------------------------- */
+.doc-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+.doc-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-12);
+  padding: var(--space-8);
+  margin-inline: calc(-1 * var(--space-8));
+  border-radius: var(--radius-16);
+  color: inherit;
+  text-decoration: none;
+}
+@media (hover: hover) and (pointer: fine) {
+  .doc-item:hover {
+    background: var(--gray-955);
+  }
+}
+.doc-item:focus-visible {
+  outline: var(--space-2) solid var(--faint);
+  outline-offset: 0;
+}
+.doc-icon {
+  flex: none;
+  padding: var(--space-2);
+  border-radius: var(--radius-8);
+  background: var(--bg);
+  box-shadow: var(--shadow-lift);
+}
+.doc-icon__page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  width: var(--space-44);
+  height: var(--space-52);
+  padding: var(--space-4);
+  border: var(--border-w) solid var(--line);
+  border-radius: var(--radius-6);
+  background: var(--white);
+  overflow: hidden;
+  user-select: none;
+}
+.doc-icon__line {
+  display: block;
+  height: var(--space-3);
+  border-radius: var(--radius-full);
+  background: var(--line);
+}
+/* Five lines, the widths and beats Jakub uses: a short first line (a title),
+   a long one, then a paragraph that tails off — read as text, not stripes. */
+.doc-icon__line:nth-child(1) { width: var(--space-16); margin-top: var(--space-2); }
+.doc-icon__line:nth-child(2) { width: var(--space-32); margin-top: var(--space-4); }
+.doc-icon__line:nth-child(3) { width: var(--space-24); }
+.doc-icon__line:nth-child(4) { width: var(--space-20); margin-top: var(--space-4); }
+.doc-icon__line:nth-child(5) { width: var(--space-12); }
+.doc-item__text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: var(--space-56);
+  min-width: 0;
+}
+.doc-item__title {
+  color: var(--ink);
+  font-weight: var(--fw-medium);
+  text-wrap: pretty;
+}
+.doc-item__desc {
+  color: var(--muted);
+  text-wrap: pretty;
+}
+
+.contrib {
+  padding: var(--space-4);
+  border-radius: var(--radius-16);
+  box-shadow: var(--shadow-lift);
+  overflow: hidden;
+}
+.contrib__card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+  padding: var(--space-16);
+  border: var(--border-w) solid var(--line);
+  border-radius: var(--radius-12);
+  background: var(--white);
+}
+.contrib__grid {
+  display: grid;
+  grid-template-rows: repeat(7, var(--space-9));
+  grid-auto-flow: column;
+  gap: var(--space-2);
+  padding-bottom: var(--space-4);
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
+}
+.contrib__cell {
+  width: var(--space-9);
+  height: var(--space-9);
+  border-radius: var(--radius-2);
+  background: var(--contrib-0);
+}
+.contrib__cell[data-level="1"] { background: var(--contrib-1); }
+.contrib__cell[data-level="2"] { background: var(--contrib-2); }
+.contrib__cell[data-level="3"] { background: var(--contrib-3); }
+.contrib__cell[data-level="4"] { background: var(--contrib-4); }
+.contrib__meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-16);
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.contrib__legend {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--muted);
+}
+.contrib__legend .contrib__cell:first-of-type { margin-left: var(--space-4); }
+.contrib__legend .contrib__cell:last-of-type { margin-right: var(--space-4); }
+@supports (corner-shape: superellipse(1)) {
+  main > section .row,
+  .doc-item,
+  .doc-icon,
+  .doc-icon__page,
+  .contrib,
+  .contrib__card {
+    corner-shape: var(--corner-sm);
   }
 }

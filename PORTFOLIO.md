@@ -39,6 +39,13 @@ Cada entrada tem que caber na forma que o `render()` já espera — não invente
 
 Pra um projeto de cliente isso vira: `name` = cliente/projeto, `role` = "o que era + ano", `bio` = o problema e o resultado, `items` = decisões de craft, `links` = site no ar, estudo de caso, repo.
 
+## 2b. Duas peças novas do index do portfólio (já construídas — 16/08/2026)
+
+Além das coleções, o index do portfólio ganha duas seções que o site atual não tem, e os componentes já existem em `styles/main.css` (bloco "Portfolio components") + Storybook (`stories/portfolio.stories.js`, "Patterns/Portfolio"):
+
+- **Writing** — lista de artigos no formato do jakub.kr: `.doc-list > a.doc-item` com o ícone de documento (`.doc-icon > .doc-icon__page > 5× .doc-icon__line`), título (`.doc-item__title`) e resumo de uma linha (`.doc-item__desc`). A linha inteira é o link; hover é preenchimento instantâneo, sem transição, de propósito. Marcação de referência está na story.
+- **Contributions** — o gráfico de contribuições do GitHub como no site do Noé Chagué, no azul do site (`--contrib-0…4`, nível 3 = `#00B9FF`). Marcação `.contrib > .contrib__card > .contrib__grid + .contrib__meta`; `contrib.mjs` exporta `renderContributions(root, days)` e preenche a grade a partir de um array de `{date, count}` (371 dias). **Dado ainda não decidido/implementado:** o site não tem servidor e o calendário do GitHub não é lido do browser sem token — o plano é um JSON no repo (`data/contributions.json`) atualizado por uma GitHub Action agendada (1×/dia) via GraphQL `contributionsCollection`, e a página lê esse arquivo. Isso é o passo seguinte quando o portfólio nascer; o componente já está pronto pra receber.
+
 ## 3. Os cinco pontos de extensão do código
 
 Tudo que você precisa tocar no `script.js` está nestes cinco lugares. Fora deles, o arquivo não muda.

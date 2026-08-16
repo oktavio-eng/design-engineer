@@ -1,17 +1,21 @@
 import { expect, waitFor } from "storybook/test";
 import { expectOnlyA11yDebt } from "./helpers/a11y-baseline.js";
 
-function patternShell(title, description, content) {
+// `asMain` wraps the content in a real <main>: the page-list hover fill is
+// keyed on `main > section .row` in production (see main.css), so a fixture
+// that wants to show it has to sit in the same ancestry, not a look-alike.
+function patternShell(title, description, content, { asMain = false } = {}) {
   const root = document.createElement("div");
   root.className = "sb-inventory";
+  const tag = asMain ? "main" : "div";
   root.innerHTML = `
-    <div class="sb-inventory__content sb-pattern">
+    <${tag} class="sb-inventory__content sb-pattern">
       <header class="sb-inventory__header">
         <h1>${title}</h1>
         <p>${description}</p>
       </header>
       ${content}
-    </div>
+    </${tag}>
   `;
   return root;
 }
@@ -84,7 +88,7 @@ export const Rows = {
   render: () =>
     patternShell(
       "Rows",
-      "The repeated .row pattern used for people, courses, readings and references. Hover an item to inspect the existing neighborhood-focus behavior.",
+      "The repeated .row pattern used for people, courses, readings and references. Hover an item: it fills instantly (no transition), bleeding 8px past the column — the jakub.kr row.",
       `
         <section>
           <h2>People</h2>
@@ -115,12 +119,24 @@ export const Rows = {
           </div>
         </section>
       `,
+      { asMain: true },
     ),
-  play: async ({ canvasElement }) => {
+  play: async ({ canvasElement, userEvent }) => {
     await expectOnlyA11yDebt(canvasElement, [
       "color-contrast:status-bought",
       "color-contrast:status-evaluate",
     ]);
+    // The static half of the hover contract: no transition on the fill, the
+    // 8px bleed (negative margin), and the text column unmoved by it — the
+    // row's content box starts exactly where the section's does. The fill
+    // itself needs a real pointer (`:hover` + the hover/pointer media query),
+    // which synthetic events can't produce; the product smoke test covers it.
+    const rows = canvasElement.querySelectorAll(".row");
+    await expect(getComputedStyle(rows[0]).transitionProperty).not.toMatch(/background/);
+    await expect(parseFloat(getComputedStyle(rows[0]).marginLeft)).toBeLessThan(0);
+    const section = rows[0].closest("section");
+    const textLeft = rows[0].querySelector(".who").getBoundingClientRect().left;
+    await expect(textLeft).toBe(section.getBoundingClientRect().left);
   },
 };
 
