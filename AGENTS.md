@@ -135,6 +135,8 @@ found a gap, it doesn't just record one.
 
 **Layout:** cascata de três colunas inspirada no floguo.com (estilo Finder/coluna), sidebar redimensionável com drag handle (linha tracejada de hint, opacidade baixa ~0.3).
 
+**Sidebar × modal (decisão de 15/08/2026):** o `#panel` é um elemento só, mas tem duas superfícies. Só as fases de "The plan" abrem como sidebar à direita; pessoas, craft references, cursos e leituras abrem o mesmo `#panel` como modal centralizado (`body.panel-modal` + `#panelWash`), com a geometria e o `--ease-pop` do `.cmd-modal` — os dois modais devem ler como uma superfície só. Quem decide é `MODAL_KINDS` em `script.js` (via `setPanelMode()` dentro de `open()`); trocar de kind com o painel aberto reseta sem transição e reentra no modo novo, em vez de morfar sidebar ↔ modal. `render()`, comentários (`.cpanel`, elevado pra `z-index: 52` acima do wash) e a navegação Shift+↑/↓ são compartilhados. Consequência pros testes: com o wash em pé, hover/click na lista atrás dele não acontece — troca de pessoa em teste vai por Shift+Arrow, e "hover cruzado" virou "ponteiro sobre a lista cai no wash".
+
 **Motion:**
 - Entrada de elementos: stagger animation via `@keyframes enter` (fade + `translateY` + blur leve).
 - Toda transição precisa ser **interruptível** — nunca travar o usuário no meio de uma animação.

@@ -101,17 +101,16 @@ async function scanPeopleSection(page, persons) {
 
 // Deterministic real-browser coverage for the persisted People selection
 // (body.panel-open + .row.active, driven entirely by script.js's existing
-// open()/close() — see main.css above .row.active for the CSS). This exists
-// specifically to exercise the one interaction the Storybook harness cannot:
-// a genuine, OS-level pointer hover over a *different*, non-active row while
-// the selection stays open. @testing-library/user-event's hover() (used in
-// stories/patterns.stories.js) does not reliably set real CSS :hover in a
-// Chromium tab; Playwright's locator.hover() does, so that specific assertion
-// lives here instead, against the real production page. It also runs a real
+// open()/close() — see main.css above .row.active for the CSS). Since people
+// open #panel in modal mode (body.panel-modal + #panelWash; only "The plan"
+// phases keep the sidebar), a genuine OS-level pointer over a *different* row
+// lands on the wash, not the row: this test drives a real mouse move there
+// and asserts the list ignores it, and switches person through the existing
+// Shift+Arrow navigation instead of a second click. It also runs a real
 // axe-core scan in each open/dimmed state (not just after closing) in both
 // themes, since the Storybook addon's own scan only ever sees whatever state
 // play() finishes in, and only ever in the light-mode default.
-test("the People list keeps the selected row highlighted while the sidebar is open", { timeout: 30_000 }, async (context) => {
+test("the People list keeps the selected row highlighted while a person's modal is open", { timeout: 30_000 }, async (context) => {
   const server = await serveDirectory(repositoryRoot);
   const browser = await launchChromium();
   context.after(async () => {
@@ -184,6 +183,19 @@ test("the People list keeps the selected row highlighted while the sidebar is op
   await page.waitForFunction(() => document.body.classList.contains("panel-open"), null, { polling: 100 });
   await waitForClass(page, '.people .row[data-person="rauno"]', "active", true);
   await waitForColor(page, '.people .row[data-person="emil"] .what', dim);
+  // People open as a modal, not the sidebar: the wash is up and owns the
+  // pointer, so nothing on the page behind it can be hovered or clicked.
+  assert.equal(await page.evaluate(() => document.body.classList.contains("panel-modal")), true, "people open in modal mode");
+  assert.equal(await page.locator("#panelWash").getAttribute("aria-hidden"), "false", "the wash is exposed while the modal is open");
+  const jakubBox = await jakub.boundingBox();
+  // Probe near the row's left edge, clear of the centered modal itself, so
+  // the only thing between the pointer and the row is the wash.
+  const jakubCenter = { x: jakubBox.x + 8, y: jakubBox.y + jakubBox.height / 2 };
+  assert.equal(
+    await page.evaluate(({ x, y }) => document.elementFromPoint(x, y)?.id, jakubCenter),
+    "panelWash",
+    "the wash intercepts the pointer over the list",
+  );
   assert.notEqual(await whoColorOf(page, "rauno"), dim, "active row's name is not dimmed");
   assert.equal(await whoColorOf(page, "emil"), dim, "unselected row's name is dimmed");
   assert.equal(await whatColorOf(page, "emil"), dim, "unselected row's summary is dimmed too, unlike the previous round");
@@ -197,32 +209,34 @@ test("the People list keeps the selected row highlighted while the sidebar is op
     "color-contrast (and anything else) must be clean while persisted, unhovered — light theme",
   );
 
-  // Hover a different, non-active row with a *real* pointer move. The active
-  // row and the actually-hovered row both read undimmed; everyone else keeps
-  // --row-dim. This is the exact scenario the Storybook harness cannot
-  // exercise (see the comment in patterns.stories.js).
-  await jakub.hover();
-  await page.waitForFunction(
-    () => document.querySelector('.people .row[data-person="jakub"]').matches(":hover"),
-    null,
-    { polling: 100 },
+  // Move a *real* pointer over a different, non-active row. The wash sits
+  // between the mouse and the list, so the row never enters :hover and the
+  // highlight stays exactly where the selection put it — the state is owned
+  // by body.panel-open/.row.active, never by the pointer.
+  await page.mouse.move(jakubCenter.x, jakubCenter.y);
+  await page.waitForTimeout(300);
+  assert.equal(
+    await page.evaluate(() => document.querySelector('.people .row[data-person="jakub"]').matches(":hover")),
+    false,
+    "a row behind the wash never enters :hover",
   );
-  await waitForColor(page, '.people .row[data-person="jakub"] .what', await inkColor(page));
-  assert.notEqual(await whoColorOf(page, "rauno"), dim, "active row stays undimmed while a different row is hovered");
-  assert.notEqual(await whoColorOf(page, "jakub"), dim, "the actually-hovered row is not dimmed");
-  assert.equal(await whoColorOf(page, "emil"), dim, "rows that are neither active nor hovered stay dimmed");
+  assert.notEqual(await whoColorOf(page, "rauno"), dim, "active row stays undimmed with the pointer over the list");
+  assert.equal(await whoColorOf(page, "jakub"), dim, "the row under the pointer stays dimmed behind the wash");
+  assert.equal(await whoColorOf(page, "emil"), dim, "every other row stays dimmed");
 
-  measured.light_hoverCross = await scanPeopleSection(page, ["rauno", "emil", "jakub"]);
+  measured.light_pointerOver = await scanPeopleSection(page, ["rauno", "emil", "jakub"]);
   assert.deepEqual(
-    measured.light_hoverCross.violations,
+    measured.light_pointerOver.violations,
     [],
-    "color-contrast (and anything else) must be clean mid-hover too — light theme",
+    "color-contrast (and anything else) must be clean with the pointer over the list too — light theme",
   );
 
   await page.mouse.move(0, 0);
 
-  // Switch directly to a different person without closing first.
-  await emil.locator("a").click();
+  // Switch directly to the next person without closing first: the list is
+  // behind the wash, so this goes through the existing Shift+ArrowDown
+  // navigation (rauno → emil in DOM order).
+  await page.keyboard.press("Shift+ArrowDown");
   await waitForClass(page, '.people .row[data-person="emil"]', "active", true);
   await waitForColor(page, '.people .row[data-person="rauno"] .what', dim);
   assert.notEqual(await whoColorOf(page, "emil"), dim);
@@ -240,10 +254,11 @@ test("the People list keeps the selected row highlighted while the sidebar is op
     "color-contrast (and anything else) must be clean after switching — light theme",
   );
 
-  // Re-select rauno and switch to dark mode in place (no reload needed —
-  // every color in main.css reads through var(), see tokens/colors.css) to
+  // Re-select rauno (Shift+ArrowUp: emil → rauno; the list is still behind
+  // the wash) and switch to dark mode in place (no reload needed — every
+  // color in main.css reads through var(), see tokens/colors.css) to
   // measure the same two states there.
-  await rauno.locator("a").click();
+  await page.keyboard.press("Shift+ArrowUp");
   await waitForClass(page, '.people .row[data-person="rauno"]', "active", true);
   await page.evaluate(() => document.documentElement.setAttribute("data-theme", "dark"));
   const darkDim = await dimColor(page);
@@ -256,25 +271,21 @@ test("the People list keeps the selected row highlighted while the sidebar is op
     "color-contrast (and anything else) must be clean while persisted, unhovered — dark theme",
   );
 
-  await jakub.hover();
-  await page.waitForFunction(
-    () => document.querySelector('.people .row[data-person="jakub"]').matches(":hover"),
-    null,
-    { polling: 100 },
-  );
-  await waitForColor(page, '.people .row[data-person="jakub"] .what', await inkColor(page));
+  await page.mouse.move(jakubCenter.x, jakubCenter.y);
+  await page.waitForTimeout(300);
+  assert.equal(await whoColorOf(page, "jakub"), darkDim, "the row under the pointer stays dimmed behind the wash — dark theme");
 
-  measured.dark_hoverCross = await scanPeopleSection(page, ["rauno", "emil", "jakub"]);
+  measured.dark_pointerOver = await scanPeopleSection(page, ["rauno", "emil", "jakub"]);
   assert.deepEqual(
-    measured.dark_hoverCross.violations,
+    measured.dark_pointerOver.violations,
     [],
-    "color-contrast (and anything else) must be clean mid-hover too — dark theme",
+    "color-contrast (and anything else) must be clean with the pointer over the list too — dark theme",
   );
 
   await page.mouse.move(0, 0);
   await page.evaluate(() => document.documentElement.removeAttribute("data-theme"));
 
-  // Close the sidebar; the list returns to the plain hover-only behavior.
+  // Close the modal; the list returns to the plain hover-only behavior.
   // emil (the last-active row before this) is undimmed already — wait on
   // rauno's actual 250ms color transition back to normal before asserting.
   await page.locator("#panelClose").click();

@@ -220,8 +220,8 @@ test("a People row revealed by show more selects like any other row", { timeout:
   await waitFor(page, () => document.querySelector('.people .row[data-person="floguo"]').classList.contains("active"));
   await waitFor(page, (expected) => getComputedStyle(document.querySelector('.people .row[data-person="rauno"] .what')).color === expected, dim);
 
-  assert.equal(await page.locator("#panel").getAttribute("aria-hidden"), "false", "the sidebar opened");
-  assert.equal(await page.locator("#panel h3").first().textContent(), "Flora Guo", "the sidebar rendered the revealed person");
+  assert.equal(await page.locator("#panel").getAttribute("aria-hidden"), "false", "the panel opened");
+  assert.equal(await page.locator("#panel h3").first().textContent(), "Flora Guo", "the panel rendered the revealed person");
   assert.equal(await whoColorOf("floguo"), ink, "the selected extra row keeps --ink");
   assert.equal(await whatColorOf("floguo"), ink, "the selected extra row's summary keeps --ink too");
   assert.equal(await whoColorOf("rauno"), dim, "a visible row falls to --row-dim");
@@ -247,7 +247,7 @@ test("a People row revealed by show more selects like any other row", { timeout:
 
   // Selecting must not collapse the list back.
   const stillOpen = await sectionState(page, "people");
-  assert.equal(stillOpen.expanded, true, "the list stays expanded while the sidebar is open");
+  assert.equal(stillOpen.expanded, true, "the list stays expanded while the panel is open");
   assert.equal(stillOpen.ariaExpanded, "true");
   assert.equal(stillOpen.label, "show less");
   assert.ok(stillOpen.extrasHeight > 0);
@@ -273,7 +273,7 @@ test("a People row revealed by show more selects like any other row", { timeout:
   await waitFor(page, () => !document.body.classList.contains("panel-open"));
   await waitFor(page, (expected) => getComputedStyle(document.querySelector('.people .row[data-person="rauno"] .who a')).color === expected, ink);
   assert.equal(await whoColorOf("janikb"), ink, "closing restores the revealed rows too");
-  assert.equal((await sectionState(page, "people")).expanded, true, "closing the sidebar leaves the list expanded");
+  assert.equal((await sectionState(page, "people")).expanded, true, "closing the panel leaves the list expanded");
 
   assert.deepEqual(pageErrors, []);
   assert.deepEqual(consoleErrors, []);

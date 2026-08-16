@@ -450,6 +450,73 @@ body.panel-open #panel {
 body.panel-open.cpanel-open #panel {
   right: var(--cpanel-w);
 }
+/* Modal mode. Only "The plan" (phases) opens #panel as the sidebar; people,
+   refs, courses and readings open the same element as a centered modal —
+   script.js toggles body.panel-modal per kind. Geometry and motion mirror
+   .cmd-modal so both modals feel like one surface. The wash sits above the
+   comment panel's normal layer, so the cpanel is lifted over it in this mode. */
+.panel-wash {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: var(--wash-bg);
+  backdrop-filter: blur(var(--glass-blur-lg)) saturate(var(--glass-sat));
+  -webkit-backdrop-filter: blur(var(--glass-blur-lg)) saturate(var(--glass-sat));
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--duration-250) var(--ease);
+}
+body.panel-open.panel-modal .panel-wash {
+  opacity: 1;
+  pointer-events: auto;
+}
+body.panel-modal.panel-open {
+  padding-right: 0;
+}
+body.panel-modal.panel-open.cpanel-open {
+  padding-right: var(--cpanel-w);
+}
+body.panel-modal #panel {
+  top: 50%;
+  left: 50%;
+  right: auto;
+  bottom: auto;
+  z-index: 51;
+  width: min(var(--space-480), calc(100vw - var(--space-48)));
+  max-height: calc(100vh - var(--space-96));
+  padding: var(--space-64) var(--space-32) var(--space-40);
+  border-left: none;
+  border-radius: var(--radius-28);
+  box-shadow: var(--shadow-modal);
+  transform: translate(-50%, -50%) scale(0.96);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    transform var(--duration-250) var(--ease-pop),
+    opacity var(--duration-200) var(--ease);
+}
+body.panel-modal.panel-open #panel {
+  right: auto;
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
+  pointer-events: auto;
+}
+/* The sidebar's resize handle and its sticky top fade have no place in the
+   modal: no edge to drag, and .cmd-modal (the reference surface) has no fade. */
+body.panel-modal #panel .panel-resize,
+body.panel-modal #panel .panel-fade {
+  display: none;
+}
+body.panel-modal #panel .panel-close {
+  top: var(--space-16);
+  right: var(--space-16);
+}
+body.panel-modal .cpanel {
+  z-index: 52;
+}
+#panel.no-transition {
+  transition: none;
+}
 .panel-close {
   position: absolute;
   top: var(--space-24);
@@ -1160,7 +1227,8 @@ a.note-open.note-empty:hover {
   .cpanel textarea {
     corner-shape: var(--corner-sm);
   }
-  .about-modal {
+  .about-modal,
+  body.panel-modal #panel {
     corner-shape: var(--corner-lg);
   }
   .composer {
@@ -1826,6 +1894,13 @@ body.cmd-detail-open .cmd-modal {
 .timeline__title {
   color: var(--ink);
   margin-bottom: var(--space-4);
+}
+/* One entry per day, not per change: a day with several updates shares one
+   date and one dot, and its updates stack as `.timeline__item`s inside the
+   same content column — the gap between them is smaller than the gap between
+   days, so the grouping reads without any extra rule or marker. */
+.timeline__item + .timeline__item {
+  margin-top: var(--space-24);
 }
 
 /* ---------------------------------------------------------------------------

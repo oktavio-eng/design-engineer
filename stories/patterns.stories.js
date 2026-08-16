@@ -434,7 +434,7 @@ export const SeeMoreSections = {
 };
 
 export const PeopleSelection = {
-  name: "People — selected + sidebar open",
+  name: "People — selected + panel open",
   parameters: {
     a11y: { test: "error" },
   },
@@ -444,7 +444,7 @@ export const PeopleSelection = {
     document.body.classList.remove("panel-open");
 
     const root = patternShell(
-      "People — selected + sidebar open",
+      "People — selected + panel open",
       "Mirrors script.js: activeRow/body.panel-open (set by open()/close()) drive .row.active, not a separate styling flag. Click a name to open, click another to switch, close to restore — the rest of the list stays dimmed even with no pointer over it.",
       `
         <section class="people" id="storybookPeopleSelection">
@@ -523,7 +523,7 @@ export const PeopleSelection = {
       await expect(whatColorOf(emil)).not.toBe(dimColor);
     });
 
-    await step("Selecting a person opens the sidebar and persists without a pointer over the list", async () => {
+    await step("Selecting a person opens the panel and persists without a pointer over the list", async () => {
       await userEvent.click(canvas.getByRole("link", { name: "Rauno Freiberg" }));
       await userEvent.unhover(rauno);
       await expect(document.body).toHaveClass("panel-open");
@@ -545,7 +545,7 @@ export const PeopleSelection = {
 
     await step("Axe passes while the selection is persisted, not just after closing", async () => {
       // The addon's own end-of-play scan only ever sees whatever state play()
-      // finishes in; a violation that exists only in this dimmed, sidebar-open
+      // finishes in; a violation that exists only in this dimmed, panel-open
       // state would otherwise never be caught. Run the scan here explicitly
       // instead of just moving it to the end.
       await expectOnlyA11yDebt(canvasElement, []);
@@ -566,21 +566,19 @@ export const PeopleSelection = {
       await expectOnlyA11yDebt(canvasElement, []);
     });
 
-    // A row hovered next to the persisted selection (mouse on a different,
-    // non-active row while body.panel-open/.row.active hold) is intentionally
-    // not exercised here: @testing-library/user-event's hover() dispatches
-    // synthetic pointer events that do not reliably set real CSS :hover in a
-    // Chromium tab (confirmed independently — a hovered row's dim never
-    // cleared across a 2s poll even though document.elementFromPoint located
-    // the right row). That interplay — active row undimmed, the
-    // actually-hovered row also undimmed, everyone else at --row-dim, axe
-    // clean throughout — is covered deterministically instead by
+    // The pointer over a different, non-active row while the selection holds
+    // is intentionally not exercised here: @testing-library/user-event's
+    // hover() dispatches synthetic pointer events that do not reliably set
+    // real CSS :hover in a Chromium tab, and in production people open #panel
+    // in modal mode (body.panel-modal + #panelWash), so a real pointer over
+    // the list lands on the wash and the row never enters :hover at all. That
+    // interplay — selection owned by body.panel-open/.row.active, pointer
+    // ignored, axe clean throughout — is covered deterministically by
     // tests/ui/people-persistent-selection.test.mjs, which drives real
     // script.js/main.css on the production page with genuine OS-level pointer
-    // movement (Playwright's locator.hover()) and a real axe-core scan taken
-    // mid-hover.
+    // movement and a real axe-core scan taken with the pointer over the list.
 
-    await step("Closing the sidebar restores the normal list state", async () => {
+    await step("Closing the panel restores the normal list state", async () => {
       await userEvent.click(closeButton);
       await expect(document.body).not.toHaveClass("panel-open");
       await expect(emil).not.toHaveClass("active");
@@ -613,7 +611,7 @@ export const SelectedExtraRow = {
 
     const root = patternShell(
       "People — show more + selected extra row",
-      "Where the two features meet: a row that only exists after show more is still a .people .row, so selecting it opens the sidebar, holds --ink while the rest falls to --row-dim, and leaves the list expanded. The enter animation ends at opacity 1 (forwards) and must not fight the opacity: 1 pin that keeps the dim a pure color change.",
+      "Where the two features meet: a row that only exists after show more is still a .people .row, so selecting it opens the panel (a modal in production, only the plan's phases keep the sidebar), holds --ink while the rest falls to --row-dim, and leaves the list expanded. The enter animation ends at opacity 1 (forwards) and must not fight the opacity: 1 pin that keeps the dim a pure color change.",
       `
         <section class="people" id="sbExtraSelection">
           <h2>People</h2>
@@ -713,7 +711,7 @@ export const SelectedExtraRow = {
       await waitFor(() => expect(getComputedStyle(janik).opacity).toBe("1"));
     });
 
-    await step("Selecting a revealed row opens the sidebar like any other row", async () => {
+    await step("Selecting a revealed row opens the panel like any other row", async () => {
       await userEvent.click(canvas.getByRole("link", { name: "floguo" }));
       await userEvent.unhover(floguo);
       await expect(document.body).toHaveClass("panel-open");
@@ -755,7 +753,7 @@ export const SelectedExtraRow = {
     // the row deactivates, and the section collapses, all in the same click.
     // No orphaned panel.
 
-    await step("Closing the sidebar restores the expanded list to its plain state", async () => {
+    await step("Closing the panel restores the expanded list to its plain state", async () => {
       await userEvent.click(closeButton);
       await expect(document.body).not.toHaveClass("panel-open");
       await expect(floguo).not.toHaveClass("active");
