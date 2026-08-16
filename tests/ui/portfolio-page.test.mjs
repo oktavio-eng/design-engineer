@@ -63,8 +63,18 @@ test("/ (portfolio home) renders its collections, opens rows and photos in modal
     return route.fulfill({ status: 204, body: "" });
   });
 
+  // The home plays the intro too since 16/08/2026 (intro.js) — skip it.
+  await page.addInitScript(() => sessionStorage.setItem("intro-shown-v1", "true"));
+
   // 127.0.0.1 counts as localhost, so drafts render here — assert both modes.
   await page.goto(`${server.origin}/`, { waitUntil: "load" });
+  await page.waitForFunction(() => !document.documentElement.classList.contains("intro-playing"));
+  // Releasing the intro is what starts the content stagger, so it is still
+  // running here (before intro.js it had finished by `load`). Let it land
+  // before hovering: Playwright's scroll-into-view misjudges a cell whose
+  // section is mid-`enter`, scrolls the page, and the graph's scroll→hide
+  // cancels the tooltip that is being asserted below.
+  await page.evaluate(() => Promise.all(document.getAnimations().map((a) => a.finished)));
   await page.waitForFunction(() => document.querySelectorAll(".row-btn").length > 0);
   await page.addScriptTag({ path: axeScriptPath });
 
