@@ -16,6 +16,11 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&amp;family=Geist+Mono:wght@100..900&amp;family=Geist+Pixel&amp;display=swap" rel="stylesheet">
 
+<!-- The iPadOS pointer (cursor.mjs) auto-mounts on import; in Storybook the
+     module is imported for its paint function only, so the inventory keeps the
+     OS cursor and the story lays the states out statically. -->
+<script>document.documentElement.dataset.cursorMount = "manual";</script>
+
 <link rel="stylesheet" href="/styles/main.css">
 <link id="storybook-flat-type" rel="stylesheet" href="/styles/experiments/flat-type.css" disabled>
 <script>

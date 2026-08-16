@@ -125,7 +125,7 @@ export function renderGallery(root) {
       // non-square aspect) sit inside the frame instead of filling it.
       const contain = /\.svg(\?|$)/i.test(photo.src) || (photo.width && photo.height && Math.max(photo.width, photo.height) / Math.min(photo.width, photo.height) > 1.6);
       return (
-        '<button class="gallery__item" type="button" data-index="' + i + '" aria-label="' + esc(photo.alt || photo.caption || "Photo") + '"' +
+        '<button class="gallery__item" type="button" data-cursor="ring" data-index="' + i + '" aria-label="' + esc(photo.alt || photo.caption || "Photo") + '"' +
         ' data-lightbox-src="' + esc(photo.src) + '" data-lightbox-alt="' + esc(photo.alt || "") + '" data-lightbox-caption="' + esc(photo.caption || "") + '">' +
         '<span class="gallery__frame"><img class="gallery__img' + (contain ? " gallery__img--contain" : "") + '" src="' + esc(photo.src) + '" alt=""' +
         (photo.width ? ' width="' + photo.width + '"' : "") + (photo.height ? ' height="' + photo.height + '"' : "") +

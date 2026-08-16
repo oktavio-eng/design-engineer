@@ -11,4 +11,9 @@
   --radius-full: 999px;
   --corner-sm: superellipse(1.35);
   --corner-lg: superellipse(1.65);
+  /* iPadOS pointer (cursor.mjs). A target with its own border-radius gets a
+     concentric rect (element radius + pad); a square one falls to
+     --cursor-radius-min; inline links get the tighter inline radius. */
+  --cursor-radius-min: var(--radius-8);
+  --cursor-radius-inline: var(--radius-6);
 }

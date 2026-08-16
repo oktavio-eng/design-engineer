@@ -2578,3 +2578,58 @@ body.mail-open .mail-modal {
   content: " · draft";
   color: var(--faint);
 }
+
+/* ---------------------------------------------------------------------------
+   iPadOS pointer (cursor.mjs, all pages) — the translucent dot that turns
+   into an I-beam over text and into a rounded highlight around whatever it
+   can press. Geometry (transform/width/height/border-radius/opacity) is
+   written inline by the module every frame; this block only owns the look
+   and the two page-level switches. See the header of cursor.mjs for the
+   modes and the gates.
+
+   `html.cursor-on` is set on the first mouse move and hides the OS cursor
+   everywhere. The rule needs enough weight to beat every `cursor:` in this
+   file without `!important` — `!important` would also beat the *native*
+   escape below, and there is no way to un-important a declaration. Three
+   `:not(#\#)` steps borrow id-level specificity without an id existing.
+   `html.cursor-native` (the resize handle and any `[data-cursor="native"]`)
+   simply un-matches the rule, so the element's own `cursor:` shows again. */
+html.cursor-on:not(.cursor-native):not(#\#):not(#\#):not(#\#),
+html.cursor-on:not(.cursor-native):not(#\#):not(#\#):not(#\#) * {
+  cursor: none;
+}
+.ipad-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  width: var(--cursor-size);
+  height: var(--cursor-size);
+  border-radius: var(--radius-full);
+  background: var(--cursor-fill);
+  opacity: 0;
+  pointer-events: none;
+  contain: strict;
+  will-change: transform, width, height, opacity;
+  transition: background-color var(--duration-120) var(--ease);
+}
+.ipad-cursor.is-pressed {
+  background: var(--cursor-fill-pressed);
+}
+.ipad-cursor[data-mode="text"] {
+  background: var(--cursor-stroke);
+}
+/* Ring: outline instead of fill, for image buttons (see cursor.mjs). The
+   stroke lives in a box-shadow so width/height/radius keep animating the
+   same way; the recipe stays literal, only the color is a token. */
+.ipad-cursor[data-mode="ring"] {
+  background: transparent;
+  box-shadow: inset 0 0 0 2px var(--cursor-stroke);
+}
+/* Belt and braces with the module's own matchMedia gates (it never mounts
+   under a coarse pointer or reduced motion): the overlay can't paint there. */
+@media (hover: none), (pointer: coarse), (prefers-reduced-motion: reduce) {
+  .ipad-cursor {
+    display: none;
+  }
+}
