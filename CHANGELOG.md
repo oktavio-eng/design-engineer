@@ -2,6 +2,12 @@
 
 Notable changes to this site, in the order they landed on `main`. Newest first. This is the technical log — for the narrated version, see `/changelog` on the site itself. See `AGENTS.md` for the deeper "why" behind several of these; a few entries below only summarize it.
 
+## 2026-08-15
+
+- Give `changelog.html` and `prompts.html` the same `topbar__nav` (index/changelog/prompts + the "portfólio" coming-soon tag) that `index.html` already had — both pages were missing the primary nav entirely, logo and social icons only. `tests/ui/navigation-pages.test.mjs` now asserts the nav on all three pages and scopes the changelog footer's "Prompts" link so it doesn't collide with the new topbar one.
+- Cap `.prompt-modal` at `min(--space-600, 100vh - --space-96)` (new `--space-600` token) instead of the uncapped `.cmd-modal` height it inherited, and give it the same delicate thin/transparent scrollbar recipe as `.panel` (`--line` thumb, transparent track, `--faint` on hover) — closer to a macOS overlay scrollbar than the browser default. The Wise-inspired prompt (the longest entry) now scrolls internally instead of stretching the sheet down the page; its visual baseline and a height/overflow assertion were updated accordingly.
+- Curate three new prompts into `/prompts` alongside the existing Wise-inspired dashboard one: an animated toast/drawer component brief and a motion-audit brief, both referencing Emil Kowalski's Sonner/Vaul craft, and a minimal typographic landing-page brief referencing Jakub Krehel's portfolio (jakub.kr). `prompts.mjs`, the Storybook story, and the product smoke test were updated together for the new count and to keep the existing single-prompt assertions scoped to the original entry.
+
 ## 2026-08-14
 
 - Redesign `/prompts`: each prompt is now a `.row` that opens a shared `.cmd-wash`/`.cmd-modal` detail surface — same wash, motion curve, Escape handling, and focus restoration as the ⌘K command palette — instead of rendering the full prompt body down the page. The search field switches from a bordered input to a navbar-style pill (`--radius-full`, `--topbar-h`, `--glass-bg`) with an inline Phosphor "X" clear button in gray, replacing the browser's default blue one. Story, product smoke, and the visual matrix moved together; two baselines were regenerated and inspected. (#30, superseded — merged against an already-merged base and never reached `main`; landed for real via #32)

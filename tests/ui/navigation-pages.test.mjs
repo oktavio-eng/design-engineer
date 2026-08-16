@@ -91,12 +91,35 @@ test("page links stay out of homepage scroll-spy and clean URLs keep sibling pag
   await page.goto(`${server.origin}/changelog`, { waitUntil: "domcontentloaded" });
   assert.equal(new URL(page.url()).pathname, "/changelog");
   assert.equal(await page.locator("h1").textContent(), "Changelog");
-  assert.equal(await page.getByRole("link", { name: "Prompts" }).getAttribute("href"), "/prompts");
+  // The topbar now carries its own "prompts" link on this page too (the fix
+  // under test), so the footer's matching "Prompts" link needs scoping to
+  // stay a single match.
+  assert.equal(
+    await page.locator("footer").getByRole("link", { name: "Prompts" }).getAttribute("href"),
+    "/prompts",
+  );
+  const changelogTopbarLinks = page.locator(".topbar__nav a[href^=\"/\"]");
+  assert.deepEqual(await changelogTopbarLinks.allTextContents(), ["index", "changelog", "prompts"]);
+  assert.deepEqual(
+    await changelogTopbarLinks.evaluateAll((links) => links.map((link) => link.getAttribute("href"))),
+    ["/", "/changelog", "/prompts"],
+  );
   await page.setViewportSize({ width: 320, height: 800 });
   assert.equal(
     await page.evaluate(() => document.documentElement.scrollWidth === document.documentElement.clientWidth),
     true,
     "changelog footer navigation does not introduce mobile overflow",
+  );
+
+  await page.setViewportSize({ width: 901, height: 800 });
+  await page.goto(`${server.origin}/prompts`, { waitUntil: "domcontentloaded" });
+  assert.equal(new URL(page.url()).pathname, "/prompts");
+  assert.equal(await page.locator("h1").textContent(), "Prompts");
+  const promptsTopbarLinks = page.locator(".topbar__nav a[href^=\"/\"]");
+  assert.deepEqual(await promptsTopbarLinks.allTextContents(), ["index", "changelog", "prompts"]);
+  assert.deepEqual(
+    await promptsTopbarLinks.evaluateAll((links) => links.map((link) => link.getAttribute("href"))),
+    ["/", "/changelog", "/prompts"],
   );
 
   await page.goto(server.origin, { waitUntil: "domcontentloaded" });

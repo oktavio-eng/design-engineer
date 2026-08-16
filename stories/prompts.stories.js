@@ -83,7 +83,9 @@ export const SearchAndOpen = {
 
     await step("The collection renders as rows, not full entries", async () => {
       await expect(row()).toBeVisible();
-      await expect(canvasElement.querySelector(".prompt-search__status")).toHaveTextContent("1 prompt");
+      await expect(canvasElement.querySelector(".prompt-search__status")).toHaveTextContent(
+        `${PROMPTS.length} ${PROMPTS.length === 1 ? "prompt" : "prompts"}`,
+      );
       await expect(canvasElement.querySelector(".prompt-modal__content")).toBeNull();
       await expectAxeClean(canvasElement);
     });
@@ -152,6 +154,26 @@ export const SearchAndOpen = {
       await expect(modal.inert).toBe(true);
       await expect(row()).toHaveFocus();
       await expectAxeClean(canvasElement);
+    });
+
+    // Coverage for the curated Emil Kowalski-inspired prompt added alongside
+    // the original Wise-inspired one — a second row, opened by pointer this
+    // time, proves the pattern isn't only exercised on PROMPTS[0].
+    await step("A curated Emil Kowalski-inspired prompt opens with its own content", async () => {
+      const emilPrompt = PROMPTS.find((prompt) => prompt.slug === "animated-toast-drawer-kit-emil-kowalski");
+      const emilRow = canvas.getByRole("button", { name: new RegExp(emilPrompt.title) });
+      await userEvent.click(emilRow);
+      await expect(document.body.classList.contains("cmd-detail-open")).toBe(true);
+      await waitFor(async () => {
+        await expect(canvas.getByRole("heading", { level: 2, name: emilPrompt.title })).toBeVisible();
+      });
+      await expect(canvasElement.querySelector(".prompt-modal__content")).toHaveTextContent(
+        "Sonner and Vaul libraries",
+      );
+      await expectAxeClean(canvasElement);
+      await userEvent.keyboard("{Escape}");
+      await expect(document.body.classList.contains("cmd-detail-open")).toBe(false);
+      await expect(emilRow).toHaveFocus();
     });
   },
 };
