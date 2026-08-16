@@ -176,6 +176,30 @@ test("the People list keeps the selected row highlighted while a person's modal 
     false,
   );
 
+  // Real-pointer hover on a page row: the instant fill (no transition), the
+  // 8px bleed past the column, and no neighborhood dim on the other rows —
+  // the jakub.kr row contract (main.css, `main > section .row`).
+  await emil.hover();
+  const hovered = await page.evaluate(() => {
+    const row = document.querySelector('.people .row[data-person="emil"]');
+    const other = document.querySelector('.people .row[data-person="rauno"] .who');
+    const cs = getComputedStyle(row);
+    return {
+      bg: cs.backgroundColor,
+      transition: cs.transitionProperty,
+      marginLeft: parseFloat(cs.marginLeft),
+      textLeft: row.querySelector(".who").getBoundingClientRect().left,
+      sectionLeft: row.closest("section").getBoundingClientRect().left,
+      otherOpacity: getComputedStyle(other).opacity,
+    };
+  });
+  assert.notEqual(hovered.bg, "rgba(0, 0, 0, 0)", "hovered row is filled");
+  assert.doesNotMatch(hovered.transition, /background/, "the fill is instant");
+  assert.ok(hovered.marginLeft < 0, "the fill bleeds past the column");
+  assert.equal(hovered.textLeft, hovered.sectionLeft, "the text column does not move");
+  assert.equal(hovered.otherOpacity, "1", "no neighborhood dim on page rows");
+  await page.mouse.move(0, 0);
+
   // Select rauno, then move the pointer off the whole list — the highlight
   // has to hold on body.panel-open/.row.active alone, not on :hover.
   await rauno.locator("a").click();
