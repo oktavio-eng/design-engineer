@@ -2365,10 +2365,14 @@ body.mail-open .mail-modal {
 .contrib__cell[data-level="3"] { background: var(--contrib-3); }
 .contrib__cell[data-level="4"] { background: var(--contrib-4); }
 /* The hovered cell (JS-driven, so touch taps count too) — a hairline ring in
-   the text color, drawn outside the cell so the fill stays readable. No
+   the card's own border color (`--line`, not the text gray: at 100% it read
+   as a black outline), drawn outside the cell so the fill stays readable. No
    transition on purpose: you sweep across dozens of these per pass. */
+.contrib__grid .contrib__cell[data-date] {
+  cursor: pointer;
+}
 .contrib__cell.is-hover {
-  box-shadow: 0 0 0 var(--border-w) var(--muted);
+  box-shadow: 0 0 0 var(--border-w) var(--line);
 }
 .contrib__tip {
   position: fixed;
