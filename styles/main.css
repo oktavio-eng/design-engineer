@@ -2228,6 +2228,22 @@ body.mail-open .mail-modal {
      green). The grid is `aria-hidden`; the total in the footer is the
      accessible summary. It scrolls sideways below ~600px rather than
      shrinking the cells. `contrib.mjs` fills the grid from a 371-day array.
+   - `.contrib__tip` is the hover readout GitHub gives each cell ("3
+     contributions on Aug 12"), on the site's own tooltip surface — the same
+     recipe as `.gloss-tip` (`--bg`, `--line`, radius 6, `--fs-13`), so the
+     two tooltips on the site read as one. It's ONE element for the whole
+     grid, appended to `<body>` and `position: fixed`, because the card is
+     `overflow: hidden` and the grid scrolls sideways — anchored inside,
+     the top row's tooltip would be clipped. contrib.mjs positions it over
+     the hovered cell (below it when there's no room above) and owns the
+     timing: the first tooltip waits `--tip-delay` and scales in from the
+     cell (0.97 → 1, origin bottom, `--ease-out`, `--tip-in`); while the
+     pointer keeps moving across cells the tooltip just jumps — no delay,
+     no transition (`.contrib__tip--instant`) — and it stays warm for
+     `--tip-warm` after leaving, so coming back is instant too. Hover on a
+     cell that's used dozens of times in one pass is exactly where motion
+     gets out of the way (Emil's rule). The hovered cell gets a 1px ring,
+     also instant. Reduced motion keeps the fade and drops the scale.
 --------------------------------------------------------------------------- */
 .doc-list {
   display: flex;
@@ -2348,6 +2364,68 @@ body.mail-open .mail-modal {
 .contrib__cell[data-level="2"] { background: var(--contrib-2); }
 .contrib__cell[data-level="3"] { background: var(--contrib-3); }
 .contrib__cell[data-level="4"] { background: var(--contrib-4); }
+/* The hovered cell (JS-driven, so touch taps count too) — a hairline ring in
+   the text color, drawn outside the cell so the fill stays readable. No
+   transition on purpose: you sweep across dozens of these per pass. */
+.contrib__cell.is-hover {
+  box-shadow: 0 0 0 var(--border-w) var(--muted);
+}
+.contrib__tip {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: max-content;
+  max-width: var(--space-220);
+  background: var(--bg);
+  border: var(--border-w) solid var(--line);
+  border-radius: var(--radius-6);
+  box-shadow:
+    var(--shadow-glass-core),
+    0 10px 24px var(--shadow-a02);
+  padding: var(--space-6) var(--space-10);
+  font-size: var(--fs-13);
+  line-height: var(--lh-snug);
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(var(--space-4)) scale(0.97);
+  transform-origin: 50% 100%;
+  transition-property: opacity, transform;
+  transition-duration: var(--tip-out);
+  transition-timing-function: var(--ease-out);
+  z-index: 20;
+}
+.contrib__tip strong {
+  color: var(--ink);
+  font-weight: var(--fw-medium);
+}
+.contrib__tip[data-open="true"] {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  transition-duration: var(--tip-in);
+}
+/* Flipped below the cell: it grows down from the cell instead. */
+.contrib__tip[data-side="bottom"] {
+  transform: translateY(calc(-1 * var(--space-4))) scale(0.97);
+  transform-origin: 50% 0;
+}
+.contrib__tip[data-side="bottom"][data-open="true"] {
+  transform: translateY(0) scale(1);
+}
+/* Warm: the pointer moved to a neighbouring cell (or came back within
+   --tip-warm). Jump, don't animate. */
+.contrib__tip.contrib__tip--instant {
+  transition-duration: 0ms;
+}
+@media (prefers-reduced-motion: reduce) {
+  .contrib__tip,
+  .contrib__tip[data-side="bottom"] {
+    transform: none;
+    transition-property: opacity;
+  }
+}
 .contrib__meta {
   display: flex;
   justify-content: space-between;
@@ -2370,7 +2448,8 @@ body.mail-open .mail-modal {
   .doc-icon,
   .doc-icon__page,
   .contrib,
-  .contrib__card {
+  .contrib__card,
+  .contrib__tip {
     corner-shape: var(--corner-sm);
   }
 }
