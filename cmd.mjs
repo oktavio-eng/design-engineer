@@ -27,8 +27,8 @@
 import { PROMPTS, renderPromptDetail, attachPromptCopy } from "/prompts.mjs";
 
 const PAGES = [
-  { name: "The plan", what: "index", href: "/" },
-  { name: "Portfolio", what: "client work, personal projects, life", href: "/portfolio" },
+  { name: "The plan", what: "wiki", href: "/wiki" },
+  { name: "Portfolio", what: "home — client work, personal projects, life", href: "/" },
   { name: "Changelog", what: "what changed, day by day", href: "/changelog" },
   { name: "Prompts", what: "prompts used in real work", href: "/prompts" },
 ];

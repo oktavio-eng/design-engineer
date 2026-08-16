@@ -1,7 +1,7 @@
 /* ---------------------------------------------------------------------------
    Page chrome for every page that isn't the homepage: the theme toggle and
    the topbar that reveals on scroll and hides on idle. changelog.html,
-   prompts.html and portfolio.html load this; index.html gets the same two
+   prompts.html and index.html (the portfolio home) load this; wiki.html gets the same two
    behaviors from script.js (which also wires the homepage-only surfaces —
    see the note in changelog.html for why that file can't just be loaded
    here). Until 16/08/2026 this lived as an inline copy at the bottom of each

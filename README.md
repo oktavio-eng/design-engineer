@@ -9,13 +9,13 @@ Documenta a estratégia, referências de craft, cursos, leituras e o plano de 4 
 Zero-dependency, sem build step:
 
 ```
-index.html            — a home (o plano)
+index.html            — a home: o portfólio (dados em portfolio-content.js, página em portfolio.mjs)
+wiki.html             — /wiki: o plano (era a home até 16/08/2026)
 changelog.html        — /changelog
 prompts.html          — /prompts (dados + página em prompts.mjs)
-portfolio.html        — /portfolio (dados em portfolio-content.js, página em portfolio.mjs)
-content.js            — as coleções da home → window.SITE_CONTENT
+content.js            — as coleções da wiki → window.SITE_CONTENT
 portfolio-content.js  — as coleções do portfólio → window.PORTFOLIO_CONTENT
-script.js             — a interação da home (painel, modais, animações)
+script.js             — a interação da wiki (painel, modais, animações)
 chrome.js             — tema + navbar nas outras páginas
 cmd.mjs               — busca ⌘K, em todas as páginas
 contrib.mjs           — gráfico de contribuições (dados em data/contributions.json)

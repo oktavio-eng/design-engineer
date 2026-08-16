@@ -1,5 +1,5 @@
 /* ---------------------------------------------------------------------------
-   /portfolio — renders the page from window.PORTFOLIO_CONTENT (portfolio-
+   / (index.html, the portfolio home) — renders the page from window.PORTFOLIO_CONTENT (portfolio-
    content.js) and owns the one surface that's new here: the photo lightbox.
 
    What it does NOT own: opening a project's detail. Clicking a client /
