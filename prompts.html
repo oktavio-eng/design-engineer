@@ -42,7 +42,7 @@
 <link rel="stylesheet" href="/styles/experiments/flat-type.css">
 </head>
 <body class="prompts-page">
-<header class="topbar visible" aria-hidden="false">
+<header class="topbar" aria-hidden="true" inert>
   <a href="/" class="topbar__logo" aria-label="Home">
     <svg width="44" height="56" viewBox="0 0 44 56" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <path d="M22.2308 41.1974C33.2757 41.1974 42.2294 44.2682 42.2296 48.0565C42.2296 51.8448 33.2759 54.9158 22.2308 54.9158C11.1857 54.9158 2.23175 51.8448 2.23175 48.0565C2.23194 44.2682 11.1858 41.1974 22.2308 41.1974Z" fill="black"/>
@@ -138,6 +138,56 @@
     if (media.addEventListener) media.addEventListener("change", followSystemTheme);
     else if (media.addListener) media.addListener(followSystemTheme);
   }
+})();
+
+/* Small local equivalent of script.js's topbar reveal block (see index.html's
+   loaded script around the topbar/NAV_IDLE_MS/showNav functions) — same
+   reasoning as the theme-toggle block above for keeping this local instead of
+   loading script.js wholesale. Matches index.html's behavior: the bar starts
+   hidden (see the un-"visible" markup above), appears on the first scroll,
+   and hides again after 1200ms without scrolling or hovering it; hovering
+   the bar itself holds it open indefinitely.
+   One addition beyond script.js's version: `inert` is toggled alongside
+   `aria-hidden`, the same pairing `.prompt-modal`/`.cmd-modal` already use
+   while closed elsewhere on this site. Without it, the logo/nav/theme links
+   inside the hidden bar stay real Tab stops — invisible and non-interactive
+   to a pointer, but still reachable by keyboard, an aria-hidden-focus trap.
+   `<header>` (this page's topbar element) makes axe catch that; a plain
+   `<div>` apparently doesn't in the same run, which is likely why it hasn't
+   surfaced on index.html's version. */
+(function () {
+  var topbar = document.querySelector(".topbar");
+  if (!topbar) return;
+  var NAV_IDLE_MS = 1200;
+  var navIdleTimer = null;
+  var navHovering = false;
+  function scheduleNavIdle() {
+    clearTimeout(navIdleTimer);
+    if (navHovering) return;
+    navIdleTimer = setTimeout(function () {
+      topbar.classList.remove("visible");
+      topbar.setAttribute("aria-hidden", "true");
+      topbar.inert = true;
+    }, NAV_IDLE_MS);
+  }
+  function showNav() {
+    topbar.inert = false;
+    topbar.classList.add("visible");
+    topbar.setAttribute("aria-hidden", "false");
+    scheduleNavIdle();
+  }
+  window.addEventListener("scroll", showNav, { passive: true });
+  topbar.addEventListener("mouseenter", function () {
+    navHovering = true;
+    clearTimeout(navIdleTimer);
+    topbar.inert = false;
+    topbar.classList.add("visible");
+    topbar.setAttribute("aria-hidden", "false");
+  });
+  topbar.addEventListener("mouseleave", function () {
+    navHovering = false;
+    scheduleNavIdle();
+  });
 })();
 </script>
 <script type="module" src="/prompts.mjs"></script>

@@ -129,3 +129,68 @@ test("page links stay out of homepage scroll-spy and clean URLs keep sibling pag
   assert.deepEqual(consoleErrors, []);
   assert.deepEqual(failedResponses, []);
 });
+
+async function topbarState(page) {
+  return page.evaluate(() => {
+    const topbar = document.querySelector(".topbar");
+    return {
+      visible: topbar.classList.contains("visible"),
+      ariaHidden: topbar.getAttribute("aria-hidden"),
+      inert: topbar.inert,
+    };
+  });
+}
+
+for (const routePath of ["/changelog", "/prompts"]) {
+  test(`${routePath}'s topbar reveals on scroll and hides on idle, matching index.html`, { timeout: 30_000 }, async (context) => {
+    const server = await serveDirectory(repositoryRoot);
+    const browser = await launchChromium();
+    context.after(async () => {
+      await browser.close();
+      await server.close();
+    });
+
+    const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+    const pageErrors = [];
+    page.on("pageerror", (error) => pageErrors.push(error.message));
+
+    await page.goto(`${server.origin}${routePath}`, { waitUntil: "domcontentloaded" });
+
+    // Starts hidden — no "visible" class, aria-hidden, and inert so its real
+    // links can't be Tab-reached while invisible (the aria-hidden-focus trap
+    // axe caught before `inert` was added here).
+    assert.deepEqual(await topbarState(page), { visible: false, ariaHidden: "true", inert: true }, "initial state");
+
+    await page.evaluate(() => window.dispatchEvent(new Event("scroll")));
+    assert.deepEqual(
+      await topbarState(page),
+      { visible: true, ariaHidden: "false", inert: false },
+      "revealed on scroll",
+    );
+    await page.locator(".topbar__logo").waitFor({ state: "visible" });
+
+    await page.waitForTimeout(1500);
+    assert.deepEqual(await topbarState(page), { visible: false, ariaHidden: "true", inert: true }, "hidden after idle");
+
+    // Hovering the bar itself holds it open past the idle window…
+    await page.evaluate(() => window.dispatchEvent(new Event("scroll")));
+    await page.hover(".topbar__logo");
+    await page.waitForTimeout(1500);
+    assert.deepEqual(
+      await topbarState(page),
+      { visible: true, ariaHidden: "false", inert: false },
+      "stays visible while hovered, even past the idle window",
+    );
+
+    // …and releasing it lets the idle timer hide it again.
+    await page.mouse.move(640, 700);
+    await page.waitForTimeout(1500);
+    assert.deepEqual(
+      await topbarState(page),
+      { visible: false, ariaHidden: "true", inert: true },
+      "hides again after the pointer leaves and the idle window elapses",
+    );
+
+    assert.deepEqual(pageErrors, []);
+  });
+}

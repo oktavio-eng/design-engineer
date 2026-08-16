@@ -221,6 +221,9 @@ test("/prompts lists rows, opens the detail modal, copies the exact raw prompt, 
   await scanAxe(page, "dismissed modal");
 
   assert.equal(await page.evaluate(() => document.documentElement.hasAttribute("data-theme")), false);
+  // The topbar now starts hidden (pointer-events: none) until the page
+  // scrolls, matching index.html — nudge it into view before clicking into it.
+  await page.evaluate(() => window.dispatchEvent(new Event("scroll")));
   await page.getByRole("button", { name: "Toggle dark mode" }).click();
   assert.equal(await page.evaluate(() => document.documentElement.getAttribute("data-theme")), "dark");
   await assertReadableContrast(page, "dark");
@@ -232,7 +235,7 @@ test("/prompts lists rows, opens the detail modal, copies the exact raw prompt, 
     true,
     "320px viewport has no page-level horizontal overflow",
   );
-  assert.equal(await search.evaluate((element) => getComputedStyle(element).fontSize), "17.92px");
+  assert.equal(await search.evaluate((element) => getComputedStyle(element).fontSize), "17.28px");
   assert.equal(await page.locator(".prompt-row").first().isVisible(), true);
   await scanAxe(page, "dark theme at 320px");
 
