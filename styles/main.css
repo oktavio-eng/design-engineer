@@ -31,8 +31,11 @@ body {
     padding-top: var(--space-60);
   }
 }
+/* 640px, not 560: at one 16px size the measure is ~40em — emilkowal.ski's
+   column is 644px on the same type, and it's what lets prose breathe and the
+   two-column plan hold a readable line. Measured, not guessed (16/08/2026). */
 main {
-  max-width: var(--space-560);
+  max-width: var(--space-640);
   margin-inline: auto;
 }
 ::selection {
@@ -44,12 +47,26 @@ h1 {
   font-weight: var(--fw-semibold);
   letter-spacing: var(--ls-tight);
 }
+/* Section rhythm follows the emilkowal.ski measurement (16/08/2026): 128px
+   between sections, 24px title → prose, 16px title → list. Sections used to
+   sit 72px apart and it was the single biggest reason the page read as
+   crammed — everything else in this pass is a step or two on the scale. */
 h2 {
   font-size: var(--fs-15);
   font-weight: var(--fw-semibold);
   letter-spacing: var(--ls-tight);
-  margin-top: var(--space-72);
-  margin-bottom: var(--space-20);
+  margin-top: var(--space-128);
+  margin-bottom: var(--space-24);
+}
+/* Rows carry their own top padding, so the title sits closer to a list than
+   to a paragraph — same optical distance to the first line of text either way. */
+section:has(> h2 + .row) > h2 {
+  margin-bottom: var(--space-8);
+}
+@media (max-width: 560px) {
+  h2 {
+    margin-top: var(--space-64);
+  }
 }
 h3 {
   font-size: var(--fs-15);
@@ -119,7 +136,7 @@ a:active {
   justify-content: space-between;
   align-items: baseline;
   gap: var(--space-16);
-  padding: var(--space-10) 0;
+  padding: var(--space-12) 0;
   border-bottom: var(--border-w) solid var(--line);
   cursor: pointer;
   overflow-x: clip;
@@ -244,7 +261,7 @@ section:has(.row:hover) .row:not(:hover) > *,
   background: 0 0;
   border: none;
   padding: 0;
-  margin-top: var(--space-12);
+  margin-top: var(--space-16);
   font-family: inherit;
   font-size: var(--fs-13);
   color: var(--faint);
@@ -270,8 +287,8 @@ section:has(.row:hover) .row:not(:hover) > *,
 .phases {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  column-gap: var(--space-40);
-  row-gap: var(--space-40);
+  column-gap: var(--space-48);
+  row-gap: var(--space-48);
 }
 @media (max-width: 560px) {
   .phases {
@@ -313,7 +330,7 @@ section:has(.row:hover) .row:not(:hover) > *,
 }
 .phase li {
   color: var(--muted);
-  margin-bottom: var(--space-6);
+  margin-bottom: var(--space-10);
   text-wrap: pretty;
   cursor: pointer;
   transition-property: color, opacity;
@@ -335,7 +352,7 @@ section:has(.row:hover) .row:not(:hover) > *,
   color: var(--muted);
 }
 footer {
-  margin-top: var(--space-96);
+  margin-top: var(--space-128);
   padding-top: var(--space-24);
   color: var(--faint);
   display: flex;
@@ -1321,7 +1338,7 @@ body.about-open .about-modal {
   display: flex;
   align-items: center;
   gap: var(--space-12);
-  margin-bottom: var(--space-28);
+  margin-bottom: var(--space-32);
 }
 .profile__avatar {
   width: var(--space-57);

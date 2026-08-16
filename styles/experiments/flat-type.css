@@ -1,10 +1,18 @@
 /* ===========================================================================
-   EXPERIMENTO — tipografia plana (05/08/2026)
+   EXPERIMENTO — tipografia plana (05/08/2026; recalibrada em 16/08/2026)
 
-   Um tamanho só, um peso só. Toda a hierarquia passa a ser carregada por tom
-   de cinza, espaço e ritmo — nada de escala, nada de peso. É uma pergunta de
-   craft ("o documento se sustenta sem os dois eixos mais óbvios?"), não um
-   estado estável do design system.
+   Um tamanho só. A hierarquia passa a ser carregada por tom de cinza, espaço,
+   ritmo — e, desde 16/08, por UM degrau de peso nos títulos. É uma pergunta de
+   craft ("o documento se sustenta sem escala tipográfica?"), não um estado
+   estável do design system.
+
+   Revisão de 16/08/2026 — calibração contra emilkowal.ski, medida em Chrome
+   real (não a olho): Emil roda um tamanho só (16px) mas NÃO um peso só —
+   corpo e títulos de item em 400, títulos de seção e nome em 500. O achatamento
+   total de peso (460 em tudo, versão de 05/08) tirava um eixo que ele mantém,
+   e o 1.08rem/460 sobre uma coluna de 560px lia mais cheio do que a página
+   dele. Então: 1rem (16px), corpo 400, títulos 500 — os mesmos números dele.
+   A coluna subiu junto pra 640px em main.css (medida ≈ 40em, a dele é 644).
 
    COMO REVERTER: apague a linha
 
@@ -23,48 +31,48 @@
 :root {
   /* A escala inteira colapsa num degrau só. Os nomes ficam (`--fs-11` etc.)
      porque `main.css` os consome por toda parte — o experimento é achatar os
-     valores, não reescrever os pontos de consumo. */
-  --fs-11: 1.08rem;
-  --fs-12: 1.08rem;
-  --fs-13: 1.08rem;
-  --fs-14: 1.08rem;
-  --fs-15: 1.08rem;
-  --fs-16: 1.08rem;
+     valores, não reescrever os pontos de consumo. 1rem = 16px, o mesmo do
+     Emil (era 1.08rem até 16/08/2026 — ver o cabeçalho). */
+  --fs-11: 1rem;
+  --fs-12: 1rem;
+  --fs-13: 1rem;
+  --fs-14: 1rem;
+  --fs-15: 1rem;
+  --fs-16: 1rem;
 
-  /* E os três pesos viram um. 460, e não 500, porque Geist entra pelo Google
-     Fonts como variável de verdade (`font-weight: 100 900` no `@font-face`):
-     qualquer número do intervalo é uma instância real, interpolada no eixo
-     `wght`, não um peso sintetizado — o `font-synthesis: none` do `body`
-     recusaria o falso de qualquer jeito. 460 fica um fio abaixo do medium e
-     tira do texto corrido o peso a mais que 500 deixava numa página inteira
-     sem contraste de tamanho. */
-  --fw-regular: 460;
-  --fw-medium: 460;
-  --fw-semibold: 460;
+  /* Dois pesos, não um: 400 pro corpo e pra tudo que `main.css` marca como
+     regular/medium (nome na linha, label, status — no Emil o título de um item
+     é 400 preto contra a descrição 400 cinza, e é o bastante), e 500 só onde
+     `main.css` pede semibold (h1, h2, h3 das fases, títulos de painel/modal,
+     nome no perfil). É o par exato do site dele. Geist entra pelo Google Fonts
+     como variável (`font-weight: 100 900`), então 500 é instância real. */
+  --fw-regular: 400;
+  --fw-medium: 400;
+  --fw-semibold: 500;
 
-  /* Sem tamanho e sem peso, o cinza é o único eixo que sobrou — e a rampa
-     original foi calibrada para dividir o trabalho com os outros dois. `--ink`
+  /* Sem tamanho, o cinza continua sendo o eixo principal — e a rampa
+     original foi calibrada para dividir o trabalho com escala e peso. `--ink`
      fica onde estava (título/nome/link) e `--faint` também (meta: status,
      label, numeração, footer); o degrau do meio desce de 0.52 pra 0.48 para
-     abrir a distância até `--faint` e deixar os três níveis lidos de relance.
-     De quebra o texto corrido ganha contraste em vez de perder: ~5.3:1 contra
-     o fundo, onde antes eram ~4.6:1. */
+     abrir a distância até `--faint` e deixar os três níveis lidos de relance
+     (o cinza do Emil, rgb(99,99,94), fica em L≈0.49 — mesmo lugar). De quebra
+     o texto corrido ganha contraste: ~5.3:1 contra o fundo, antes ~4.6:1. */
   --muted: oklch(0.48 0 0);
 }
 
-/* Achatar `--fw-*` não basta: `main.css` só declara `font-weight` onde queria
-   subir do normal, então a maior parte do texto nunca passa por um token — cai
-   no `normal` (400) que o browser herda. O peso único tem que nascer no `body`,
-   de onde todo mundo herda, e os tokens acima cuidam de quem redeclara. */
+/* O peso de corpo nasce no `body`, de onde todo mundo herda; os tokens acima
+   cuidam de quem redeclara. Hoje é 400 (= o `normal` do browser), então a
+   regra parece redundante — fica porque é o ponto único de decisão: se o
+   corpo voltar a subir, é aqui que muda, não em cem seletores. */
 body {
-  font-weight: var(--fw-medium);
+  font-weight: var(--fw-regular);
 }
 
 /* Controles de formulário não herdam tipografia do documento — o UA stylesheet
    planta `font: 400 <tamanho> <família>` neles. `main.css` já reescreve família
-   e tamanho um a um (`font-family: inherit`), mas nunca precisou tocar no peso,
-   porque 400 era mesmo o peso de corpo. Agora que não é, o `.see-more` ficava
-   sozinho em regular no meio da página. */
+   e tamanho um a um (`font-family: inherit`), mas nunca precisou tocar no peso.
+   Herdar mantém o `.see-more` e o input do palette no mesmo peso do texto ao
+   redor, hoje e se o corpo mudar de novo. */
 button,
 input,
 textarea,
@@ -72,10 +80,10 @@ select {
   font-weight: inherit;
 }
 
-/* Com 17.28px o nome de uma pessoa deixa de caber na linha do palette e quebra
-   em duas, empurrando a altura do item. A peça desenhada pra ceder ali é o
-   `.what` do lado (já tem `flex-shrink` e ellipsis) — só faltava dizer que o
-   nome não cede. Mora aqui, e não em `main.css`, porque o aperto é do
+/* Num tamanho só, o nome de uma pessoa pode não caber na linha do palette e
+   quebrar em duas, empurrando a altura do item. A peça desenhada pra ceder ali
+   é o `.what` do lado (já tem `flex-shrink` e ellipsis) — só faltava dizer que
+   o nome não cede. Mora aqui, e não em `main.css`, porque o aperto é do
    experimento: em 15px a linha cabia inteira. */
 .cmd__item > span:first-child {
   flex-shrink: 0;

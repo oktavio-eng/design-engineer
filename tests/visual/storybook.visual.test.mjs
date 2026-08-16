@@ -156,7 +156,10 @@ async function assertContracts(page, visualCase) {
   assert.match(contracts.transitionDuration, /^(0s)(, 0s)*$/);
   if (visualCase.story === "foundations--typography") {
     assert.match(contracts.fontFamily, /Geist/);
-    if (visualCase.flatType === "on") assert.equal(contracts.fontWeight, "460");
+    // Flat type's body weight: 400 since the 16/08/2026 recalibration against
+    // emilkowal.ski (was 460). The contract is "flat type is really applied to
+    // the sample", so it pins the value the layer declares.
+    if (visualCase.flatType === "on") assert.equal(contracts.fontWeight, "400");
   }
 }
 
