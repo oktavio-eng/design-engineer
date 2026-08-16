@@ -1,5 +1,5 @@
 import { expect, waitFor } from "storybook/test";
-import { renderContributions, levelFor, thresholdsFor } from "../contrib.mjs";
+import { renderContributions, levelFor, thresholdsFor, tipMarkup } from "../contrib.mjs";
 
 /**
  * Portfolio components — built ahead of the page they're for (PORTFOLIO.md).
@@ -161,6 +161,61 @@ export const Contributions = {
     await expect(levelFor(0, [1, 2, 3])).toBe(0);
     await expect(levelFor(4, [1, 2, 3])).toBe(4);
     await expect(thresholdsFor([])).toEqual([0, 0, 0]);
+    // The readout copy: count in ink, date muted, year only when it isn't this one.
+    await expect(tipMarkup("2026-08-12", 3, new Date("2026-08-16"))).toBe("<strong>3 contributions</strong> on Aug 12");
+    await expect(tipMarkup("2025-12-01", 1, new Date("2026-08-16"))).toBe("<strong>1 contribution</strong> on Dec 1, 2025");
+    await expect(tipMarkup("2026-01-04", 0, new Date("2026-08-16"))).toBe("<strong>No contributions</strong> on Jan 4");
+  },
+};
+
+/* Hover readout — one shared `.contrib__tip` that follows the pointer.
+   The first cell waits `--tip-delay` and animates in; the next cell is
+   instant (`.contrib__tip--instant`); leaving hides it. The tip lives in
+   <body>, so the story reads it from document, not the canvas. */
+export const ContributionsHover = {
+  render: () => {
+    const root = shell(
+      "Contributions — hover",
+      "Hover a cell: the first tooltip waits a beat and scales in from the cell; sweeping to the next cell swaps it instantly, no delay and no animation; the hovered cell wears a 1px ring. Leaving the grid fades it out.",
+      `<h2 class="sb-pattern__title">Contributions</h2>${contribShell()}`,
+    );
+    renderContributions(root.querySelector("[data-contrib]"), sampleYear());
+    return root;
+  },
+  play: async ({ canvasElement, userEvent }) => {
+    const cells = [...canvasElement.querySelectorAll(".contrib__grid .contrib__cell[data-date]")];
+    // Real cells carry the data the tooltip reads; no native title to double it.
+    await expect(cells[0].title).toBe("");
+    const a = cells[cells.length - 60];
+    const b = cells[cells.length - 59];
+    const tip = () => document.querySelector(".contrib__tip");
+
+    await userEvent.hover(a);
+    await expect(a).toHaveClass("is-hover");
+    // Not yet: the first tooltip waits --tip-delay.
+    await expect(tip()?.dataset.open ?? "false").toBe("false");
+    await waitFor(() => expect(tip()).toHaveAttribute("data-open", "true"), { timeout: 1500 });
+    await expect(tip()).not.toHaveClass("contrib__tip--instant");
+    await expect(tip().textContent).toBe(tipMarkup(a.dataset.date, Number(a.dataset.count)).replace(/<[^>]+>/g, ""));
+    await expect(tip()).toHaveAttribute("aria-hidden", "true");
+    // Sits above the cell, centered on it (unless clamped to the viewport).
+    const tr = tip().getBoundingClientRect();
+    const ar = a.getBoundingClientRect();
+    await expect(tr.bottom).toBeLessThanOrEqual(ar.top);
+
+    // The next cell is instant: no delay, no transition, ring moves with it.
+    await userEvent.hover(b);
+    await expect(tip()).toHaveClass("contrib__tip--instant");
+    await expect(tip()).toHaveAttribute("data-open", "true");
+    await expect(tip().textContent).toBe(tipMarkup(b.dataset.date, Number(b.dataset.count)).replace(/<[^>]+>/g, ""));
+    await expect(getComputedStyle(tip()).transitionDuration).toBe("0s");
+    await expect(b).toHaveClass("is-hover");
+    await expect(a).not.toHaveClass("is-hover");
+
+    // Leaving hides it and drops the ring.
+    await userEvent.unhover(b);
+    await waitFor(() => expect(tip()).toHaveAttribute("data-open", "false"));
+    await expect(b).not.toHaveClass("is-hover");
   },
 };
 

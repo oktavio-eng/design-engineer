@@ -49,4 +49,22 @@
      beat are different moments and don't have to move together. */
   --intro-mark-hold: var(--duration-150);
   --intro-out: var(--duration-500);
+
+  /* Contribution-graph tooltip (`.contrib__tip`, driven by contrib.mjs, which
+     reads these back through getComputedStyle like the intro does). Four
+     numbers, all existing steps of the scale:
+     - --tip-delay: the wait before the FIRST tooltip shows, so brushing past
+       the graph doesn't flash one. Shorter than a text tooltip's would be —
+       the graph is something you scan on purpose.
+     - --tip-warm: after the pointer leaves the grid, how long the tooltip
+       stays "warm". Inside that window (and while moving cell to cell) the
+       next tooltip is instant — no delay, no animation. That's the whole
+       trick: one animated entrance, then the graph reads as one continuous
+       readout under the cursor, not 371 tiny popovers.
+     - --tip-in / --tip-out: the one entrance and the exit. Exit is faster
+       than entrance, as it should be. */
+  --tip-delay: var(--duration-250);
+  --tip-warm: var(--duration-320);
+  --tip-in: var(--duration-150);
+  --tip-out: var(--duration-120);
 }

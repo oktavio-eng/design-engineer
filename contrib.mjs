@@ -23,6 +23,16 @@
    refreshes with a scheduled GitHub Action is the plan — the site has no
    server, and GitHub's contribution calendar isn't reachable from a browser
    without a token). This module only knows how to draw an array.
+
+   Hover readout: each cell carries `data-date`/`data-count` and the grid
+   gets ONE shared `.contrib__tip` (appended to <body>, position: fixed —
+   see the `.contrib*` block in main.css for why it lives outside the card)
+   that follows the pointer from cell to cell. Timing comes from the
+   `--tip-*` tokens in tokens/motion.css, read back through getComputedStyle:
+   the first tooltip waits `--tip-delay` and animates in; moving between
+   cells (or coming back within `--tip-warm`) is instant. The cells stay
+   aria-hidden — the footer total is the accessible summary — so the tip
+   is decorative-for-sighted-pointer-users, like GitHub's own.
 --------------------------------------------------------------------------- */
 
 const WEEKS = 53;
@@ -72,7 +82,8 @@ export function renderContributions(root, days, options = {}) {
     cell.className = "contrib__cell";
     if (day) {
       cell.dataset.level = String(levelFor(day.count, thresholds));
-      cell.title = `${day.count} contribution${day.count === 1 ? "" : "s"} on ${day.date}`;
+      cell.dataset.date = day.date;
+      cell.dataset.count = String(day.count);
     } else {
       cell.style.visibility = "hidden";
     }
@@ -86,5 +97,129 @@ export function renderContributions(root, days, options = {}) {
       ? options.label(total)
       : `${formatTotal(total)} contribution${total === 1 ? "" : "s"} in the last year`;
   }
+  if (options.tooltip !== false) attachContribTooltip(grid);
   return { total, thresholds };
+}
+
+/* ---------------------------------------------------------------- tooltip */
+
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+// "3 contributions on Aug 12" — the year only when it isn't this one, since
+// the graph always spans two calendar years and the older half needs it.
+export function tipMarkup(date, count, now = new Date()) {
+  const [y, m, d] = date.split("-").map(Number);
+  const when = `${MONTHS[m - 1]} ${d}${y === now.getFullYear() ? "" : `, ${y}`}`;
+  const n = count === 0 ? "No" : count.toLocaleString("en-US");
+  return `<strong>${n} contribution${count === 1 ? "" : "s"}</strong> on ${when}`;
+}
+
+const GAP = 8; // cell → tooltip, and tooltip → viewport edge
+let tip = null;
+function tipEl() {
+  if (tip && tip.isConnected) return tip;
+  tip = document.createElement("div");
+  tip.className = "contrib__tip";
+  tip.setAttribute("aria-hidden", "true");
+  tip.dataset.open = "false";
+  document.body.appendChild(tip);
+  return tip;
+}
+
+function ms(name) {
+  const value = getComputedStyle(document.documentElement).getPropertyValue(name);
+  return parseFloat(value) || 0;
+}
+
+export function attachContribTooltip(grid) {
+  if (!grid || grid.dataset.tipWired) return;
+  grid.dataset.tipWired = "true";
+
+  let current = null; // the hovered cell
+  let warm = false; // a tooltip showed recently → next one is instant
+  let showTimer = 0;
+  let warmTimer = 0;
+
+  const place = (cell) => {
+    const el = tipEl();
+    el.innerHTML = tipMarkup(cell.dataset.date, Number(cell.dataset.count));
+    const r = cell.getBoundingClientRect();
+    // Measure at the position it will occupy: max-content width, so this
+    // is stable regardless of where it lands.
+    const w = el.offsetWidth;
+    const h = el.offsetHeight;
+    const above = r.top - GAP - h >= GAP;
+    el.dataset.side = above ? "top" : "bottom";
+    const top = above ? r.top - GAP - h : r.bottom + GAP;
+    const centered = r.left + r.width / 2 - w / 2;
+    const left = Math.max(GAP, Math.min(centered, window.innerWidth - GAP - w));
+    el.style.top = `${Math.round(top)}px`;
+    el.style.left = `${Math.round(left)}px`;
+  };
+
+  const show = (cell, instant) => {
+    const el = tipEl();
+    el.classList.toggle("contrib__tip--instant", instant);
+    place(cell);
+    // Force the position to land before the opacity flips, otherwise the
+    // entrance transition would also animate from the last spot.
+    void el.offsetWidth;
+    el.dataset.open = "true";
+    warm = true;
+    clearTimeout(warmTimer);
+  };
+
+  const hide = () => {
+    clearTimeout(showTimer);
+    if (tip) {
+      tip.classList.remove("contrib__tip--instant");
+      tip.dataset.open = "false";
+    }
+    if (current) current.classList.remove("is-hover");
+    current = null;
+    // Stay warm a beat so a pointer that grazes out and back doesn't wait.
+    clearTimeout(warmTimer);
+    warmTimer = setTimeout(() => {
+      warm = false;
+    }, ms("--tip-warm"));
+  };
+
+  const enter = (cell) => {
+    if (cell === current) return;
+    if (current) current.classList.remove("is-hover");
+    current = cell;
+    cell.classList.add("is-hover");
+    clearTimeout(showTimer);
+    if (warm) {
+      show(cell, true);
+    } else {
+      showTimer = setTimeout(() => {
+        if (current === cell) show(cell, false);
+      }, ms("--tip-delay"));
+    }
+  };
+
+  const cellFrom = (target) => {
+    const cell = target instanceof Element ? target.closest(".contrib__cell") : null;
+    return cell && cell.dataset.date ? cell : null;
+  };
+
+  // Only cells count. In the 2px gaps between them the target is the grid
+  // itself — the current tooltip stays put until the next cell or leave,
+  // otherwise it would blink on every crossing.
+  grid.addEventListener("pointerover", (event) => {
+    const cell = cellFrom(event.target);
+    if (cell) enter(cell);
+  });
+  grid.addEventListener("pointerleave", hide);
+  // Touch: a tap on a cell shows it (pointerover fires), a tap anywhere else
+  // hides it. Mouse users never reach this branch with a tooltip open —
+  // pointerleave already closed it.
+  document.addEventListener("pointerdown", (event) => {
+    if (current && !grid.contains(event.target)) hide();
+  });
+  // The graph scrolls sideways on narrow screens and the page scrolls
+  // under a fixed tooltip: either moves the cell out from under it.
+  grid.addEventListener("scroll", hide, { passive: true });
+  window.addEventListener("scroll", hide, { passive: true });
 }

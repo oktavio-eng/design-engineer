@@ -84,6 +84,22 @@ test("/portfolio renders its collections, opens rows and photos in modals, and s
     `${data.total.toLocaleString("en-US")} contribution${data.total === 1 ? "" : "s"} in the last year`,
   );
 
+  // Hover readout on the graph: the first tooltip waits, then shows the day's
+  // count; sweeping to the next cell is instant; leaving hides it.
+  const cellA = page.locator(".contrib__grid .contrib__cell[data-date]").nth(200);
+  const cellB = page.locator(".contrib__grid .contrib__cell[data-date]").nth(201);
+  const tipLocator = page.locator(".contrib__tip");
+  await cellA.hover();
+  await page.waitForFunction(() => document.querySelector(".contrib__tip")?.dataset.open === "true");
+  const [dateA, countA] = await cellA.evaluate((c) => [c.dataset.date, Number(c.dataset.count)]);
+  assert.match(await tipLocator.textContent(), new RegExp(`^${countA === 0 ? "No" : countA} contributions? on `), `tip reads ${dateA}`);
+  assert.equal(await tipLocator.getAttribute("aria-hidden"), "true", "tip is decorative; the total is the summary");
+  await cellB.hover();
+  assert.equal(await tipLocator.evaluate((t) => t.classList.contains("contrib__tip--instant")), true, "second cell is instant");
+  assert.equal(await cellB.evaluate((c) => c.classList.contains("is-hover")), true);
+  await page.mouse.move(0, 0);
+  await page.waitForFunction(() => document.querySelector(".contrib__tip")?.dataset.open === "false");
+
   // Writing rows are buttons with the doc icon (icon decorative) that open
   // the shared modal in place — never a navigation.
   assert.equal(await page.locator(".doc-list .doc-item").count(), 3);
