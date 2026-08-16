@@ -187,6 +187,12 @@ test("the People list keeps the selected row highlighted while a person's modal 
   // pointer, so nothing on the page behind it can be hovered or clicked.
   assert.equal(await page.evaluate(() => document.body.classList.contains("panel-modal")), true, "people open in modal mode");
   assert.equal(await page.locator("#panelWash").getAttribute("aria-hidden"), "false", "the wash is exposed while the modal is open");
+  // Playwright's click scrolled rauno into view minimally, which can leave
+  // jakub (two rows down) just below the fold — and elementFromPoint returns
+  // null for a point outside the viewport. Bring the probed row on screen
+  // first; the wash is fixed and full-viewport, so scrolling changes nothing
+  // about what's being asserted.
+  await jakub.scrollIntoViewIfNeeded();
   const jakubBox = await jakub.boundingBox();
   // Probe near the row's left edge, clear of the centered modal itself, so
   // the only thing between the pointer and the row is the wash.
