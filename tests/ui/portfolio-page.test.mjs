@@ -71,7 +71,7 @@ test("/portfolio renders its collections, opens rows and photos in modals, and s
   const sections = await page.evaluate(() =>
     [...document.querySelectorAll("main > section[id]")].map((s) => `${s.id}${s.hidden ? ":hidden" : ""}`),
   );
-  assert.deepEqual(sections, ["positioning", "writing", "contributions", "clients", "personal", "life", "gallery"]);
+  assert.deepEqual(sections, ["positioning", "contributions", "writing", "clients", "personal", "life", "gallery"]);
   assert.equal(await page.locator('[data-list="clients"] .row--draft').count(), 3, "drafts show on localhost");
 
   // Contribution graph: real data file, one cell per day plus the Sunday pad,
@@ -84,9 +84,17 @@ test("/portfolio renders its collections, opens rows and photos in modals, and s
     `${data.total.toLocaleString("en-US")} contribution${data.total === 1 ? "" : "s"} in the last year`,
   );
 
-  // Writing rows are links with the doc icon; icon is decorative.
+  // Writing rows are buttons with the doc icon (icon decorative) that open
+  // the shared modal in place — never a navigation.
   assert.equal(await page.locator(".doc-list .doc-item").count(), 3);
   assert.equal(await page.locator(".doc-list .doc-icon").first().getAttribute("aria-hidden"), "true");
+  await page.locator('[data-open="writing:changelog"]').click();
+  await page.waitForFunction(() => document.body.classList.contains("cmd-detail-open"));
+  assert.equal(new URL(page.url()).pathname, "/portfolio", "writing opens in a modal, not another page");
+  assert.equal(await page.locator("#cmdModal h3").textContent(), "Changelog, as a habit");
+  assert.equal(await page.locator('#cmdModal a[href="/changelog"]').count(), 1, "the modal carries the link to read it");
+  await page.keyboard.press("Escape");
+  await page.waitForFunction(() => !document.body.classList.contains("cmd-detail-open"));
 
   await scanAxe(page, "portfolio, resting");
 
