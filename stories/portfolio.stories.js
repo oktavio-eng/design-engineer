@@ -1,4 +1,4 @@
-import { expect } from "storybook/test";
+import { expect, waitFor } from "storybook/test";
 import { renderContributions, levelFor, thresholdsFor } from "../contrib.mjs";
 
 /**
@@ -161,5 +161,70 @@ export const Contributions = {
     await expect(levelFor(0, [1, 2, 3])).toBe(0);
     await expect(levelFor(4, [1, 2, 3])).toBe(4);
     await expect(thresholdsFor([])).toEqual([0, 0, 0]);
+  },
+};
+
+// ---- Gallery + lightbox ------------------------------------------------------
+// The one surface /portfolio adds: photos as content in a fixed-aspect grid
+// wearing the same lift shell as the doc icon and the graph, opening into a
+// lightbox with the ⌘K modal's motion contract. Uses the real portfolio.mjs
+// renderer and lightbox controller with an inline photo (data URI) so the
+// story is self-contained.
+
+const PHOTO =
+  "data:image/svg+xml;utf8," +
+  encodeURIComponent(
+    '<svg xmlns="http://www.w3.org/2000/svg" width="600" height="600"><rect width="600" height="600" fill="oklch(0.9 0.06 235)"/><circle cx="300" cy="300" r="180" fill="oklch(0.741 0.157 235)"/></svg>',
+  );
+
+export const Gallery = {
+  render: () => {
+    window.PORTFOLIO_CONTENT = {
+      gallery: [
+        { src: PHOTO, alt: "Blue disc on a pale field", caption: "Study 01", width: 600, height: 600 },
+        { src: PHOTO, alt: "Blue disc on a pale field", caption: "Study 02", width: 600, height: 600 },
+        { src: PHOTO, alt: "Blue disc on a pale field", caption: "Study 03", width: 600, height: 600 },
+      ],
+    };
+    const root = shell(
+      "Gallery",
+      "Photos as content: a fixed-aspect grid in the lift shell, each cell a button that opens the lightbox. Escape, the wash and × close it; focus returns to the thumbnail.",
+      `<h2 class="sb-pattern__title">Gallery</h2>
+       <div class="gallery" data-gallery></div>
+       <div class="cmd-wash lightbox-wash" data-lightbox-wash aria-hidden="true"></div>
+       <div class="lightbox" role="dialog" aria-modal="true" aria-label="Photo" aria-hidden="true" inert data-lightbox>
+         <button class="panel-close lightbox__close" type="button" aria-label="Close" data-lightbox-close>×</button>
+         <figure class="lightbox__figure">
+           <img class="lightbox__img" alt="" data-lightbox-img>
+           <figcaption class="lightbox__caption" data-lightbox-text></figcaption>
+         </figure>
+       </div>`,
+    );
+    // The renderer reads window.PORTFOLIO_CONTENT at import time in the page;
+    // here it's re-read through the module's exported functions on the fixture.
+    import("../portfolio.mjs").then((mod) => {
+      mod.renderGallery(root);
+      mod.initLightbox(root);
+    });
+    return root;
+  },
+  play: async ({ canvas, canvasElement, userEvent }) => {
+    await waitFor(() => expect(canvasElement.querySelectorAll(".gallery__item")).toHaveLength(3));
+    const items = canvasElement.querySelectorAll(".gallery__item");
+    await expect(getComputedStyle(items[0].querySelector(".gallery__frame")).aspectRatio).toBe("1 / 1");
+    const box = canvasElement.querySelector("[data-lightbox]");
+    await expect(box).toHaveAttribute("aria-hidden", "true");
+    await expect(box.inert).toBe(true);
+    await userEvent.click(items[1]);
+    await waitFor(() => expect(box).toHaveAttribute("aria-hidden", "false"));
+    await expect(box.inert).toBe(false);
+    await expect(canvasElement.querySelector("[data-lightbox-text]")).toHaveTextContent("Study 02");
+    // The thumbnail that carries the same caption as data is untouched.
+    await expect(items[0].querySelector(".gallery__img")).not.toBeNull();
+    await expect(canvas.getByRole("button", { name: "Close" })).toHaveFocus();
+    await userEvent.keyboard("{Escape}");
+    await waitFor(() => expect(box).toHaveAttribute("aria-hidden", "true"));
+    await expect(items[1]).toHaveFocus();
+    await expect(document.activeElement.closest('[aria-hidden="true"], [inert]')).toBeNull();
   },
 };

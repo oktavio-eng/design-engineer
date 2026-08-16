@@ -135,7 +135,7 @@ test("the command palette opens on every page, finds prompts, and never stacks o
   await page.waitForFunction(() => document.activeElement?.id === "cmdInput");
   await assertSafeFocus(page, "cmdInput");
   assert.equal(await page.locator("[data-prompt-modal]").getAttribute("aria-hidden"), "true");
-  assert.deepEqual(await groups(), ["People", "Plan", "References", "Courses", "Reading", "Prompts", "Pages"]);
+  assert.deepEqual(await groups(), ["People", "Plan", "References", "Courses", "Reading", "Client work", "Personal projects", "Life", "Prompts", "Pages"]);
 
   // Prompts match on tags too, and open with the /prompts detail sheet + copy button.
   await page.locator("#cmdInput").fill("mobbin");

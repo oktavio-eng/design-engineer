@@ -77,14 +77,6 @@ function seeMoreSectionMarkup({ id, sectionClass, heading, rows, extras, debtMar
 }
 
 export const Rows = {
-  parameters: {
-    a11y: {
-      test: "error",
-      // The play function runs the disabled rule separately and accepts only
-      // the two marked production-debt nodes below.
-      options: { rules: { "color-contrast": { enabled: false } } },
-    },
-  },
   render: () =>
     patternShell(
       "Rows",
@@ -106,26 +98,24 @@ export const Rows = {
           </div>
         </section>
         <section>
-          <h2>Course status</h2>
+          <h2>Courses</h2>
           <div class="row">
             <span class="who"><a href="#">Interface Craft</a></span>
-            <span class="what">Josh Puckett</span>
-            <span class="status" data-a11y-debt="status-bought">Bought</span>
+            <span class="what">Josh Puckett · Bought</span>
           </div>
           <div class="row">
             <span class="who"><a href="#">Animations.dev</a></span>
-            <span class="what">Emil Kowalski · motion</span>
-            <span class="status" data-a11y-debt="status-evaluate">Evaluate</span>
+            <span class="what">Emil Kowalski · motion · Evaluate</span>
           </div>
         </section>
       `,
       { asMain: true },
     ),
-  play: async ({ canvasElement, userEvent }) => {
-    await expectOnlyA11yDebt(canvasElement, [
-      "color-contrast:status-bought",
-      "color-contrast:status-evaluate",
-    ]);
+  play: async ({ canvasElement }) => {
+    // Two columns only since 16/08/2026 — the course status (Bought /
+    // Evaluate / In progress) folded into `.what`, and with it went the
+    // `--faint` status column and its color-contrast debt.
+    await expectOnlyA11yDebt(canvasElement, []);
     // The static half of the hover contract: no transition on the fill, the
     // 8px bleed (negative margin), and the text column unmoved by it — the
     // row's content box starts exactly where the section's does. The fill

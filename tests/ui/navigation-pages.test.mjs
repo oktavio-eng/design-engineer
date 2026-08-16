@@ -45,24 +45,18 @@ test("page links stay out of homepage scroll-spy and clean URLs keep sibling pag
   await page.waitForFunction(() => !document.documentElement.classList.contains("intro-playing"));
 
   const pageLinks = page.locator('.topbar__nav a[href^="/"]');
-  assert.deepEqual(await pageLinks.allTextContents(), ["index", "changelog", "prompts"]);
+  assert.deepEqual(await pageLinks.allTextContents(), ["index", "changelog", "prompts", "portfólio"]);
   assert.deepEqual(await pageLinks.evaluateAll((links) => links.map((link) => link.getAttribute("href"))), [
     "/",
     "/changelog",
     "/prompts",
+    "/portfolio",
   ]);
   // The whole navbar is page links now — no in-page anchors left for the
-  // scroll-spy to claim.
-  assert.equal(await page.locator(".topbar__nav a").count(), 3);
-
-  // "portfólio" is announced but not navigable yet: a non-interactive span
-  // carrying the coming-soon tag, never a link or a Tab stop.
-  const soon = page.locator(".topbar__soon");
-  assert.equal(await soon.count(), 1);
-  assert.match(await soon.textContent(), /portfólio/);
-  assert.equal(await soon.locator(".topbar__soon-tag").textContent(), "coming soon");
-  assert.equal(await soon.evaluate((element) => element.tagName), "SPAN");
-  assert.equal(await soon.evaluate((element) => element.hasAttribute("tabindex")), false);
+  // scroll-spy to claim, and no "coming soon" span since /portfolio shipped
+  // (16/08/2026).
+  assert.equal(await page.locator(".topbar__nav a").count(), 4);
+  assert.equal(await page.locator(".topbar__soon").count(), 0);
 
   const topbarBounds = await page.locator(".topbar").boundingBox();
   assert.ok(topbarBounds, "desktop topbar is rendered");
@@ -77,7 +71,7 @@ test("page links stay out of homepage scroll-spy and clean URLs keep sibling pag
     await page.waitForTimeout(100);
     assert.deepEqual(
       await pageLinks.evaluateAll((links) => links.map((link) => link.classList.contains("on"))),
-      [false, false, false],
+      [false, false, false, false],
       `cross-page links stay inactive while #${id} intersects`,
     );
   }
@@ -99,10 +93,10 @@ test("page links stay out of homepage scroll-spy and clean URLs keep sibling pag
     "/prompts",
   );
   const changelogTopbarLinks = page.locator(".topbar__nav a[href^=\"/\"]");
-  assert.deepEqual(await changelogTopbarLinks.allTextContents(), ["index", "changelog", "prompts"]);
+  assert.deepEqual(await changelogTopbarLinks.allTextContents(), ["index", "changelog", "prompts", "portfólio"]);
   assert.deepEqual(
     await changelogTopbarLinks.evaluateAll((links) => links.map((link) => link.getAttribute("href"))),
-    ["/", "/changelog", "/prompts"],
+    ["/", "/changelog", "/prompts", "/portfolio"],
   );
   await page.setViewportSize({ width: 320, height: 800 });
   assert.equal(
@@ -116,11 +110,16 @@ test("page links stay out of homepage scroll-spy and clean URLs keep sibling pag
   assert.equal(new URL(page.url()).pathname, "/prompts");
   assert.equal(await page.locator("h1").textContent(), "Prompts");
   const promptsTopbarLinks = page.locator(".topbar__nav a[href^=\"/\"]");
-  assert.deepEqual(await promptsTopbarLinks.allTextContents(), ["index", "changelog", "prompts"]);
+  assert.deepEqual(await promptsTopbarLinks.allTextContents(), ["index", "changelog", "prompts", "portfólio"]);
   assert.deepEqual(
     await promptsTopbarLinks.evaluateAll((links) => links.map((link) => link.getAttribute("href"))),
-    ["/", "/changelog", "/prompts"],
+    ["/", "/changelog", "/prompts", "/portfolio"],
   );
+
+  await page.goto(`${server.origin}/portfolio`, { waitUntil: "domcontentloaded" });
+  assert.equal(new URL(page.url()).pathname, "/portfolio");
+  assert.equal(await page.locator("h1").textContent(), "Portfolio");
+  assert.deepEqual(await page.locator(".topbar__nav a[href^=\"/\"]").allTextContents(), ["index", "changelog", "prompts", "portfólio"]);
 
   await page.goto(server.origin, { waitUntil: "domcontentloaded" });
   assert.equal(await page.locator("h1").textContent(), "Design Engineer");
@@ -141,7 +140,7 @@ async function topbarState(page) {
   });
 }
 
-for (const routePath of ["/changelog", "/prompts"]) {
+for (const routePath of ["/changelog", "/prompts", "/portfolio"]) {
   test(`${routePath}'s topbar reveals on scroll and hides on idle, matching index.html`, { timeout: 30_000 }, async (context) => {
     const server = await serveDirectory(repositoryRoot);
     const browser = await launchChromium();

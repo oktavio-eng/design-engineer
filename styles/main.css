@@ -87,6 +87,11 @@ p:hover {
   color: var(--muted);
   margin-top: var(--space-4);
 }
+/* Consecutive paragraphs in a section: 16px apart, the emilkowal.ski
+   measurement (his `mt-4` between prose paragraphs). */
+main > section > p + p {
+  margin-top: var(--space-16);
+}
 .label {
   font-size: var(--fs-12);
   font-weight: var(--fw-medium);
@@ -148,7 +153,7 @@ a:active {
   overflow-x: clip;
 }
 /* Hover on the page lists = the jakub.kr Writing row (16/08/2026): the row
-   fills with the lightest gray, corners at 16px, and the fill bleeds 8px past
+   fills with the lightest gray, corners at 16px, and the fill bleeds 12px past
    the column on each side (padding-inline + negative margin, so the text
    itself never moves). Instant — no transition — the same reason `.doc-item`
    gives: this is a row you pass over dozens of times. Scoped to `main >
@@ -157,8 +162,11 @@ a:active {
    neighborhood dim for these lists; the dim stays on phase items, panel
    items and palette results, where nothing else marks the hovered one. */
 main > section .row {
-  padding-inline: var(--space-8);
-  margin-inline: calc(-1 * var(--space-8));
+  /* 12px, not jakub.kr's 8: his row leads with a 48px icon that carries its
+     own air; ours leads with a 13px favicon that sat against the fill's
+     edge at 8px. One step up on the scale gives it the same optical breath. */
+  padding-inline: var(--space-12);
+  margin-inline: calc(-1 * var(--space-12));
   border-radius: var(--radius-16);
 }
 @media (hover: hover) and (pointer: fine) {
@@ -197,14 +205,6 @@ main > section .row {
 }
 .row:hover .what {
   color: var(--ink);
-}
-.row .status {
-  transition-property: color, opacity;
-  transition-duration: var(--duration-250);
-  transition-timing-function: var(--ease);
-}
-.row:hover .status {
-  color: var(--muted);
 }
 /* ---------------------------------------------------------------------------
    Foco por vizinhança — com o mouse dentro de uma lista, os itens que não estão
@@ -296,13 +296,6 @@ main > section .row {
 }
 .see-more:active {
   scale: 0.96;
-}
-.status {
-  font-size: var(--fs-12);
-  font-weight: var(--fw-medium);
-  color: var(--faint);
-  white-space: nowrap;
-  user-select: none;
 }
 .phases {
   display: grid;
@@ -1775,6 +1768,11 @@ body.mail-open .mail-modal {
   top: var(--space-16);
   left: var(--space-16);
 }
+/* Opened straight from a page row (portfolio lists): no results to go back
+   to, so the back button goes and the title takes the left edge. */
+.cmd-modal--direct .cmd-modal__back {
+  display: none;
+}
 .cmd-modal__back svg {
   width: var(--space-15);
   height: var(--space-15);
@@ -2062,14 +2060,18 @@ body.mail-open .mail-modal {
    button chrome, let `.row` do the layout. Unlike the site lists, here the
    title is the side that gives — a nowrap title would clip at 320px, while
    the short category can stay whole. */
-.prompt-row {
+.prompt-row,
+.row-btn {
   /* Buttons don't stretch like block divs: the width has to include the
-     8px the hover fill bleeds past the column on each side. */
-  width: calc(100% + 2 * var(--space-8));
+     12px the hover fill bleeds past the column on each side. `.row-btn` is
+     the same reset for any list where a row is a <button> (the portfolio's
+     clients/personal/life rows open a modal, so they're buttons too). */
+  width: calc(100% + 2 * var(--space-12));
   border: none;
   background: 0 0;
   color: var(--ink);
   font: inherit;
+  text-align: left;
 }
 /* `.row`'s `display: flex` outranks the UA's `[hidden] { display: none }`,
    so the search filter's `hidden` needs restating. */
@@ -2358,4 +2360,129 @@ body.mail-open .mail-modal {
   .contrib__card {
     corner-shape: var(--corner-sm);
   }
+}
+
+/* ---------------------------------------------------------------------------
+   Portfolio page (`/portfolio`, portfolio.html + portfolio.mjs). Everything
+   above is reused as-is (rows, doc list, contribution graph); what's new is
+   the photo gallery and its lightbox — PORTFOLIO.md §4: photos are content,
+   not decoration, so they get a surface of their own where the image is the
+   subject, and the typographic index stays pure. Same wash/dialog motion
+   contract as the ⌘K detail (`--ease-pop`, 250/200ms, aria-hidden + inert
+   while closed).
+--------------------------------------------------------------------------- */
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-8);
+}
+@media (max-width: 560px) {
+  .gallery {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+/* Fixed aspect per cell so the grid never jumps as photos load; the shell is
+   the same two-layer lift the doc icon and the graph use, so the gallery
+   reads as part of the same family. */
+.gallery__item {
+  display: block;
+  padding: var(--space-4);
+  border: none;
+  border-radius: var(--radius-16);
+  background: var(--bg);
+  box-shadow: var(--shadow-lift);
+  cursor: zoom-in;
+  transition: box-shadow var(--duration-200) var(--ease-out);
+}
+@media (hover: hover) and (pointer: fine) {
+  .gallery__item:hover {
+    box-shadow: var(--shadow-lift-hover);
+  }
+}
+.gallery__item:focus-visible {
+  outline: var(--space-2) solid var(--faint);
+  outline-offset: var(--space-2);
+}
+.gallery__item:active {
+  scale: 0.98;
+}
+.gallery__frame {
+  display: block;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: var(--radius-12);
+  border: var(--border-w) solid var(--line);
+  background: var(--white);
+}
+.gallery__img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.gallery__img--contain {
+  object-fit: contain;
+  padding: var(--space-16);
+  box-sizing: border-box;
+}
+.lightbox {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  z-index: 61;
+  width: min(var(--space-960), calc(100vw - var(--space-48)));
+  max-height: calc(100vh - var(--space-96));
+  padding: var(--space-4);
+  border-radius: var(--radius-16);
+  background: var(--bg);
+  box-shadow: var(--shadow-modal);
+  transform: translate(-50%, -50%) scale(0.96);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    transform var(--duration-250) var(--ease-pop),
+    opacity var(--duration-200) var(--ease);
+}
+.lightbox[aria-hidden="false"] {
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
+  pointer-events: auto;
+}
+.lightbox__figure {
+  margin: 0;
+  border-radius: var(--radius-12);
+  border: var(--border-w) solid var(--line);
+  background: var(--white);
+  overflow: hidden;
+}
+.lightbox__img {
+  display: block;
+  width: 100%;
+  max-height: calc(100vh - var(--space-96) - var(--space-64));
+  object-fit: contain;
+}
+.lightbox__caption {
+  padding: var(--space-12) var(--space-16);
+  color: var(--muted);
+}
+.lightbox__caption:empty {
+  display: none;
+}
+.lightbox__close {
+  position: absolute;
+  top: var(--space-16);
+  right: var(--space-16);
+  z-index: 1;
+}
+@supports (corner-shape: superellipse(1)) {
+  .gallery__item,
+  .gallery__frame,
+  .lightbox,
+  .lightbox__figure {
+    corner-shape: var(--corner-sm);
+  }
+}
+.row--draft .who::after {
+  content: " · draft";
+  color: var(--faint);
 }
