@@ -124,6 +124,107 @@ Display account cards for:
 
 The final result should feel like a polished, enterprise-grade financial dashboard inspired by Wise's user experience while using an original visual treatment and components.`,
   },
+  {
+    slug: "animated-toast-drawer-kit-emil-kowalski",
+    title: "Animated Toast & Drawer Kit — Emil Kowalski-inspired",
+    description:
+      "A prompt for building an unstyled, accessible toast and drawer component pair with the interaction craft behind Sonner and Vaul — spring-based motion, swipe-to-dismiss, and sensible defaults with real escape hatches.",
+    category: "Component Design",
+    tags: ["React", "Animation", "Accessibility", "Component API", "Motion Design"],
+    prompt: `Design and implement a small, unstyled component pair — a toast notification system and a bottom-sheet drawer — with the interaction craft of Emil Kowalski's Sonner and Vaul libraries as the reference for feel, not literal source code.
+
+Reference: https://sonner.emilkowal.ski and https://vaul.emilkowal.ski
+
+Build both components in React with TypeScript and a spring-physics animation primitive (e.g. Motion, React Spring) — no CSS-only easing curves — with zero required styling, so consumers bring their own classes or design tokens.
+
+**Toast component:**
+- Stack multiple toasts with a slight vertical offset and scale, expanding to full height on hover
+- Swipe-to-dismiss on touch, with velocity-aware momentum, not a fixed-duration slide
+- A promise-based API — toast.promise(fn, { loading, success, error }) — that swaps content in place instead of stacking a new toast
+- Auto-dismiss timer that pauses on hover/focus and resumes on leave
+- Enter/exit that is always interruptible — a toast dismissed mid-animation must never finish its enter animation first
+
+**Drawer component:**
+- Bottom-sheet drag with real touch tracking, not a scripted transform
+- Snap points (e.g. 25%/50%/90% of viewport height) with spring settle, not linear easing
+- Background scale-and-blur while open, echoing iOS's native sheet-over-app depth
+- Releasing mid-drag should either settle at the nearest snap point or dismiss, based on velocity and position — never just distance
+- Full keyboard support: Escape closes, focus is trapped while open, and focus returns to the trigger on close
+
+**Design and motion principles to hold throughout:**
+- Every animation is interruptible; nothing locks input
+- Durations and easing read as physical, not decorative — favor spring physics over fixed-duration curves
+- Defaults should look finished with zero configuration, but every timing, snap point, and dismiss threshold should be overridable
+- A reduced-motion preference must degrade to instant or near-instant transitions, not just shorter ones
+
+Ship both as small, tree-shakeable, headless primitives — the same shape as a library meant to be copied into a project's own component folder, not installed as a black box.`,
+  },
+  {
+    slug: "motion-audit-emil-kowalski-craft-review",
+    title: "Motion & Micro-interaction Audit — Emil Kowalski-inspired",
+    description:
+      "A prompt for auditing an existing interface's animations against Emil Kowalski's craft principles — interruptibility, spring-based timing, and purposeful motion — and turning the findings into a prioritized punch list.",
+    category: "Motion Review",
+    tags: ["Animation", "Motion Design", "UI Polish", "Code Review", "Accessibility"],
+    prompt: `Act as a senior motion reviewer applying Emil Kowalski's writing on UI craft (emilkowal.ski) to review the animation and micro-interaction code in this codebase. Do not propose a redesign — audit what exists and flag what breaks his standard.
+
+For every animated element (modals, drawers, dropdowns, hover states, list reordering, loading states, toasts), check:
+
+**Interruptibility:**
+- Can a user reverse or cancel the animation mid-flight, or does it lock input until it finishes?
+- Does a rapid second interaction (double-click, quick re-open) restart cleanly, or does it stack/glitch?
+
+**Timing and easing:**
+- Is the duration proportional to the distance or size of the change, or a single flat number reused everywhere regardless of context?
+- Are entrances and exits using different curves on purpose, or copy-pasted from one to the other?
+- Would the motion feel more physical as a spring (mass/stiffness/damping) than a fixed-duration curve, especially for anything gesture-driven?
+
+**Purpose:**
+- Does the animation communicate a real state change (what moved, what appeared, what caused it), or is it decoration with no information value?
+- Is there any animation competing with itself — multiple elements animating on unrelated timers that visually clash?
+
+**Accessibility:**
+- Does everything respect prefers-reduced-motion, with reduced motion meaning "no motion," not just "shorter motion"?
+- Does any animation block keyboard focus from landing where the user expects during the transition?
+
+Output a prioritized list: for each finding, name the exact element or selector, the specific problem, and a concrete fix — an easing curve, a duration, an "make this interruptible" note — not a general recommendation. Rank by how often a user hits the interaction, not by how visually obvious the flaw is.`,
+  },
+  {
+    slug: "minimal-typographic-landing-jakub-krehel",
+    title: "Minimal Typographic Landing Page — Jakub Krehel-inspired",
+    description:
+      "A prompt for building a restrained, monochrome, typography-led landing page in the visual language of jakub.kr — hierarchy carried by weight, spacing, and rhythm instead of color or imagery.",
+    category: "UI Generation",
+    tags: ["Typography", "Minimalism", "Landing Page", "Monochrome", "Product Design"],
+    prompt: `Design a single-page product landing page in the visual language of Jakub Krehel's portfolio (jakub.kr) as the primary reference — restrained, monochrome, and carried almost entirely by typography and spacing rather than color, icons, or photography.
+
+Reference: https://www.jakub.kr
+
+Build a responsive desktop layout (1280px wide) using one typeface family across the whole page, varying only weight, size, and letter-spacing to create hierarchy — no secondary display font, no decorative icon set, no cover imagery.
+
+**Palette:**
+- Near-black text on a near-white background (or the inverse for a dark variant)
+- A single muted gray for secondary text and dividers
+- One accent used sparingly — a single link color or a single button state, nowhere else
+
+**Structure:**
+- A short, direct headline (one sentence, no filler) followed by a one-line subhead
+- A feature list expressed as short text rows, not icon-plus-card grids — each row is a label and a one-line description, separated by hairline borders
+- A minimal footer: product name, one or two links, no social icon row
+
+**Rhythm and craft:**
+- Generous vertical whitespace between sections — let the page breathe instead of filling it
+- Consistent baseline spacing scale (an 8pt-style system) applied to every margin and padding, no one-off values
+- Subtle entrance motion on scroll (fade plus a small upward shift), short and interruptible, never a slide-in from off-screen
+- Left-aligned text throughout; avoid centered paragraphs beyond a single short headline
+
+**What to avoid:**
+- Stock photography, illustration, or gradient backgrounds
+- More than one font family
+- Color used to carry meaning that spacing or weight could carry instead
+
+The result should feel confident because of what it leaves out, not what it adds — precision through restraint, not embellishment.`,
+  },
 ];
 
 function searchText(prompt) {

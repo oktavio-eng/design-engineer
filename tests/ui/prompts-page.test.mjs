@@ -115,16 +115,25 @@ test("/prompts lists rows, opens the detail modal, copies the exact raw prompt, 
   assert.equal(new URL(page.url()).pathname, "/prompts", "clean URL stays extensionless");
   assert.equal(await page.locator("h1").textContent(), "Prompts");
 
-  // The collection is a list of rows now — the full prompt only exists once a
-  // row opens the detail modal.
-  assert.equal(await page.locator(".prompt-row .who").textContent(), PROMPTS[0].title);
-  assert.equal(await page.locator(".prompt-row .what").textContent(), PROMPTS[0].category);
+  // The collection is a curated list of rows now — the full prompt only
+  // exists once a row opens the detail modal. The fintech dashboard prompt
+  // stays first (index 0) with the curated Emil/Jakub-inspired prompts
+  // appended after it, so every title/category renders in PROMPTS order.
+  assert.equal(await page.locator(".prompt-row").count(), PROMPTS.length);
+  assert.deepEqual(await page.locator(".prompt-row .who").allTextContents(), PROMPTS.map((p) => p.title));
+  assert.deepEqual(await page.locator(".prompt-row .what").allTextContents(), PROMPTS.map((p) => p.category));
   assert.equal(await page.locator(".prompt-modal__content").count(), 0);
+
+  // The rest of the interaction flow below drills into one specific prompt
+  // (the original Wise-inspired one) — scope to it explicitly so it stays
+  // unambiguous now that the collection holds several rows.
+  const fintechRow = page.locator('.prompt-row[data-prompt-slug="fintech-dashboard-wise-inspired"]');
 
   const search = page.getByRole("searchbox", { name: "Search prompts" });
   for (const query of ["wise", "framer", "fintech", "transactions"]) {
     await search.fill(query);
-    assert.equal(await page.locator(".prompt-row").isVisible(), true, `${query}: prompt remains visible`);
+    assert.equal(await page.locator(".prompt-row:not([hidden])").count(), 1, `${query}: exactly one prompt matches`);
+    assert.equal(await fintechRow.isVisible(), true, `${query}: the Wise-inspired prompt remains visible`);
     assert.equal(await page.locator(".prompt-search__status").textContent(), "1 prompt");
   }
 
@@ -133,7 +142,7 @@ test("/prompts lists rows, opens the detail modal, copies the exact raw prompt, 
   await scanAxe(page, "filtered results");
 
   await search.fill("no matching workflow");
-  assert.equal(await page.locator(".prompt-row").isVisible(), false);
+  assert.equal(await page.locator(".prompt-row:not([hidden])").count(), 0);
   assert.equal(await page.locator("[data-prompts-empty]").isVisible(), true);
   assert.equal(
     await page.locator("[data-prompts-empty-message]").textContent(),
@@ -144,7 +153,7 @@ test("/prompts lists rows, opens the detail modal, copies the exact raw prompt, 
   await page.locator(".prompt-clear").click();
   assert.equal(await search.inputValue(), "");
   assert.equal(await search.evaluate((element) => element === document.activeElement), true);
-  assert.equal(await page.locator(".prompt-row").isVisible(), true);
+  assert.equal(await page.locator(".prompt-row:not([hidden])").count(), PROMPTS.length);
 
   // The pill's own clear control: appears with a query, wipes it, refocuses
   // the field, and leaves the tab order once hidden again.
@@ -156,12 +165,15 @@ test("/prompts lists rows, opens the detail modal, copies the exact raw prompt, 
   assert.equal(await search.evaluate((element) => element === document.activeElement), true);
   assert.equal(await fieldClear.evaluate((element) => element.classList.contains("visible")), false);
 
-  // Keyboard path into the modal: Tab lands on the row (the hidden clear
-  // control must not be a stop), Enter opens the cmd+k-style detail.
+  // Keyboard path into the modal: Tab lands on the first row in DOM order
+  // (the hidden clear control must not be a stop) — the Wise-inspired prompt
+  // stays first, so this is still the fintech row, and Enter opens the
+  // cmd+k-style detail for it.
   await search.focus();
   await page.keyboard.press("Tab");
-  const row = page.locator(".prompt-row");
+  const row = page.locator(".prompt-row").first();
   assert.equal(await row.evaluate((element) => element === document.activeElement), true);
+  assert.equal(await row.getAttribute("data-prompt-slug"), "fintech-dashboard-wise-inspired");
   await page.keyboard.press("Enter");
   await page.waitForFunction(() => document.body.classList.contains("cmd-detail-open"));
   const modal = page.locator("[data-prompt-modal]");
@@ -177,6 +189,19 @@ test("/prompts lists rows, opens the detail modal, copies the exact raw prompt, 
   assert.deepEqual(await page.locator(".prompt-tag").allTextContents(), PROMPTS[0].tags);
   assert.equal(await page.locator(".prompt-modal__content").textContent(), PROMPTS[0].prompt);
   await scanAxe(page, "open detail modal");
+
+  // The Wise-inspired prompt is the longest entry — its detail modal must
+  // cap at 600px tall and scroll internally rather than grow with the text.
+  const modalBox = await modal.boundingBox();
+  assert.ok(modalBox.height <= 601, `modal height ${modalBox.height}px exceeds the 600px cap`);
+  const modalOverflow = await modal.evaluate((element) => ({
+    scrollHeight: element.scrollHeight,
+    clientHeight: element.clientHeight,
+  }));
+  assert.ok(
+    modalOverflow.scrollHeight > modalOverflow.clientHeight,
+    "the long prompt overflows the capped modal, proving the scrollbar is load-bearing here",
+  );
 
   const copyButton = page.getByRole("button", { name: "Copy prompt" });
   await copyButton.click();
@@ -208,7 +233,7 @@ test("/prompts lists rows, opens the detail modal, copies the exact raw prompt, 
     "320px viewport has no page-level horizontal overflow",
   );
   assert.equal(await search.evaluate((element) => getComputedStyle(element).fontSize), "17.92px");
-  assert.equal(await page.locator(".prompt-row").isVisible(), true);
+  assert.equal(await page.locator(".prompt-row").first().isVisible(), true);
   await scanAxe(page, "dark theme at 320px");
 
   assert.deepEqual(pageErrors, []);

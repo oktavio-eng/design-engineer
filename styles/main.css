@@ -1969,6 +1969,26 @@ body.cmd-detail-open .cmd-modal {
 /* Long-form prompt text needs a wider sheet than the ⌘K person card. */
 .prompt-modal {
   width: min(var(--space-620), calc(100vw - var(--space-48)));
+  max-height: min(var(--space-600), calc(100vh - var(--space-96)));
+  /* Delicate, near-invisible scrollbar (same recipe as .panel above): thin
+     track, transparent background, --line thumb that only firms up to
+     --faint on hover — closer to the Apple overlay scrollbar than a browser
+     default. */
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
+}
+.prompt-modal::-webkit-scrollbar {
+  width: var(--space-6);
+}
+.prompt-modal::-webkit-scrollbar-track {
+  background: 0 0;
+}
+.prompt-modal::-webkit-scrollbar-thumb {
+  background: var(--line);
+  border-radius: var(--radius-3);
+}
+.prompt-modal::-webkit-scrollbar-thumb:hover {
+  background: var(--faint);
 }
 .prompt-modal h2 {
   font-weight: var(--fw-semibold);

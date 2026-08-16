@@ -98,7 +98,9 @@ async function applyState(page, visualCase) {
   }
 
   if (visualCase.state === "prompt-modal") {
-    await page.locator(".prompt-row").click();
+    // The Wise-inspired prompt specifically: it's the longest entry, so this
+    // is also the case that exercises the modal's 600px cap and scrollbar.
+    await page.locator('.prompt-row[data-prompt-slug="fintech-dashboard-wise-inspired"]').click();
     await page.waitForFunction(() => document.body.classList.contains("cmd-detail-open"));
     // Capture the resting surface: no focus ring on the close control, no
     // pointer anywhere near the wash or rows.
