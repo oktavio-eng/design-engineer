@@ -11,7 +11,7 @@ Leia o [AGENTS.md](AGENTS.md) antes — ele descreve o craft que este roteiro as
 Estes são o produto, não o andaime. Vão inteiros:
 
 - `styles/` **na íntegra** (`main.css` + os cinco arquivos em `tokens/`). Tokens OKLCH, tipografia Inter, cascata de colunas, glass/squircle, sombras em camadas, curvas de easing. É aqui que mora o "mesmo design".
-- **A máquina do** `script.js`**:** painel lateral redimensionável, modais, busca ⌘K com o modal de detalhe + botão de voltar, cascata de fallback de favicon (`favFallback` + `sweepFavicons`), helpers `readStored`/`writeStored`, `esc()`, `favicon()`.
+- **A máquina do** `script.js`**:** painel lateral redimensionável, modais, helpers `readStored`/`writeStored`, `esc()`. A busca ⌘K (modal de detalhe + botão de voltar) mora em `cmd.mjs` e roda em toda página; a cascata de fallback de favicon (`favicon()` + `favFallback` + `sweepFavicons`) em `favicons.js`; as coleções em `content.js`.
 - **A malha de animação:** `.stagger` (entrada das seções) e `.p-stagger` (entrada do conteúdo do painel).
 - **Topbar:** logo, nav com `IntersectionObserver` marcando a seção ativa, auto-hide após 1200ms, ícones sociais, composer de e-mail.
 
@@ -43,10 +43,10 @@ Pra um projeto de cliente isso vira: `name` = cliente/projeto, `role` = "o que e
 
 Tudo que você precisa tocar no `script.js` está nestes cinco lugares. Fora deles, o arquivo não muda.
 
-1. **Os objetos de dados** ([script.js:34+](script.js#L34)) — trocar `people`/`phases`/`refs`/`courses`/`readings` pelas coleções novas.
+1. **Os objetos de dados** ([content.js](content.js)) — trocar `people`/`phases`/`refs`/`courses`/`readings` pelas coleções novas (publicadas em `window.SITE_CONTENT`; o `script.js` desempacota no topo).
 2. **O registro** `lists` ([script.js:551-586](script.js#L551-L586)) — é o extension point de verdade. Cada tipo é `{ els: <NodeList do DOM>, get: <el → entrada>, idAttr: <sufixo do data-attr> }`. Um tipo novo = uma entrada aqui + um `data-client="acme"` no HTML + a chave no objeto de dados. Nada mais.
 3. **O delegador de clique fora do painel** ([script.js:722-735](script.js#L722-L735)) — tem uma lista literal de `closest("[data-ref]")`, `[data-course]`, `[data-reading]`. Precisa listar os novos atributos, senão clicar numa linha fecha o painel em vez de abrir.
-4. **O índice da busca** ([script.js:995-1006](script.js#L995-L1006)) — `add("Grupo", objeto)`, uma linha por coleção. Os nomes de grupo aparecem como cabeçalho na lista de resultados.
+4. **O índice da busca** ([cmd.mjs](cmd.mjs), as chamadas `add("Grupo", …)` em `initCommandMenu`) — uma linha por coleção. Os nomes de grupo aparecem como cabeçalho na lista de resultados.
 5. **A nav da topbar** — os `href="#secao"` no HTML precisam bater com os `id` das `<section>`; o `IntersectionObserver` se liga sozinho a partir disso ([script.js:657-679](script.js#L657-L679)).
 
 **Armadilha de CSS:** `.stagger` tem delays escritos à mão até `nth-child(9)` ([styles/main.css:784-816](styles/main.css#L784-L816)) e `.p-stagger` até `nth-child(5)`. Se o portfolio tiver mais seções que isso, as extras entram **sem delay** (todas juntas) e a cascata quebra. Estender as regras junto.

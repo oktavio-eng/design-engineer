@@ -78,6 +78,16 @@
 <li class="timeline__entry">
 <div class="timeline__rail"><span class="timeline__marker"></span></div>
 <div class="timeline__content">
+<time class="label timeline__date" datetime="2026-08-16">Aug 16</time>
+<article class="timeline__item">
+<h3 class="timeline__title">⌘K works on every page and finds prompts too</h3>
+<p>The command palette used to live only on the plan page. It now opens on the changelog and prompts pages as well, and it searches everything saved on the site — people, plan phases, craft references, courses, readings, and now the prompts (by title, category and tag) — plus the pages themselves, so it doubles as a way to hop between them. Picking a prompt opens the same detail sheet as on the prompts page, copy button included.</p>
+</article>
+</div>
+</li>
+<li class="timeline__entry">
+<div class="timeline__rail"><span class="timeline__marker"></span></div>
+<div class="timeline__content">
 <time class="label timeline__date" datetime="2026-08-15">Aug 15</time>
 <article class="timeline__item">
 <h3 class="timeline__title">People open in a modal; the plan keeps the sidebar</h3>
@@ -308,5 +318,11 @@
   });
 })();
 </script>
+<!-- ⌘K palette on this page too (see cmd.mjs). favicons.js + content.js are
+     the same classic scripts index.html loads before script.js — the palette
+     needs the collections and the favicon builder, not the homepage script. -->
+<script src="/favicons.js" defer></script>
+<script src="/content.js" defer></script>
+<script type="module" src="/cmd.mjs"></script>
 </body>
 </html>

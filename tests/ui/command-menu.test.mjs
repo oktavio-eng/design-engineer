@@ -102,3 +102,82 @@ test("the production command palette preserves layered keyboard focus", { timeou
   assert.deepEqual(pageErrors, []);
   assert.deepEqual(consoleErrors, []);
 });
+
+// The palette is shared (cmd.mjs) and runs on every page, over the same
+// content plus the prompts. This drives it on /prompts — the one page that
+// has a second `.cmd-modal` (the prompt detail) — and on /changelog, which has
+// no page-specific surface at all.
+test("the command palette opens on every page, finds prompts, and never stacks on the prompt modal", { timeout: 30_000 }, async (context) => {
+  const server = await serveDirectory(repositoryRoot);
+  const browser = await launchChromium();
+  context.after(async () => {
+    await browser.close();
+    await server.close();
+  });
+
+  const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+  const pageErrors = [];
+  page.on("pageerror", (error) => pageErrors.push(error.message));
+  await page.route(/^https?:\/\/(?!127\.0\.0\.1)/, (route) => route.fulfill({ status: 204, body: "" }));
+
+  const groups = () =>
+    page.evaluate(() => [...document.querySelectorAll(".cmd__group")].map((group) => group.textContent));
+  const visibleModals = () =>
+    page.evaluate(() =>
+      [...document.querySelectorAll(".cmd-modal")].filter((modal) => modal.getAttribute("aria-hidden") === "false").length,
+    );
+
+  // /prompts: a prompt modal is open; ⌘K swaps to the palette instead of stacking.
+  await page.goto(`${server.origin}/prompts`, { waitUntil: "load" });
+  await page.locator(".prompt-row").first().click();
+  await page.waitForFunction(() => document.body.classList.contains("cmd-detail-open"));
+  await page.keyboard.press("Control+K");
+  await page.waitForFunction(() => document.activeElement?.id === "cmdInput");
+  await assertSafeFocus(page, "cmdInput");
+  assert.equal(await page.locator("[data-prompt-modal]").getAttribute("aria-hidden"), "true");
+  assert.deepEqual(await groups(), ["People", "Plan", "References", "Courses", "Reading", "Prompts", "Pages"]);
+
+  // Prompts match on tags too, and open with the /prompts detail sheet + copy button.
+  await page.locator("#cmdInput").fill("mobbin");
+  assert.equal(await page.locator(".cmd__item").count(), 1);
+  await page.keyboard.press("Enter");
+  await assertSafeFocus(page, "cmdModalClose");
+  assert.equal(await visibleModals(), 1);
+  assert.equal(await page.locator("#cmdModal.prompt-modal .prompt-copy").count(), 1);
+  assert.equal(await page.locator("#cmdModal .prompt-modal__title").textContent(), "Fintech Dashboard — Wise-inspired");
+
+  // Escape peels the palette's own layers, not the page's prompt modal.
+  await page.keyboard.press("Escape");
+  await page.waitForFunction(() => document.activeElement?.id === "cmdInput");
+  await page.keyboard.press("Escape");
+  await page.waitForFunction(() => !document.body.classList.contains("cmd-open"));
+  assert.equal(await visibleModals(), 0);
+  // The palette handed focus back to what the prompt modal returned it to: its row.
+  assert.equal(await page.evaluate(() => document.activeElement?.classList.contains("prompt-row")), true);
+
+  // Escape with only the prompt modal open still closes the prompt modal.
+  await page.locator(".prompt-row").first().click();
+  await page.waitForFunction(() => document.body.classList.contains("cmd-detail-open"));
+  await page.keyboard.press("Escape");
+  await page.waitForFunction(() => !document.body.classList.contains("cmd-detail-open"));
+
+  // /changelog: no page surface at all — the palette still opens and shows a person.
+  await page.goto(`${server.origin}/changelog`, { waitUntil: "load" });
+  await page.keyboard.press("Control+K");
+  await page.waitForFunction(() => document.activeElement?.id === "cmdInput");
+  await page.locator("#cmdInput").fill("Rauno");
+  await page.keyboard.press("Enter");
+  await assertSafeFocus(page, "cmdModalClose");
+  assert.equal(await page.locator("#cmdModal h3").textContent(), "Rauno Freiberg");
+  await page.locator("#cmdModalClose").click();
+  await page.waitForFunction(() => !document.body.classList.contains("cmd-detail-open"));
+
+  // "Pages" navigates.
+  await page.keyboard.press("Control+K");
+  await page.waitForFunction(() => document.activeElement?.id === "cmdInput");
+  await page.locator("#cmdInput").fill("prompts");
+  await page.locator('.cmd__item:has(.what:text-is("prompts used in real work"))').click();
+  await page.waitForURL(/\/prompts$/);
+
+  assert.deepEqual(pageErrors, []);
+});

@@ -191,5 +191,11 @@
 })();
 </script>
 <script type="module" src="/prompts.mjs"></script>
+<!-- ⌘K palette on this page too (see cmd.mjs). favicons.js + content.js are
+     the same classic scripts index.html loads before script.js — the palette
+     needs the collections and the favicon builder, not the homepage script. -->
+<script src="/favicons.js" defer></script>
+<script src="/content.js" defer></script>
+<script type="module" src="/cmd.mjs"></script>
 </body>
 </html>

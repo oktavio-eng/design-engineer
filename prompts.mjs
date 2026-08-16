@@ -255,8 +255,9 @@ function renderPrompt(prompt) {
 }
 
 // Rebuilt on every open, so the `.p-stagger` enter animation replays the same
-// way the ⌘K detail's does.
-function renderDetail(prompt) {
+// way the ⌘K detail's does. Exported because the ⌘K palette (cmd.mjs) shows a
+// prompt with this exact renderer, on every page — one source for the sheet.
+export function renderPromptDetail(prompt) {
   const fragment = document.createDocumentFragment();
 
   const head = makeElement("div", "p-stagger");
@@ -305,6 +306,28 @@ async function writeClipboard(text) {
   const copied = document.execCommand("copy");
   textarea.remove();
   if (!copied) throw new Error("Copy failed");
+}
+
+// Delegated "Copy prompt" handler for any container that shows a prompt
+// detail: this page's modal and the ⌘K detail modal both call it once.
+export function attachPromptCopy(container, prompts = PROMPTS, copy = writeClipboard) {
+  container.addEventListener("click", async (event) => {
+    const button = event.target.closest(".prompt-copy");
+    if (!button) return;
+
+    const prompt = prompts.find(({ slug }) => slug === button.dataset.promptSlug);
+    if (!prompt) return;
+
+    const status = container.querySelector(".prompt-copy__status");
+    try {
+      await copy(prompt.prompt);
+      button.textContent = "Copied";
+      status.textContent = "Prompt copied to clipboard.";
+    } catch (error) {
+      button.textContent = "Copy failed";
+      status.textContent = "Unable to copy. Select the prompt text and copy it manually.";
+    }
+  });
 }
 
 export function initPromptsPage(root, options = {}) {
@@ -372,18 +395,23 @@ export function initPromptsPage(root, options = {}) {
   }
 
   // Same body switch (`cmd-detail-open`) and aria choreography as the ⌘K
-  // detail in script.js, so the two dialogs move and dismiss identically.
+  // detail in cmd.mjs, so the two dialogs move and dismiss identically.
   // `inert` (cleared only while open) is what keeps the closed dialog's ×
   // out of the tab order and out of axe's aria-hidden-focus rule.
+  // Open/closed is tracked here rather than read back off the body class:
+  // the ⌘K palette on this page toggles the same class for its own detail,
+  // and Escape/⌘K must only fold the dialog this module actually put up.
   let opener = null;
+  let modalOpen = false;
 
   function isModalOpen() {
-    return document.body.classList.contains("cmd-detail-open");
+    return modalOpen;
   }
 
   function openModal(prompt, trigger) {
     opener = trigger || null;
-    modalBody.replaceChildren(renderDetail(prompt));
+    modalOpen = true;
+    modalBody.replaceChildren(renderPromptDetail(prompt));
     modal.setAttribute("aria-label", prompt.title);
     modal.inert = false;
     modal.setAttribute("aria-hidden", "false");
@@ -395,6 +423,7 @@ export function initPromptsPage(root, options = {}) {
 
   function closeModal() {
     if (!isModalOpen()) return;
+    modalOpen = false;
     document.body.classList.remove("cmd-detail-open");
     if (modal.contains(document.activeElement)) document.activeElement.blur();
     modal.inert = true;
@@ -424,24 +453,12 @@ export function initPromptsPage(root, options = {}) {
     if (!root.isConnected || !isModalOpen()) return;
     closeModal();
   });
+  // The ⌘K palette (cmd.mjs) is on this page too. It announces itself before
+  // it opens; this modal folds so the two never stack — same contract the
+  // homepage's panel/about/mail layers follow.
+  document.addEventListener("cmd:beforeopen", closeModal);
 
-  modal.addEventListener("click", async (event) => {
-    const button = event.target.closest(".prompt-copy");
-    if (!button) return;
-
-    const prompt = prompts.find(({ slug }) => slug === button.dataset.promptSlug);
-    if (!prompt) return;
-
-    const status = modal.querySelector(".prompt-copy__status");
-    try {
-      await copy(prompt.prompt);
-      button.textContent = "Copied";
-      status.textContent = "Prompt copied to clipboard.";
-    } catch (error) {
-      button.textContent = "Copy failed";
-      status.textContent = "Unable to copy. Select the prompt text and copy it manually.";
-    }
-  });
+  attachPromptCopy(modal, prompts, copy);
 
   update();
   return { update, entries, openModal, closeModal };
