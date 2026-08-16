@@ -1545,8 +1545,14 @@ body.mail-open .mail-modal {
   pointer-events: none;
   transition: opacity var(--duration-250) var(--ease);
 }
-body.cmd-open .cmd-wash,
-body.cmd-detail-open .cmd-wash {
+/* Visibility keys on the element's own aria-hidden, not on the body switch
+   (`body.cmd-open` / `body.cmd-detail-open` still exist as page-level state).
+   Reason: /prompts has two `.cmd-modal` + `.cmd-wash` pairs on the same page
+   — the ⌘K palette's (cmd.mjs) and the prompt detail's (prompts.mjs) — and
+   both toggle `cmd-detail-open`. Keyed on the body class, opening one would
+   light up both. Every surface already sets its own aria-hidden in the same
+   tick as the class, so nothing about the motion changes. */
+.cmd-wash[aria-hidden="false"] {
   opacity: 1;
   pointer-events: auto;
 }
@@ -1563,7 +1569,7 @@ body.cmd-detail-open .cmd-wash {
     transform var(--duration-250) var(--ease-pop),
     opacity var(--duration-200) var(--ease);
 }
-body.cmd-open .cmd {
+.cmd[aria-hidden="false"] {
   transform: translate(-50%, -50%) scale(1);
   opacity: 1;
   pointer-events: auto;
@@ -1717,7 +1723,7 @@ body.cmd-open .cmd {
     transform var(--duration-250) var(--ease-pop),
     opacity var(--duration-200) var(--ease);
 }
-body.cmd-detail-open .cmd-modal {
+.cmd-modal[aria-hidden="false"] {
   transform: translate(-50%, -50%) scale(1);
   opacity: 1;
   pointer-events: auto;

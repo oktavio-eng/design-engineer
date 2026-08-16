@@ -49,7 +49,7 @@ function renderCommandMenu() {
       <button class="see-more sb-command-trigger" type="button" data-a11y-debt="command-trigger">Open search</button>
     </div>
     <div class="cmd-wash" aria-hidden="true"></div>
-    <div class="cmd" role="dialog" aria-modal="true" aria-label="Search" aria-hidden="true" data-a11y-debt="command-dialog">
+    <div class="cmd" role="dialog" aria-modal="true" aria-label="Search" aria-hidden="true" inert>
       <div class="cmd__card">
         <div class="cmd__head">
           <input
@@ -70,7 +70,7 @@ function renderCommandMenu() {
         <div class="cmd__list" id="storybookCmdList" role="listbox" aria-label="Results"></div>
       </div>
     </div>
-    <div class="cmd-modal" role="dialog" aria-modal="true" aria-label="Details" aria-hidden="true" data-a11y-debt="detail-dialog">
+    <div class="cmd-modal" role="dialog" aria-modal="true" aria-label="Details" aria-hidden="true" inert>
       <button class="panel-close cmd-modal__back" type="button" aria-label="Back to search">←</button>
       <button class="panel-close cmd-modal__close" type="button" aria-label="Close">×</button>
       <div class="sb-command-detail"></div>
@@ -175,9 +175,11 @@ function renderCommandMenu() {
     cancelPendingFocus();
     document.body.classList.remove("cmd-detail-open");
     blurIfInside(detail);
+    detail.inert = true;
     detail.setAttribute("aria-hidden", "true");
     document.body.classList.add("cmd-open");
     wash.setAttribute("aria-hidden", "false");
+    command.inert = false;
     command.setAttribute("aria-hidden", "false");
     if (!keepQuery) input.value = "";
     renderResults();
@@ -195,6 +197,7 @@ function renderCommandMenu() {
     document.body.classList.remove("cmd-open");
     blurIfInside(command);
     wash.setAttribute("aria-hidden", "true");
+    command.inert = true;
     command.setAttribute("aria-hidden", "true");
     if (restore) returnFocus();
   }
@@ -204,6 +207,7 @@ function renderCommandMenu() {
     document.body.classList.remove("cmd-detail-open");
     blurIfInside(detail);
     wash.setAttribute("aria-hidden", "true");
+    detail.inert = true;
     detail.setAttribute("aria-hidden", "true");
     returnFocus();
   }
@@ -218,6 +222,7 @@ function renderCommandMenu() {
     closeCommand(false);
     document.body.classList.add("cmd-detail-open");
     wash.setAttribute("aria-hidden", "false");
+    detail.inert = false;
     detail.setAttribute("aria-hidden", "false");
     close.focus();
   }
@@ -279,7 +284,6 @@ export default {
       // only the marked production-debt rule/target pairs for that state.
       options: {
         rules: {
-          "aria-hidden-focus": { enabled: false },
           "color-contrast": { enabled: false },
         },
       },
@@ -294,8 +298,6 @@ export const KeyboardFlow = {
 
     await step("Keep the known accessibility debt exact", async () => {
       await expectOnlyA11yDebt(canvasElement, [
-        "aria-hidden-focus:command-dialog",
-        "aria-hidden-focus:detail-dialog",
         "color-contrast:command-trigger",
       ]);
     });
@@ -372,8 +374,6 @@ export const KeyboardFlow = {
       await expect(trigger).toHaveFocus();
       await waitForStoryAnimations(canvasElement);
       await expectOnlyA11yDebt(canvasElement, [
-        "aria-hidden-focus:command-dialog",
-        "aria-hidden-focus:detail-dialog",
         "color-contrast:command-trigger",
       ]);
     });
