@@ -221,6 +221,9 @@ test("/prompts lists rows, opens the detail modal, copies the exact raw prompt, 
   await scanAxe(page, "dismissed modal");
 
   assert.equal(await page.evaluate(() => document.documentElement.hasAttribute("data-theme")), false);
+  // The topbar now starts hidden (pointer-events: none) until the page
+  // scrolls, matching index.html — nudge it into view before clicking into it.
+  await page.evaluate(() => window.dispatchEvent(new Event("scroll")));
   await page.getByRole("button", { name: "Toggle dark mode" }).click();
   assert.equal(await page.evaluate(() => document.documentElement.getAttribute("data-theme")), "dark");
   await assertReadableContrast(page, "dark");
