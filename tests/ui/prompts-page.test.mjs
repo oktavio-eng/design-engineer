@@ -235,7 +235,12 @@ test("/prompts lists rows, opens the detail modal, copies the exact raw prompt, 
     true,
     "320px viewport has no page-level horizontal overflow",
   );
-  assert.equal(await search.evaluate((element) => getComputedStyle(element).fontSize), "17.28px");
+  // The 16px floor is what keeps iOS from zooming the focused field; the exact
+  // size follows the flat-type layer (1rem since 16/08/2026, 1.08rem before).
+  assert.ok(
+    parseFloat(await search.evaluate((element) => getComputedStyle(element).fontSize)) >= 16,
+    "search input stays at or above the 16px iOS zoom floor",
+  );
   assert.equal(await page.locator(".prompt-row").first().isVisible(), true);
   await scanAxe(page, "dark theme at 320px");
 
