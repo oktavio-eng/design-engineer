@@ -42,6 +42,12 @@ const cases = [
     blurRadius: 3,
   },
   { name: "prompts-empty-dark", story: "patterns-prompts--search-and-open", theme: "dark", flatType: "on", width: 320, height: 800, state: "prompt-empty", fullPage: false },
+  // Portfolio components (16/08/2026): the doc-icon writing row and the blue
+  // contribution graph — one in each theme, both under Flat type since that's
+  // how the site ships. The graph in dark is where the blue ramp is easiest to
+  // get wrong (it climbs toward light there).
+  { name: "portfolio-writing-light", story: "patterns-portfolio--writing-list", theme: "light", flatType: "on", width: 1024, height: 700 },
+  { name: "portfolio-contrib-dark", story: "patterns-portfolio--contributions", theme: "dark", flatType: "on", width: 1024, height: 700 },
 ];
 
 async function captureStable(page, fullPage = true) {

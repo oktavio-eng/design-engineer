@@ -37,6 +37,7 @@
   --shadow-a02: oklch(0 0 0 / 0.02);
   --shadow-a04: oklch(0 0 0 / 0.04);
   --shadow-a05: oklch(0 0 0 / 0.05);
+  --shadow-a06: oklch(0 0 0 / 0.06);
   --shadow-a08: oklch(0 0 0 / 0.08);
   --glass-bg: color-mix(in srgb, var(--bg) 72%, transparent);
   --glass-blur-sm: 18px;
@@ -52,6 +53,30 @@
   --shadow-modal:
     var(--shadow-glass-core),
     0 24px 64px var(--shadow-a05);
+  /* "Lift" — the two-layer shell jakub.kr and noechague.vercel.app put around
+     small cards (doc icon, contribution graph, project card): a 1px ring plus
+     two very short drops, so the shell reads as a raised sliver of the page
+     rather than a floating card. Measured on both sites (16/08/2026):
+     0 0 0 1px .06, 0 1px 2px -1px .06, 0 2px 4px 0 .04. The hover step is
+     the same recipe one notch darker (.08/.08/.06). */
+  --shadow-lift:
+    0 0 0 1px var(--shadow-a06),
+    0 1px 2px -1px var(--shadow-a06),
+    0 2px 4px 0 var(--shadow-a04);
+  --shadow-lift-hover:
+    0 0 0 1px var(--shadow-a08),
+    0 1px 2px -1px var(--shadow-a08),
+    0 2px 4px 0 var(--shadow-a06);
+  /* Contribution graph — GitHub's five-step scale, in the site's blue.
+     Level 3 is #00B9FF exactly (oklch 0.741 0.157 235); 1–2 lighten toward
+     the page, 4 deepens; 0 is the same gray as the rules. Hue is held at 235
+     across the ramp so the steps read as one color at four strengths, not
+     four different blues (that's what OKLCH buys over lightening in sRGB). */
+  --contrib-0: var(--line);
+  --contrib-1: oklch(0.9 0.06 235);
+  --contrib-2: oklch(0.83 0.11 235);
+  --contrib-3: oklch(0.741 0.157 235);
+  --contrib-4: oklch(0.58 0.14 235);
 }
 /* ---------------------------------------------------------------------------
    Dark mode — every component in main.css already reads color through these
@@ -92,7 +117,13 @@
   --shadow-a02: oklch(0 0 0 / 0.24);
   --shadow-a04: oklch(0 0 0 / 0.32);
   --shadow-a05: oklch(0 0 0 / 0.4);
+  --shadow-a06: oklch(0 0 0 / 0.45);
   --shadow-a08: oklch(0 0 0 / 0.5);
+  /* Dark ramp climbs toward light — on a dark ground, "more" is brighter, the
+     same direction GitHub's own dark graph takes. Level 3 stays #00B9FF. */
+  --contrib-1: oklch(0.42 0.08 235);
+  --contrib-2: oklch(0.58 0.12 235);
+  --contrib-4: oklch(0.86 0.1 235);
   --shadow-glass-core: inset 0 1px 0 0 oklch(1 0 0 / 0.06), 0 0 2px oklch(0 0 0 / 0.3),
     0 0 6px oklch(0 0 0 / 0.35);
 }
