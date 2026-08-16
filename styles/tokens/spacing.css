@@ -55,4 +55,15 @@
   --space-620: 620px;
   --space-640: 640px;
   --space-960: 960px;
+
+  /* iPadOS pointer (cursor.mjs). 20px is the resting dot (iPadOS draws it at
+     ~20pt); the pad is how far the highlight rect grows past the element it
+     snaps to (2px vertically for inline links so it hugs the line box);
+     parallax is the most the rect drifts toward the mouse inside a target. */
+  --cursor-size: 20px;
+  --cursor-pad: var(--space-4);
+  --cursor-pad-inline: var(--space-2);
+  --cursor-pad-text-x: var(--space-8);
+  --cursor-beam-w: var(--space-2);
+  --cursor-parallax: var(--space-4);
 }

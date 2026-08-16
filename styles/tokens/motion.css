@@ -67,4 +67,16 @@
   --tip-warm: var(--duration-320);
   --tip-in: var(--duration-150);
   --tip-out: var(--duration-120);
+
+  /* iPadOS pointer (cursor.mjs). Not durations but time constants (τ) of the
+     exponential smoothing that moves the pointer's geometry — after one τ
+     the gap has closed ~63%, after three it's gone. Shape (width/height/
+     radius) morphs quickest; position eases only while snapped to an
+     element or flying back to the mouse; the fade is the slowest so idle-out
+     and window-leave read as a dissolve, not a blink. `--cursor-idle` is a
+     plain delay: how long the mouse can sit still before the pointer fades. */
+  --cursor-tau-shape: 70ms;
+  --cursor-tau-pos: 60ms;
+  --cursor-tau-fade: 110ms;
+  --cursor-idle: 2000ms;
 }

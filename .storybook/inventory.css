@@ -141,3 +141,35 @@ body {
     text-align: start;
   }
 }
+
+/* iPadOS pointer story: each stage is a transformed box, which makes it the
+   containing block for the `position: fixed` .ipad-cursor inside it — the
+   real element and the real CSS, pinned inside a card instead of the viewport. */
+.sb-cursor-stages {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(var(--space-150), 1fr));
+  gap: var(--space-16);
+}
+.sb-cursor-stage {
+  position: relative;
+  transform: translateZ(0);
+  min-height: var(--space-96);
+  padding: var(--space-16);
+  border-radius: var(--radius-12);
+  box-shadow: var(--shadow-lift);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+.sb-cursor-stage__label {
+  position: absolute;
+  top: var(--space-8);
+  left: var(--space-12);
+  color: var(--muted);
+}
+.sb-cursor-stage__avatar {
+  width: var(--space-52);
+  height: var(--space-52);
+  border-radius: var(--radius-full);
+  background: var(--gray-870);
+}
