@@ -713,6 +713,7 @@ const people = {
     },
   },
   panel = document.getElementById("panel"),
+  panelWash = document.getElementById("panelWash"),
   content = document.getElementById("panelContent"),
   closeBtn = document.getElementById("panelClose"),
   rows = document.querySelectorAll(".people .row");
@@ -957,13 +958,34 @@ const lists = {
     idAttr: "reading",
   },
 };
+/* Which surface a kind opens in. Only "The plan" (phases) keeps the sidebar;
+   people, refs, courses and readings open as a centered modal. Same #panel
+   element, same render(): body.panel-modal just restyles it (see main.css). */
+const MODAL_KINDS = { people: 1, ref: 1, course: 1, reading: 1 };
+function setPanelMode(kind) {
+  const wantModal = !!MODAL_KINDS[kind],
+    body = document.body,
+    isModal = body.classList.contains("panel-modal");
+  if (wantModal === isModal) return;
+  /* Swapping surface while open: reset without transition so the panel
+     re-enters in the new mode instead of morphing sidebar <-> modal. */
+  if (body.classList.contains("panel-open")) {
+    panel.classList.add("no-transition"),
+      body.classList.remove("panel-open"),
+      body.classList.toggle("panel-modal", wantModal),
+      void panel.offsetWidth,
+      panel.classList.remove("no-transition");
+  } else body.classList.toggle("panel-modal", wantModal);
+}
 function open(e, t, n, a) {
   (currentPhaseId = n || null),
     closeComment(),
     closeAvatar(),
     closeMail(),
     render(e, n, a),
+    setPanelMode(currentKind),
     document.body.classList.add("panel-open"),
+    panelWash.setAttribute("aria-hidden", MODAL_KINDS[currentKind] ? "false" : "true"),
     panel.setAttribute("aria-hidden", "false"),
     (panel.scrollTop = 0),
     activeRow && activeRow.classList.remove("active"),
@@ -982,6 +1004,7 @@ function openAt(e, t) {
 function close() {
   document.body.classList.remove("panel-open"),
     panel.setAttribute("aria-hidden", "true"),
+    panelWash.setAttribute("aria-hidden", "true"),
     activeRow && activeRow.classList.remove("active"),
     (activeRow = null),
     (currentPhaseId = null),
@@ -1082,6 +1105,7 @@ window.addEventListener("scroll", showNav, { passive: !0 }),
     (navHovering = !1), scheduleNavIdle();
   }),
   closeBtn.addEventListener("click", close),
+  panelWash.addEventListener("click", close),
   document.addEventListener("keydown", function (e) {
     if ("Escape" === e.key) return void close();
     const t = (e.target && e.target.tagName) || "";
