@@ -155,7 +155,7 @@ test("the People list keeps the selected row highlighted while a person's modal 
     }
     return route.fulfill({ status: 204, body: "" });
   });
-  await page.goto(server.origin, { waitUntil: "domcontentloaded" });
+  await page.goto(`${server.origin}/wiki`, { waitUntil: "domcontentloaded" });
   await page.waitForFunction(() => !document.documentElement.classList.contains("intro-playing"));
   // Favicon loading is unrelated to this feature and its async load/error/
   // remove cascade (see AGENTS.md) reflows rows independently of anything

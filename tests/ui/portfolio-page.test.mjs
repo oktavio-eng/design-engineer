@@ -34,10 +34,10 @@ async function activeInfo(page) {
   });
 }
 
-// /portfolio: rows open the ⌘K detail card directly (no back button), the
+// / (the portfolio home): rows open the ⌘K detail card directly (no back button), the
 // gallery opens the lightbox, the graph renders from data/contributions.json,
 // drafts stay off the published page, and ⌘K finds portfolio entries.
-test("/portfolio renders its collections, opens rows and photos in modals, and stays axe-clean", { timeout: 40_000 }, async (context) => {
+test("/ (portfolio home) renders its collections, opens rows and photos in modals, and stays axe-clean", { timeout: 40_000 }, async (context) => {
   const server = await serveDirectory(repositoryRoot);
   const browser = await launchChromium();
   context.after(async () => {
@@ -64,7 +64,7 @@ test("/portfolio renders its collections, opens rows and photos in modals, and s
   });
 
   // 127.0.0.1 counts as localhost, so drafts render here — assert both modes.
-  await page.goto(`${server.origin}/portfolio`, { waitUntil: "load" });
+  await page.goto(`${server.origin}/`, { waitUntil: "load" });
   await page.waitForFunction(() => document.querySelectorAll(".row-btn").length > 0);
   await page.addScriptTag({ path: axeScriptPath });
 
@@ -106,7 +106,7 @@ test("/portfolio renders its collections, opens rows and photos in modals, and s
   assert.equal(await page.locator(".doc-list .doc-icon").first().getAttribute("aria-hidden"), "true");
   await page.locator('[data-open="writing:changelog"]').click();
   await page.waitForFunction(() => document.body.classList.contains("cmd-detail-open"));
-  assert.equal(new URL(page.url()).pathname, "/portfolio", "writing opens in a modal, not another page");
+  assert.equal(new URL(page.url()).pathname, "/", "writing opens in a modal, not another page");
   assert.equal(await page.locator("#cmdModal h3").textContent(), "Changelog, as a habit");
   assert.equal(await page.locator('#cmdModal a[href="/changelog"]').count(), 1, "the modal carries the link to read it");
   await page.keyboard.press("Escape");
@@ -193,7 +193,7 @@ test("portfolio drafts are hidden unless on localhost or ?draft", { timeout: 20_
     });
   });
   await page.route(/^https?:\/\/(?!127\.0\.0\.1|portfolio\.test)/, (route) => route.fulfill({ status: 204, body: "" }));
-  await page.goto("http://portfolio.test/portfolio", { waitUntil: "load" });
+  await page.goto("http://portfolio.test/", { waitUntil: "load" });
   await page.waitForFunction(() => document.querySelectorAll('[data-list="personal"] .row-btn').length > 0);
   assert.equal(await page.locator('[data-list="clients"] .row-btn').count(), 0, "no draft rows in production");
   assert.equal(await page.locator("#clients").evaluate((s) => s.hidden), true, "clients section hidden when it has nothing to show");
@@ -202,7 +202,7 @@ test("portfolio drafts are hidden unless on localhost or ?draft", { timeout: 20_
   await page.locator("#cmdInput").fill("template");
   assert.equal(await page.locator(".cmd__item").count(), 0, "drafts are not indexed by ⌘K in production");
   // And ?draft turns them back on, for reviewing the placeholders in place.
-  await page.goto("http://portfolio.test/portfolio?draft", { waitUntil: "load" });
+  await page.goto("http://portfolio.test/?draft", { waitUntil: "load" });
   await page.waitForFunction(() => document.querySelectorAll('[data-list="clients"] .row-btn').length > 0);
   assert.equal(await page.locator('[data-list="clients"] .row--draft').count(), 3);
 });

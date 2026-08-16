@@ -41,19 +41,19 @@ test("page links stay out of homepage scroll-spy and clean URLs keep sibling pag
     return route.fulfill({ status: 204, body: "" });
   });
 
-  await page.goto(server.origin, { waitUntil: "domcontentloaded" });
+  await page.goto(`${server.origin}/wiki`, { waitUntil: "domcontentloaded" });
   await page.waitForFunction(() => !document.documentElement.classList.contains("intro-playing"));
 
   const pageLinks = page.locator('.topbar__nav a[href^="/"]');
-  assert.deepEqual(await pageLinks.allTextContents(), ["index", "changelog", "prompts", "portfólio"]);
+  assert.deepEqual(await pageLinks.allTextContents(), ["home", "wiki", "changelog", "prompts"]);
   assert.deepEqual(await pageLinks.evaluateAll((links) => links.map((link) => link.getAttribute("href"))), [
     "/",
+    "/wiki",
     "/changelog",
     "/prompts",
-    "/portfolio",
   ]);
   // The whole navbar is page links now — no in-page anchors left for the
-  // scroll-spy to claim, and no "coming soon" span since /portfolio shipped
+  // scroll-spy to claim, and no "coming soon" span since the portfolio shipped
   // (16/08/2026).
   assert.equal(await page.locator(".topbar__nav a").count(), 4);
   assert.equal(await page.locator(".topbar__soon").count(), 0);
@@ -93,10 +93,10 @@ test("page links stay out of homepage scroll-spy and clean URLs keep sibling pag
     "/prompts",
   );
   const changelogTopbarLinks = page.locator(".topbar__nav a[href^=\"/\"]");
-  assert.deepEqual(await changelogTopbarLinks.allTextContents(), ["index", "changelog", "prompts", "portfólio"]);
+  assert.deepEqual(await changelogTopbarLinks.allTextContents(), ["home", "wiki", "changelog", "prompts"]);
   assert.deepEqual(
     await changelogTopbarLinks.evaluateAll((links) => links.map((link) => link.getAttribute("href"))),
-    ["/", "/changelog", "/prompts", "/portfolio"],
+    ["/", "/wiki", "/changelog", "/prompts"],
   );
   await page.setViewportSize({ width: 320, height: 800 });
   assert.equal(
@@ -110,18 +110,18 @@ test("page links stay out of homepage scroll-spy and clean URLs keep sibling pag
   assert.equal(new URL(page.url()).pathname, "/prompts");
   assert.equal(await page.locator("h1").textContent(), "Prompts");
   const promptsTopbarLinks = page.locator(".topbar__nav a[href^=\"/\"]");
-  assert.deepEqual(await promptsTopbarLinks.allTextContents(), ["index", "changelog", "prompts", "portfólio"]);
+  assert.deepEqual(await promptsTopbarLinks.allTextContents(), ["home", "wiki", "changelog", "prompts"]);
   assert.deepEqual(
     await promptsTopbarLinks.evaluateAll((links) => links.map((link) => link.getAttribute("href"))),
-    ["/", "/changelog", "/prompts", "/portfolio"],
+    ["/", "/wiki", "/changelog", "/prompts"],
   );
 
-  await page.goto(`${server.origin}/portfolio`, { waitUntil: "domcontentloaded" });
-  assert.equal(new URL(page.url()).pathname, "/portfolio");
-  assert.equal(await page.locator("h1").textContent(), "Portfolio");
-  assert.deepEqual(await page.locator(".topbar__nav a[href^=\"/\"]").allTextContents(), ["index", "changelog", "prompts", "portfólio"]);
-
   await page.goto(server.origin, { waitUntil: "domcontentloaded" });
+  assert.equal(new URL(page.url()).pathname, "/");
+  assert.equal(await page.locator("h1").textContent(), "Portfolio");
+  assert.deepEqual(await page.locator(".topbar__nav a[href^=\"/\"]").allTextContents(), ["home", "wiki", "changelog", "prompts"]);
+
+  await page.goto(`${server.origin}/wiki`, { waitUntil: "domcontentloaded" });
   assert.equal(await page.locator("h1").textContent(), "Design Engineer");
 
   assert.deepEqual(pageErrors, []);
@@ -140,8 +140,8 @@ async function topbarState(page) {
   });
 }
 
-for (const routePath of ["/changelog", "/prompts", "/portfolio"]) {
-  test(`${routePath}'s topbar reveals on scroll and hides on idle, matching index.html`, { timeout: 30_000 }, async (context) => {
+for (const routePath of ["/changelog", "/prompts", "/"]) {
+  test(`${routePath}'s topbar reveals on scroll and hides on idle, matching wiki.html`, { timeout: 30_000 }, async (context) => {
     const server = await serveDirectory(repositoryRoot);
     const browser = await launchChromium();
     context.after(async () => {

@@ -96,7 +96,7 @@ async function openSite(browser, server, contextOptions = {}) {
     }
     return route.fulfill({ status: 204, body: "" });
   });
-  await page.goto(server.origin, { waitUntil: "domcontentloaded" });
+  await page.goto(`${server.origin}/wiki`, { waitUntil: "domcontentloaded" });
   await page.waitForFunction(() => !document.documentElement.classList.contains("intro-playing"));
   // The favicons are lazy-loaded from an external service and their
   // load/error/remove cascade (see AGENTS.md) reflows rows on its own schedule

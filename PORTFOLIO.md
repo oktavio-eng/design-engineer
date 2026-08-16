@@ -1,12 +1,12 @@
-# Portfólio — `/portfolio`, construído em 16/08/2026
+# Portfólio — `/` (a home desde 16/08/2026; nasceu como `/portfolio`)
 
-**Estado:** a página existe e está no ar como `/portfolio` (link "portfólio" na navbar de todas as páginas). Decisão de 16/08/2026: mora **neste site**, não num repo/projeto Vercel novo — o roteiro abaixo (§1–§8) foi escrito antes de o JS virar compartilhado (`content.js`, `favicons.js`, `cmd.mjs`, `chrome.js`) e previa cópia; hoje o portfólio reusa tudo isso sem duplicar nada. Se um dia for pra um domínio próprio, é mover arquivos, não refazer.
+**Estado:** a página existe e está no ar como `/` — a home do site (link "home" na navbar; o plano virou `/wiki`, e `/portfolio` redireciona pra `/`). Decisão de 16/08/2026: mora **neste site**, não num repo/projeto Vercel novo — o roteiro abaixo (§1–§8) foi escrito antes de o JS virar compartilhado (`content.js`, `favicons.js`, `cmd.mjs`, `chrome.js`) e previa cópia; hoje o portfólio reusa tudo isso sem duplicar nada. Se um dia for pra um domínio próprio, é mover arquivos, não refazer.
 
 ## 0. O que existe e onde
 
 | Peça | Arquivo | Notas |
 | --- | --- | --- |
-| Página | `portfolio.html` | Mesmo head/topbar das outras páginas; seções: perfil, What I do, Writing, Contributions, Client work, Personal projects, Life, Gallery. Seções nascem `hidden` e só aparecem quando têm conteúdo. |
+| Página | `index.html` (era `portfolio.html`) | Mesmo head/topbar das outras páginas; seções: perfil, What I do, Writing, Contributions, Client work, Personal projects, Life, Gallery. Seções nascem `hidden` e só aparecem quando têm conteúdo. |
 | Conteúdo | `portfolio-content.js` | `window.PORTFOLIO_CONTENT = { clients, personal, life, writing, gallery }`. **Os três `clients` são `draft: true` — templates pra você trocar** (ver §9). Drafts só aparecem em localhost ou com `?draft` na URL; em produção a seção some. |
 | Página (JS) | `portfolio.mjs` | Renderiza listas/writing/galeria, busca `data/contributions.json`, e é dono do lightbox. |
 | Detalhe de projeto | `cmd.mjs` | Clicar numa linha (`data-open="clients:key"`) abre o **mesmo modal do ⌘K** direto (sem botão de voltar — `.cmd-modal--direct`). ⌘K também indexa Client work / Personal projects / Life em toda página. |

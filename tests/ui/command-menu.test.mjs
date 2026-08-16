@@ -52,7 +52,7 @@ test("the production command palette preserves layered keyboard focus", { timeou
     }
     return route.fulfill({ status: 204, body: "" });
   });
-  await page.goto(server.origin, { waitUntil: "domcontentloaded" });
+  await page.goto(`${server.origin}/wiki`, { waitUntil: "domcontentloaded" });
   await page.waitForFunction(() => !document.documentElement.classList.contains("intro-playing"));
 
   const opener = page.locator("#aboutTrigger");
