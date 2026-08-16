@@ -1,187 +1,9 @@
 /* Favicon fallback + the favicon() <img> builder moved to favicons.js (loaded
    before this file) so cmd.mjs can share them on every page. */
 
-/* ---------------------------------------------------------------------------
-   Intro — the "hello screensaver".
+/* Intro ("hello screensaver") moved to intro.js (loaded before this file) so
+   the home plays it too. */
 
-   Greets in six languages — one cut per --intro-step, no fade between them,
-   the way Apple's setup greeting reads — then dissolves the last word into the
-   mark and hands the page over. Every duration is read back out of
-   tokens/motion.css so the schedule here and the transitions in main.css can
-   never drift apart. Runs once per tab session (sessionStorage), not once
-   per visit — see the SESSION_KEY block below.
-
-   Three rules the sequence has to keep:
-   - It is interruptible. Any deliberate input ends it on the spot.
-   - It cannot trap the page. `.intro-playing` comes off <html> on every exit
-     path — finished, skipped, already seen this session, or refused for
-     reduced motion.
-   - No held state is free. Every pause (the per-word step, the mark's beat
-     before the dissolve) is a deliberate number that adds to the total; when
-     the total needs to move, that's the first place to look.
-
-   This block sits at the top of the file on purpose: it is the first thing the
-   page does, so it runs before the rest of the script is even parsed.
---------------------------------------------------------------------------- */
-(function () {
-  const root = document.documentElement;
-  const intro = document.getElementById("intro");
-  if (!intro) return;
-
-  // Latin scripts ride on Geist; the rest fall through to system-ui, which
-  // carries CJK on every platform we target.
-  const GREETINGS = [
-    "Hola",
-    "Bonjour",
-    "Olá",
-    "こんにちは",
-    "你好",
-    "Hello",
-  ];
-
-  const word = document.getElementById("intro-word");
-  const text = document.getElementById("intro-text");
-  const mark = document.getElementById("intro-mark");
-
-  // Chrome/Firefox hold a `defer` script until stylesheets queued earlier in
-  // <head> have applied, so `main.css` is always in by the time this runs.
-  // Safari doesn't make that guarantee: it can run this script before
-  // `main.css` lands, and every --intro-* read below then comes back empty.
-  // `parseFloat("") || 0` turns that into a 0ms duration for the whole
-  // sequence, which finishes in a handful of same-tick timeouts — the intro
-  // "runs" in under a millisecond and never paints a frame.
-  // A `link.sheet` / `load` check isn't enough to guard against this: in
-  // Safari `link.sheet` can go non-null before the sheet's rules are actually
-  // folded into computed style, so it reports ready one frame too early.
-  // Poll the token itself instead — the one thing that's true exactly when
-  // reading it will work — capped so a stylesheet that genuinely never loads
-  // can't hang the intro forever.
-  let tokenWait = 0;
-  (function waitForTokens() {
-    const ready = getComputedStyle(root).getPropertyValue("--intro-fade").trim() !== "";
-    if (ready || ++tokenWait > 60) {
-      start();
-      return;
-    }
-    requestAnimationFrame(waitForTokens);
-  })();
-
-  function start() {
-    const tokens = getComputedStyle(root);
-    const ms = function (name) {
-      return parseFloat(tokens.getPropertyValue(name)) || 0;
-    };
-    const STEP = ms("--intro-step");
-    const HOLD_LAST = ms("--intro-hold-last");
-    const FADE = ms("--intro-fade");
-    const REVEAL = ms("--intro-reveal");
-    const MARK_HOLD = ms("--intro-mark-hold");
-    const OUT = ms("--intro-out");
-
-    // Once per tab session, not per visit: sessionStorage (not the
-    // localStorage the rest of the site uses for real persistence) is the
-    // correct tool here — a reload five minutes later shouldn't replay a
-    // 7s greeting, but a fresh tab should. Documented as a deliberate
-    // exception in AGENTS.md. Same swallow-the-exception shape as the
-    // localStorage helpers below (readStored/writeStored): persistence here
-    // is a nicety, never a requirement.
-    const SESSION_KEY = "intro-shown-v1";
-    function seenIntro() {
-      try {
-        return sessionStorage.getItem(SESSION_KEY) === "1";
-      } catch (e) {
-        return false;
-      }
-    }
-    function markIntroSeen() {
-      try {
-        sessionStorage.setItem(SESSION_KEY, "1");
-      } catch (e) {}
-    }
-
-    const SKIP_EVENTS = ["pointerdown", "keydown", "wheel", "touchmove"];
-    const SKIP_OPTS = { capture: true, passive: true };
-    let timer = null;
-    let ended = false;
-
-    function end(skipped) {
-      if (ended) return;
-      ended = true;
-      clearTimeout(timer);
-      SKIP_EVENTS.forEach(function (type) {
-        window.removeEventListener(type, skip, SKIP_OPTS);
-      });
-      if (skipped) root.classList.add("intro-skipped");
-      // `intro-done` fades the overlay out and releases the content stagger in
-      // the same frame, so the page arrives as the greeting leaves.
-      root.classList.add("intro-done");
-      setTimeout(function () {
-        root.classList.remove("intro-playing", "intro-done", "intro-skipped");
-        intro.remove();
-      }, skipped ? FADE : OUT);
-    }
-
-    function skip() {
-      end(true);
-    }
-
-    // All six greetings go into the DOM up front, stacked in one grid cell (see
-    // `.intro__langs` in main.css). Swapping is then a class toggle between two
-    // elements that are already laid out — no text measurement, no reflow, and
-    // nothing for the bullet to shift against on a cut.
-    const slots = GREETINGS.map(function (greeting) {
-      const span = document.createElement("span");
-      span.className = "intro__lang";
-      span.textContent = greeting;
-      text.appendChild(span);
-      return span;
-    });
-
-    function step(i) {
-      if (i >= slots.length) {
-        // The one dissolve in the sequence: the last greeting fades out, then the
-        // mark fades in. `.dissolve` is what gives the row a transition at all, so the
-        // opacity-1 state has to be flushed under it before `visible` comes off —
-        // set both in the same frame and the browser sees a single computed
-        // change with no "before" to animate from, i.e. another cut.
-        word.classList.add("dissolve");
-        void word.offsetWidth;
-        word.classList.remove("visible");
-        timer = setTimeout(function () {
-          mark.classList.add("visible");
-          timer = setTimeout(function () {
-            end(false);
-          }, REVEAL + MARK_HOLD);
-        }, FADE);
-        return;
-      }
-      if (i > 0) slots[i - 1].classList.remove("on");
-      slots[i].classList.add("on");
-      // The row itself only cuts in once, under the first word. After that it
-      // stays put and the languages swap inside it.
-      if (i === 0) word.classList.add("visible");
-      // "Hello" is where the shuffle lands, so it holds --intro-hold-last longer
-      // than the words it just ran through.
-      const hold = i === slots.length - 1 ? STEP + HOLD_LAST : STEP;
-      timer = setTimeout(function () {
-        step(i + 1);
-      }, hold);
-    }
-
-    const still = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)");
-    if ((still && still.matches) || seenIntro()) {
-      root.classList.remove("intro-playing");
-      intro.remove();
-      return;
-    }
-
-    markIntroSeen();
-    SKIP_EVENTS.forEach(function (type) {
-      window.addEventListener(type, skip, SKIP_OPTS);
-    });
-    step(0);
-  }
-})();
 
 /* The five content collections (people, phases, refs, courses, readings) live
    in content.js and are published on window.SITE_CONTENT — shared with cmd.mjs,
@@ -778,81 +600,23 @@ function closeAvatar() {
     },
     !0,
   );
-const MAIL_TO = "oktavio@gowdesign.com",
-  MAIL_SUBJECT = "Hey Oktavio",
-  mailWash = document.getElementById("mailWash"),
-  mailModal = document.getElementById("mailModal"),
-  mailTrigger = document.getElementById("mailTrigger"),
-  mailText = document.getElementById("mailText"),
-  mailSend = document.getElementById("mailSend");
-function autoGrow() {
-  (mailText.style.height = "auto"),
-    (mailText.style.height = Math.min(mailText.scrollHeight, 240) + "px");
-}
-function syncMailHref() {
-  const e = "" === mailText.value.trim() ? "close" : "send";
-  mailSend.setAttribute("data-mode", e),
-    mailSend.setAttribute("aria-label", "close" === e ? "Close" : "Send"),
-    (mailSend.href =
-      "mailto:" +
-      MAIL_TO +
-      "?subject=" +
-      encodeURIComponent(MAIL_SUBJECT) +
-      "&body=" +
-      encodeURIComponent(mailText.value));
-}
-function openMail() {
-  close(),
-    closeComment(),
-    closeAbout(),
-    closeAvatar(),
-    document.body.classList.add("mail-open"),
-    mailWash.setAttribute("aria-hidden", "false"),
-    mailModal.setAttribute("aria-hidden", "false"),
-    syncMailHref(),
-    autoGrow(),
-    setTimeout(function () {
-      mailText.focus();
-    }, 260);
-}
-function closeMail() {
-  document.body.classList.remove("mail-open"),
-    mailWash.setAttribute("aria-hidden", "true"),
-    mailModal.setAttribute("aria-hidden", "true");
-}
-mailTrigger.addEventListener("click", function () {
-  document.body.classList.contains("mail-open") ? closeMail() : openMail();
-}),
-  mailWash.addEventListener("click", closeMail),
-  mailText.addEventListener("input", function () {
-    syncMailHref(), autoGrow();
-  }),
-  mailSend.addEventListener("click", function (e) {
-    "close" === mailSend.getAttribute("data-mode") && e.preventDefault(), closeMail();
-  }),
-  mailText.addEventListener("keydown", function (e) {
-    (e.metaKey || e.ctrlKey) &&
-      "Enter" === e.key &&
-      (e.preventDefault(), "send" === mailSend.getAttribute("data-mode") && mailSend.click());
-  }),
-  document.addEventListener(
-    "keydown",
-    function (e) {
-      "Escape" === e.key &&
-        document.body.classList.contains("mail-open") &&
-        (e.stopImmediatePropagation(), closeMail());
-    },
-    !0,
-  ),
-  syncMailHref(),
-  loadComments();
+/* Mail composer lives in mail.js now (shared with every page). It exposes
+   window.openMail/closeMail and announces `mail:beforeopen` on document
+   before opening; this page answers by folding its own surfaces. */
+document.addEventListener("mail:beforeopen", function () {
+  close();
+  closeComment();
+  closeAbout();
+  closeAvatar();
+});
+loadComments();
 /* ---------------------------------------------------------------------------
    ⌘K palette — lives in cmd.mjs now (shared with /changelog and /prompts).
    The one thing it needs from this page is "close whatever surface is open
    before the palette takes over": it announces itself with a `cmd:beforeopen`
    event on document, and the homepage answers by folding its own layers
-   (panel, comment, about, avatar, mail). ⌘K on top of any of them swaps
-   surfaces instead of stacking. cmd.mjs registers its Escape handler after
+   (panel, comment, about, avatar; the mail composer closes itself from
+   mail.js). ⌘K on top of any of them swaps surfaces instead of stacking. cmd.mjs registers its Escape handler after
    the ones above (module scripts run after this deferred one), so the
    innermost-first Escape order those capture handlers rely on is kept.
 --------------------------------------------------------------------------- */
@@ -861,5 +625,4 @@ document.addEventListener("cmd:beforeopen", function () {
   closeComment();
   closeAbout();
   closeAvatar();
-  closeMail();
 });

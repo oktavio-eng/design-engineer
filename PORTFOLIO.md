@@ -34,7 +34,7 @@ Estes são o produto, não o andaime. Vão inteiros:
 - `styles/` **na íntegra** (`main.css` + os cinco arquivos em `tokens/`). Tokens OKLCH, tipografia Inter, cascata de colunas, glass/squircle, sombras em camadas, curvas de easing. É aqui que mora o "mesmo design".
 - **A máquina do** `script.js`**:** painel lateral redimensionável, modais, helpers `readStored`/`writeStored`, `esc()`. A busca ⌘K (modal de detalhe + botão de voltar) mora em `cmd.mjs` e roda em toda página; a cascata de fallback de favicon (`favicon()` + `favFallback` + `sweepFavicons`) em `favicons.js`; as coleções em `content.js`.
 - **A malha de animação:** `.stagger` (entrada das seções) e `.p-stagger` (entrada do conteúdo do painel).
-- **Topbar:** logo, nav com `IntersectionObserver` marcando a seção ativa, auto-hide após 1200ms, ícones sociais, composer de e-mail.
+- **Topbar:** logo, nav com `IntersectionObserver` marcando a seção ativa, auto-hide após 1200ms, ícones sociais (X + envelope + tema — em toda página desde 16/08/2026), composer de e-mail (`mail.js`, compartilhado). A home também toca a intro (`intro.js`) desde 16/08/2026.
 
 **Regra que continua valendo:** arquivos estáticos, zero build step, `<script defer>` — nunca `async`.
 

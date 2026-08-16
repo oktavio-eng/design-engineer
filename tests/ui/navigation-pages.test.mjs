@@ -152,8 +152,12 @@ for (const routePath of ["/changelog", "/prompts", "/"]) {
     const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
     const pageErrors = [];
     page.on("pageerror", (error) => pageErrors.push(error.message));
+    // The home plays the intro too since 16/08/2026 (intro.js) — skip it the
+    // same way the wiki tests do.
+    await page.addInitScript(() => sessionStorage.setItem("intro-shown-v1", "true"));
 
     await page.goto(`${server.origin}${routePath}`, { waitUntil: "domcontentloaded" });
+    await page.waitForFunction(() => !document.documentElement.classList.contains("intro-playing"));
 
     // Starts hidden — no "visible" class, aria-hidden, and inert so its real
     // links can't be Tab-reached while invisible (the aria-hidden-focus trap
