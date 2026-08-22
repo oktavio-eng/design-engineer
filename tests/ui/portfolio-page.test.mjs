@@ -90,8 +90,10 @@ test("/ (portfolio home) renders its collections, opens rows and photos in modal
   assert.deepEqual(sections, ["positioning", "contributions", "writing", "projects", "personal", "life", "gallery:hidden"]);
 
   // Projects: favicon in the row (opt-in, unlike personal/life), and a
-  // show-more overflow past the 3-row threshold.
-  assert.equal(await page.locator('[data-list="projects"] .row--draft').count(), 6, "all six project drafts render on localhost");
+  // show-more overflow past the 3-row threshold. Live for real since
+  // 22/08/2026 (no longer draft-gated) — see portfolio-content.js's header.
+  assert.equal(await page.locator('[data-list="projects"] .row--draft').count(), 0, "no draft-flagged rows left");
+  assert.equal(await page.locator('[data-list="projects"] .row-btn').count(), 6, "all six project rows render");
   assert.equal(await page.locator('[data-list="projects"] .row-btn .fav').count(), 6, "every project row carries a favicon");
   assert.equal(await page.locator('[data-list="personal"] .row-btn .fav').count(), 0, "personal rows stay icon-free");
   assert.equal(await page.locator("#projectsExtras .row.extra").count(), 3, "rows past the threshold sit in the overflow");
@@ -176,11 +178,12 @@ test("/ (portfolio home) renders its collections, opens rows and photos in modal
   await page.waitForFunction(() => document.activeElement?.id === "cmdInput");
   assert.equal(await page.locator("[data-lightbox]").getAttribute("aria-hidden"), "true", "⌘K folds the lightbox");
 
-  // ⌘K indexes the portfolio collections (and drafts, since localhost).
+  // ⌘K indexes the portfolio collections, projects included (real content
+  // since 22/08/2026, not draft-gated).
   await page.locator("#cmdInput").fill("gow");
   assert.equal(await page.locator('.cmd__item:has-text("GOW Studio")').count(), 1);
   await page.locator("#cmdInput").fill("Sphera");
-  assert.equal(await page.locator(".cmd__item").count(), 1, "drafts are searchable on localhost");
+  assert.equal(await page.locator(".cmd__item").count(), 1, "project rows are searchable");
   await page.keyboard.press("Escape");
 
   // Projects show more: ported wireSeeMore(), same .expanded/aria-expanded/
@@ -216,7 +219,11 @@ test("/ (portfolio home) renders its collections, opens rows and photos in modal
 
 // The published page hides drafts. The module keys on location.hostname, so
 // serve the same files under a non-loopback host name: every request to
-// portfolio.test is answered from the local server.
+// portfolio.test is answered from the local server. No real collection ships
+// with `draft: true` today — projects went live for real 22/08/2026, see
+// portfolio-content.js's header — so this exercises the actual hide/show
+// gate with one synthetic draft entry injected into `life` at request time,
+// the same shape a real placeholder would carry.
 test("portfolio drafts are hidden unless on localhost or ?draft", { timeout: 20_000 }, async (context) => {
   const server = await serveDirectory(repositoryRoot);
   const browser = await launchChromium();
@@ -228,25 +235,29 @@ test("portfolio drafts are hidden unless on localhost or ?draft", { timeout: 20_
   await page.route(/^https?:\/\/portfolio\.test\//, async (route) => {
     const url = new URL(route.request().url());
     const upstream = await fetch(server.origin + url.pathname + url.search);
+    let body = Buffer.from(await upstream.arrayBuffer());
+    if (url.pathname === "/portfolio-content.js") {
+      const withSyntheticDraft = body.toString("utf8").replace("links: [],", 'links: [],\n      draft: true,');
+      assert.notEqual(withSyntheticDraft, body.toString("utf8"), "the life.brazil anchor line must still exist to inject the synthetic draft");
+      body = Buffer.from(withSyntheticDraft);
+    }
     route.fulfill({
       status: upstream.status,
       headers: { "content-type": upstream.headers.get("content-type") || "application/octet-stream" },
-      body: Buffer.from(await upstream.arrayBuffer()),
+      body,
     });
   });
   await page.route(/^https?:\/\/(?!127\.0\.0\.1|portfolio\.test)/, (route) => route.fulfill({ status: 204, body: "" }));
   await page.goto("http://portfolio.test/", { waitUntil: "load" });
   await page.waitForFunction(() => document.querySelectorAll('[data-list="personal"] .row-btn').length > 0);
-  assert.equal(await page.locator('[data-list="projects"] .row-btn').count(), 0, "no project drafts in production");
-  assert.equal(await page.locator("#projects").evaluate((s) => s.hidden), true, "projects section hidden when it has nothing to show");
-  assert.equal(await page.locator("#projectsSeeMore").isVisible(), false, "no show-more button when there's nothing to reveal");
-  assert.equal(await page.locator("#gallery").evaluate((s) => s.hidden), true, "gallery stays hidden too — it's paused, not draft-gated");
+  assert.equal(await page.locator('[data-list="life"] .row--draft').count(), 0, "no draft rows in production");
+  assert.equal(await page.locator('[data-list="life"] .row-btn:has-text("Brazil, remote")').count(), 0, "the synthetic draft is absent in production");
   await page.keyboard.press("Control+K");
   await page.waitForFunction(() => document.activeElement?.id === "cmdInput");
-  await page.locator("#cmdInput").fill("Sphera");
+  await page.locator("#cmdInput").fill("prerequisite");
   assert.equal(await page.locator(".cmd__item").count(), 0, "drafts are not indexed by ⌘K in production");
-  // And ?draft turns them back on, for reviewing the placeholders in place.
+  // And ?draft turns it back on, for reviewing the placeholder in place.
   await page.goto("http://portfolio.test/?draft", { waitUntil: "load" });
-  await page.waitForFunction(() => document.querySelectorAll('[data-list="projects"] .row-btn').length > 0);
-  assert.equal(await page.locator('[data-list="projects"] .row--draft').count(), 6, "?draft turns project drafts back on too");
+  await page.waitForFunction(() => document.querySelectorAll('[data-list="life"] .row--draft').length > 0);
+  assert.equal(await page.locator('[data-list="life"] .row--draft:has-text("Brazil, remote")').count(), 1, "?draft turns the synthetic draft back on");
 });

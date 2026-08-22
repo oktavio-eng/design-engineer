@@ -10,11 +10,10 @@
 
    `draft: true` marks an entry that is a placeholder for Otavio to replace —
    the page hides drafts unless the URL carries `?draft` (or on localhost),
-   and ⌘K skips them. EVERY `projects` ENTRY BELOW IS A DRAFT: they're real
-   work with a best-effort bio (name = client/project, role = what it was +
-   year, bio = problem → result, items = 2–4 craft decisions, links = live
-   site) — Otavio reviews each one and drops the flag entry by entry.
-   Everything else is real as of 16/08/2026.
+   and ⌘K skips them. `projects` shipped as six drafts (16/08/2026) and went
+   live for real (22/08/2026) once Otavio reviewed and rewrote each bio/items
+   line by line — none of the six carry the flag anymore. Everything else is
+   real as of 16/08/2026.
 
    `projects` gets one thing `personal`/`life` don't: a favicon in the row,
    from `entry.links[0][1]` (portfolio.mjs's renderList opts in per group).
@@ -33,38 +32,36 @@
 (function () {
   // Projects — real client/studio work, favicon shown left of the name in
   // the row (opt-in per row via portfolio.mjs's rowMarkup, from
-  // links[0][1]; see portfolio.mjs's renderList call site). All six are
-  // draft: true until Otavio reviews each bio/items line by line — see the
-  // file header and task-projects-home-v2.md.
+  // links[0][1]; see portfolio.mjs's renderList call site). Live as of
+  // 22/08/2026 — see the file header and task-projects-home-v2.md.
   const projects = {
     "sphera-academy": {
       name: "Sphera Academy",
       role: "UX/UI + Design System · MBA admissions prep",
-      bio: "Designed most of the interface screens and the entire design system in Figma, then trained a junior designer to take ownership of the file before moving to other client work. The platform today documents dozens of student admissions to schools including Duke, Cornell, and Columbia.",
+      bio: "Designed most of the interface screens and the entire design system in Figma, then trained a junior designer to take ownership of the file before moving to other client work. Currently revisiting the Figma file structure to keep the system usable as the internal team grows. The platform today documents dozens of student admissions to schools including Duke, Cornell, and Columbia.",
       items: [
         "Full design system built in Figma → Framer.",
         "Mentored a junior designer to take over the file structure.",
+        "Structure now being revisited for long-term internal maintainability.",
       ],
       links: [["Live site", "https://www.spheraacademy.com/"]],
-      draft: true,
     },
     "caderno-de-erros": {
       name: "Caderno de Erros",
       role: "Identity + Website · EdTech",
-      bio: "Visual identity and full website, Figma → Framer, for a study method built around logging mistakes by cause and reviewing them on a spaced schedule. 15K Instagram followers; beta testers have specifically praised being able to log discursive (essay-style) questions and the clean, distraction-free interface.",
+      bio: "Visual identity and full platform — desktop, tablet, and mobile, light and dark — for a study method built around logging mistakes by cause and reviewing them on a spaced schedule. Designed end-to-end in Figma and shipped to Framer, including the subscription flow with a custom coupon system (live price updates via DOM overrides) and ASAAS payment integration. 15K Instagram followers; beta testers have specifically praised logging discursive (essay-style) questions and the clean, distraction-free interface.",
       items: [
-        "Visual identity + full site, Figma → Framer.",
+        "Full platform design across desktop/tablet/mobile, light/dark — Figma → Framer.",
+        "Built the subscription page's coupon logic as reusable Framer overrides.",
         "Kept the interface deliberately quiet so the study method stays the focus.",
       ],
       links: [["Live site", "https://www.cadernodeerros.com.br/"]],
-      draft: true,
     },
     "cloudfaster-academy": {
       name: "CloudFaster Academy",
       role: "Identity + Website · Cloud/AWS training",
       bio: "Visual identity and website for an AWS certification training brand serving both individual learners and corporate teams. The brand has since scaled to a mobile app on Google Play and corporate/B2B plans beyond the original site.",
       links: [["Live site", "https://cloudfaster.academy/"]],
-      draft: true,
     },
     dascia: {
       name: "DascIA",
@@ -72,21 +69,23 @@
       bio: "Visual identity and website, via GOW Design, for an AI-education brand positioned against shallow 'AI in three clicks' courses — built to read as technical and credible.",
       items: ["Compressed, mixed-weight capital headline as the core brand device."],
       links: [["Live site", "https://dascia.com.br/"]],
-      draft: true,
     },
     "finq-edu": {
       name: "FinQ Edu",
       role: "Identity + Website · Investment Banking prep",
       bio: "Visual identity and website at company launch, for an investment-banking / private-equity prep brand founded by people with real Wall Street backgrounds.",
       links: [["Live site", "https://www.finqedu.com/"]],
-      draft: true,
     },
     "escola-da-bel": {
       name: "Escola da Bel",
-      role: "Campaign key visuals · Aesthetics",
-      bio: "Campaign key visuals (e.g. Fresh Frozen Paris) built inside an already-established brand identity that predates this work.",
+      role: "Campaign key visuals · Medical aesthetics",
+      bio: "Ongoing campaign key visuals inside an already-established brand identity — includes surrealist matte-painting series (Fresh Frozen Paris, Las Vegas) and a full anatomical illustration set for a medical-education atlas. Also built a Framer-based diagnostic quiz (7-course recommendation engine) with a Google Sheets webhook and iframe height-sync, used as a lead-gen tool on the site.",
+      items: [
+        "Surrealist campaign series: Fresh Frozen Paris, Las Vegas.",
+        "Anatomical illustration set for a course atlas.",
+        "Interactive Framer diagnostic quiz with live course recommendations.",
+      ],
       links: [["Live site", "https://escoladabel.com/"]],
-      draft: true,
     },
   };
 
