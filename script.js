@@ -310,9 +310,30 @@ rows.forEach(function (e, t) {
 });
 function wireSeeMore(sectionId) {
   const section = document.getElementById(sectionId),
-    seeMore = document.getElementById(sectionId + "SeeMore");
+    seeMore = document.getElementById(sectionId + "SeeMore"),
+    extras = section && section.querySelector(".extras"),
+    extrasInner = section && section.querySelector(".extras-inner");
   if (!section || !seeMore) return;
+  /* Settle-overflow fix (22/08/2026, /better-colors follow-up) — same shape
+     as the `enter` filter-clearing listener above, one level up. `.extras-
+     inner`'s `overflow: hidden` (main.css) is load-bearing *during* the
+     320ms grid-template-rows transition — without it the collapsed 0fr
+     track can't visually hide oversized content — but once expand settles
+     at 1fr, nothing needs clipping anymore, and it was clipping the last
+     `.row.extra`'s own hover shadow instead (the fixed 6px slack the CSS
+     already adds is exactly the shadow's own reach, zero margin, so it cut
+     flush there). Flipping to `visible` only after the transition ends,
+     then straight back to `hidden` the moment either direction starts
+     again, keeps the collapse animation intact and stops that clip. */
+  if (extras && extrasInner) {
+    extras.addEventListener("transitionend", function (e) {
+      if (e.propertyName === "grid-template-rows" && section.classList.contains("expanded")) {
+        extrasInner.style.overflow = "visible";
+      }
+    });
+  }
   seeMore.addEventListener("click", function () {
+    if (extrasInner) extrasInner.style.overflow = "hidden";
     const e = section.classList.toggle("expanded");
     seeMore.textContent = e ? "show less" : "show more";
     seeMore.setAttribute("aria-expanded", e ? "true" : "false");
