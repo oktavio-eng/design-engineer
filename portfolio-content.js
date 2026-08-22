@@ -40,10 +40,11 @@
     "sphera-academy": {
       name: "Sphera Academy",
       role: "UX/UI + Design System · MBA admissions prep",
-      bio: "Designed most of the interface screens and the entire design system in Figma, then trained a junior designer to take ownership of the file before moving to other client work. The platform today documents dozens of student admissions to schools including Duke, Cornell, and Columbia.",
+      bio: "Designed most of the interface screens and the entire design system in Figma, then trained a junior designer to take ownership of the file before moving to other client work. Currently revisiting the Figma file structure to keep the system usable as the internal team grows. The platform today documents dozens of student admissions to schools including Duke, Cornell, and Columbia.",
       items: [
         "Full design system built in Figma → Framer.",
         "Mentored a junior designer to take over the file structure.",
+        "Structure now being revisited for long-term internal maintainability.",
       ],
       links: [["Live site", "https://www.spheraacademy.com/"]],
       draft: true,
@@ -51,9 +52,10 @@
     "caderno-de-erros": {
       name: "Caderno de Erros",
       role: "Identity + Website · EdTech",
-      bio: "Visual identity and full website, Figma → Framer, for a study method built around logging mistakes by cause and reviewing them on a spaced schedule. 15K Instagram followers; beta testers have specifically praised being able to log discursive (essay-style) questions and the clean, distraction-free interface.",
+      bio: "Visual identity and full platform — desktop, tablet, and mobile, light and dark — for a study method built around logging mistakes by cause and reviewing them on a spaced schedule. Designed end-to-end in Figma and shipped to Framer, including the subscription flow with a custom coupon system (live price updates via DOM overrides) and ASAAS payment integration. 15K Instagram followers; beta testers have specifically praised logging discursive (essay-style) questions and the clean, distraction-free interface.",
       items: [
-        "Visual identity + full site, Figma → Framer.",
+        "Full platform design across desktop/tablet/mobile, light/dark — Figma → Framer.",
+        "Built the subscription page's coupon logic as reusable Framer overrides.",
         "Kept the interface deliberately quiet so the study method stays the focus.",
       ],
       links: [["Live site", "https://www.cadernodeerros.com.br/"]],
@@ -83,8 +85,13 @@
     },
     "escola-da-bel": {
       name: "Escola da Bel",
-      role: "Campaign key visuals · Aesthetics",
-      bio: "Campaign key visuals (e.g. Fresh Frozen Paris) built inside an already-established brand identity that predates this work.",
+      role: "Campaign key visuals · Medical aesthetics",
+      bio: "Ongoing campaign key visuals inside an already-established brand identity — includes surrealist matte-painting series (Fresh Frozen Paris, Las Vegas) and a full anatomical illustration set for a medical-education atlas. Also built a Framer-based diagnostic quiz (7-course recommendation engine) with a Google Sheets webhook and iframe height-sync, used as a lead-gen tool on the site.",
+      items: [
+        "Surrealist campaign series: Fresh Frozen Paris, Las Vegas.",
+        "Anatomical illustration set for a course atlas.",
+        "Interactive Framer diagnostic quiz with live course recommendations.",
+      ],
       links: [["Live site", "https://escoladabel.com/"]],
       draft: true,
     },
