@@ -101,9 +101,9 @@
         "Storybook renders the production CSS, axe runs on every state, and eleven visual baselines gate each pull request.",
       ],
       links: [
-        ["Site", "https://design-engineer-phi.vercel.app"],
+        ["Site", "https://oktavio.vercel.app"],
         ["Repo", "https://github.com/oktavio-eng/design-engineer"],
-        ["Changelog", "https://design-engineer-phi.vercel.app/changelog"],
+        ["Changelog", "https://oktavio.vercel.app/changelog"],
       ],
     },
     prompts: {
@@ -114,7 +114,7 @@
         "Each prompt opens in the same modal surface as the palette detail, so the two never drift apart.",
         "Copy is exact: raw multiline text, no smart-quote or whitespace surprises.",
       ],
-      links: [["Open", "https://design-engineer-phi.vercel.app/prompts"]],
+      links: [["Open", "https://oktavio.vercel.app/prompts"]],
     },
     "gow-studio": {
       name: "GOW Studio",
@@ -141,7 +141,7 @@
       name: "The canon",
       role: "What I study",
       bio: "Rauno, Emil, Jakub, Josh — the design engineers whose public work set the yardstick this site is measured against. The reading order and why is on the plan page.",
-      links: [["The plan", "https://design-engineer-phi.vercel.app/#people"]],
+      links: [["The plan", "https://oktavio.vercel.app/#people"]],
     },
   };
 
