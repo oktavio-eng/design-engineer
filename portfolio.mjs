@@ -17,6 +17,12 @@
    Drafts: entries flagged `draft: true` in portfolio-content.js are the
    placeholders for real client work. They render only on localhost or with
    `?draft` in the URL, so the published page never shows a template.
+
+   Projects is the one row list with a favicon (opt-in via renderList's
+   `favicon` opt, from `entry.links[0][1]` — see rowMarkup) and a show-more
+   overflow past `threshold` rows (the `.extras`/`.extras-inner`/`.row.extra`
+   contract wiki.html hand-authors for people/courses/references, built here
+   from data instead — see wireSeeMore).
 --------------------------------------------------------------------------- */
 import { renderContributions } from "/contrib.mjs";
 
@@ -37,29 +43,85 @@ function reveal(section) {
   if (section) section.hidden = false;
 }
 
-// ---- Rows: clients / personal / life ------------------------------------
-function rowMarkup(group, key, entry) {
+// favicons.js is a classic script (loaded before this module, see
+// index.html) that owns the <img> builder and the fallback cascade (Google
+// -> DuckDuckGo -> origin -> remove). Global on purpose so the inline
+// `onerror="favFallback(this)"` in the markup string can find it — same
+// wrapper cmd.mjs uses.
+function favicon(url) {
+  return typeof window.favicon === "function" ? window.favicon(url) : "";
+}
+
+// ---- Rows: clients / projects / personal / life --------------------------
+// `opts.favicon`: prefix `.who` with the row's favicon, from
+// `entry.links[0][1]` — opt-in per group (only "projects" today), so
+// clients/personal/life keep their plain rows. `opts.extra`: this row lives
+// inside `.extras` (the show-more overflow) — same `.row.extra` contract
+// wiki.html/script.js's wireSeeMore already animates.
+function rowMarkup(group, key, entry, opts) {
+  opts = opts || {};
+  const icon = opts.favicon && entry.links && entry.links[0] ? favicon(entry.links[0][1]) : "";
   return (
-    '<button class="row row-btn' + (entry.draft ? " row--draft" : "") + '" type="button" data-open="' +
-    group + ":" + key + '" aria-haspopup="dialog">' +
-    '<span class="who">' + esc(entry.name) + "</span>" +
+    '<button class="row row-btn' + (entry.draft ? " row--draft" : "") + (opts.extra ? " extra" : "") +
+    '" type="button" data-open="' + group + ":" + key + '" aria-haspopup="dialog">' +
+    '<span class="who">' + icon + esc(entry.name) + "</span>" +
     (entry.role ? '<span class="what">' + esc(entry.role) + "</span>" : "") +
     "</button>"
   );
 }
 
-export function renderList(root, group) {
+// `opts.threshold`: past this many entries, the rest render inside
+// `.extras`/`.extras-inner` (id `<group>Extras`) — the same show-more markup
+// wiki.html hand-authors for people/courses/references, built here instead
+// since this list is data-driven. Pairs with wireSeeMore(group) below.
+export function renderList(root, group, opts) {
+  opts = opts || {};
   const host = root.querySelector('[data-list="' + group + '"]');
   const map = content[group] || {};
   if (!host) return 0;
-  const html = Object.keys(map)
-    .filter((key) => showDrafts || !map[key].draft)
-    .map((key) => rowMarkup(group, key, map[key]))
-    .join("");
+  const keys = Object.keys(map).filter((key) => showDrafts || !map[key].draft);
+  const cut = opts.threshold && keys.length > opts.threshold ? opts.threshold : keys.length;
+  let html = keys.slice(0, cut).map((key) => rowMarkup(group, key, map[key], opts)).join("");
+  const rest = keys.slice(cut);
+  if (rest.length) {
+    html +=
+      '<div class="extras" id="' + group + 'Extras"><div class="extras-inner">' +
+      rest.map((key) => rowMarkup(group, key, map[key], Object.assign({}, opts, { extra: true }))).join("") +
+      "</div></div>";
+  }
   host.innerHTML = html;
-  const count = host.children.length;
+  const count = keys.length;
   if (count) reveal(host.closest("section"));
   return count;
+}
+
+// Ported from script.js (wireSeeMore, ~line 311) — that file only loads on
+// pages with static see-more markup already in the document; here the rows
+// (and the `.extras` wrapper itself) are built by renderList() above, so the
+// button is hidden outright when there's nothing to reveal. Same classes,
+// same behavior otherwise: toggle .expanded + aria-expanded + the button's
+// own text.
+export function wireSeeMore(sectionId) {
+  const section = document.getElementById(sectionId),
+    seeMore = document.getElementById(sectionId + "SeeMore"),
+    extras = section && section.querySelector(".extras"),
+    extrasInner = section && section.querySelector(".extras-inner");
+  if (!section || !seeMore) return;
+  if (!extras) {
+    seeMore.hidden = true;
+    return;
+  }
+  extras.addEventListener("transitionend", function (e) {
+    if (e.propertyName === "grid-template-rows" && section.classList.contains("expanded")) {
+      extrasInner.style.overflow = "visible";
+    }
+  });
+  seeMore.addEventListener("click", function () {
+    extrasInner.style.overflow = "hidden";
+    const expanded = section.classList.toggle("expanded");
+    seeMore.textContent = expanded ? "show less" : "show more";
+    seeMore.setAttribute("aria-expanded", expanded ? "true" : "false");
+  });
 }
 
 // ---- Writing: the doc-icon list -------------------------------------------
@@ -215,11 +277,13 @@ export function initLightbox(root) {
 export function initPortfolioPage(root) {
   const counts = {
     clients: renderList(root, "clients"),
+    projects: renderList(root, "projects", { favicon: true, threshold: 3 }),
     personal: renderList(root, "personal"),
     life: renderList(root, "life"),
     writing: renderWriting(root),
     gallery: renderGallery(root),
   };
+  wireSeeMore("projects");
   const lightbox = initLightbox(document);
   const graph = renderGraph(root);
   return { counts, lightbox, graph };

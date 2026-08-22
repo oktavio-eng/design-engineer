@@ -10,11 +10,17 @@
 
    `draft: true` marks an entry that is a placeholder for Otavio to replace —
    the page hides drafts unless the URL carries `?draft` (or on localhost),
-   and ⌘K skips them. THE CLIENT PROJECTS BELOW ARE ALL DRAFTS: they show the
-   shape (name = client/project, role = what it was + year, bio = problem →
-   result, items = 2–4 craft decisions, links = live site / case study /
-   repo). Replace them with real ones — with permission to publish each — and
-   drop the `draft` flag. Everything else is real as of 16/08/2026.
+   and ⌘K skips them. THE `clients` TEMPLATES AND EVERY `projects` ENTRY
+   BELOW ARE DRAFTS: they show the shape (name = client/project, role = what
+   it was + year, bio = problem → result, items = 2–4 craft decisions,
+   links = live site / case study / repo). `projects` entries are real work
+   with a best-effort bio — Otavio reviews and drops the flag entry by
+   entry; `clients`' three are templates, replace outright. Everything else
+   is real as of 16/08/2026.
+
+   `projects` gets one thing `clients`/`personal`/`life` don't: a favicon in
+   the row, from `entry.links[0][1]` (portfolio.mjs's renderList opts in per
+   group). No `domain` field needed — favicon() extracts the hostname.
 
    Order inside each collection is the order on the page.
 --------------------------------------------------------------------------- */
@@ -53,6 +59,65 @@
     },
   };
 
+  // Projects — real client/studio work, favicon shown left of the name in
+  // the row (opt-in per row via portfolio.mjs's rowMarkup, from
+  // links[0][1]; see portfolio.mjs's renderList call site). All six are
+  // draft: true until Otavio reviews each bio/items line by line — see the
+  // file header and task-projects-home-v2.md.
+  const projects = {
+    "sphera-academy": {
+      name: "Sphera Academy",
+      role: "UX/UI + Design System · MBA admissions prep",
+      bio: "Designed most of the interface screens and the entire design system in Figma, then trained a junior designer to take ownership of the file before moving to other client work. The platform today documents dozens of student admissions to schools including Duke, Cornell, and Columbia.",
+      items: [
+        "Full design system built in Figma → Framer.",
+        "Mentored a junior designer to take over the file structure.",
+      ],
+      links: [["Live site", "https://www.spheraacademy.com/"]],
+      draft: true,
+    },
+    "caderno-de-erros": {
+      name: "Caderno de Erros",
+      role: "Identity + Website · EdTech",
+      bio: "Visual identity and full website, Figma → Framer, for a study method built around logging mistakes by cause and reviewing them on a spaced schedule. 15K Instagram followers; beta testers have specifically praised being able to log discursive (essay-style) questions and the clean, distraction-free interface.",
+      items: [
+        "Visual identity + full site, Figma → Framer.",
+        "Kept the interface deliberately quiet so the study method stays the focus.",
+      ],
+      links: [["Live site", "https://www.cadernodeerros.com.br/"]],
+      draft: true,
+    },
+    "cloudfaster-academy": {
+      name: "CloudFaster Academy",
+      role: "Identity + Website · Cloud/AWS training",
+      bio: "Visual identity and website for an AWS certification training brand serving both individual learners and corporate teams. The brand has since scaled to a mobile app on Google Play and corporate/B2B plans beyond the original site.",
+      links: [["Live site", "https://cloudfaster.academy/"]],
+      draft: true,
+    },
+    dascia: {
+      name: "DascIA",
+      role: "Identity + Website · AI Education",
+      bio: "Visual identity and website, via GOW Design, for an AI-education brand positioned against shallow 'AI in three clicks' courses — built to read as technical and credible.",
+      items: ["Compressed, mixed-weight capital headline as the core brand device."],
+      links: [["Live site", "https://dascia.com.br/"]],
+      draft: true,
+    },
+    "finq-edu": {
+      name: "FinQ Edu",
+      role: "Identity + Website · Investment Banking prep",
+      bio: "Visual identity and website at company launch, for an investment-banking / private-equity prep brand founded by people with real Wall Street backgrounds.",
+      links: [["Live site", "https://www.finqedu.com/"]],
+      draft: true,
+    },
+    "escola-da-bel": {
+      name: "Escola da Bel",
+      role: "Campaign key visuals · Aesthetics",
+      bio: "Campaign key visuals (e.g. Fresh Frozen Paris) built inside an already-established brand identity that predates this work.",
+      links: [["Live site", "https://escoladabel.com/"]],
+      draft: true,
+    },
+  };
+
   const personal = {
     "design-engineer": {
       name: "design-engineer",
@@ -84,8 +149,7 @@
       name: "GOW Studio",
       role: "Studio · ongoing",
       bio: "The studio the client work ships under. Visual design first, moving toward design engineering: the same eye, now with the code to carry it through.",
-      // No public studio site yet — add the link when it's live.
-      links: [],
+      links: [["Site", "https://gowdesign.framer.website/"]],
     },
   };
 
@@ -146,5 +210,5 @@
     { src: "/og.jpg", alt: "The plan page's share card", caption: "The plan, as a card", width: 1200, height: 628 },
   ];
 
-  window.PORTFOLIO_CONTENT = { clients, personal, life, writing, gallery };
+  window.PORTFOLIO_CONTENT = { clients, projects, personal, life, writing, gallery };
 })();

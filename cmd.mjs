@@ -144,6 +144,7 @@ export function initCommandMenu() {
   // client project is one ⌘K away from the plan page too.
   const portfolio = window.PORTFOLIO_CONTENT || {};
   add("Client work", portfolio.clients || {}, "clients");
+  add("Projects", portfolio.projects || {}, "projects");
   add("Personal projects", portfolio.personal || {}, "personal");
   add("Life", portfolio.life || {}, "life");
   add("Writing", portfolio.writing || {}, "writing");
