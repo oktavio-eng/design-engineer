@@ -125,7 +125,7 @@ export function initCommandMenu() {
   // change at runtime. `what` is the secondary line in the row; `text` is
   // extra searchable material (tags, descriptions) that isn't shown.
   const index = [];
-  // `collection` is the key of the map on the content object ("clients",
+  // `collection` is the key of the map on the content object ("projects",
   // "people"…) — what `[data-open="collection:key"]` on a page row refers to.
   function add(group, map, collection) {
     for (const key in map) {
@@ -141,9 +141,8 @@ export function initCommandMenu() {
   add("Courses", content.courses || {}, "courses");
   add("Reading", content.readings || {}, "readings");
   // Portfolio collections (portfolio-content.js) — loaded on every page, so a
-  // client project is one ⌘K away from the plan page too.
+  // project is one ⌘K away from the plan page too.
   const portfolio = window.PORTFOLIO_CONTENT || {};
-  add("Client work", portfolio.clients || {}, "clients");
   add("Projects", portfolio.projects || {}, "projects");
   add("Personal projects", portfolio.personal || {}, "personal");
   add("Life", portfolio.life || {}, "life");

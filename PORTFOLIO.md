@@ -6,21 +6,21 @@
 
 | Peça | Arquivo | Notas |
 | --- | --- | --- |
-| Página | `index.html` (era `portfolio.html`) | Mesmo head/topbar das outras páginas; seções: perfil, What I do, Writing, Contributions, Client work, Personal projects, Life, Gallery. Seções nascem `hidden` e só aparecem quando têm conteúdo. |
-| Conteúdo | `portfolio-content.js` | `window.PORTFOLIO_CONTENT = { clients, personal, life, writing, gallery }`. **Os três `clients` são `draft: true` — templates pra você trocar** (ver §9). Drafts só aparecem em localhost ou com `?draft` na URL; em produção a seção some. |
-| Página (JS) | `portfolio.mjs` | Renderiza listas/writing/galeria, busca `data/contributions.json`, e é dono do lightbox. |
-| Detalhe de projeto | `cmd.mjs` | Clicar numa linha (`data-open="clients:key"`) abre o **mesmo modal do ⌘K** direto (sem botão de voltar — `.cmd-modal--direct`). ⌘K também indexa Client work / Personal projects / Life em toda página. |
+| Página | `index.html` (era `portfolio.html`) | Mesmo head/topbar das outras páginas; seções: perfil, What I do, Writing, Contributions, Projects, Personal projects, Life, Gallery. Seções nascem `hidden` e só aparecem quando têm conteúdo. **`Client work` foi removida em 22/08/2026** — os três templates falsos (`client-a/b/c`) eram redundantes com `Projects`, que já é trabalho real. |
+| Conteúdo | `portfolio-content.js` | `window.PORTFOLIO_CONTENT = { projects, personal, life, writing, gallery }`. **`projects` tem 6 entradas reais, todas `draft: true`** até você revisar bio/items e tirar a flag uma a uma (ver §9). Drafts só aparecem em localhost ou com `?draft` na URL; em produção a seção some. |
+| Página (JS) | `portfolio.mjs` | Renderiza listas/writing/galeria, busca `data/contributions.json`, e é dono do lightbox. `initPortfolioPage()` não chama mais `renderGallery()` — **galeria pausada a pedido do Otavio em 22/08/2026**; a seção fica `hidden` sem conteúdo (o lightbox do avatar do perfil continua funcionando, é independente da galeria). Reativar é uma linha: chamar `renderGallery(root)` de novo ali. |
+| Detalhe de projeto | `cmd.mjs` | Clicar numa linha (`data-open="projects:key"`) abre o **mesmo modal do ⌘K** direto (sem botão de voltar — `.cmd-modal--direct`). ⌘K também indexa Projects / Personal projects / Life em toda página. |
 | Gráfico GitHub | `contrib.mjs` + `data/contributions.json` + `scripts/fetch-contributions.mjs` + `.github/workflows/contributions.yml` | Dados **reais** de `oktavio-eng`, lidos do calendário público (sem token). A Action roda 1×/dia e commita só se mudou; commit em `main` dispara o deploy. Rodar à mão: `node scripts/fetch-contributions.mjs`. |
-| Galeria + lightbox | `.gallery*` / `.lightbox*` em `main.css`, `portfolio.mjs` | Grid 3 col (2 no celular), `aspect-ratio` fixo, mesma casca "lift" do ícone de doc e do gráfico. Lightbox: wash + figura, Escape/wash/× fecham, foco volta pra miniatura, ⌘K por cima fecha. Imagem que falha some da grade. |
+| Galeria + lightbox | `.gallery*` / `.lightbox*` em `main.css`, `portfolio.mjs` | Grid 3 col (2 no celular), `aspect-ratio` fixo, mesma casca "lift" do ícone de doc e do gráfico. Lightbox: wash + figura, Escape/wash/× fecham, foco volta pra miniatura, ⌘K por cima fecha. Imagem que falha some da grade. Seção pausada — ver linha acima. |
 | Cromo | `chrome.js` | Tema + navbar reveal-on-scroll, compartilhado por changelog/prompts/portfolio (era inline em cada uma). |
-| Testes | `tests/ui/portfolio-page.test.mjs`, `stories/portfolio.stories.js` (Writing, Contributions, Gallery), 3 casos visuais | Cobrem: seções, gráfico do JSON, linha→modal direto, galeria→lightbox, ⌘K, drafts escondidos em produção (servido como `portfolio.test`), 320px, axe. |
+| Testes | `tests/ui/portfolio-page.test.mjs`, `stories/portfolio.stories.js` (Writing, Contributions, Gallery, Projects List), 3 casos visuais | Cobrem: seções, gráfico do JSON, linha→modal direto, avatar→lightbox, ⌘K, drafts escondidos em produção (servido como `portfolio.test`), 320px, axe. |
 
 ## 9. O que só você faz (o gargalo real)
 
-- [ ] **Trocar os três `clients` de `portfolio-content.js`** por projetos reais (com permissão de publicar): `name`, `role` ("o que era · ano"), `bio` (problema → resultado), `items` (2–4 decisões de craft), `links`. Tirar `draft: true`. Enquanto isso a seção "Client work" não aparece no site publicado; pra revisar os templates no ar: `/portfolio?draft`.
+- [ ] **Revisar as 6 entradas de `projects` em `portfolio-content.js`** linha por linha (bio/items com meu melhor esforço, não confirmado palavra por palavra) e tirar `draft: true` uma a uma conforme aprovar. Enquanto isso a seção "Projects" não aparece no site publicado; pra revisar no ar: `/?draft`.
 - [ ] Revisar os textos de **What I do**, **Personal projects** e **Life** — escrevi com o que sei; é sua voz que tem que estar ali.
 - [ ] **Writing**: hoje aponta pras páginas que existem (plano, changelog, prompts). Quando houver artigo de verdade, é `{title, description, href}` no array.
-- [ ] **Galeria**: as três imagens são as únicas do repo (avatar, marca, card do site). Fotos reais vão em `/photos/*.webp`, tratadas, com `width`/`height` e legenda; ver a regra de peso em §4.
+- [ ] **Galeria**: pausada por enquanto (22/08/2026). Quando quiser reativar: fotos reais em `/photos/*.webp`, tratadas, com `width`/`height` e legenda (ver a regra de peso em §4), depois voltar a chamar `renderGallery(root)` em `initPortfolioPage()`.
 - [ ] `og.jpg`/`favicon`: decidir se o portfólio usa a marca GOW (hoje usa).
 
 ---
@@ -43,7 +43,7 @@ Estes são o produto, não o andaime. Vão inteiros:
 
 | Hoje                         | No portfolio                          |
 | ---------------------------- | ------------------------------------- |
-| `people` (6 + 6 extras)      | `clients` — projetos de cliente       |
+| `people` (6 + 6 extras)      | `clients` (removida 22/08/2026, virou `projects`) — projetos de cliente |
 | `courses`                    | `personal` — projetos pessoais        |
 | `readings`                   | `life` — vida                         |
 | `refs`                       | *(some, ou vira a galeria)*           |

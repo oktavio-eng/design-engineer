@@ -35,8 +35,10 @@ async function activeInfo(page) {
 }
 
 // / (the portfolio home): rows open the ⌘K detail card directly (no back button), the
-// gallery opens the lightbox, the graph renders from data/contributions.json,
-// drafts stay off the published page, and ⌘K finds portfolio entries.
+// profile avatar opens the lightbox (gallery itself is paused, see
+// initPortfolioPage's comment in portfolio.mjs), the graph renders from
+// data/contributions.json, drafts stay off the published page, and ⌘K finds
+// portfolio entries.
 test("/ (portfolio home) renders its collections, opens rows and photos in modals, and stays axe-clean", { timeout: 40_000 }, async (context) => {
   const server = await serveDirectory(repositoryRoot);
   const browser = await launchChromium();
@@ -81,14 +83,16 @@ test("/ (portfolio home) renders its collections, opens rows and photos in modal
   const sections = await page.evaluate(() =>
     [...document.querySelectorAll("main > section[id]")].map((s) => `${s.id}${s.hidden ? ":hidden" : ""}`),
   );
-  assert.deepEqual(sections, ["positioning", "contributions", "writing", "clients", "projects", "personal", "life", "gallery"]);
-  assert.equal(await page.locator('[data-list="clients"] .row--draft').count(), 3, "drafts show on localhost");
+  // clients was removed 22/08/2026 (projects replaced it) and gallery is
+  // paused (portfolio.mjs's initPortfolioPage no longer calls
+  // renderGallery()) — the section still exists in the markup, just
+  // permanently hidden until that's restored.
+  assert.deepEqual(sections, ["positioning", "contributions", "writing", "projects", "personal", "life", "gallery:hidden"]);
 
-  // Projects: favicon in the row (opt-in, unlike clients/personal/life),
-  // and a show-more overflow past the 3-row threshold.
+  // Projects: favicon in the row (opt-in, unlike personal/life), and a
+  // show-more overflow past the 3-row threshold.
   assert.equal(await page.locator('[data-list="projects"] .row--draft').count(), 6, "all six project drafts render on localhost");
   assert.equal(await page.locator('[data-list="projects"] .row-btn .fav').count(), 6, "every project row carries a favicon");
-  assert.equal(await page.locator('[data-list="clients"] .row-btn .fav').count(), 0, "clients rows stay icon-free");
   assert.equal(await page.locator('[data-list="personal"] .row-btn .fav').count(), 0, "personal rows stay icon-free");
   assert.equal(await page.locator("#projectsExtras .row.extra").count(), 3, "rows past the threshold sit in the overflow");
   assert.equal(await page.locator("#projectsSeeMore").getAttribute("aria-expanded"), "false", "starts collapsed");
@@ -149,21 +153,24 @@ test("/ (portfolio home) renders its collections, opens rows and photos in modal
   assert.equal(await page.evaluate(() => document.activeElement?.getAttribute("data-open")), "personal:design-engineer");
   assert.equal(await page.locator("#cmd").getAttribute("aria-hidden"), "true", "Escape from a direct detail does not reopen the list");
 
-  // Gallery → lightbox: opens on the clicked photo, × has focus, Escape
-  // closes and focus goes back to the thumbnail; ⌘K on top of it swaps.
-  const first = page.locator(".gallery__item").first();
-  await first.scrollIntoViewIfNeeded();
-  await first.click();
+  // Avatar → lightbox: gallery is paused (0 .gallery__item today), but the
+  // profile avatar wires the same trigger/controller (initLightbox() runs
+  // regardless — see initPortfolioPage). Opens on click, × has focus, Escape
+  // closes and focus goes back to the avatar; ⌘K on top of it swaps.
+  assert.equal(await page.locator(".gallery__item").count(), 0, "gallery is paused, no thumbnails render");
+  const avatar = page.locator(".profile__avatar");
+  await avatar.scrollIntoViewIfNeeded();
+  await avatar.click();
   await page.waitForFunction(() => document.querySelector("[data-lightbox]").getAttribute("aria-hidden") === "false");
-  assert.equal(await page.locator("[data-lightbox-img]").getAttribute("src"), await first.getAttribute("data-lightbox-src"));
-  assert.equal(await page.locator("[data-lightbox-text]").textContent(), await first.getAttribute("data-lightbox-caption"));
-  assert.equal(await page.locator(".gallery__item .gallery__img").count(), 3, "opening the lightbox leaves every thumbnail intact");
+  assert.equal(await page.locator("[data-lightbox-img]").getAttribute("src"), await avatar.getAttribute("data-lightbox-src"));
+  assert.equal(await page.locator("[data-lightbox-text]").textContent(), await avatar.getAttribute("data-lightbox-caption"));
+  assert.equal(await page.locator(".profile__avatar img").count(), 1, "opening the lightbox leaves the avatar thumbnail intact");
   assert.deepEqual(await activeInfo(page).then((a) => [a.className.includes("lightbox__close"), a.hidden]), [true, false]);
   await scanAxe(page, "portfolio, lightbox open");
   await page.keyboard.press("Escape");
   await page.waitForFunction(() => document.querySelector("[data-lightbox]").getAttribute("aria-hidden") === "true");
-  assert.equal(await page.evaluate(() => document.activeElement?.classList.contains("gallery__item")), true);
-  await first.click();
+  assert.equal(await page.evaluate(() => document.activeElement?.classList.contains("profile__avatar")), true);
+  await avatar.click();
   await page.waitForFunction(() => document.querySelector("[data-lightbox]").getAttribute("aria-hidden") === "false");
   await page.keyboard.press("Control+K");
   await page.waitForFunction(() => document.activeElement?.id === "cmdInput");
@@ -172,7 +179,7 @@ test("/ (portfolio home) renders its collections, opens rows and photos in modal
   // ⌘K indexes the portfolio collections (and drafts, since localhost).
   await page.locator("#cmdInput").fill("gow");
   assert.equal(await page.locator('.cmd__item:has-text("GOW Studio")').count(), 1);
-  await page.locator("#cmdInput").fill("template A");
+  await page.locator("#cmdInput").fill("Sphera");
   assert.equal(await page.locator(".cmd__item").count(), 1, "drafts are searchable on localhost");
   await page.keyboard.press("Escape");
 
@@ -190,16 +197,18 @@ test("/ (portfolio home) renders its collections, opens rows and photos in modal
   assert.equal(await page.locator("#projectsSeeMore").textContent(), "show more");
   assert.equal(await page.locator("#projectsSeeMore").getAttribute("aria-expanded"), "false");
 
-  // Narrow viewport: no horizontal overflow, gallery drops to two columns.
+  // Narrow viewport: no horizontal overflow. The two-column `.gallery` grid
+  // check that used to live here was dropped along with the gallery pause
+  // (22/08/2026): with the section `hidden` and empty, Chrome can't resolve
+  // `grid-template-columns` into pixel tracks and hands back the literal
+  // `repeat(2, minmax(0px, 1fr))` formula instead — a getComputedStyle
+  // artifact of an unrendered element, not a real regression. Restoring the
+  // gallery should bring a real rendered-layout assertion back with it.
   await page.setViewportSize({ width: 320, height: 800 });
   assert.equal(
     await page.evaluate(() => document.documentElement.scrollWidth === document.documentElement.clientWidth),
     true,
     "320px viewport has no horizontal overflow",
-  );
-  assert.equal(
-    await page.locator(".gallery").evaluate((g) => getComputedStyle(g).gridTemplateColumns.split(" ").length),
-    2,
   );
 
   assert.deepEqual(pageErrors, []);
@@ -228,18 +237,16 @@ test("portfolio drafts are hidden unless on localhost or ?draft", { timeout: 20_
   await page.route(/^https?:\/\/(?!127\.0\.0\.1|portfolio\.test)/, (route) => route.fulfill({ status: 204, body: "" }));
   await page.goto("http://portfolio.test/", { waitUntil: "load" });
   await page.waitForFunction(() => document.querySelectorAll('[data-list="personal"] .row-btn').length > 0);
-  assert.equal(await page.locator('[data-list="clients"] .row-btn').count(), 0, "no draft rows in production");
-  assert.equal(await page.locator("#clients").evaluate((s) => s.hidden), true, "clients section hidden when it has nothing to show");
-  assert.equal(await page.locator('[data-list="projects"] .row-btn').count(), 0, "no project drafts in production either");
+  assert.equal(await page.locator('[data-list="projects"] .row-btn').count(), 0, "no project drafts in production");
   assert.equal(await page.locator("#projects").evaluate((s) => s.hidden), true, "projects section hidden when it has nothing to show");
   assert.equal(await page.locator("#projectsSeeMore").isVisible(), false, "no show-more button when there's nothing to reveal");
+  assert.equal(await page.locator("#gallery").evaluate((s) => s.hidden), true, "gallery stays hidden too — it's paused, not draft-gated");
   await page.keyboard.press("Control+K");
   await page.waitForFunction(() => document.activeElement?.id === "cmdInput");
-  await page.locator("#cmdInput").fill("template");
+  await page.locator("#cmdInput").fill("Sphera");
   assert.equal(await page.locator(".cmd__item").count(), 0, "drafts are not indexed by ⌘K in production");
   // And ?draft turns them back on, for reviewing the placeholders in place.
   await page.goto("http://portfolio.test/?draft", { waitUntil: "load" });
-  await page.waitForFunction(() => document.querySelectorAll('[data-list="clients"] .row-btn').length > 0);
-  assert.equal(await page.locator('[data-list="clients"] .row--draft').count(), 3);
+  await page.waitForFunction(() => document.querySelectorAll('[data-list="projects"] .row-btn').length > 0);
   assert.equal(await page.locator('[data-list="projects"] .row--draft').count(), 6, "?draft turns project drafts back on too");
 });

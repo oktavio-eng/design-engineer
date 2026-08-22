@@ -10,55 +10,27 @@
 
    `draft: true` marks an entry that is a placeholder for Otavio to replace —
    the page hides drafts unless the URL carries `?draft` (or on localhost),
-   and ⌘K skips them. THE `clients` TEMPLATES AND EVERY `projects` ENTRY
-   BELOW ARE DRAFTS: they show the shape (name = client/project, role = what
-   it was + year, bio = problem → result, items = 2–4 craft decisions,
-   links = live site / case study / repo). `projects` entries are real work
-   with a best-effort bio — Otavio reviews and drops the flag entry by
-   entry; `clients`' three are templates, replace outright. Everything else
-   is real as of 16/08/2026.
+   and ⌘K skips them. EVERY `projects` ENTRY BELOW IS A DRAFT: they're real
+   work with a best-effort bio (name = client/project, role = what it was +
+   year, bio = problem → result, items = 2–4 craft decisions, links = live
+   site) — Otavio reviews each one and drops the flag entry by entry.
+   Everything else is real as of 16/08/2026.
 
-   `projects` gets one thing `clients`/`personal`/`life` don't: a favicon in
-   the row, from `entry.links[0][1]` (portfolio.mjs's renderList opts in per
-   group). No `domain` field needed — favicon() extracts the hostname.
+   `projects` gets one thing `personal`/`life` don't: a favicon in the row,
+   from `entry.links[0][1]` (portfolio.mjs's renderList opts in per group).
+   No `domain` field needed — favicon() extracts the hostname.
+
+   The `clients` collection (three fake `client-a/b/c` templates) was
+   removed 22/08/2026 — `projects` replaced it with real work, so the
+   templates were redundant rather than useful as a second placeholder
+   section. `gallery` still exists below but portfolio.mjs no longer calls
+   renderGallery() from initPortfolioPage — paused on Otavio's request,
+   real photos pending; the data and the render function are both intact,
+   restoring it is a one-line change there.
 
    Order inside each collection is the order on the page.
 --------------------------------------------------------------------------- */
 (function () {
-  const clients = {
-    // ---- DRAFTS: replace with real client work (see header) -----------------
-    "client-a": {
-      draft: true,
-      name: "Client project — template A",
-      role: "Product website · 2026",
-      bio: "One paragraph: what the client needed, what was in the way, and what shipped. Lead with the outcome — a number, a launch, a before/after — not the process.",
-      items: [
-        "Craft decision 1 — e.g. type scale and rhythm chosen against a measured reference.",
-        "Craft decision 2 — e.g. motion kept interruptible; no animation on repeated actions.",
-        "Craft decision 3 — e.g. OKLCH palette so hues hold across light and dark.",
-      ],
-      links: [
-        ["Live site", "https://example.com"],
-        ["Case study", "https://example.com/case"],
-      ],
-    },
-    "client-b": {
-      draft: true,
-      name: "Client project — template B",
-      role: "Design system · 2025",
-      bio: "Problem → what you did → result. Two or three sentences at most; the modal is a card, not a case study.",
-      items: ["Decision 1.", "Decision 2."],
-      links: [["Live site", "https://example.com"]],
-    },
-    "client-c": {
-      draft: true,
-      name: "Client project — template C",
-      role: "Brand + site · 2025",
-      bio: "Problem → what you did → result.",
-      links: [["Live site", "https://example.com"]],
-    },
-  };
-
   // Projects — real client/studio work, favicon shown left of the name in
   // the row (opt-in per row via portfolio.mjs's rowMarkup, from
   // links[0][1]; see portfolio.mjs's renderList call site). All six are
@@ -210,5 +182,5 @@
     { src: "/og.jpg", alt: "The plan page's share card", caption: "The plan, as a card", width: 1200, height: 628 },
   ];
 
-  window.PORTFOLIO_CONTENT = { clients, projects, personal, life, writing, gallery };
+  window.PORTFOLIO_CONTENT = { projects, personal, life, writing, gallery };
 })();

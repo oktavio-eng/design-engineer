@@ -52,10 +52,10 @@ function favicon(url) {
   return typeof window.favicon === "function" ? window.favicon(url) : "";
 }
 
-// ---- Rows: clients / projects / personal / life --------------------------
+// ---- Rows: projects / personal / life -------------------------------------
 // `opts.favicon`: prefix `.who` with the row's favicon, from
 // `entry.links[0][1]` — opt-in per group (only "projects" today), so
-// clients/personal/life keep their plain rows. `opts.extra`: this row lives
+// personal/life keep their plain rows. `opts.extra`: this row lives
 // inside `.extras` (the show-more overflow) — same `.row.extra` contract
 // wiki.html/script.js's wireSeeMore already animates.
 function rowMarkup(group, key, entry, opts) {
@@ -276,12 +276,18 @@ export function initLightbox(root) {
 
 export function initPortfolioPage(root) {
   const counts = {
-    clients: renderList(root, "clients"),
     projects: renderList(root, "projects", { favicon: true, threshold: 3 }),
     personal: renderList(root, "personal"),
     life: renderList(root, "life"),
     writing: renderWriting(root),
-    gallery: renderGallery(root),
+    // Gallery paused on Otavio's request (22/08/2026) — not calling
+    // renderGallery() here is enough: the section stays `hidden` (its
+    // default in index.html, since nothing else reveals it) and the profile
+    // avatar's own lightbox trigger is untouched (initLightbox below still
+    // wires it — it isn't gallery-dependent). renderGallery() and the data
+    // in portfolio-content.js are both intact; restoring is calling it here
+    // again.
+    gallery: 0,
   };
   wireSeeMore("projects");
   const lightbox = initLightbox(document);
