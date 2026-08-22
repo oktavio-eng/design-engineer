@@ -402,13 +402,35 @@ export function initCommandMenu() {
       esc(e.name) +
       '</h3><p class="role">' +
       e.role +
-      "</p></div>" +
-      '<p class="bio p-stagger">' +
-      e.bio +
-      "</p>";
+      "</p></div>";
+    // `preview` (22/08/2026, projects only): the entry's own og:image,
+    // hotlinked live — same "external asset, remove on failure" contract
+    // favicon() uses below, just a bigger image with nothing to fall back
+    // to. onerror has to be inline: the markup is built as a string and
+    // inserted via innerHTML, so a JS-attached listener would never bind.
+    if (e.preview) {
+      html += '<img class="cmd-modal__preview p-stagger" src="' + e.preview + '" onerror="this.remove()" alt="" loading="lazy">';
+    }
+    html += '<p class="bio p-stagger">' + e.bio + "</p>";
     if (e.items) {
       html += '<span class="label p-stagger">In practice</span><div class="p-stagger">';
       for (let i = 0; i < e.items.length; i++) html += '<p class="item">' + e.items[i] + "</p>";
+      html += "</div>";
+    }
+    // `subprojects` (22/08/2026, escola-da-bel only): individual landing
+    // pages worth a preview of their own, each its own live-fetched image +
+    // description, same onerror contract as `preview` above.
+    if (e.subprojects) {
+      html += '<span class="label p-stagger">Landing pages</span><div class="p-stagger cmd-modal__subprojects">';
+      for (let k = 0; k < e.subprojects.length; k++) {
+        const s = e.subprojects[k];
+        html +=
+          '<a class="subproject" href="' + s.url + '" target="_blank" rel="noopener">' +
+          '<img class="subproject__preview" src="' + s.preview + '" onerror="this.remove()" alt="" loading="lazy">' +
+          '<span class="subproject__name">' + esc(s.name) + "</span>" +
+          '<p class="subproject__desc">' + s.description + "</p>" +
+          "</a>";
+      }
       html += "</div>";
     }
     html += '<span class="label p-stagger">Links</span><div class="p-stagger">';
