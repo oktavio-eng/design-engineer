@@ -1880,17 +1880,17 @@ body.mail-open .mail-modal {
 }
 /* Sub-project cards (22/08/2026, escola-da-bel's Landing pages): same
    preview-image contract as .cmd-modal__preview above, one per linked page,
-   stacked rather than gridded (image on top, name + description under it —
-   the whole card is the link, same tap target as a `.row`). */
+   stacked rather than gridded (image on top, name + description under it).
+   Only .subproject__name is the tap target (22/08/2026 follow-up) — a
+   card-wide `<a>` made hover read too heavy for what's meant to be one line
+   of text; the image/description are supporting context, not interactive.
+   `.subproject__name` picks up `.inline-link`'s underline treatment (see
+   its definition near the top of this file) via the class on the markup
+   side, so the "link inside a sentence" look stays in one place. */
 .cmd-modal__subprojects {
   display: flex;
   flex-direction: column;
   gap: var(--space-24);
-}
-.subproject {
-  display: block;
-  color: inherit;
-  text-decoration: none;
 }
 .subproject__preview {
   display: block;
@@ -1902,6 +1902,7 @@ body.mail-open .mail-modal {
 }
 .subproject__name {
   display: block;
+  width: fit-content;
   margin-top: var(--space-10);
   font-weight: var(--fw-semibold);
 }
@@ -1910,7 +1911,7 @@ body.mail-open .mail-modal {
   margin-top: var(--space-4);
 }
 @media (hover: hover) and (pointer: fine) {
-  .subproject:hover .subproject__preview {
+  .subproject:has(.subproject__name:hover) .subproject__preview {
     border-color: var(--faint);
   }
 }

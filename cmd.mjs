@@ -419,17 +419,20 @@ export function initCommandMenu() {
     }
     // `subprojects` (22/08/2026, escola-da-bel only): individual landing
     // pages worth a preview of their own, each its own live-fetched image +
-    // description, same onerror contract as `preview` above.
+    // description, same onerror contract as `preview` above. Only the name
+    // is the link (22/08/2026 follow-up) — image and description are
+    // supporting context, not tap target; a card-wide `<a>` made hover read
+    // too heavy for what's meant to be a single line of text.
     if (e.subprojects) {
       html += '<span class="label p-stagger">Landing pages</span><div class="p-stagger cmd-modal__subprojects">';
       for (let k = 0; k < e.subprojects.length; k++) {
         const s = e.subprojects[k];
         html +=
-          '<a class="subproject" href="' + s.url + '" target="_blank" rel="noopener">' +
+          '<div class="subproject">' +
           '<img class="subproject__preview" src="' + s.preview + '" onerror="this.remove()" alt="" loading="lazy">' +
-          '<span class="subproject__name">' + esc(s.name) + "</span>" +
+          '<a class="subproject__name inline-link" href="' + s.url + '" target="_blank" rel="noopener">' + esc(s.name) + "</a>" +
           '<p class="subproject__desc">' + s.description + "</p>" +
-          "</a>";
+          "</div>";
       }
       html += "</div>";
     }
