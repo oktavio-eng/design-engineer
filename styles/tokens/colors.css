@@ -132,7 +132,19 @@
      Twitter's own Dim text (#F7F9F9) is only C≈0.002, near enough to zero
      that tinting it bought nothing but risked reading muddy at high
      lightness. */
-  --bg: oklch(0.24 0.026 246);
+  /* Darkened further (22/08/2026): --bg's HSL L went from 12.5% to 7%
+     (oklch L 0.24 -> 0.179), hue/chroma held at 246/0.026. The surface ramp
+     below (--white, --line, --row-dim, --gray-870, --gray-955, --bg-a90)
+     shifts by the same absolute OKLCH-L delta (-0.061), not the same ratio —
+     OKLCH L is already close to perceptually uniform, so an equal-L shift
+     keeps each surface's visual "step" off --bg roughly where it was
+     (--white/--bg elevation: 1.13:1 -> 1.09:1; --row-dim/--bg: 4.78:1 ->
+     4.29:1), where a flat multiplicative scale would have compressed them
+     toward --bg instead. --ink/--muted/--faint are untouched on purpose —
+     darkening --bg only widens their contrast against it (--muted/--bg:
+     5.94:1 -> 6.80:1; --faint/--bg: 4.52:1 -> 5.18:1), so scaling them down
+     too would have thrown away margin for no reason. */
+  --bg: oklch(0.179 0.026 246);
   --ink: oklch(0.96 0 0);
   /* 0.69, not 0.66 (22/08/2026) — the ⌘K palette's *selected* result row adds
      `--ink-a5` on top of the `--white` card (a highlight), which in dark mode
@@ -162,8 +174,8 @@
      own --bg — the two lightness numbers aren't meant to match, only the
      contrast ratio they land on (measured 4.78:1, same target as before the
      22/08/2026 bg change; the number happens to fall in the same place). */
-  --row-dim: oklch(0.634 0.024 246);
-  --line: oklch(0.36 0.02 246);
+  --row-dim: oklch(0.5733 0.024 246);
+  --line: oklch(0.2993 0.02 246);
   /* Elevated surface (composer, cmd__card, doc-icon, gallery/lightbox — every
      `--white` consumer, see design-system.md) — close to Dim's own hover
      surface (#192734, L≈0.266) rather than the lighter #22303C. First tried
@@ -173,14 +185,17 @@
      a real regression, not a fixture issue. Paired with the --muted bump
      above, 0.28 clears that exact case at 4.57:1 while still reading as a
      lift off --bg (1.13:1) and dark enough against --ink as button text
-     (13:1+). */
-  --white: oklch(0.28 0.024 246);
+     (13:1+). Superseded numerically by the --bg darkening above (22/08/2026):
+     --white is now 0.2193, same -0.061 delta as --bg, so the 1.13:1 lift and
+     the .cmd__item .what case both hold (now 1.09:1 and 6.26:1 respectively —
+     more margin than before, not less). */
+  --white: oklch(0.2193 0.024 246);
   --white-a40: oklch(1 0 0 / 0.06);
   --white-a50: oklch(1 0 0 / 0.05);
   --white-a60: oklch(1 0 0 / 0.08);
-  --gray-870: oklch(0.42 0.018 246);
-  --gray-955: oklch(0.28 0.02 246);
-  --bg-a90: oklch(0.24 0.026 246 / 0.9);
+  --gray-870: oklch(0.3593 0.018 246);
+  --gray-955: oklch(0.2193 0.02 246);
+  --bg-a90: oklch(0.179 0.026 246 / 0.9);
   /* Zeroed, not just dimmed (22/08/2026, /better-colors review): a black
      drop-shadow composited over --bg (L 0.24) here measures ~1.1:1 contrast
      at every alpha step below (a06's 0.45 alpha renders at 1.11:1; a02's
