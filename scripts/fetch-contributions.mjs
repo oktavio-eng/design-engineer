@@ -25,7 +25,7 @@ const user = process.argv[2] || "oktavio-eng";
 const out = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../data/contributions.json");
 
 const response = await fetch(`https://github.com/users/${user}/contributions`, {
-  headers: { "user-agent": "design-engineer-site contributions refresh (+https://design-engineer-phi.vercel.app)" },
+  headers: { "user-agent": "design-engineer-site contributions refresh (+https://oktavio.vercel.app)" },
 });
 if (!response.ok) {
   console.error(`GitHub returned ${response.status} for ${user}`);
