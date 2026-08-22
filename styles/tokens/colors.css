@@ -1,6 +1,15 @@
 :root {
   color-scheme: light;
-  --bg: oklch(0.991 0 0);
+  /* Warm off-white (22/08/2026), not pure white — #FBFAF7 converted to OKLCH
+     (L 0.985, C 0.0041, H 91.4°; verified #FBFAF7 round-trips through this
+     value). A hair off neutral on purpose: chroma this small (0.004) reads as
+     "paper", not as a visible tint, but keeps the page from feeling like a
+     blank browser window. Was oklch(0.991 0 0) (true neutral, L 0.991) — see
+     git history for that value. --row-dim's measured ratio below shifted
+     slightly (4.79:1 → 4.71:1 against the new --bg) but still clears the
+     4.5:1 floor with margin; re-verify with axe-core if that floor ever gets
+     tight. Dark mode's --bg is untouched. */
+  --bg: oklch(0.985 0.0041 91.4);
   --ink: oklch(0.173 0 0);
   --muted: oklch(0.52 0 0);
   --faint: oklch(0.68 0 0);
@@ -11,8 +20,10 @@
      here) — it's calibrated directly against --bg so both .who and .what can
      share one color at the edge of what's legible, instead of opacity fading
      toward --bg (which is what produced 1.99:1/1.5:1 failures at the old
-     0.3). Measured 4.75:1 with axe-core against the real page, not just
-     computed — see main.css and tests/ui/people-persistent-selection.test.mjs. */
+     0.3). Measured 4.75:1 with axe-core against the real page (pre-22/08/2026
+     --bg; recomputed against the current --bg at 4.71:1, still clears 4.5:1),
+     not just computed — see main.css and
+     tests/ui/people-persistent-selection.test.mjs. */
   --row-dim: oklch(0.547 0 0);
   --line: oklch(0.94 0 0);
   /* `--white` does double duty: solid card/modal surfaces (.composer,
@@ -27,7 +38,7 @@
   --white-a60: oklch(1 0 0 / 0.6);
   --gray-870: oklch(0.87 0 0);
   --gray-955: oklch(0.955 0 0);
-  --bg-a90: oklch(0.991 0 0 / 0.9);
+  --bg-a90: oklch(0.985 0.0041 91.4 / 0.9);
   --ink-a5: color-mix(in srgb, var(--ink) 5%, transparent);
   --ink-a7: color-mix(in srgb, var(--ink) 7%, transparent);
   --wash-bg: color-mix(in srgb, var(--bg) 55%, transparent);
