@@ -12,6 +12,16 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   scroll-behavior: smooth;
+  /* Moved here from `.row` (22/08/2026) — see the note where `.row` used to
+     declare this for why the guard exists and why `-x` only. Scoping it per
+     row meant a same-element `box-shadow` (the 22/08 hover lift) got clipped
+     on the same axis as the guard: a box-shadow is painted relative to its
+     own element's box, so any overflow value other than `visible` on that
+     element clips its own shadow too, not just runaway children. The guard's
+     actual job — stop a nowrap descendant from widening the document — works
+     identically from the document root, and nothing here has its own
+     box-shadow to lose. */
+  overflow-x: clip;
 }
 [id] {
   scroll-margin-top: var(--space-96);
@@ -131,14 +141,15 @@ a:active {
   opacity: 0.9;
   user-select: none;
 }
-/* `overflow-x: clip` is the structural guard against sideways page scroll: a
-   flex item defaults to `min-width: auto`, so any `white-space: nowrap` child
-   refuses to shrink below its own text width and pushes the document wider than
-   the viewport. That is precisely what the tag pills did here at 375px. Clipping
-   the row on the inline axis alone means no descendant can widen the page,
-   whatever ends up inside it. Not `overflow: hidden`: that clips both axes, and
-   the favicon rides a negative `vertical-align` that would get its bottom
-   sliced off. */
+/* The sideways-page-scroll guard (a flex item's default `min-width: auto`
+   means a `white-space: nowrap` child — the tag pills at 375px, originally —
+   refuses to shrink and pushes the document wider than the viewport) moved to
+   `overflow-x: clip` on `html` (22/08/2026, see that rule for why). It used
+   to live here on `.row` itself, which quietly broke the moment `.row` got a
+   `box-shadow` (below): the shadow is relative to this same box, so any
+   non-`visible` overflow on it clips its own shadow along with any runaway
+   child. Moving the guard to the document root fixes that without giving up
+   the guard. */
 /* No rule between rows (16/08/2026): the hairlines read as clutter once the
    page opened up, so vertical rhythm carries the separation alone — 12px of
    padding each side, ~24px of air between adjacent rows' text (tried 14/28
@@ -153,7 +164,6 @@ a:active {
   gap: var(--space-16);
   padding: var(--space-12) 0;
   cursor: pointer;
-  overflow-x: clip;
 }
 /* Hover on the page lists (22/08/2026): the row lifts — solid --white fill,
    the same three-layer --shadow-lift the doc icon/gallery/contrib card use —
@@ -191,7 +201,8 @@ main > section .row {
    than it sounds: a sub-pixel deficit is enough to trigger `text-overflow`, and
    the ellipsis then has to eat a whole cluster of real characters to make room
    for itself — "Dominik Kandravý" renders as "Dominik Kandra…" over 0.07px. The
-   row's own `overflow-x: clip` is what catches a name too long to fit at all. */
+   document root's `overflow-x: clip` (moved there 22/08/2026, see `html`)
+   is what catches a name too long to fit at all. */
 .row .who {
   font-weight: var(--fw-medium);
   white-space: nowrap;
