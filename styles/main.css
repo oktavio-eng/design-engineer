@@ -47,6 +47,12 @@ body {
 main {
   max-width: var(--space-640);
   margin-inline: auto;
+  /* Explicit, not just the default (22/08/2026): `main` is the one container
+     every `.row` hover shadow (`--shadow-lift`) has to bleed past on its way
+     to the viewport. Was already `visible` by inheritance, but that's one
+     accidental `overflow: hidden`/`clip` away from silently clipping every
+     list's hover on the page — pin it here so it can't regress quietly. */
+  overflow: visible;
 }
 ::selection {
   background: var(--ink);

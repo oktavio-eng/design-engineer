@@ -146,7 +146,18 @@
      contrast in the process (page-level muted/bg was already comfortable at
      5.3:1, now 5.94:1). See --white below for the other half of this fix. */
   --muted: oklch(0.69 0.024 246);
-  --faint: oklch(0.46 0.018 246);
+  /* 0.62, not 0.46 (22/08/2026, /better-colors review) — the resting-state
+     color for topbar nav links, logo, icons and the "soon" tag, all of which
+     read as gray/washed-out at the old value: 2.31:1 against --bg, well
+     under the 4.5:1 text floor (this is small nav text, fs-13, not
+     large/UI-only). 0.62 clears it at 4.52:1. Chroma/hue held at the ramp's
+     0.018/246 on purpose (same principle as --muted/--row-dim above) — only
+     L moves. Left closer to --muted (5.94:1) than the light-mode gap between
+     --faint/--muted might suggest, but the hover states this token feeds
+     (`.topbar__nav a:hover`, `.topbar__icon:hover`) also swap in a
+     background wash (`--ink-a5`), so the resting→hover jump still reads
+     clearly even with a smaller color-only delta. */
+  --faint: oklch(0.62 0.018 246);
   /* Same floor as light mode's --row-dim above, recalculated against dark's
      own --bg — the two lightness numbers aren't meant to match, only the
      contrast ratio they land on (measured 4.78:1, same target as before the
@@ -170,14 +181,24 @@
   --gray-870: oklch(0.42 0.018 246);
   --gray-955: oklch(0.28 0.02 246);
   --bg-a90: oklch(0.24 0.026 246 / 0.9);
-  --shadow-a0086: oklch(0 0 0 / 0.3);
-  --shadow-a0128: oklch(0 0 0 / 0.35);
-  --shadow-a0214: oklch(0 0 0 / 0.4);
-  --shadow-a02: oklch(0 0 0 / 0.24);
-  --shadow-a04: oklch(0 0 0 / 0.32);
-  --shadow-a05: oklch(0 0 0 / 0.4);
-  --shadow-a06: oklch(0 0 0 / 0.45);
-  --shadow-a08: oklch(0 0 0 / 0.5);
+  /* Zeroed, not just dimmed (22/08/2026, /better-colors review): a black
+     drop-shadow composited over --bg (L 0.24) here measures ~1.1:1 contrast
+     at every alpha step below (a06's 0.45 alpha renders at 1.11:1; a02's
+     0.24 alpha at 1.05:1) — under any perceptible threshold, let alone a
+     WCAG one. --white's own card-elevation lift off --bg is only 1.13:1 for
+     the same reason. Black-on-near-black doesn't read as elevation here, it
+     reads as nothing; keeping the shadow layers at a "dim but present" alpha
+     would still be dead weight. `--shadow-glass-core`'s white inset
+     highlight (unaffected, defined below) still gives the topbar/modals
+     their glass edge without needing these. */
+  --shadow-a0086: oklch(0 0 0 / 0);
+  --shadow-a0128: oklch(0 0 0 / 0);
+  --shadow-a0214: oklch(0 0 0 / 0);
+  --shadow-a02: oklch(0 0 0 / 0);
+  --shadow-a04: oklch(0 0 0 / 0);
+  --shadow-a05: oklch(0 0 0 / 0);
+  --shadow-a06: oklch(0 0 0 / 0);
+  --shadow-a08: oklch(0 0 0 / 0);
   /* Dark ramp climbs toward light — on a dark ground, "more" is brighter, the
      same direction GitHub's own dark graph takes. Level 3 stays #00B9FF. */
   --contrib-1: oklch(0.42 0.08 235);
