@@ -50,7 +50,13 @@
   --shadow-a05: oklch(0 0 0 / 0.05);
   --shadow-a06: oklch(0 0 0 / 0.06);
   --shadow-a08: oklch(0 0 0 / 0.08);
-  --glass-bg: color-mix(in srgb, var(--bg) 72%, transparent);
+  /* Mixed against --white, not --bg (22/08/2026, since --bg carries a warm
+     tint): the navbar (.topbar__logo/__nav/__social) and every glass modal
+     (.panel, .about-modal, .cmd-modal, .prompt-search__pill) read as neutral
+     white chrome floating over the page, not a tinted haze — same reasoning
+     as --white staying pure white while --bg went warm. Re-resolves for free
+     in dark mode through --white's own override there. */
+  --glass-bg: color-mix(in srgb, var(--white) 72%, transparent);
   --glass-blur-sm: 18px;
   --glass-blur: 24px;
   --glass-blur-lg: 27px;
@@ -102,9 +108,10 @@
    Dark mode — every component in main.css already reads color through these
    tokens (var(), never a literal), so re-pointing the palette here is the
    whole job; nothing in main.css itself needs to know a theme exists.
-   `--ink-a5`, `--ink-a7`, `--wash-bg` and `--glass-bg` are left out on
-   purpose: they're `color-mix()` against `--ink`/`--bg`, so they re-resolve
-   for free the moment those two flip. `--shadow-card`/`--shadow-modal` are
+   `--ink-a5`, `--ink-a7` and `--wash-bg` are left out on purpose: they're
+   `color-mix()` against `--ink`/`--bg`, so they re-resolve for free the
+   moment those two flip. `--glass-bg` is the same story against `--white`
+   (since 22/08/2026 — see above). `--shadow-card`/`--shadow-modal` are
    the same story one level up — they're built from the `--shadow-a*` tokens
    below, not from literals.
 

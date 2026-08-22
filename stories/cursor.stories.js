@@ -20,7 +20,7 @@ const STATES = [
   { key: "text", label: "text (I-beam)", geo: { w: 2, h: 21, r: 1, mode: "text" }, content: "<span>Design engineering</span>" },
   { key: "rect", label: "rect (text link)", geo: { w: 0, h: 0, r: 8, mode: "rect" }, content: '<a href="#rect">Read the plan</a>' },
   { key: "ring", label: "ring (image button)", geo: { w: 0, h: 0, r: 999, mode: "ring" }, content: '<span class="sb-cursor-stage__avatar" aria-hidden="true"></span>' },
-  { key: "merge", label: "merge (row)", geo: { w: 0, h: 0, r: 16, mode: "merge" }, content: '<span class="row" style="background: var(--gray-955); padding: 12px; border-radius: 16px;">Rauno Freiberg</span>' },
+  { key: "merge", label: "merge (row)", geo: { w: 0, h: 0, r: 16, mode: "merge" }, content: '<span class="row" style="background: var(--white); box-shadow: var(--shadow-lift); padding: 12px; border-radius: 16px;">Rauno Freiberg</span>' },
 ];
 
 function stage({ key, label, content = "" }) {
