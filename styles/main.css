@@ -271,6 +271,28 @@ main > section .row {
   min-height: 0;
   overflow: hidden;
 }
+/* 6px of slack top and bottom, expanded state only (22/08/2026) —
+   `.extras-inner`'s `overflow: hidden` above is load-bearing for the
+   collapse animation (it's what makes `0fr` actually hide the rows instead
+   of just squeezing them), but a `.row.extra`'s own hover box-shadow bleeds
+   a few px past its border box, and with zero slack that bleed lands
+   exactly on this box's own clip edge — cut flush, top and bottom, on the
+   first/last row and (since the rows stack with no gap of their own) every
+   row in between. Horizontal bleed doesn't need the same fix: this box is
+   already wide enough to hold the row's 12px side bleed without touching
+   its own edge, so only the block axis needed room.
+
+   Scoped to `.expanded` rather than added to the bare rule above: padding
+   isn't swallowed by the `0fr` collapse the way content height is —
+   `min-height: 0` only removes the *content* floor, not the box's own
+   padding — so an unconditional `padding-block` here left the collapsed
+   state 12px tall instead of 0 (caught by
+   tests/ui/see-more-sections.test.mjs, "collapsed extras take no space").
+   Gating it on `.expanded` keeps the collapsed height genuinely 0 and only
+   adds the slack once the rows (and their shadow) are actually visible. */
+.expanded .extras-inner {
+  padding-block: var(--space-6);
+}
 .row.extra {
   opacity: 0;
   transition-property: opacity;
@@ -1133,6 +1155,21 @@ a.note-open.note-empty:hover {
   to {
     opacity: 1;
     transform: translateY(0);
+    /* Written as `blur(0)`, not `none` — has to be, so it animates smoothly
+       from `blur(var(--space-4))` — but a CSS Animation resolves that end
+       value to a concrete `blur(0px)` no matter which of the two the
+       keyframe names (tried `none` here first, 22/08/2026: identical
+       computed style, confirmed in a minimal repro before touching this
+       comment). Any non-`none` filter, even this visually-inert one, gives
+       the element its own stacking context, which clips box-shadow bleeding
+       past its own border box — invisible while every `.stagger`/
+       `.row.extra` consumer only had a flat fill, but the instant `.row`/
+       `.doc-item` grew a hover box-shadow (22/08/2026, see "Hover das listas
+       da página" above) any row revealed by show more rendered that shadow
+       cut flush at its own edges. The real fix can't live here: it's the
+       `animationend` listener in script.js/chrome.js that clears `filter`
+       from *outside* the animation once it ends, which is the only way to
+       land on a genuine `none`. */
     filter: blur(0);
   }
 }

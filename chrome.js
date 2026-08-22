@@ -87,3 +87,21 @@
     scheduleNavIdle();
   });
 })();
+
+/* `enter`'s settle-filter fix (22/08/2026) — see the comment on
+   `@keyframes enter` in main.css for the why. A CSS Animation interpolating
+   away from a real `blur()` always resolves its end value to a concrete
+   `blur(0px)`, never the bare keyword `none`, no matter what the keyframe
+   itself declares — so every `.stagger`/`.p-stagger`/`.row.extra` consumer
+   of `enter` keeps a non-`none` filter after it "finishes", which gives the
+   element its own stacking context and clips any box-shadow bleeding past
+   its own border box. Clearing `filter` from outside the animation, once it
+   ends, produces a genuine `none` and drops that stacking context;
+   `!important` is required because a still forwards-filling animation
+   outranks a plain style change on the same property. Duplicated in
+   script.js (wiki) for the same reason chrome.js itself is split from it. */
+document.addEventListener("animationend", function (e) {
+  if (e.animationName === "enter") {
+    e.target.style.setProperty("filter", "none", "important");
+  }
+});
