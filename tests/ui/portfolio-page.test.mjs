@@ -81,8 +81,17 @@ test("/ (portfolio home) renders its collections, opens rows and photos in modal
   const sections = await page.evaluate(() =>
     [...document.querySelectorAll("main > section[id]")].map((s) => `${s.id}${s.hidden ? ":hidden" : ""}`),
   );
-  assert.deepEqual(sections, ["positioning", "contributions", "writing", "clients", "personal", "life", "gallery"]);
+  assert.deepEqual(sections, ["positioning", "contributions", "writing", "clients", "projects", "personal", "life", "gallery"]);
   assert.equal(await page.locator('[data-list="clients"] .row--draft').count(), 3, "drafts show on localhost");
+
+  // Projects: favicon in the row (opt-in, unlike clients/personal/life),
+  // and a show-more overflow past the 3-row threshold.
+  assert.equal(await page.locator('[data-list="projects"] .row--draft').count(), 6, "all six project drafts render on localhost");
+  assert.equal(await page.locator('[data-list="projects"] .row-btn .fav').count(), 6, "every project row carries a favicon");
+  assert.equal(await page.locator('[data-list="clients"] .row-btn .fav').count(), 0, "clients rows stay icon-free");
+  assert.equal(await page.locator('[data-list="personal"] .row-btn .fav').count(), 0, "personal rows stay icon-free");
+  assert.equal(await page.locator("#projectsExtras .row.extra").count(), 3, "rows past the threshold sit in the overflow");
+  assert.equal(await page.locator("#projectsSeeMore").getAttribute("aria-expanded"), "false", "starts collapsed");
 
   // Contribution graph: real data file, one cell per day plus the Sunday pad,
   // and the total in the footer matches the file.
@@ -167,6 +176,20 @@ test("/ (portfolio home) renders its collections, opens rows and photos in modal
   assert.equal(await page.locator(".cmd__item").count(), 1, "drafts are searchable on localhost");
   await page.keyboard.press("Escape");
 
+  // Projects show more: ported wireSeeMore(), same .expanded/aria-expanded/
+  // text-swap contract as wiki.html's people/courses/references. Exercised
+  // down here (after the contrib-graph hover assertions above) since
+  // clicking it scrolls the page, and an in-flight extras transition throws
+  // off Playwright's scroll-into-view for a hover target earlier on the page.
+  await page.locator("#projectsSeeMore").click();
+  await page.waitForFunction(() => document.getElementById("projects").classList.contains("expanded"));
+  assert.equal(await page.locator("#projectsSeeMore").textContent(), "show less");
+  assert.equal(await page.locator("#projectsSeeMore").getAttribute("aria-expanded"), "true");
+  await page.locator("#projectsSeeMore").click();
+  await page.waitForFunction(() => !document.getElementById("projects").classList.contains("expanded"));
+  assert.equal(await page.locator("#projectsSeeMore").textContent(), "show more");
+  assert.equal(await page.locator("#projectsSeeMore").getAttribute("aria-expanded"), "false");
+
   // Narrow viewport: no horizontal overflow, gallery drops to two columns.
   await page.setViewportSize({ width: 320, height: 800 });
   assert.equal(
@@ -207,6 +230,9 @@ test("portfolio drafts are hidden unless on localhost or ?draft", { timeout: 20_
   await page.waitForFunction(() => document.querySelectorAll('[data-list="personal"] .row-btn').length > 0);
   assert.equal(await page.locator('[data-list="clients"] .row-btn').count(), 0, "no draft rows in production");
   assert.equal(await page.locator("#clients").evaluate((s) => s.hidden), true, "clients section hidden when it has nothing to show");
+  assert.equal(await page.locator('[data-list="projects"] .row-btn').count(), 0, "no project drafts in production either");
+  assert.equal(await page.locator("#projects").evaluate((s) => s.hidden), true, "projects section hidden when it has nothing to show");
+  assert.equal(await page.locator("#projectsSeeMore").isVisible(), false, "no show-more button when there's nothing to reveal");
   await page.keyboard.press("Control+K");
   await page.waitForFunction(() => document.activeElement?.id === "cmdInput");
   await page.locator("#cmdInput").fill("template");
@@ -215,4 +241,5 @@ test("portfolio drafts are hidden unless on localhost or ?draft", { timeout: 20_
   await page.goto("http://portfolio.test/?draft", { waitUntil: "load" });
   await page.waitForFunction(() => document.querySelectorAll('[data-list="clients"] .row-btn').length > 0);
   assert.equal(await page.locator('[data-list="clients"] .row--draft').count(), 3);
+  assert.equal(await page.locator('[data-list="projects"] .row--draft').count(), 6, "?draft turns project drafts back on too");
 });

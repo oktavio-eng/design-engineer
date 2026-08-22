@@ -1,5 +1,6 @@
 import { expect, waitFor } from "storybook/test";
 import { renderContributions, levelFor, thresholdsFor, tipMarkup } from "../contrib.mjs";
+import { expectOnlyA11yDebt } from "./helpers/a11y-baseline.js";
 
 /**
  * Portfolio components — built ahead of the page they're for (PORTFOLIO.md).
@@ -54,6 +55,43 @@ function docItem([title, description]) {
       </span>
     </a>`;
 }
+
+const GALLERY_PHOTO =
+  "data:image/svg+xml;utf8," +
+  encodeURIComponent(
+    '<svg xmlns="http://www.w3.org/2000/svg" width="600" height="600"><rect width="600" height="600" fill="oklch(0.9 0.06 235)"/><circle cx="300" cy="300" r="180" fill="oklch(0.741 0.157 235)"/></svg>',
+  );
+
+const PROJECTS_FIXTURE = Object.fromEntries(
+  ["Sphera Academy", "Caderno de Erros", "CloudFaster Academy", "DascIA", "FinQ Edu"].map((name, i) => [
+    name.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
+    {
+      name,
+      role: "Identity + Website · " + (2024 + (i % 3)),
+      bio: "One paragraph: problem, what shipped, result.",
+      links: [["Live site", `https://${name.toLowerCase().replace(/[^a-z0-9]+/g, "")}.com`]],
+    },
+  ]),
+);
+
+// One fixture, set once, for every story below that imports the real
+// portfolio.mjs (Gallery, ProjectsList): that module reads
+// `window.PORTFOLIO_CONTENT` into a module-scope `const` at import time, and
+// Vitest's browser mode shares one module registry across every story in
+// this file — so only the *first* story to `import("../portfolio.mjs")`
+// actually triggers that read; every story after it reuses the same cached
+// module and the same already-frozen `content`, no matter what it sets
+// `window.PORTFOLIO_CONTENT` to in its own render(). Assigning the full
+// object here, before any story runs, means whichever one imports first
+// still sees every collection the others need.
+window.PORTFOLIO_CONTENT = {
+  gallery: [
+    { src: GALLERY_PHOTO, alt: "Blue disc on a pale field", caption: "Study 01", width: 600, height: 600 },
+    { src: GALLERY_PHOTO, alt: "Blue disc on a pale field", caption: "Study 02", width: 600, height: 600 },
+    { src: GALLERY_PHOTO, alt: "Blue disc on a pale field", caption: "Study 03", width: 600, height: 600 },
+  ],
+  projects: PROJECTS_FIXTURE,
+};
 
 export default {
   title: "Patterns/Portfolio",
@@ -226,21 +264,10 @@ export const ContributionsHover = {
 // renderer and lightbox controller with an inline photo (data URI) so the
 // story is self-contained.
 
-const PHOTO =
-  "data:image/svg+xml;utf8," +
-  encodeURIComponent(
-    '<svg xmlns="http://www.w3.org/2000/svg" width="600" height="600"><rect width="600" height="600" fill="oklch(0.9 0.06 235)"/><circle cx="300" cy="300" r="180" fill="oklch(0.741 0.157 235)"/></svg>',
-  );
-
 export const Gallery = {
   render: () => {
-    window.PORTFOLIO_CONTENT = {
-      gallery: [
-        { src: PHOTO, alt: "Blue disc on a pale field", caption: "Study 01", width: 600, height: 600 },
-        { src: PHOTO, alt: "Blue disc on a pale field", caption: "Study 02", width: 600, height: 600 },
-        { src: PHOTO, alt: "Blue disc on a pale field", caption: "Study 03", width: 600, height: 600 },
-      ],
-    };
+    // window.PORTFOLIO_CONTENT is the shared fixture set once at the top of
+    // this file — see the comment there for why it can't be set here instead.
     const root = shell(
       "Gallery",
       "Photos as content: a fixed-aspect grid in the lift shell, each cell a button that opens the lightbox. Escape, the wash and × close it; focus returns to the thumbnail.",
@@ -255,8 +282,6 @@ export const Gallery = {
          </figure>
        </div>`,
     );
-    // The renderer reads window.PORTFOLIO_CONTENT at import time in the page;
-    // here it's re-read through the module's exported functions on the fixture.
     import("../portfolio.mjs").then((mod) => {
       mod.renderGallery(root);
       mod.initLightbox(root);
@@ -281,5 +306,83 @@ export const Gallery = {
     await waitFor(() => expect(box).toHaveAttribute("aria-hidden", "true"));
     await expect(items[1]).toHaveFocus();
     await expect(document.activeElement.closest('[aria-hidden="true"], [inert]')).toBeNull();
+  },
+};
+
+// The Projects row list: the same .row/.row-btn clients/personal/life use,
+// plus the two things unique to this group — a favicon left of the name
+// (opt-in, from entry.links[0][1]) and a show-more overflow past a
+// threshold, ported from wiki.html's people/courses/references pattern
+// (task-projects-home-v2.md). Uses the real portfolio.mjs renderer + the
+// real wireSeeMore(), not a reimplementation, so the two can't drift apart.
+export const ProjectsList = {
+  // `.see-more`'s `--faint`-on-`--bg` contrast is pre-existing production
+  // debt (see stories/patterns.stories.js's "color-contrast:see-more"
+  // markers) — narrowed to the marked node below, same pattern.
+  parameters: {
+    a11y: {
+      test: "error",
+      options: { rules: { "color-contrast": { enabled: false } } },
+    },
+  },
+  render: () => {
+    // window.PORTFOLIO_CONTENT (the "projects" key) is the shared fixture
+    // set once at the top of this file. wireSeeMore() reads
+    // document.getElementById(sectionId) for the section itself (toggling
+    // .expanded there), so the fixture below needs the real <section
+    // id="projects"> wrapper index.html uses, not just the parts renderList
+    // touches.
+    const root = shell(
+      "Projects",
+      "Client/studio work — favicon in the row (unique to this group) and a show-more overflow past 3 rows, same .extras/.row.extra contract wiki.html uses for People/Courses/References.",
+      `<section id="projects">
+         <h2 class="sb-pattern__title">Projects</h2>
+         <div data-list="projects"></div>
+         <button class="see-more" id="projectsSeeMore" type="button" aria-expanded="false" aria-controls="projectsExtras" data-a11y-debt="see-more-projects">show more</button>
+       </section>`,
+    );
+    // favicons.js is a classic script index.html loads before portfolio.mjs
+    // (see that file's header) — the inventory doesn't load it globally, so
+    // pull in the real file rather than duplicate its favicon()/favFallback
+    // logic here. renderList()'s favicon opt is a soft dependency on it
+    // (cmd.mjs: "if a page loads this module without favicons.js, links
+    // still render — just without the icon"), so wait for it explicitly.
+    const ready = window.favicon
+      ? Promise.resolve()
+      : new Promise((resolve) => {
+          const script = document.createElement("script");
+          script.src = "/favicons.js";
+          script.onload = resolve;
+          document.head.appendChild(script);
+        });
+    ready.then(() => {
+      import("../portfolio.mjs").then((mod) => {
+        mod.renderList(root, "projects", { favicon: true, threshold: 3 });
+        mod.wireSeeMore("projects");
+      });
+    });
+    return root;
+  },
+  play: async ({ canvas, canvasElement, userEvent }) => {
+    await waitFor(() => expect(canvasElement.querySelectorAll(".row-btn")).toHaveLength(5));
+    const rows = canvasElement.querySelectorAll(".row-btn");
+    // Every row carries a favicon, unlike clients/personal/life.
+    await expect(canvasElement.querySelectorAll(".row-btn .fav")).toHaveLength(5);
+    await expect(rows[0].querySelector(".fav")).toHaveAttribute("data-domain", "spheraacademy.com");
+    // First 3 rows are plain; the rest start inside the collapsed overflow.
+    await expect(canvasElement.querySelectorAll('[data-list="projects"] > .row-btn')).toHaveLength(3);
+    const extras = canvasElement.querySelector("#projectsExtras");
+    await expect(extras).not.toBeNull();
+    await expect(extras.querySelectorAll(".row.extra")).toHaveLength(2);
+    await expect(getComputedStyle(extras).visibility).toBe("hidden");
+
+    const seeMore = canvas.getByRole("button", { name: "show more" });
+    await expect(seeMore).toHaveAttribute("aria-expanded", "false");
+    await userEvent.click(seeMore);
+    await waitFor(() => expect(canvasElement.querySelector("#projects")).toHaveClass("expanded"));
+    await waitFor(() => expect(getComputedStyle(extras).visibility).toBe("visible"));
+    await expect(canvas.getByRole("button", { name: "show less" })).toHaveAttribute("aria-expanded", "true");
+
+    await expectOnlyA11yDebt(canvasElement, ["color-contrast:see-more-projects"]);
   },
 };
