@@ -1169,7 +1169,6 @@ a.note-open.note-empty:hover {
 .intro__word {
   display: flex;
   align-items: center;
-  gap: var(--space-12);
   white-space: nowrap;
   font-size: 1.2rem;
   font-weight: var(--fw-medium);
@@ -1184,21 +1183,19 @@ a.note-open.note-empty:hover {
      grants it that transition for that one moment. */
 }
 /* Every greeting sits stacked in a single grid cell, all six in the DOM from the
-   start: the row's width settles on the widest word and never moves again. The
-   old cross-fade hid that reflow behind an empty frame between words — a cut has
-   no empty frame, and at a 200ms cadence a bullet hopping on every swap reads as
-   tremor, not as movement. */
+   start: the stack settles on the width of the widest word (こんにちは) and never
+   reflows again. Swapping is a class toggle between two elements that are
+   already laid out — no measurement, no reflow.
+   Centered, not start-aligned (there was a bullet marker here until
+   22/08/2026 — removed for craft, see git history). With the bullet gone
+   there's nothing pinning the stack to a left edge, so a plain center has no
+   trade-off left to make: it keeps the visible word's optical center
+   identical across all six languages, instead of drifting with each word's
+   width the way start-alignment did. */
 .intro__langs {
   display: grid;
   align-items: center;
-  /* Start-aligned, not centered. The stack is as wide as the widest greeting
-     (こんにちは), so centering the words inside it pushed the short ones ~35px off
-     the bullet — the distance between bullet and first letter has to be `gap`
-     and nothing else, identical in every language. The cost is that the row is
-     centred as a whole, so a short word sits a hair left of the optical centre;
-     that's the cheapest of the three prices here, the other two being a gap that
-     changes per word or a bullet that hops on every cut. */
-  justify-items: start;
+  justify-items: center;
 }
 .intro__lang {
   grid-area: 1 / 1;
@@ -1227,11 +1224,10 @@ a.note-open.note-empty:hover {
   opacity: 1;
   transform: scale(1);
 }
-/* A palavra é 1.2rem nos dois breakpoints de propósito — só o gap encolhe. */
+/* A palavra é 1.2rem nos dois breakpoints de propósito — sem gap pra encolher
+   desde que a bolinha saiu (22/08/2026), este breakpoint não tem mais nada
+   pra fazer com .intro__word. */
 @media (max-width: 560px) {
-  .intro__word {
-    gap: var(--space-8);
-  }
   /* The tip is anchored to the glossed word (`left: 0` on a `position:
      relative` inline span) and is up to 220px wide, so a word in the right half
      of a 375px screen throws it past the viewport edge — laid out even at

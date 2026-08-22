@@ -126,8 +126,7 @@
 
     // All six greetings go into the DOM up front, stacked in one grid cell (see
     // `.intro__langs` in main.css). Swapping is then a class toggle between two
-    // elements that are already laid out — no text measurement, no reflow, and
-    // nothing for the bullet to shift against on a cut.
+    // elements that are already laid out — no text measurement, no reflow.
     const slots = GREETINGS.map(function (greeting) {
       const span = document.createElement("span");
       span.className = "intro__lang";
