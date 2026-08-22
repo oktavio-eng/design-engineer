@@ -12,6 +12,11 @@
   --duration-200: 200ms;
   --duration-240: 240ms;
   --duration-250: 250ms;
+  /* 300/360 (22/08/2026): continue the .p-stagger 60ms step past nth-child(5)
+     for entries with more sections (escola-da-bel's Landing pages block adds
+     two more staggered children — see main.css's nth-child(6)/(7)). */
+  --duration-300: 300ms;
+  --duration-360: 360ms;
   --duration-320: 320ms;
   --duration-400: 400ms;
   --duration-480: 480ms;

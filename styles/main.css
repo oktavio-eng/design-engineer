@@ -680,6 +680,18 @@ body.panel-modal .cpanel {
 .p-stagger:nth-child(5) {
   animation-delay: var(--duration-240);
 }
+/* 6/7 (22/08/2026): a project entry with both a preview image and items now
+   runs 7 deep (h3+role, preview, bio, "In practice" label, items, "Links"
+   label, links) — two steps past what the palette/panel used to need. Past
+   7 (escola-da-bel's Landing pages block only) the tail lands together at
+   nth-child(1)'s delay instead of extending further — one entry doesn't
+   earn its own duration tokens. */
+.p-stagger:nth-child(6) {
+  animation-delay: var(--duration-300);
+}
+.p-stagger:nth-child(7) {
+  animation-delay: var(--duration-360);
+}
 .people .row.active .what,
 .people .row.active .who a,
 .row.active .what,
@@ -1848,8 +1860,59 @@ body.mail-open .mail-modal {
   color: var(--muted);
   margin-top: var(--space-2);
 }
+/* Project preview (22/08/2026): the entry's own og:image, hotlinked live —
+   1.91:1 is the standard og:image ratio (1200×630); `object-fit: cover`
+   absorbs whatever the source actually ships. Sits between .role and .bio,
+   so .bio's own margin-top now measures off the image instead of the role
+   line — reads the same either way, since both are "gap before the next
+   block of text/media" at the same token. */
+.cmd-modal .cmd-modal__preview {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1200 / 630;
+  object-fit: cover;
+  margin-top: var(--space-16);
+  border-radius: var(--radius-16);
+  border: var(--border-w) solid var(--line);
+}
 .cmd-modal .bio {
   margin-top: var(--space-20);
+}
+/* Sub-project cards (22/08/2026, escola-da-bel's Landing pages): same
+   preview-image contract as .cmd-modal__preview above, one per linked page,
+   stacked rather than gridded (image on top, name + description under it —
+   the whole card is the link, same tap target as a `.row`). */
+.cmd-modal__subprojects {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-24);
+}
+.subproject {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+.subproject__preview {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1200 / 630;
+  object-fit: cover;
+  border-radius: var(--radius-16);
+  border: var(--border-w) solid var(--line);
+}
+.subproject__name {
+  display: block;
+  margin-top: var(--space-10);
+  font-weight: var(--fw-semibold);
+}
+.subproject__desc {
+  color: var(--muted);
+  margin-top: var(--space-4);
+}
+@media (hover: hover) and (pointer: fine) {
+  .subproject:hover .subproject__preview {
+    border-color: var(--faint);
+  }
 }
 .cmd-modal .label {
   margin-top: var(--space-32);

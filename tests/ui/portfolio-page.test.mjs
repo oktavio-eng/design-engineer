@@ -155,6 +155,17 @@ test("/ (portfolio home) renders its collections, opens rows and photos in modal
   assert.equal(await page.evaluate(() => document.activeElement?.getAttribute("data-open")), "personal:design-engineer");
   assert.equal(await page.locator("#cmd").getAttribute("aria-hidden"), "true", "Escape from a direct detail does not reopen the list");
 
+  // Project preview image (22/08/2026): the entry's own og:image, between
+  // .role and .bio. Every image request is already routed to a stub SVG
+  // above, so this is really asserting the element/attributes, not a real
+  // fetch — the broken-image removal path has its own dedicated test below.
+  await page.locator('[data-open="projects:sphera-academy"]').click();
+  await page.waitForFunction(() => document.body.classList.contains("cmd-detail-open"));
+  assert.equal(await page.locator("#cmdModal .cmd-modal__preview").count(), 1, "sphera-academy carries a preview image");
+  assert.equal(await page.locator("#cmdModal .cmd-modal__preview").getAttribute("loading"), "lazy");
+  await page.keyboard.press("Escape");
+  await page.waitForFunction(() => !document.body.classList.contains("cmd-detail-open"));
+
   // Avatar → lightbox: gallery is paused (0 .gallery__item today), but the
   // profile avatar wires the same trigger/controller (initLightbox() runs
   // regardless — see initPortfolioPage). Opens on click, × has focus, Escape
@@ -195,6 +206,33 @@ test("/ (portfolio home) renders its collections, opens rows and photos in modal
   await page.waitForFunction(() => document.getElementById("projects").classList.contains("expanded"));
   assert.equal(await page.locator("#projectsSeeMore").textContent(), "show less");
   assert.equal(await page.locator("#projectsSeeMore").getAttribute("aria-expanded"), "true");
+
+  // dascia has no og:image on the real site — no preview field, no image.
+  // (dascia sits past the show-more threshold, so this needs the expand
+  // above; can't run alongside sphera-academy earlier on the page.)
+  await page.locator('[data-open="projects:dascia"]').click();
+  await page.waitForFunction(() => document.body.classList.contains("cmd-detail-open"));
+  assert.equal(await page.locator("#cmdModal .cmd-modal__preview").count(), 0, "dascia has no preview to show");
+  await page.keyboard.press("Escape");
+  await page.waitForFunction(() => !document.body.classList.contains("cmd-detail-open"));
+
+  // Sub-projects (22/08/2026, escola-da-bel only): each is its own preview
+  // image + name + description, the whole card a live link — same "no
+  // reserved gap on failure" contract as the top-level preview.
+  await page.locator('[data-open="projects:escola-da-bel"]').click();
+  await page.waitForFunction(() => document.body.classList.contains("cmd-detail-open"));
+  assert.equal(await page.locator("#cmdModal .cmd-modal__preview").count(), 1, "escola-da-bel also carries its own top-level preview");
+  assert.equal(await page.locator("#cmdModal .subproject").count(), 5, "five landing pages listed");
+  assert.equal(await page.locator("#cmdModal .subproject__preview").count(), 5, "every sub-project card carries a preview image");
+  assert.deepEqual(
+    await page.locator("#cmdModal .subproject").evaluateAll((as) => as.map((a) => a.getAttribute("target"))),
+    Array(5).fill("_blank"),
+    "sub-project cards open the live page, not the modal",
+  );
+  await scanAxe(page, "portfolio, escola-da-bel sub-projects open");
+  await page.keyboard.press("Escape");
+  await page.waitForFunction(() => !document.body.classList.contains("cmd-detail-open"));
+
   await page.locator("#projectsSeeMore").click();
   await page.waitForFunction(() => !document.getElementById("projects").classList.contains("expanded"));
   assert.equal(await page.locator("#projectsSeeMore").textContent(), "show more");
@@ -260,4 +298,30 @@ test("portfolio drafts are hidden unless on localhost or ?draft", { timeout: 20_
   await page.goto("http://portfolio.test/?draft", { waitUntil: "load" });
   await page.waitForFunction(() => document.querySelectorAll('[data-list="life"] .row--draft').length > 0);
   assert.equal(await page.locator('[data-list="life"] .row--draft:has-text("Brazil, remote")').count(), 1, "?draft turns the synthetic draft back on");
+});
+
+// A project preview image is a live hotlink to the entry's own og:image —
+// same "external asset, remove on failure" contract as favicon(). A stub
+// SVG (like the other tests here use) never actually errors, so this test
+// forces a real 404 on the specific preview URL to exercise onerror.
+test("a broken project preview image removes itself, no reserved gap", { timeout: 20_000 }, async (context) => {
+  const server = await serveDirectory(repositoryRoot);
+  const browser = await launchChromium();
+  context.after(async () => {
+    await browser.close();
+    await server.close();
+  });
+  const page = await browser.newPage();
+  await page.route("https://framerusercontent.com/images/PgbsHlNgpSQclDuYYOPfMT6Zo.png", (route) =>
+    route.fulfill({ status: 404, body: "" }),
+  );
+  await page.route(/^https?:\/\/(?!127\.0\.0\.1)/, (route) => route.fulfill({ status: 204, body: "" }));
+  await page.addInitScript(() => sessionStorage.setItem("intro-shown-v1", "true"));
+  await page.goto(`${server.origin}/`, { waitUntil: "load" });
+  await page.waitForFunction(() => document.querySelectorAll(".row-btn").length > 0);
+  await page.locator('[data-open="projects:sphera-academy"]').click();
+  await page.waitForFunction(() => document.body.classList.contains("cmd-detail-open"));
+  await page.waitForFunction(() => document.querySelector("#cmdModal .cmd-modal__preview") === null);
+  assert.equal(await page.locator("#cmdModal .cmd-modal__preview").count(), 0, "the broken image removed itself, not just failed silently");
+  assert.equal(await page.locator("#cmdModal .bio").count(), 1, "the rest of the detail still renders");
 });
