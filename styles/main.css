@@ -155,15 +155,23 @@ a:active {
   cursor: pointer;
   overflow-x: clip;
 }
-/* Hover on the page lists = the jakub.kr Writing row (16/08/2026): the row
-   fills with the lightest gray, corners at 16px, and the fill bleeds 12px past
-   the column on each side (padding-inline + negative margin, so the text
-   itself never moves). Instant — no transition — the same reason `.doc-item`
-   gives: this is a row you pass over dozens of times. Scoped to `main >
-   section` so the link rows inside the panel/⌘K detail (which are `.row`
-   too, cursor default) keep their plain layout. This replaces the
-   neighborhood dim for these lists; the dim stays on phase items, panel
-   items and palette results, where nothing else marks the hovered one. */
+/* Hover on the page lists (22/08/2026): the row lifts — solid --white fill,
+   the same three-layer --shadow-lift the doc icon/gallery/contrib card use —
+   corners at 16px, fill bleeds 12px past the column on each side
+   (padding-inline + negative margin, so the text itself never moves). Was a
+   flat --gray-955 fill with no transition (jakub.kr's Writing row, 16/08); the
+   gray read as inert once the page moved off pure white (see --bg), so the
+   row now reads as a small card lifting off the page instead of a tint
+   change. The fill itself stays instant on purpose — Emil's rule for
+   anything hovered dozens of times a session — only `box-shadow` transitions,
+   the same var(--duration-200) var(--ease-out) `.gallery__item` already uses
+   for the identical tokens: a shadow popping in over zero frames reads as a
+   glitch in a way a color swap doesn't, so it gets just enough motion to
+   avoid that, nothing more. Scoped to `main > section` so the link rows
+   inside the panel/⌘K detail (which are `.row` too, cursor default) keep
+   their plain layout. This replaces the neighborhood dim for these lists;
+   the dim stays on phase items, panel items and palette results, where
+   nothing else marks the hovered one. */
 main > section .row {
   /* 12px, not jakub.kr's 8: his row leads with a 48px icon that carries its
      own air; ours leads with a 13px favicon that sat against the fill's
@@ -171,10 +179,12 @@ main > section .row {
   padding-inline: var(--space-12);
   margin-inline: calc(-1 * var(--space-12));
   border-radius: var(--radius-16);
+  transition: box-shadow var(--duration-200) var(--ease-out);
 }
 @media (hover: hover) and (pointer: fine) {
   main > section .row:hover {
-    background: var(--gray-955);
+    background: var(--white);
+    box-shadow: var(--shadow-lift);
   }
 }
 /* `flex-shrink: 0` keeps the name whole. Letting it shrink even a hair is worse
@@ -1023,7 +1033,7 @@ body.cpanel-open .cpanel {
   bottom: calc(100% + var(--space-8));
   width: max-content;
   max-width: var(--space-220);
-  background: var(--bg);
+  background: var(--white);
   border: var(--border-w) solid var(--line);
   border-radius: var(--radius-6);
   box-shadow:
@@ -2255,10 +2265,15 @@ body.mail-open .mail-modal {
   border-radius: var(--radius-16);
   color: inherit;
   text-decoration: none;
+  /* Same lift as the page-list `.row` hover (22/08/2026) — see that comment
+     in main.css for the full reasoning; kept in sync because AGENTS.md
+     documents them as one pattern. */
+  transition: box-shadow var(--duration-200) var(--ease-out);
 }
 @media (hover: hover) and (pointer: fine) {
   .doc-item:hover {
-    background: var(--gray-955);
+    background: var(--white);
+    box-shadow: var(--shadow-lift);
   }
 }
 /* The portfolio's Writing rows are buttons (they open the shared modal);
@@ -2279,7 +2294,7 @@ body.mail-open .mail-modal {
   flex: none;
   padding: var(--space-2);
   border-radius: var(--radius-8);
-  background: var(--bg);
+  background: var(--white);
   box-shadow: var(--shadow-lift);
 }
 .doc-icon__page {
@@ -2376,7 +2391,7 @@ body.mail-open .mail-modal {
   left: 0;
   width: max-content;
   max-width: var(--space-220);
-  background: var(--bg);
+  background: var(--white);
   border: var(--border-w) solid var(--line);
   border-radius: var(--radius-6);
   box-shadow:
@@ -2481,7 +2496,7 @@ body.mail-open .mail-modal {
   padding: var(--space-4);
   border: none;
   border-radius: var(--radius-16);
-  background: var(--bg);
+  background: var(--white);
   box-shadow: var(--shadow-lift);
   cursor: zoom-in;
   transition: box-shadow var(--duration-200) var(--ease-out);
@@ -2526,7 +2541,7 @@ body.mail-open .mail-modal {
   max-height: calc(100vh - var(--space-96));
   padding: var(--space-4);
   border-radius: var(--radius-16);
-  background: var(--bg);
+  background: var(--white);
   box-shadow: var(--shadow-modal);
   transform: translate(-50%, -50%) scale(0.96);
   opacity: 0;
