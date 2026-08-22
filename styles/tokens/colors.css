@@ -134,16 +134,20 @@
      lightness. */
   /* Darkened further (22/08/2026): --bg's HSL L went from 12.5% to 7%
      (oklch L 0.24 -> 0.179), hue/chroma held at 246/0.026. The surface ramp
-     below (--white, --line, --row-dim, --gray-870, --gray-955, --bg-a90)
-     shifts by the same absolute OKLCH-L delta (-0.061), not the same ratio —
-     OKLCH L is already close to perceptually uniform, so an equal-L shift
-     keeps each surface's visual "step" off --bg roughly where it was
-     (--white/--bg elevation: 1.13:1 -> 1.09:1; --row-dim/--bg: 4.78:1 ->
-     4.29:1), where a flat multiplicative scale would have compressed them
-     toward --bg instead. --ink/--muted/--faint are untouched on purpose —
-     darkening --bg only widens their contrast against it (--muted/--bg:
-     5.94:1 -> 6.80:1; --faint/--bg: 4.52:1 -> 5.18:1), so scaling them down
-     too would have thrown away margin for no reason. */
+     below (--white, --line, --gray-870, --gray-955, --bg-a90) shifts by the
+     same absolute OKLCH-L delta (-0.061), not the same ratio — OKLCH L is
+     already close to perceptually uniform, so an equal-L shift keeps each
+     surface's visual "step" off --bg roughly where it was (--white/--bg
+     elevation: 1.13:1 -> 1.09:1), where a flat multiplicative scale would
+     have compressed them toward --bg instead. --row-dim is the one
+     exception: the same -0.061 delta first landed it at 4.29:1, under the
+     4.5:1 floor — caught by the axe-core assertion in
+     tests/ui/people-persistent-selection.test.mjs (persisted-selection dim
+     text on `.who`/`.what`), a real CI failure, not a fixture issue. See its
+     own comment below for the fix. --ink/--muted/--faint are untouched on
+     purpose — darkening --bg only widens their contrast against it
+     (--muted/--bg: 5.94:1 -> 6.80:1; --faint/--bg: 4.52:1 -> 5.18:1), so
+     scaling them down too would have thrown away margin for no reason. */
   --bg: oklch(0.179 0.026 246);
   --ink: oklch(0.96 0 0);
   /* 0.69, not 0.66 (22/08/2026) — the ⌘K palette's *selected* result row adds
@@ -172,9 +176,14 @@
   --faint: oklch(0.62 0.018 246);
   /* Same floor as light mode's --row-dim above, recalculated against dark's
      own --bg — the two lightness numbers aren't meant to match, only the
-     contrast ratio they land on (measured 4.78:1, same target as before the
-     22/08/2026 bg change; the number happens to fall in the same place). */
-  --row-dim: oklch(0.5733 0.024 246);
+     contrast ratio they land on. Re-tuned again (22/08/2026, --bg darkening
+     above): the delta-shifted value (0.5733) landed at 4.29:1 against the
+     new --bg, under the 4.5:1 floor and caught by
+     tests/ui/people-persistent-selection.test.mjs's axe assertion in CI.
+     0.62 clears it at 5.19:1 — recalibrated straight to the floor with a
+     small margin, same as this token's original tuning, rather than carried
+     by the flat delta the rest of the surface ramp uses. */
+  --row-dim: oklch(0.62 0.024 246);
   --line: oklch(0.2993 0.02 246);
   /* Elevated surface (composer, cmd__card, doc-icon, gallery/lightbox — every
      `--white` consumer, see design-system.md) — close to Dim's own hover
