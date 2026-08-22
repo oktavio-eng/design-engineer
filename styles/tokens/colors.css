@@ -134,7 +134,18 @@
      lightness. */
   --bg: oklch(0.24 0.026 246);
   --ink: oklch(0.96 0 0);
-  --muted: oklch(0.66 0.024 246);
+  /* 0.69, not 0.66 (22/08/2026) — the ⌘K palette's *selected* result row adds
+     `--ink-a5` on top of the `--white` card (a highlight), which in dark mode
+     mixes in a touch of --ink's own lightness and nudges that effective
+     background lighter still. `.cmd__item .what` (this token, 13px) sitting
+     on that specific combination was the tightest case in the whole palette:
+     4.2:1 at the old --muted, under the 4.5:1 floor. Lightening the text
+     a hair (not darkening — dark-mode text needs to pull away from the
+     background by getting lighter, the opposite direction of light mode)
+     clears that exact case at 4.57:1 and only widens every other --muted
+     contrast in the process (page-level muted/bg was already comfortable at
+     5.3:1, now 5.94:1). See --white below for the other half of this fix. */
+  --muted: oklch(0.69 0.024 246);
   --faint: oklch(0.46 0.018 246);
   /* Same floor as light mode's --row-dim above, recalculated against dark's
      own --bg — the two lightness numbers aren't meant to match, only the
@@ -143,11 +154,16 @@
   --row-dim: oklch(0.634 0.024 246);
   --line: oklch(0.36 0.02 246);
   /* Elevated surface (composer, cmd__card, doc-icon, gallery/lightbox — every
-     `--white` consumer, see design-system.md) — same ~0.06 lightness step
-     above --bg the old gray pair had (0.22 vs 0.16), just re-based on Dim's
-     own hover surface (#192734/#22303C) instead of neutral gray. Still dark
-     enough against --ink (now the button-text role) at 12:1+. */
-  --white: oklch(0.3 0.024 246);
+     `--white` consumer, see design-system.md) — close to Dim's own hover
+     surface (#192734, L≈0.266) rather than the lighter #22303C. First tried
+     0.3, which quietly broke `.cmd__item .what` (color: var(--muted)) on the
+     ⌘K palette's selected row (--white + --ink-a5 highlight): 4.2:1, under
+     the 4.5:1 floor, caught by axe inside the command-menu Storybook story —
+     a real regression, not a fixture issue. Paired with the --muted bump
+     above, 0.28 clears that exact case at 4.57:1 while still reading as a
+     lift off --bg (1.13:1) and dark enough against --ink as button text
+     (13:1+). */
+  --white: oklch(0.28 0.024 246);
   --white-a40: oklch(1 0 0 / 0.06);
   --white-a50: oklch(1 0 0 / 0.05);
   --white-a60: oklch(1 0 0 / 0.08);
