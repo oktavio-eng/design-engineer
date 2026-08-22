@@ -257,6 +257,29 @@ test("/ (portfolio home) renders its collections, opens rows and photos in modal
     "320px viewport has no horizontal overflow",
   );
 
+  // Show more, at 320px (22/08/2026 regression): `.extras-inner`'s
+  // `overflow: hidden` -> `visible` swap (the transitionend listener above,
+  // for the last row's hover shadow) used to also cancel CSS Grid's
+  // automatic min-width: 0 on that item — once `visible`, the item's
+  // minimum floor became its nowrap children's min-content width instead,
+  // ballooning every row-btn's 100%-based width along with it and undoing
+  // `.row .what`'s ellipsis (nothing was left to shrink it against). The
+  // collapsed-then-narrow check above didn't catch this — it never expanded
+  // at 320px — so this expands specifically at the narrow width.
+  await page.locator("#projectsSeeMore").click();
+  await page.waitForFunction(() => document.getElementById("projects").classList.contains("expanded"));
+  await page.waitForTimeout(400); // let the transitionend overflow swap settle
+  assert.equal(
+    await page.evaluate(() => document.documentElement.scrollWidth === document.documentElement.clientWidth),
+    true,
+    "320px viewport has no horizontal overflow with Projects expanded",
+  );
+  const longestWhat = page.locator('[data-open="projects:finq-edu"] .what');
+  assert.ok(
+    await longestWhat.evaluate((el) => el.scrollWidth > el.clientWidth),
+    "the longest role line still truncates instead of forcing the row wider",
+  );
+
   assert.deepEqual(pageErrors, []);
 });
 

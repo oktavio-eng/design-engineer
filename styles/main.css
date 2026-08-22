@@ -275,6 +275,24 @@ main > section .row {
 }
 .extras-inner {
   min-height: 0;
+  /* min-width: 0 (22/08/2026 mobile fix) is load-bearing on its own, not
+     just belt-and-suspenders with min-height. `.extras-inner` is the sole
+     item in `.extras`'s single-column grid, and CSS Grid's automatic
+     minimum size only floors a grid item's min-width at 0 while its
+     `overflow` is `visible` (this box is `hidden` at rest) — the moment
+     script.js's transitionend listener below flips it to `overflow:
+     visible` (to stop clipping a `.row.extra`'s hover shadow, see below),
+     the browser's automatic minimum reverts to the item's min-content size
+     instead. Every row inside carries `white-space: nowrap` text (.who,
+     and .what before it's forced to shrink), so min-content is the full
+     unwrapped width of the longest role line — on mobile that's wider than
+     the viewport, so the grid item (and every row-btn sized off its 100%)
+     ballooned out and forced horizontal scroll on the whole page, undoing
+     `.row .what`'s ellipsis in the process (nothing was left to shrink it
+     against). `min-width: 0` overrides that automatic floor outright,
+     independent of overflow, so the item stays pinned to the grid track's
+     actual width in both states. */
+  min-width: 0;
   overflow: hidden;
 }
 /* 6px of slack top and bottom, expanded state only (22/08/2026) —
