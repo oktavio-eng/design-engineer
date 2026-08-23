@@ -24,7 +24,7 @@
    version lacked this and axe flagged it once the composer reached /prompts.
 --------------------------------------------------------------------------- */
 (function () {
-  var MAIL_TO = "oktavio@gowdesign.com";
+  var MAIL_TO = "oktavio@gowstudio.pro";
   var MAIL_SUBJECT = "Hey Oktavio";
 
   document.body.insertAdjacentHTML(
