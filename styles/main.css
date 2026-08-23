@@ -650,6 +650,13 @@ body.panel-modal .cpanel {
 .panel-close:active {
   scale: 0.96;
 }
+/* All panel-close consumers (bare panel/comment close, about/avatar modals,
+   ⌘K's close+back) render a Phosphor Light SVG now instead of a literal
+   "×" character — sized to roughly the glyph's old visual weight. */
+.panel-close svg {
+  width: var(--space-15);
+  height: var(--space-15);
+}
 .panel h3 {
   font-weight: var(--fw-semibold);
   letter-spacing: var(--ls-tight);
@@ -1575,6 +1582,44 @@ body.mail-open .mail-modal {
   padding: var(--space-12);
   box-shadow: var(--shadow-card);
 }
+/* Two-step composer (added 23/08/2026): `#stepEmail` and `#stepMessage`
+   swap via mail.js's `showStep()`, which toggles `hidden` + a class rather
+   than driving two permanently-mounted, absolutely-stacked panels — so the
+   crossfade is a real exit-then-enter, not two elements overlapping. Both
+   steps sit at opacity 0 for the instant the swap happens, which is what
+   hides the height change between the two steps; there's no explicit
+   height transition anywhere here.
+
+   The email step deliberately reuses `.composer__input` (same textarea
+   look, same rows="4" footprint) and `.composer__send` (same 40px round
+   button, just a different icon and no data-mode) verbatim instead of
+   introducing its own field/button styling — asked for explicitly
+   23/08/2026 after a first pass built a distinct single-line component
+   that didn't match. `.composer__actions--end` is the only new rule this
+   step needed: with just the one button and no `.composer__to` label to
+   balance against, plain `.composer__actions`'s `space-between` would pin
+   it to the left instead of matching the send button's position. */
+.composer__step {
+  transition:
+    opacity var(--duration-200) var(--ease),
+    transform var(--duration-200) var(--ease),
+    filter var(--duration-200) var(--ease);
+}
+/* --step-dir (1 forward, -1 back) is set on .composer__stage right before
+   each transition by showStep() — the exiting step always moves opposite
+   the entering one, and back reverses both, so "voltar" actually reads as
+   reversing "avançar" instead of replaying the same forward slide. */
+.composer__step.is-leaving {
+  transition-duration: var(--duration-150);
+  opacity: 0;
+  transform: translateX(calc(var(--space-12) * -1 * var(--step-dir, 1)));
+  filter: blur(var(--space-4));
+}
+.composer__step.is-entering {
+  opacity: 0;
+  transform: translateX(calc(var(--space-12) * var(--step-dir, 1)));
+  filter: blur(var(--space-4));
+}
 .composer__input {
   width: 100%;
   min-height: var(--space-84);
@@ -1601,6 +1646,18 @@ body.mail-open .mail-modal {
   gap: var(--space-16);
   padding-left: var(--space-12);
 }
+.composer__actions--end {
+  justify-content: flex-end;
+}
+/* Wraps `#mailBack` + `.composer__to` as one flex item so `.composer__actions`'s
+   `space-between` still only ever sees two groups (this one, `.composer__send`)
+   — without it, three direct children would spread the back button, the
+   email, and the send button apart instead of keeping the first two together. */
+.composer__from {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
 .composer__to {
   font-size: var(--fs-13);
   color: var(--faint);
@@ -1608,6 +1665,51 @@ body.mail-open .mail-modal {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+/* Small, quiet — same chevron path as ⌘K's detail-view back button
+   (`cmd-modal__back`), but without its circular wash-colored chrome: this
+   one sits inline next to the "to" address, not floating over a panel.
+   Hidden until `.composer__from` is hovered (or the button itself gets
+   keyboard focus) — it's a rarely-needed correction, not a control that
+   should compete with the "to" address at rest. Collapsed to `width: 0`
+   rather than just `opacity: 0` — the spacing to "to" lives on this
+   element's own `margin-right` (not `.composer__from`'s `gap`) so both
+   width and margin animate to 0 together and leave no reserved gap. */
+.composer__back {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden;
+  width: 0;
+  height: var(--space-16);
+  margin-right: 0;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--faint);
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    color var(--duration-150) var(--ease),
+    opacity var(--duration-150) var(--ease),
+    width var(--duration-150) var(--ease),
+    margin-right var(--duration-150) var(--ease);
+}
+.composer__from:hover .composer__back,
+.composer__back:focus-visible {
+  width: var(--space-16);
+  margin-right: var(--space-16);
+  opacity: 1;
+  pointer-events: auto;
+}
+.composer__back:hover {
+  color: var(--ink);
+}
+.composer__back svg {
+  width: var(--space-14);
+  height: var(--space-14);
 }
 .composer__send {
   position: relative;
@@ -1617,10 +1719,13 @@ body.mail-open .mail-modal {
   display: flex;
   align-items: center;
   justify-content: center;
+  border: none;
   border-radius: var(--radius-full);
   background: var(--ink);
   color: var(--white);
   cursor: pointer;
+  font: inherit;
+  padding: 0;
   transition-property: scale, background;
   transition-duration: var(--duration-200);
   transition-timing-function: var(--ease);
@@ -1656,6 +1761,50 @@ body.mail-open .mail-modal {
   opacity: 1;
   scale: 1;
   filter: blur(0);
+}
+.composer__send .icon-sent {
+  opacity: 0;
+  scale: 0.25;
+  filter: blur(var(--space-4));
+}
+.composer__send[data-mode="sent"] .icon-send,
+.composer__send[data-mode="sent"] .icon-close {
+  opacity: 0;
+  scale: 0.25;
+  filter: blur(var(--space-4));
+}
+.composer__send[data-mode="sent"] .icon-sent {
+  opacity: 1;
+  scale: 1;
+  filter: blur(0);
+}
+/* Checkmark draws itself in rather than just fading with the other two
+   icons — gives the success state its own signature motion instead of
+   reusing the routine send/close crossfade verbatim. 17 is the path's
+   actual length (~16.3, measured from its `d`) rounded up a hair so the
+   line finishes exactly as the transition ends, not before. Delayed by
+   --duration-80 so the draw reads as a second beat after the icon has
+   already faded in, not simultaneous with it. */
+.composer__send .icon-sent path {
+  stroke-dasharray: 17;
+  stroke-dashoffset: 17;
+  transition: stroke-dashoffset var(--duration-320) var(--ease) var(--duration-80);
+}
+.composer__send[data-mode="sent"] .icon-sent path {
+  stroke-dashoffset: 0;
+}
+/* Small scale pop on the whole button the moment it lands on "sent" — the
+   send/close crossfade alone read as too flat/"seco" for a confirmation
+   (23/08/2026). Only the 35% keyframe is set; start/end inherit whatever
+   scale is already computed (1, or 0.96 mid-:active), same shorthand the
+   `enter` keyframe above relies on. */
+.composer__send[data-mode="sent"] {
+  animation: mail-sent-pop var(--duration-320) var(--ease);
+}
+@keyframes mail-sent-pop {
+  35% {
+    scale: 1.08;
+  }
 }
 .cmd-wash {
   position: fixed;
@@ -1865,10 +2014,6 @@ body.mail-open .mail-modal {
    to, so the back button goes and the title takes the left edge. */
 .cmd-modal--direct .cmd-modal__back {
   display: none;
-}
-.cmd-modal__back svg {
-  width: var(--space-15);
-  height: var(--space-15);
 }
 .cmd-modal h3 {
   font-weight: var(--fw-semibold);

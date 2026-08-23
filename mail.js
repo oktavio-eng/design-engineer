@@ -22,28 +22,78 @@
    The dialog is `inert` while closed (same `aria-hidden` + `inert` pair as
    the ⌘K dialogs) so its textarea is never a hidden Tab stop — the wiki-only
    version lacked this and axe flagged it once the composer reached /prompts.
+
+   Sending: this used to be a bare `mailto:` link, which depends on the
+   visitor's browser/OS having a mail client registered — without one, the
+   click just navigates the tab to `mailto:...` and leaves it on a blank
+   about:blank (reported 23/08/2026). It now POSTs to Web3Forms instead
+   (api.web3forms.com/submit, keyed to oktavio@gowstudio.pro) so the send
+   never navigates the page at all. The `href` stays a `mailto:` fallback —
+   pure convenience if JS fails to load, not the primary path.
+
+   On success `data-mode` goes to "sent" — a third crossfade state next to
+   "close"/"send" on the same icon-swap system (`.composer__send svg`,
+   opacity+scale+blur, `--duration-200`/`--ease`) — and the sheet holds for
+   SENT_HOLD_MS before auto-closing, so the confirmation is actually seen.
+   Typing again or closing manually cancels that timer (see `sentTimer`) so
+   a second message never gets cut off mid-draft by the old timeout.
+
+   Two steps, one modal (added 23/08/2026 — without this, "who actually
+   messaged me" only got answered if the visitor thought to sign their name
+   inside the message itself): `#stepEmail` asks for a reply address first,
+   `#stepMessage` is the composer as before. `showStep()` toggles between
+   them with a quick exit-then-enter (native `hidden`, not `inert` —
+   nothing needs to stay tabbable underneath) so the two never overlap;
+   sharing `.composer__input`'s rows="4" box on both steps means there's
+   barely any height delta to hide in the first place. The email step is
+   skippable on purpose — clicking the arrow with it empty still advances;
+   `sendMail()` only adds `email` to the payload when non-blank.
 --------------------------------------------------------------------------- */
 (function () {
   var MAIL_TO = "oktavio@gowstudio.pro";
   var MAIL_SUBJECT = "Hey Oktavio";
+  var WEB3FORMS_KEY = "81ee78a2-91c0-4dcb-8afa-926da9bafccc";
+  var SENT_HOLD_MS = 1300;
+  var STEP_EXIT_MS = 150;
+  var STEP_ORDER = { email: 0, message: 1 };
+  var sending = false;
+  var sentTimer = null;
+  var currentStep = "email";
 
   document.body.insertAdjacentHTML(
     "beforeend",
     '<div class="mail-wash" id="mailWash" aria-hidden="true"></div>' +
       '<div class="mail-modal" id="mailModal" role="dialog" aria-modal="true" aria-label="Send a message" aria-hidden="true" inert>' +
       '<div class="composer">' +
+      '<div class="composer__stage" id="composerStage">' +
+      '<div class="composer__step composer__step--email" id="stepEmail">' +
+      '<textarea class="composer__input" id="mailReply" placeholder="Your email" rows="4" inputmode="email" autocomplete="email"></textarea>' +
+      '<div class="composer__actions composer__actions--end">' +
+      '<button class="composer__send" id="mailNext" type="button" aria-label="Next">' +
+      '<svg class="icon-next" viewBox="0 0 256 256" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M220.24,132.24l-72,72a6,6,0,0,1-8.48-8.48L201.51,134H40a6,6,0,0,1,0-12H201.51L139.76,60.24a6,6,0,0,1,8.48-8.48l72,72A6,6,0,0,1,220.24,132.24Z"/></svg>' +
+      "</button></div></div>" +
+      '<div class="composer__step composer__step--message" id="stepMessage" hidden>' +
       '<textarea class="composer__input" id="mailText" placeholder="Hey Oktavio!" rows="4"></textarea>' +
       '<div class="composer__actions">' +
-      '<span class="composer__to">' + MAIL_TO + "</span> " +
+      '<span class="composer__from">' +
+      '<button class="composer__back" id="mailBack" type="button" aria-label="Edit email"><svg viewBox="0 0 256 256" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M164.24,203.76a6,6,0,1,1-8.48,8.48l-80-80a6,6,0,0,1,0-8.48l80-80a6,6,0,0,1,8.48,8.48L88.49,128Z"/></svg></button>' +
+      '<span class="composer__to">' + MAIL_TO + "</span></span> " +
       '<a class="composer__send" id="mailSend" data-mode="close" href="mailto:' + MAIL_TO + '" target="_blank" rel="noopener" aria-label="Close">' +
-      '<svg class="icon-send" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M12 19.5V5.5"/><path d="M5.25 12.25 12 5.5l6.75 6.75"/></svg> ' +
-      '<svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M17.5 6.5 6.5 17.5"/><path d="M6.5 6.5 17.5 17.5"/></svg>' +
-      "</a></div></div></div>",
+      '<svg class="icon-send" viewBox="0 0 256 256" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M204.24,116.24a6,6,0,0,1-8.48,0L134,54.49V216a6,6,0,0,1-12,0V54.49L60.24,116.24a6,6,0,0,1-8.48-8.48l72-72a6,6,0,0,1,8.48,0l72,72A6,6,0,0,1,204.24,116.24Z"/></svg> ' +
+      '<svg class="icon-close" viewBox="0 0 256 256" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M204.24,195.76a6,6,0,1,1-8.48,8.48L128,136.49,60.24,204.24a6,6,0,0,1-8.48-8.48L119.51,128,51.76,60.24a6,6,0,0,1,8.48-8.48L128,119.51l67.76-67.75a6,6,0,0,1,8.48,8.48L136.49,128Z"/></svg>' +
+      '<svg class="icon-sent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M6.5 13 10 16.5 17.5 8"/></svg>' +
+      "</a></div></div></div></div></div>",
   );
 
   var mailWash = document.getElementById("mailWash"),
     mailModal = document.getElementById("mailModal"),
     mailTrigger = document.getElementById("mailTrigger"),
+    composerStage = document.getElementById("composerStage"),
+    stepEmail = document.getElementById("stepEmail"),
+    stepMessage = document.getElementById("stepMessage"),
+    mailReply = document.getElementById("mailReply"),
+    mailNext = document.getElementById("mailNext"),
+    mailBack = document.getElementById("mailBack"),
     mailText = document.getElementById("mailText"),
     mailSend = document.getElementById("mailSend");
 
@@ -63,23 +113,98 @@
       "&body=" +
       encodeURIComponent(mailText.value);
   }
+  function showStep(step, animate) {
+    var showEl = "email" === step ? stepEmail : stepMessage;
+    var hideEl = "email" === step ? stepMessage : stepEmail;
+    var direction = STEP_ORDER[step] > STEP_ORDER[currentStep] ? 1 : -1;
+    currentStep = step;
+    if (!animate) {
+      hideEl.hidden = true;
+      hideEl.classList.remove("is-leaving", "is-entering");
+      showEl.hidden = false;
+      showEl.classList.remove("is-leaving", "is-entering");
+      return;
+    }
+    composerStage.style.setProperty("--step-dir", direction);
+    hideEl.classList.add("is-leaving");
+    setTimeout(function () {
+      hideEl.hidden = true;
+      hideEl.classList.remove("is-leaving");
+      showEl.hidden = false;
+      showEl.classList.add("is-entering");
+      requestAnimationFrame(function () {
+        showEl.classList.remove("is-entering");
+      });
+      if ("message" === step) {
+        autoGrow();
+        mailText.focus();
+      } else {
+        mailReply.focus();
+      }
+    }, STEP_EXIT_MS);
+  }
   function openMail() {
     document.dispatchEvent(new CustomEvent("mail:beforeopen"));
     document.body.classList.add("mail-open");
     mailWash.setAttribute("aria-hidden", "false");
     mailModal.setAttribute("aria-hidden", "false");
     mailModal.inert = false;
+    showStep(currentStep, false);
     syncMailHref();
     autoGrow();
     setTimeout(function () {
-      mailText.focus();
+      ("email" === currentStep ? mailReply : mailText).focus();
     }, 260);
   }
   function closeMail() {
+    if (sentTimer) {
+      clearTimeout(sentTimer);
+      sentTimer = null;
+    }
     document.body.classList.remove("mail-open");
     mailWash.setAttribute("aria-hidden", "true");
     mailModal.setAttribute("aria-hidden", "true");
     mailModal.inert = true;
+  }
+  function sendMail() {
+    if (sending) return;
+    sending = true;
+    var body = mailText.value;
+    var replyEmail = mailReply.value.trim();
+    var payload = {
+      access_key: WEB3FORMS_KEY,
+      subject: MAIL_SUBJECT,
+      from_name: "Oktavio Design",
+      message: body,
+    };
+    if (replyEmail) payload.email = replyEmail;
+    fetch("https://api.web3forms.com/submit", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Accept: "application/json" },
+      body: JSON.stringify(payload),
+    })
+      .then(function (res) {
+        return res.json();
+      })
+      .then(function (data) {
+        sending = false;
+        if (data && data.success) {
+          mailText.value = "";
+          mailSend.setAttribute("data-mode", "sent");
+          mailSend.setAttribute("aria-label", "Sent");
+          sentTimer = setTimeout(function () {
+            sentTimer = null;
+            closeMail();
+            syncMailHref();
+          }, SENT_HOLD_MS);
+        } else {
+          console.error("Web3Forms error", data);
+        }
+      })
+      .catch(function (err) {
+        sending = false;
+        console.error("Mail send failed", err);
+      });
   }
   window.openMail = openMail;
   window.closeMail = closeMail;
@@ -90,13 +215,30 @@
     });
   }
   mailWash.addEventListener("click", closeMail);
+  mailNext.addEventListener("click", function () {
+    showStep("message", true);
+  });
+  mailBack.addEventListener("click", function () {
+    showStep("email", true);
+  });
+  mailReply.addEventListener("keydown", function (e) {
+    if ("Enter" === e.key) {
+      e.preventDefault();
+      showStep("message", true);
+    }
+  });
   mailText.addEventListener("input", function () {
+    if (sentTimer) {
+      clearTimeout(sentTimer);
+      sentTimer = null;
+    }
     syncMailHref();
     autoGrow();
   });
   mailSend.addEventListener("click", function (e) {
-    if ("close" === mailSend.getAttribute("data-mode")) e.preventDefault();
-    closeMail();
+    e.preventDefault();
+    if ("send" === mailSend.getAttribute("data-mode")) sendMail();
+    else closeMail();
   });
   mailText.addEventListener("keydown", function (e) {
     if ((e.metaKey || e.ctrlKey) && "Enter" === e.key) {
