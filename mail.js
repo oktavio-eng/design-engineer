@@ -35,7 +35,7 @@
       '<textarea class="composer__input" id="mailText" placeholder="Hey Oktavio!" rows="4"></textarea>' +
       '<div class="composer__actions">' +
       '<span class="composer__to">' + MAIL_TO + "</span> " +
-      '<a class="composer__send" id="mailSend" data-mode="close" href="mailto:' + MAIL_TO + '" aria-label="Close">' +
+      '<a class="composer__send" id="mailSend" data-mode="close" href="mailto:' + MAIL_TO + '" target="_blank" rel="noopener" aria-label="Close">' +
       '<svg class="icon-send" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M12 19.5V5.5"/><path d="M5.25 12.25 12 5.5l6.75 6.75"/></svg> ' +
       '<svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M17.5 6.5 6.5 17.5"/><path d="M6.5 6.5 17.5 17.5"/></svg>' +
       "</a></div></div></div>",
