@@ -52,11 +52,12 @@
       name: "Sphera Academy",
       role: "UX/UI + Design System",
       preview: "https://framerusercontent.com/images/PgbsHlNgpSQclDuYYOPfMT6Zo.png",
-      bio: "Designed most of the interface screens and the entire design system in Figma, then trained a junior designer to take ownership of the file before moving to other client work. Currently revisiting the Figma file structure to keep the system usable as the internal team grows. The platform today documents dozens of student admissions to schools including Duke, Cornell, and Columbia.",
+      bio: "Design system and visual language for a university-admissions coaching platform, built around academic-university aesthetic — matching the credibility register that students and families already associate with the schools they're applying to. Designed the identity plus the core screens that set the system's components and tone (onboarding, home, class list/modules, classroom), then handed the file to the dev team to extend and trained a junior designer to take ownership of it. The client has used the identity and those first screens ever since; students describe the study environment as comfortable and immersive. The platform today documents dozens of admissions to schools including Duke, Cornell, and Columbia.",
       items: [
-        "Full design system built in Figma → Framer.",
-        "Mentored a junior designer to take over the file structure.",
-        "Structure now being revisited for long-term internal maintainability.",
+        "Visual language built around academic-university aesthetic to match the credibility register students expect — not generic edtech UI.",
+        "Designed identity + core screens (onboarding, home, class list/modules, classroom) to set the system's components; dev team extended from there.",
+        "Client has used the identity and those screens since launch; students describe the environment as comfortable and immersive.",
+        "Mentored a junior designer into ownership of the file; structure now being revisited as the internal team grows.",
       ],
       links: [["Live site", "https://www.spheraacademy.com/"]],
     },
@@ -76,7 +77,7 @@
       name: "CloudFaster Academy",
       role: "UX/UI + Identity + Website · Cloud/AWS training",
       preview: "https://cloudfaster.academy/assets/og-image.png",
-      bio: "Visual identity and website for an AWS certification training brand serving both individual learners and corporate teams. The brand has since scaled to a mobile app on Google Play and corporate/B2B plans beyond the original site.",
+      bio: "Visual identity and website for an AWS certification training brand serving individual learners and corporate teams — built on solid UI/UX fundamentals for a straightforward certification-prep flow. The brand has since expanded to a mobile app and B2B plans, a later business decision outside this project's scope.",
       links: [["Live site", "https://cloudfaster.academy/"]],
     },
     dascia: {
@@ -89,18 +90,26 @@
     "finq-edu": {
       name: "FinQ Edu",
       role: "UX/UI + Identity + Website · Investment Banking prep",
-      bio: "Visual identity and website at company launch, for an investment-banking / private-equity prep brand founded by people with real Wall Street backgrounds.",
-      links: [["Live site", "https://www.finqedu.com/"]],
+      bio: "Visual identity and initial website version, at company launch, for an investment-banking/private-equity prep brand founded by people with real Wall Street backgrounds — built to give women a foothold in an IB/PE space that's highly competitive and visually closed off. Bet on gradients and vivid color, a deliberate break from every competitor's visual convention in the category. Structured the first version of the site and built out the app and web system screens; the live site has evolved since.",
+      items: [
+        "Identity built to stand out for women in IB/PE — a category where competitor branding is uniformly conservative.",
+        "Gradients and vivid color as a deliberate break from category convention.",
+        "Structured the first site version and built the app + web system screens — not the version currently live.",
+      ],
+      links: [
+        ["App LP", "https://finqedu.webflow.io/"],
+        ["Original site", "https://dev-finqedu.webflow.io/"],
+      ],
     },
     "escola-da-bel": {
       name: "Escola da Bel",
       role: "Campaign key visuals · Medical aesthetics",
       preview: "https://framerusercontent.com/images/BP6trVJNYC4N4uySVf4sXwSvUA.jpg",
-      bio: "Ongoing campaign key visuals inside an already-established brand identity — includes surrealist matte-painting series (Fresh Frozen Paris, Las Vegas) and a full anatomical illustration set for a medical-education atlas. Also built a Framer-based diagnostic quiz (7-course recommendation engine) with a Google Sheets webhook and iframe height-sync, used as a lead-gen tool on the site.",
+      bio: "Ongoing campaign key visuals inside an already-established brand identity — includes surrealist matte-painting series (Fresh Frozen Paris, Las Vegas) and a full anatomical illustration set for a medical-education atlas. Also built a Framer-based diagnostic quiz (7-course recommendation engine) with a Google Sheets webhook and iframe height-sync, used as a lead-gen tool on the site — it generated around 600 leads at a single event of 1,500–2,000 attendees.",
       items: [
         "Surrealist campaign series: Fresh Frozen Paris, Las Vegas.",
         "Anatomical illustration set for a course atlas.",
-        "Interactive Framer diagnostic quiz with live course recommendations.",
+        "Interactive Framer diagnostic quiz with live course recommendations — ~600 leads generated at one event of 1,500–2,000 attendees.",
       ],
       // Landing pages: same process on each (key visual → landing page
       // design → Framer implementation, Clarity + Analytics wired in) unless
@@ -143,6 +152,19 @@
         },
       ],
       links: [["Live site", "https://escoladabel.com/"]],
+    },
+    "jlcp-tecnologia": {
+      name: "JLCP Tecnologia",
+      role: "Brand Identity + Positioning · IT Observability",
+      preview: "https://www.jlcp.com.br/images/favicon.svg",
+      bio: "Brand and logomark redesign for the #1 Zabbix partner in Brazil, an IT observability consultancy serving enterprise clients like Globo, Riachuelo, and EcoRodovias. Replaced a dated isometric-cube mark with a modular grid of squares — data points, monitored environments — resolving into a minimalist star, repositioning the brand as AI-first. Defended the direction against a competing AI-generated concept the founder had produced himself, then wrote the presentation rationale that won the room.",
+      items: [
+        "New logomark: modular grid of squares resolving into a star — monitored environments coalescing into AI-driven insight.",
+        "Repositioned the brand as AI-first, replacing a dated isometric 3D cube mark.",
+        "Defended the direction in front of the founder against his own AI-generated alternative, and wrote the rationale that shipped it.",
+        "Extended into event naming and a Portuguese-language copy pass on the live monitoring dashboard UI.",
+      ],
+      links: [["Live site", "https://www.jlcp.com.br/"]],
     },
   };
 
