@@ -93,10 +93,10 @@ test("/ (portfolio home) renders its collections, opens rows and photos in modal
   // show-more overflow past the 3-row threshold. Live for real since
   // 22/08/2026 (no longer draft-gated) — see portfolio-content.js's header.
   assert.equal(await page.locator('[data-list="projects"] .row--draft').count(), 0, "no draft-flagged rows left");
-  assert.equal(await page.locator('[data-list="projects"] .row-btn').count(), 6, "all six project rows render");
-  assert.equal(await page.locator('[data-list="projects"] .row-btn .fav').count(), 6, "every project row carries a favicon");
+  assert.equal(await page.locator('[data-list="projects"] .row-btn').count(), 7, "all seven project rows render");
+  assert.equal(await page.locator('[data-list="projects"] .row-btn .fav').count(), 7, "every project row carries a favicon");
   assert.equal(await page.locator('[data-list="personal"] .row-btn .fav').count(), 0, "personal rows stay icon-free");
-  assert.equal(await page.locator("#projectsExtras .row.extra").count(), 3, "rows past the threshold sit in the overflow");
+  assert.equal(await page.locator("#projectsExtras .row.extra").count(), 4, "rows past the threshold sit in the overflow");
   assert.equal(await page.locator("#projectsSeeMore").getAttribute("aria-expanded"), "false", "starts collapsed");
 
   // Contribution graph: real data file, one cell per day plus the Sunday pad,
@@ -145,7 +145,7 @@ test("/ (portfolio home) renders its collections, opens rows and photos in modal
   await row.focus();
   await page.keyboard.press("Enter");
   await page.waitForFunction(() => document.body.classList.contains("cmd-detail-open"));
-  assert.equal(await page.locator("#cmdModal h3").textContent(), "design-engineer");
+  assert.equal(await page.locator("#cmdModal h3").textContent(), "Design Engineer");
   assert.equal(await page.locator("#cmdModal").evaluate((m) => m.classList.contains("cmd-modal--direct")), true);
   assert.equal(await page.locator("#cmdModalBack").evaluate((b) => getComputedStyle(b).display), "none");
   assert.deepEqual(await activeInfo(page).then((a) => [a.id, a.hidden]), ["cmdModalClose", false]);
