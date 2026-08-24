@@ -96,6 +96,7 @@
         "Gradients and vivid color as a deliberate break from category convention.",
         "Structured the first site version and built the app + web system screens — not the version currently live.",
       ],
+      faviconFrom: "https://www.finqedu.com.br/",
       links: [
         ["App LP", "https://finqedu.webflow.io/"],
         ["Original site", "https://dev-finqedu.webflow.io/"],
