@@ -148,9 +148,9 @@
 
   const personal = {
     "design-engineer": {
-      name: "design-engineer",
-      role: "This site · 2026 · public proof",
-      bio: "A career-transition plan for design engineering that doubles as its own portfolio piece: a typographic single-page document with a ⌘K palette, a resizable panel, glossary tooltips and a Storybook + visual-regression harness — static HTML/CSS/JS, zero build step, every decision written down.",
+      name: "Design Engineer",
+      role: "This site · 2026",
+      bio: "A single-page site — palette, ⌘K search, glossary tooltips, a Storybook + visual-regression harness — static HTML/CSS/JS, zero build step, every decision written down as it ships.",
       items: [
         "Type and spacing measured against emilkowal.ski in a real browser, not eyeballed: one size, two weights, 128px between sections.",
         "OKLCH tokens for color, motion, spacing, typography and radius; every literal lives in one token file.",
@@ -176,7 +176,7 @@
     "gow-studio": {
       name: "GOW Studio",
       role: "Studio · ongoing",
-      bio: "The studio the client work ships under. Visual design first, moving toward design engineering: the same eye, now with the code to carry it through.",
+      bio: "The studio the client work ships under, since 2019 — interface design, brand systems, and design engineering.",
       links: [["Site", "https://gowdesign.framer.website/"]],
     },
   };
