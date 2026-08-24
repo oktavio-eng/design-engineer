@@ -55,12 +55,17 @@ function favicon(url) {
 // ---- Rows: projects / personal / life -------------------------------------
 // `opts.favicon`: prefix `.who` with the row's favicon, from
 // `entry.links[0][1]` — opt-in per group (only "projects" today), so
-// personal/life keep their plain rows. `opts.extra`: this row lives
-// inside `.extras` (the show-more overflow) — same `.row.extra` contract
+// personal/life keep their plain rows. `entry.faviconFrom`: optional
+// override when the row's first link isn't the project's real domain (e.g.
+// finq-edu's links point at Webflow staging URLs, but the row icon should
+// still read as finqedu.com.br). `opts.extra`: this row lives inside
+// `.extras` (the show-more overflow) — same `.row.extra` contract
 // wiki.html/script.js's wireSeeMore already animates.
 function rowMarkup(group, key, entry, opts) {
   opts = opts || {};
-  const icon = opts.favicon && entry.links && entry.links[0] ? favicon(entry.links[0][1]) : "";
+  const icon = opts.favicon && entry.links && entry.links[0]
+    ? favicon(entry.faviconFrom || entry.links[0][1])
+    : "";
   return (
     '<button class="row row-btn' + (entry.draft ? " row--draft" : "") + (opts.extra ? " extra" : "") +
     '" type="button" data-open="' + group + ":" + key + '" aria-haspopup="dialog">' +
