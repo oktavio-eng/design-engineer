@@ -270,6 +270,15 @@ const people = {
       bio: "Icon designer · Sketch toolbar &amp; app icons",
       links: [["Site", "https://kinaj.com"]],
     },
+    maria: {
+      name: "María Zuil González",
+      role: "Creative developer, Lyra Creative Studio · animation, 3D, shaders",
+      bio: "Mathematician and computer scientist who brings web pages to life with bold animations and 3D experiences. Combines design and development into sites that balance aesthetics with functionality — currently playing with shaders to make sites actually fun to explore.",
+      links: [
+        ["Site", "https://lyra-creative-studio.com"],
+        ["GitHub", "https://github.com/mZuil"],
+      ],
+    },
   },
   phases = {
     f1: {
