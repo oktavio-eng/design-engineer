@@ -80,7 +80,7 @@ function ensureMarkup() {
     '<button class="panel-close cmd-modal__back" id="cmdModalBack" type="button" aria-label="Back to search">' +
     '<svg viewBox="0 0 256 256" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M165.66,202.34a8,8,0,0,1-11.32,11.32l-80-80a8,8,0,0,1,0-11.32l80-80a8,8,0,0,1,11.32,11.32L91.31,128Z"/></svg>' +
     "</button> " +
-    '<button class="panel-close cmd-modal__close" id="cmdModalClose" type="button" aria-label="Close">' +
+    '<button class="panel-close cmd-modal__close" id="cmdModalClose" type="button" aria-label="Close" data-cuelume-toggle="droplet">' +
     '<svg viewBox="0 0 256 256" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z"/></svg>' +
     "</button>" +
     '<div id="cmdModalBody"></div></div>';
@@ -219,7 +219,7 @@ export function initCommandMenu() {
         last = r.group;
       }
       html +=
-        '<button class="cmd__item" role="option" data-i="' +
+        '<button class="cmd__item" role="option" data-cuelume-hover="tick" data-cuelume-toggle="bloom" data-i="' +
         k +
         '" aria-selected="' +
         (k === 0) +

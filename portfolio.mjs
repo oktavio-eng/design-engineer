@@ -68,7 +68,7 @@ function rowMarkup(group, key, entry, opts) {
     : "";
   return (
     '<button class="row row-btn' + (entry.draft ? " row--draft" : "") + (opts.extra ? " extra" : "") +
-    '" type="button" data-open="' + group + ":" + key + '" aria-haspopup="dialog">' +
+    '" type="button" data-cuelume-hover="tick" data-cuelume-toggle="bloom" data-open="' + group + ":" + key + '" aria-haspopup="dialog">' +
     '<span class="who">' + icon + esc(entry.name) + "</span>" +
     (entry.role ? '<span class="what">' + esc(entry.role) + "</span>" : "") +
     "</button>"
@@ -149,7 +149,7 @@ export function renderWriting(root) {
     .map((key) => {
       const post = map[key];
       return (
-        '<button class="doc-item doc-item--btn" type="button" data-open="writing:' + key + '" aria-haspopup="dialog">' +
+        '<button class="doc-item doc-item--btn" type="button" data-cuelume-hover="tick" data-cuelume-toggle="bloom" data-open="writing:' + key + '" aria-haspopup="dialog">' +
         docIcon() +
         '<span class="doc-item__text"><span class="doc-item__title">' + esc(post.name) + "</span>" +
         (post.bio ? '<span class="doc-item__desc">' + esc(post.bio) + "</span>" : "") +
