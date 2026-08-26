@@ -34,8 +34,8 @@ Um site pessoal single-page do Otavio (GOW Studio) — um "plano de transição 
 
 - **[docs/architecture.md](docs/architecture.md)** — rotas, ordem de carregamento dos scripts, o que cada arquivo de JS compartilhado faz (`content.js`, `favicons.js`, `intro.js`, `mail.js`, `contrib.mjs`, `chrome.js`, `cursor.mjs`, `cmd.mjs`, portfolio), estrutura de `styles/main.css` + `@import` dos tokens.
 - **[docs/design-system.md](docs/design-system.md)** — cor (OKLCH), tipografia (Geist/variable font), layout e ritmo vertical (medido contra emilkowal.ski), a decisão sidebar×modal, motion, e o inventário completo de `styles/tokens/*.css`.
-- **[docs/patterns.md](docs/patterns.md)** — padrões já implementados que não devem ser "corrigidos" de volta pro jeito antigo: toggle ver mais/menos, fallback de favicon, persistência (`localStorage`/`sessionStorage`), tooltips de glossário, hover das listas, foco por vizinhança, ponteiro iPadOS.
-- **[docs/storybook-and-tests.md](docs/storybook-and-tests.md)** — comandos, o contrato Storybook↔produção, cobertura de testes interativos, Definition of Done pra mudanças de UI.
+- **[docs/patterns.md](docs/patterns.md)** — padrões já implementados que não devem ser "corrigidos" de volta pro jeito antigo: toggle ver mais/menos, fallback de favicon, persistência (`localStorage`/`sessionStorage`), tooltips de glossário, hover das listas, foco por vizinhança, ponteiro iPadOS, gráfico de contribuições abrindo nas semanas recentes.
+- **[docs/storybook-and-tests.md](docs/storybook-and-tests.md)** — comandos, o contrato Storybook↔produção, cobertura de testes interativos, Definition of Done pra mudanças de UI, versão do Chromium do Playwright nesta máquina e a lição do PR #71 (rode a suíte antes do push).
 - **[docs/intro-screensaver.md](docs/intro-screensaver.md)** — a saudação em 6 idiomas antes do conteúdo (`.intro`, `intro.js`): timing, por que corte seco, sessionStorage, bugs já corrigidos.
 - **[docs/flat-type-experiment.md](docs/flat-type-experiment.md)** — o experimento de tipografia achatada (`styles/experiments/flat-type.css`): como reverter, por que a intro fica de fora, validação.
 
