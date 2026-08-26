@@ -98,7 +98,43 @@ export function renderContributions(root, days, options = {}) {
       : `${formatTotal(total)} contribution${total === 1 ? "" : "s"} in the last year`;
   }
   if (options.tooltip !== false) attachContribTooltip(grid);
+  scrollToLatest(grid);
   return { total, thresholds };
+}
+
+/* On narrow screens the grid is wider than the card and scrolls sideways
+   (`overflow-x: auto`, see the `.contrib*` block in main.css). A scroll
+   container always opens at scrollLeft 0 — the OLDEST weeks — so a year
+   whose activity sits in its last few months looked empty on a phone until
+   you scrolled (visitor bug report, 26/08/2026). Open at the right edge
+   instead, where the recent weeks are. On desktop the grid fits, scrollLeft
+   is clamped to 0 and this is a no-op. No smooth scrolling on purpose: it's
+   the initial position, not a movement (and the section is still at
+   opacity 0 behind the stagger when it lands), so reduced-motion is moot.
+
+   The graph is usually rendered while its <section> is still `hidden`
+   (portfolio.mjs reveals it right after), and a display:none element has
+   no scrollWidth to scroll to. With no layout yet, wait for the first one
+   with a ResizeObserver — it fires after layout and before paint, so the
+   grid is never painted at the wrong edge — and snap once. */
+export function scrollToLatest(grid) {
+  const snap = () => {
+    grid.scrollLeft = grid.scrollWidth;
+  };
+  if (grid.clientWidth > 0) {
+    snap();
+    return;
+  }
+  if (typeof ResizeObserver !== "function") {
+    requestAnimationFrame(snap);
+    return;
+  }
+  const observer = new ResizeObserver(() => {
+    if (!grid.clientWidth) return;
+    snap();
+    observer.disconnect();
+  });
+  observer.observe(grid);
 }
 
 /* ---------------------------------------------------------------- tooltip */

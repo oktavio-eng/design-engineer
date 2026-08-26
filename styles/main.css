@@ -2514,7 +2514,10 @@ body.mail-open .mail-modal {
      `--contrib-*` ramp in tokens/colors.css (the site's blue, not GitHub's
      green). The grid is `aria-hidden`; the total in the footer is the
      accessible summary. It scrolls sideways below ~600px rather than
-     shrinking the cells. `contrib.mjs` fills the grid from a 371-day array.
+     shrinking the cells, and opens scrolled to the latest weeks there
+     (`scrollToLatest` in contrib.mjs — a scroll container starts at the
+     left, i.e. the oldest, emptiest end). `contrib.mjs` fills the grid
+     from a 371-day array.
    - `.contrib__tip` is the hover readout GitHub gives each cell ("3
      contributions on Aug 12"), on the site's own tooltip surface — the same
      recipe as `.gloss-tip` (`--bg`, `--line`, radius 6, `--fs-13`), so the
