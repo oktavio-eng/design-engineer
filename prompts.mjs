@@ -1,3 +1,5 @@
+import { play } from "/vendor/cuelume/index.js";
+
 export const PROMPTS = [
   {
     slug: "fintech-dashboard-wise-inspired",
@@ -323,9 +325,11 @@ export function attachPromptCopy(container, prompts = PROMPTS, copy = writeClipb
       await copy(prompt.prompt);
       button.textContent = "Copied";
       status.textContent = "Prompt copied to clipboard.";
+      play("success");
     } catch (error) {
       button.textContent = "Copy failed";
       status.textContent = "Unable to copy. Select the prompt text and copy it manually.";
+      play("error");
     }
   });
 }

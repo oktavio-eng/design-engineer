@@ -11,15 +11,18 @@
     "test:ui": "npm run test-storybook && npm run test:product-ui && npm run test:visual"
   },
   "devDependencies": {
+    "@blazediff/core": "1.9.1",
     "@storybook/addon-a11y": "10.5.7",
     "@storybook/addon-vitest": "10.5.7",
     "@storybook/html-vite": "10.5.7",
-    "@blazediff/core": "1.9.1",
     "@vitest/browser-playwright": "4.1.10",
     "axe-core": "4.13.0",
     "playwright": "1.58.2",
     "pngjs": "7.0.0",
     "storybook": "10.5.7",
     "vitest": "4.1.10"
+  },
+  "dependencies": {
+    "cuelume": "^0.2.2"
   }
 }
