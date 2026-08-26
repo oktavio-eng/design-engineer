@@ -117,9 +117,21 @@ export function renderContributions(root, days, options = {}) {
    no scrollWidth to scroll to. With no layout yet, wait for the first one
    with a ResizeObserver — it fires after layout and before paint, so the
    grid is never painted at the wrong edge — and snap once. */
+const SNAPPING = new WeakSet(); // grids whose next scroll event is the snap itself
 export function scrollToLatest(grid) {
   const snap = () => {
+    const before = grid.scrollLeft;
     grid.scrollLeft = grid.scrollWidth;
+    if (grid.scrollLeft === before) return; // fits, or already there: no event coming
+    // The scroll event this queues is dispatched in the next frame's scroll
+    // steps, which run BEFORE that frame's rAF callbacks — so the flag
+    // outlives it by exactly one event, whether snap ran from script or
+    // from the ResizeObserver. The tooltip's scroll→hide skips it: that
+    // event is the initial positioning, not the pointer losing its cell
+    // (a hover started right after render used to be cancelled by it —
+    // the Contributions Hover story caught that).
+    SNAPPING.add(grid);
+    requestAnimationFrame(() => SNAPPING.delete(grid));
   };
   if (grid.clientWidth > 0) {
     snap();
@@ -256,6 +268,12 @@ export function attachContribTooltip(grid) {
   });
   // The graph scrolls sideways on narrow screens and the page scrolls
   // under a fixed tooltip: either moves the cell out from under it.
-  grid.addEventListener("scroll", hide, { passive: true });
+  grid.addEventListener(
+    "scroll",
+    () => {
+      if (!SNAPPING.has(grid)) hide();
+    },
+    { passive: true },
+  );
   window.addEventListener("scroll", hide, { passive: true });
 }
