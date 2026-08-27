@@ -130,6 +130,83 @@ function itemHtml(e, t, n) {
     o + "</p>"
   );
 }
+/* Deeper entries (27/08/2026, Simile first). `bio` may be a list of
+   paragraphs: one wrapper keeps the .bio lead and the p-stagger count, the
+   paragraphs sit inside. A string renders exactly as before. */
+function bioHtml(bio) {
+  return Array.isArray(bio)
+    ? '<div class="bio p-stagger"><p>' + bio.join("</p><p>") + "</p></div>"
+    : '<p class="bio p-stagger">' + bio + "</p>";
+}
+/* Optional `sections` after Links: each one is a label plus any of `text`
+   (one muted line), `list` (plain lines, the same .item the "In practice"
+   block uses) and `entries` (a person or a lineage node: name + role on a
+   .row, descriptor under it, inline links). All sections share ONE
+   p-stagger: the note row + Links already make five steps, and the
+   nth-child delays stop at seven, so the annex enters as a single step
+   after Links instead of its tail landing at zero delay. Mirrored in
+   cmd.mjs entryHtml() like the rest of this markup. */
+function sectionsHtml(e) {
+  currentSubs = [];
+  return e.sections
+    ? '<div class="p-stagger">' +
+        e.sections
+          .map(function (s) {
+            let o = '<span class="label">' + s.label + "</span>";
+            return (
+              s.text && (o += '<p class="section-text">' + s.text + "</p>"),
+              s.list &&
+                (o += s.list
+                  .map(function (t) {
+                    return '<p class="item">' + t + "</p>";
+                  })
+                  .join("")),
+              s.people && (o += s.people.map(personRow).join("")),
+              s.entries && (o += s.entries.map(entryHtml).join("")),
+              o
+            );
+          })
+          .join("") +
+        "</div>"
+    : "";
+}
+/* A person as a link row (name + role, the page-row shape); the index in
+   data-sub is the position in currentSubs, read by the click handler below.
+   `{ ref: key }` reuses an entry of the People list instead of repeating it. */
+function personRow(p) {
+  p.ref && (p = people[p.ref]);
+  if (!p) return "";
+  const i = currentSubs.push(p) - 1;
+  /* The whole row is the link (an <a> with the .row layout), not just the
+     name: one target for pointer, keyboard and the iPadOS cursor alike. */
+  return (
+    '<a class="row" href="#" data-sub="' +
+    i +
+    '"><span class="who">' +
+    p.name +
+    "</span>" +
+    (p.role ? '<span class="what">' + p.role + "</span>" : "") +
+    "</a>"
+  );
+}
+function entryHtml(p) {
+  let o = '<div class="entry"><div class="row"><span class="who">' + p.name + "</span>";
+  return (
+    p.role && (o += '<span class="what">' + p.role + "</span>"),
+    (o += "</div>"),
+    p.what && (o += '<p class="entry-desc">' + p.what + "</p>"),
+    p.links &&
+      (o +=
+        '<p class="entry-links">' +
+        p.links
+          .map(function (l) {
+            return '<a class="inline-link" href="' + l[1] + '" target="_blank" rel="noopener">' + l[0] + "</a>";
+          })
+          .join(" · ") +
+        "</p>"),
+    o + "</div>"
+  );
+}
 function noteBlock(e) {
   return (
     '<div class="note-row p-stagger" data-c="' +
@@ -171,9 +248,8 @@ function render(e, t, n) {
     e.name +
     '</h3><p class="role">' +
     e.role +
-    '</p></div><p class="bio p-stagger">' +
-    e.bio +
-    "</p>";
+    "</p></div>" +
+    bioHtml(e.bio);
   e.items &&
     (a +=
       '<span class="label p-stagger">In practice</span><div class="p-stagger">' +
@@ -184,24 +260,53 @@ function render(e, t, n) {
         .join("") +
       "</div>"),
     n && (a += noteBlock(n)),
-    (a +=
-      '<span class="label p-stagger">Links</span><div class="p-stagger">' +
-      e.links
-        .map(function (e) {
-          return (
-            '<div class="row"><span class="who">' +
-            favicon(e[1]) +
-            '<a href="' +
-            e[1] +
-            '" target="_blank" rel="noopener">' +
-            e[0] +
-            "</a></span></div>"
-          );
-        })
-        .join("") +
-      "</div>"),
+    e.links &&
+      e.links.length &&
+      (a +=
+        '<span class="label p-stagger">Links</span><div class="p-stagger">' +
+        e.links
+          .map(function (e) {
+            return (
+              '<div class="row"><span class="who">' +
+              favicon(e[1]) +
+              '<a href="' +
+              e[1] +
+              '" target="_blank" rel="noopener">' +
+              e[0] +
+              "</a></span></div>"
+            );
+          })
+          .join("") +
+        "</div>"),
+    (a += sectionsHtml(e)),
     (content.innerHTML = a);
 }
+/* Sub-entries (27/08/2026): a `people` row inside an entry opens that person
+   in the same modal (plain render(): name, role, bio, links) and #panelBack
+   returns to the entry. One level only, no stack: currentTop remembers the
+   render() arguments of the entry the row came from. Escape peels the sub
+   first, then closes, the same innermost-first order the ⌘K detail keeps. */
+const panelBack = document.getElementById("panelBack");
+let currentTop = null,
+  subOpen = false,
+  currentSubs = [];
+function rememberTop(e, t, n) {
+  (currentTop = [e, t, n]), (subOpen = false), (panelBack.hidden = true);
+}
+function openSub(i) {
+  const s = currentSubs[i];
+  s && (render(s, null, null), (subOpen = true), (panelBack.hidden = false), (panel.scrollTop = 0), panelBack.focus());
+}
+function backToTop() {
+  subOpen &&
+    currentTop &&
+    (render.apply(null, currentTop), (subOpen = false), (panelBack.hidden = true), (panel.scrollTop = 0), closeBtn.focus());
+}
+content.addEventListener("click", function (e) {
+  const a = e.target.closest("[data-sub]");
+  a && content.contains(a) && (e.preventDefault(), openSub(parseInt(a.dataset.sub, 10)));
+}),
+  panelBack.addEventListener("click", backToTop);
 let currentPhaseId = null,
   currentKind = null,
   currentIndex = -1;
@@ -266,6 +371,7 @@ function open(e, t, n, a) {
     closeAvatar(),
     closeMail(),
     render(e, n, a),
+    rememberTop(e, n, a),
     setPanelMode(currentKind),
     document.body.classList.add("panel-open"),
     panelWash.setAttribute("aria-hidden", MODAL_KINDS[currentKind] ? "false" : "true"),
@@ -294,6 +400,8 @@ function close() {
     (currentKind = null),
     (currentIndex = -1),
     (currentNoteCid = null),
+    (subOpen = false),
+    (panelBack.hidden = true),
     closeComment();
 }
 rows.forEach(function (e, t) {
@@ -411,7 +519,7 @@ window.addEventListener("scroll", showNav, { passive: !0 }),
   closeBtn.addEventListener("click", close),
   panelWash.addEventListener("click", close),
   document.addEventListener("keydown", function (e) {
-    if ("Escape" === e.key) return void close();
+    if ("Escape" === e.key) return void (subOpen ? backToTop() : close());
     const t = (e.target && e.target.tagName) || "";
     if (
       "TEXTAREA" !== t &&
@@ -439,6 +547,10 @@ window.addEventListener("scroll", showNav, { passive: !0 }),
         e.target.closest(".phase-head") ||
         e.target.closest(".c-add") ||
         e.target.closest(".c-link") ||
+        /* A person row re-renders the panel, so by the time this bubbling
+           handler runs the clicked link is already detached and
+           panel.contains() says no. closest() still works on it. */
+        e.target.closest("[data-sub]") ||
         close());
   });
 const cpanel = document.getElementById("cpanel"),

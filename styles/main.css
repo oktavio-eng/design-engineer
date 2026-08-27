@@ -687,6 +687,62 @@ body.panel-modal .cpanel {
 .panel .row .what {
   font-variant-numeric: tabular-nums;
 }
+/* Deeper reference entries (27/08/2026, Simile first): an entry may carry a
+   multi-paragraph `bio` and `sections` after Links (see content.js). Both
+   surfaces get the rules together, like the h3/.role/.bio pairs the panel
+   and the ⌘K detail already keep in step. Paragraphs inside .bio sit 12px
+   apart, one step under the 16px of page prose: the column is narrower and
+   the paragraphs shorter. An .entry is a person or a lineage node: name and
+   role on a .row (the same .who/.what as the page rows, so it reads as a
+   list, not a card), descriptor and inline links underneath because .what
+   is a single nowrap line. The row may wrap: the modal is 263px wide on a
+   375px phone, and a role truncated to "Founding Desi…" is worse than the
+   role dropping under the name. Links are text, .inline-link, joined by
+   " · ", so one person stays one quiet block and not three favicon rows. */
+.panel .bio p + p,
+.cmd-modal .bio p + p {
+  margin-top: var(--space-12);
+}
+.panel .entry,
+.cmd-modal .entry {
+  padding: var(--space-8) 0;
+}
+.panel .entry .row,
+.cmd-modal .entry .row {
+  padding: 0;
+  flex-wrap: wrap;
+  row-gap: var(--space-2);
+}
+.panel .section-text,
+.panel .entry-desc,
+.cmd-modal .section-text,
+.cmd-modal .entry-desc {
+  margin-top: var(--space-2);
+}
+.panel .entry-links,
+.cmd-modal .entry-links {
+  margin-top: var(--space-4);
+}
+/* People rows inside an entry are whole-row links (<a class="row">): the
+   only panel rows with a pointer cursor, since they are the only ones that
+   do something. Colour stays the row's own (.row .what beats `a`), and the
+   existing .row:hover .what lift to --ink is the hover feedback. */
+.panel .row[data-sub],
+.cmd-modal .row[data-sub] {
+  cursor: pointer;
+}
+/* Sub-entry back (27/08/2026): a person opened from inside an entry swaps
+   the modal's content, and this button returns to the entry. Same spot and
+   chrome as .cmd-modal__back so the two modals keep reading as one surface.
+   Only ever shown in modal mode; `hidden` has to beat .panel-close's flex. */
+body.panel-modal #panel .panel-back {
+  top: var(--space-16);
+  left: var(--space-16);
+  right: auto;
+}
+.panel-back[hidden] {
+  display: none;
+}
 .p-stagger {
   opacity: 0;
   transform: translateY(var(--space-12));
