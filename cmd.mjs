@@ -133,7 +133,7 @@ export function initCommandMenu() {
     for (const key in map) {
       const e = map[key];
       if (e.draft && !showDrafts) continue;
-      index.push({ group, collection, kind: "entry", key, name: e.name, what: e.role || "", text: e.bio || "", entry: e });
+      index.push({ group, collection, kind: "entry", key, name: e.name, what: e.role || "", text: [].concat(e.bio || []).join(" "), entry: e });
     }
   }
   const content = window.SITE_CONTENT || {};
@@ -380,6 +380,8 @@ export function initCommandMenu() {
     cancelPendingFocus();
     detailOpen = false;
     directOpen = false;
+    subParent = null;
+    currentEntry = null;
     modal.classList.remove("cmd-modal--direct");
     document.body.classList.remove("cmd-detail-open");
     blurIfInside(modal);
@@ -391,10 +393,50 @@ export function initCommandMenu() {
   // Back to the results. The wash stays up the whole time — both states share
   // the same rule in the CSS, so hiding and re-showing it would flash.
   function backToCmd() {
+    // Inside a sub-entry (a person opened from a reference), back returns
+    // to that reference; the list is one more layer out.
+    if (subParent) return backToParent();
     // A directly-opened detail has no list behind it — dismiss instead.
     if (directOpen) return closeCmdDetail();
     openCmd(true);
   }
+
+  /* Sub-entries (27/08/2026): same one-level swap script.js does in #panel.
+     A direct open (portfolio rows) hides the back button; a sub-entry needs
+     it, so `cmd-modal--direct` lifts for the sub and comes back with the
+     parent. */
+  let currentSubs = [],
+    currentEntry = null,
+    subParent = null,
+    subParentDirect = false;
+  function openSub(i) {
+    const p = currentSubs[i];
+    if (!p || !currentEntry) return;
+    subParent = currentEntry;
+    subParentDirect = directOpen;
+    directOpen = false;
+    modal.classList.remove("cmd-modal--direct");
+    currentEntry = p;
+    modalBody.innerHTML = entryHtml(p);
+    modal.scrollTop = 0;
+    modalBack.focus();
+  }
+  function backToParent() {
+    const p = subParent;
+    subParent = null;
+    directOpen = subParentDirect;
+    modal.classList.toggle("cmd-modal--direct", subParentDirect);
+    currentEntry = p;
+    modalBody.innerHTML = entryHtml(p);
+    modal.scrollTop = 0;
+    modalClose.focus();
+  }
+  modalBody.addEventListener("click", function (ev) {
+    const a = ev.target.closest("[data-sub]");
+    if (!a || !modalBody.contains(a)) return;
+    ev.preventDefault();
+    openSub(parseInt(a.dataset.sub, 10));
+  });
 
   // The same markup the homepage side panel builds for a person/phase/
   // reference, so the two surfaces can never drift apart.
@@ -413,7 +455,11 @@ export function initCommandMenu() {
     if (e.preview) {
       html += '<img class="cmd-modal__preview p-stagger" src="' + e.preview + '" onerror="this.remove()" alt="" loading="lazy">';
     }
-    html += '<p class="bio p-stagger">' + e.bio + "</p>";
+    // `bio` may be a list of paragraphs (27/08/2026, Simile): one wrapper,
+    // same .bio lead, paragraphs inside. Same helper shape as script.js.
+    html += Array.isArray(e.bio)
+      ? '<div class="bio p-stagger"><p>' + e.bio.join("</p><p>") + "</p></div>"
+      : '<p class="bio p-stagger">' + e.bio + "</p>";
     if (e.items) {
       html += '<span class="label p-stagger">In practice</span><div class="p-stagger">';
       for (let i = 0; i < e.items.length; i++) html += '<p class="item">' + e.items[i] + "</p>";
@@ -438,19 +484,72 @@ export function initCommandMenu() {
       }
       html += "</div>";
     }
-    html += '<span class="label p-stagger">Links</span><div class="p-stagger">';
-    for (let j = 0; j < e.links.length; j++) {
-      const l = e.links[j];
-      html +=
-        '<div class="row"><span class="who">' +
-        favicon(l[1]) +
-        '<a href="' +
-        l[1] +
-        '" target="_blank" rel="noopener">' +
-        l[0] +
-        "</a></span></div>";
+    if (e.links && e.links.length) {
+      html += '<span class="label p-stagger">Links</span><div class="p-stagger">';
+      for (let j = 0; j < e.links.length; j++) {
+        const l = e.links[j];
+        html +=
+          '<div class="row"><span class="who">' +
+          favicon(l[1]) +
+          '<a href="' +
+          l[1] +
+          '" target="_blank" rel="noopener">' +
+          l[0] +
+          "</a></span></div>";
+      }
+      html += "</div>";
     }
-    html += "</div>";
+    // Optional `sections` after Links (27/08/2026, Simile): label plus any
+    // of `text`, `list` (.item lines) and `entries` (name + role on a .row,
+    // descriptor and inline links under it). Mirrors sectionsHtml() in
+    // script.js; all sections share one p-stagger on purpose (the delay
+    // cascade stops at seven steps).
+    // `people` are link rows (name + role) that swap this detail for the
+    // person's own; see openSub()/backToCmd() below.
+    currentSubs = [];
+    if (e.sections) {
+      html += '<div class="p-stagger">';
+      for (let k = 0; k < e.sections.length; k++) {
+        const s = e.sections[k];
+        html += '<span class="label">' + s.label + "</span>";
+        if (s.text) html += '<p class="section-text">' + s.text + "</p>";
+        if (s.list) for (let i = 0; i < s.list.length; i++) html += '<p class="item">' + s.list[i] + "</p>";
+        if (s.people) {
+          const peopleList = (window.SITE_CONTENT || {}).people || {};
+          for (let i = 0; i < s.people.length; i++) {
+            // `{ ref: key }` reuses an entry of the People list.
+            const p = s.people[i].ref ? peopleList[s.people[i].ref] : s.people[i];
+            if (!p) continue;
+            // The whole row is the link, same as script.js personRow().
+            html +=
+              '<a class="row" href="#" data-sub="' + (currentSubs.push(p) - 1) + '"><span class="who">' + esc(p.name) + "</span>" +
+              (p.role ? '<span class="what">' + p.role + "</span>" : "") +
+              "</a>";
+          }
+        }
+        if (s.entries) {
+          for (let i = 0; i < s.entries.length; i++) {
+            const p = s.entries[i];
+            html += '<div class="entry"><div class="row"><span class="who">' + esc(p.name) + "</span>";
+            if (p.role) html += '<span class="what">' + p.role + "</span>";
+            html += "</div>";
+            if (p.what) html += '<p class="entry-desc">' + p.what + "</p>";
+            if (p.links) {
+              html += '<p class="entry-links">';
+              for (let j = 0; j < p.links.length; j++) {
+                const l = p.links[j];
+                html +=
+                  (j ? " · " : "") +
+                  '<a class="inline-link" href="' + l[1] + '" target="_blank" rel="noopener">' + l[0] + "</a>";
+              }
+              html += "</p>";
+            }
+            html += "</div>";
+          }
+        }
+      }
+      html += "</div>";
+    }
     return html;
   }
 
@@ -476,6 +575,8 @@ export function initCommandMenu() {
       opener = document.activeElement;
     }
     directOpen = direct;
+    subParent = null;
+    currentEntry = null;
     modal.classList.toggle("cmd-modal--direct", direct);
     if (item.kind === "prompt") {
       // The prompt detail is the /prompts modal's own renderer, so the two
@@ -484,6 +585,7 @@ export function initCommandMenu() {
       modal.classList.add("prompt-modal");
       modal.setAttribute("aria-label", item.entry.title);
     } else {
+      currentEntry = item.entry;
       modalBody.innerHTML = entryHtml(item.entry);
       modal.classList.remove("prompt-modal");
       modal.setAttribute("aria-label", "Details");

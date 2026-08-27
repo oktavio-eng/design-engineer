@@ -772,3 +772,109 @@ export const SelectedExtraRow = {
     await expectOnlyA11yDebt(canvasElement, ["color-contrast:see-more"]);
   },
 };
+
+/**
+ * A reference entry that goes deeper (27/08/2026, `refs.simile`): the same
+ * modal detail (h3 + .role + .bio + Links) with two optional fields after
+ * Links: a multi-paragraph `bio` and `sections` (label + `text` / `list` /
+ * `people` / `entries`). People are link rows that swap the modal for the
+ * person's own detail in production (the swap itself lives in script.js /
+ * cmd.mjs and is covered by the product smoke, not simulated here). Static
+ * copy of the string `render()` in script.js and
+ * `entryHtml()` in cmd.mjs build; no `.p-stagger` here, same as the
+ * command-menu detail fixture. Sits in a `.cmd-modal` because that surface
+ * already carries `role="dialog"` in production and the new rules are
+ * written for `.panel` and `.cmd-modal` together. The inline style only
+ * takes the modal out of its fixed, viewport-capped box and lays it in
+ * flow: axe skips contrast on anything scrolled out of the modal's own
+ * viewport, and the whole state should be reviewable at once anyway. The
+ * h3 after the inventory's h1 is the same heading-order debt the
+ * command-menu detail story carries.
+ */
+export const DeeperReference = {
+  name: "Reference · deeper entry",
+  parameters: {
+    a11y: {
+      test: "error",
+      // Only the `.label` (--faint) debt every panel already carries; the
+      // play function pins the exact list.
+      options: { rules: { "color-contrast": { enabled: false }, "heading-order": { enabled: false } } },
+    },
+  },
+  render: () => {
+    const root = patternShell(
+      "Reference · deeper entry",
+      "Simile in Craft references opens the same modal as every other row, then continues past Links with people (link rows that swap the modal for the person's detail), a study list and a visual lineage. Lineage entries reuse .row/.who/.what; descriptor and inline link sit under the name because .what is one nowrap line.",
+      `
+        <div class="cmd-modal" role="dialog" aria-modal="true" aria-label="Details" aria-hidden="false" id="sbDeeperModal" style="position: static; transform: none; max-height: none; margin: 0 auto;">
+          <button class="panel-close cmd-modal__close sb-people-close" type="button" aria-label="Close">&times;</button>
+          <div>
+            <div><h3 data-a11y-debt="deeper-detail-heading">Simile</h3><p class="role">The Simulation Company</p></div>
+            <div class="bio"><p>Simile is building AI systems that simulate human behaviour, allowing teams to explore how populations might respond to products, policies, pricing and other decisions before testing them in the real world.</p><p>What makes Simile especially interesting here is the overlap between research, product design and engineering.</p></div>
+            <span class="label" data-a11y-debt="label-links">Links</span>
+            <div>
+              <div class="row"><span class="who"><a href="https://www.simile.com/" target="_blank" rel="noopener">Website</a></span></div>
+              <div class="row"><span class="who"><a href="https://x.com/simile_ai" target="_blank" rel="noopener">X</a></span></div>
+            </div>
+            <div>
+              <span class="label" data-a11y-debt="label-people">People to follow</span>
+              <a class="row" href="#natasha" data-sub="0"><span class="who">Natasha Tenggoro</span><span class="what">Founding Designer</span></a>
+              <a class="row" href="#jenning" data-sub="1"><span class="who">Jenning Chen</span><span class="what">Engineering</span></a>
+              <span class="label" data-a11y-debt="label-study">What to study</span>
+              <p class="item">simulation UX</p>
+              <p class="item">AI-native interaction patterns</p>
+              <p class="item">designers who ship</p>
+              <span class="label" data-a11y-debt="label-lineage">Visual lineage</span>
+              <p class="section-text">Simile → Generative Agents → Smallville → LimeZu</p>
+              <div class="entry">
+                <div class="row"><span class="who">Generative Agents / Smallville</span></div>
+                <p class="entry-desc">AI agents represented as a living top-down simulated world</p>
+              </div>
+              <div class="entry">
+                <div class="row"><span class="who">LimeZu</span></div>
+                <p class="entry-desc">modular pixel-art interiors and environments used in the Smallville visual world</p>
+                <p class="entry-links"><a class="inline-link" href="https://limezu.itch.io/" target="_blank" rel="noopener">itch.io</a></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      `,
+    );
+    return root;
+  },
+  play: async ({ canvasElement }) => {
+    const modal = canvasElement.querySelector("#sbDeeperModal");
+    const bioParagraphs = modal.querySelectorAll(".bio p");
+    // Two paragraphs in one .bio: the second one opens 12px under the first.
+    await expect(bioParagraphs.length).toBe(2);
+    await expect(getComputedStyle(bioParagraphs[1]).marginTop).toBe("12px");
+    // An entry row is a list line, not a card: no padding of its own, and it
+    // may wrap so a name never truncates on a phone-wide modal.
+    const entryRow = modal.querySelector(".entry .row");
+    await expect(getComputedStyle(entryRow).paddingTop).toBe("0px");
+    await expect(getComputedStyle(entryRow).flexWrap).toBe("wrap");
+    await expect(getComputedStyle(entryRow).cursor).toBe("default");
+    // People rows are whole-row links: the panel row's 8px, a pointer cursor,
+    // and the role keeps the row's muted colour rather than the link's ink.
+    const personRow = modal.querySelector("[data-sub]");
+    await expect(personRow.tagName).toBe("A");
+    await expect(getComputedStyle(personRow).paddingTop).toBe("8px");
+    await expect(getComputedStyle(personRow).cursor).toBe("pointer");
+    await expect(getComputedStyle(personRow.querySelector(".what")).color).toBe(getComputedStyle(modal.querySelector(".role")).color);
+    await expect(modal.querySelectorAll("[data-sub]").length).toBe(2);
+    // Every external link keeps the site's contract.
+    const links = Array.from(modal.querySelectorAll("a[href^='http']"));
+    await expect(links.length).toBe(3);
+    for (const link of links) {
+      await expect(link.target).toBe("_blank");
+      await expect(link.rel).toMatch(/noopener/);
+    }
+    await expectOnlyA11yDebt(canvasElement, [
+      "heading-order:deeper-detail-heading",
+      "color-contrast:label-links",
+      "color-contrast:label-people",
+      "color-contrast:label-study",
+      "color-contrast:label-lineage",
+    ]);
+  },
+};

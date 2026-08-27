@@ -39,6 +39,12 @@ sweepFavicons();
    cmd.mjs reads it off `window`. The inline onerror is the one inline handler
    the site keeps — it has to be an attribute so the fallback survives the
    markup being built as an HTML string and inserted via innerHTML. */
+/* Sites the favicon services can't see (27/08/2026: simile.com ships no
+   /favicon.ico, only <link rel="icon" href="/brand/favicon.svg">, so Google
+   and DuckDuckGo both 404). The real file goes first; if it ever fails the
+   same cascade above still runs. wiki.html's row for the same domain uses
+   the same URL by hand. */
+const ICON_SOURCES = { "simile.com": "https://www.simile.com/brand/favicon.svg" };
 function favicon(e) {
   let t = "";
   try {
@@ -49,8 +55,8 @@ function favicon(e) {
   return (
     '<img class="fav" data-domain="' +
     t +
-    '" onerror="favFallback(this)" src="https://www.google.com/s2/favicons?sz=64&domain=' +
-    t +
+    '" onerror="favFallback(this)" src="' +
+    (ICON_SOURCES[t] || "https://www.google.com/s2/favicons?sz=64&domain=" + t) +
     '" alt="" loading="lazy">'
   );
 }

@@ -410,6 +410,124 @@ const people = {
         ["X", "https://x.com/jkane"],
       ],
     },
+    simile: {
+      name: "Simile",
+      role: "The Simulation Company",
+      /* Deeper entry (27/08/2026): `bio` as a list of paragraphs and
+         `sections` after Links (label + `text` / `list` / `entries` /
+         `people`). All optional; every other entry keeps the plain shape.
+         Rendered by script.js render() on the wiki and by cmd.mjs
+         entryHtml() in the palette. */
+      bio: [
+        "Simile is building AI systems that simulate human behaviour, allowing teams to explore how populations might respond to products, policies, pricing and other decisions before testing them in the real world.",
+        "What makes Simile especially interesting here is the overlap between research, product design and engineering. Designers prototype and ship, engineers think deeply about product, and the team is inventing interaction patterns for a category that barely existed before.",
+      ],
+      links: [
+        ["Website", "https://www.simile.com/"],
+        ["X", "https://x.com/simile_ai"],
+      ],
+      sections: [
+        {
+          label: "People to follow",
+          /* `people` (not `entries`): each one is a link row here and opens
+             as its own detail in the same modal (name, role, bio, links),
+             with a back button to return. Nothing invented: only the roles,
+             descriptors and links we have. */
+          people: [
+            {
+              name: "Natasha Tenggoro",
+              role: "Founding Designer",
+              bio: "product design · prototyping · AI interfaces · code",
+              links: [
+                ["Portfolio", "https://tash.work/"],
+                ["X", "https://x.com/natashatenggoro"],
+              ],
+            },
+            {
+              name: "Mihika Kapoor",
+              role: "Head of Product",
+              bio: "product · design · engineering · 0→1",
+              links: [["X", "https://x.com/mihikapoor"]],
+            },
+            {
+              name: "Christopher Pondoc",
+              role: "Engineering / MTS",
+              bio: "product engineering · ML · systems",
+              links: [["X", "https://x.com/chris_pondoc"]],
+            },
+            {
+              name: "Jenning Chen",
+              role: "Engineering",
+              bio: "product engineering",
+            },
+          ],
+        },
+        {
+          label: "What to study",
+          list: [
+            "simulation UX",
+            "AI-native interaction patterns",
+            "product × design × engineering",
+            "0→1 product building",
+            "agent-based interfaces",
+            "designers who ship",
+          ],
+        },
+        {
+          label: "Visual lineage",
+          text: "Simile → Generative Agents → Smallville → LimeZu",
+          entries: [
+            {
+              name: "Generative Agents / Smallville",
+              what: "AI agents represented as a living top-down simulated world",
+            },
+            {
+              name: "LimeZu",
+              what: "modular pixel-art interiors and environments used in the Smallville visual world",
+              links: [["itch.io", "https://limezu.itch.io/"]],
+            },
+          ],
+        },
+      ],
+    },
+    fey: {
+      name: "Fey",
+      role: "fey.com · investment research, Montreal · acquired by Wealthsimple in 2025",
+      bio: "Investment research for individual investors, built in Montreal by three people who came out of a design studio (Narative) and kept the studio's standards in the product. In their own words, built with taste, conviction, and an obsession with making finance feel simpler, smarter, and genuinely better. Founded in 2021, acquired by Wealthsimple in 2025; the standalone app closed on 30 September 2025 and the founders moved to Wealthsimple's self-directed investing team. The trajectory this page keeps coming back to, studio to product to acquisition, with the design engineers still in the room.",
+      links: [
+        ["Website", "https://fey.com/"],
+        ["Wealthsimple's announcement", "https://newsroom.wealthsimple.com/wealthsimple-acquires-investment-research-platform-fey"],
+      ],
+      sections: [
+        {
+          label: "People to follow",
+          /* `ref` points at an entry of the `people` collection above, so a
+             person already on this page is not written twice. */
+          people: [
+            {
+              name: "Dennis Brotzky",
+              role: "Co-founder and CTO",
+              bio: "Engineer who loves design, in his own words a bridge between design and engineering. Studied Arts and Psychology at McGill, learned HTML, CSS and JavaScript in a music-technology course and taught himself the rest. Co-founded Narative, the studio that incubated Fey, then led engineering at Fey as CTO. Now at Wealthsimple.",
+              links: [
+                ["X", "https://x.com/brotzky"],
+                ["GitHub", "https://github.com/brotzky"],
+                ["ui.land interview", "https://ui.land/interviews/brotzky"],
+              ],
+            },
+            { ref: "tcosta" },
+            {
+              name: "TJ Russell",
+              role: "Co-founder",
+              bio: "Built Fey with the other two, and now leads Engineering for App Experience at Wealthsimple. His site keeps a writing section and a prototypes section, which is the part worth following.",
+              links: [
+                ["Site", "https://tjruss.com/"],
+                ["X", "https://x.com/tjruss"],
+              ],
+            },
+          ],
+        },
+      ],
+    },
     nevflynn: {
       name: "Nev Flynn",
       role: "Leading Design at ElevenLabs · ex-Evervault",
