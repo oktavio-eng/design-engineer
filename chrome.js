@@ -88,6 +88,38 @@
   });
 })();
 
+/* "Back" links remember where the visitor came from (26/08/2026). Both
+   changelog.html and prompts.html hard-coded their two `.about-trigger`
+   back links to /wiki ("&larr; Plan" up top, "Back to the plan" in the
+   footer) — fine if the plan is the only way in, wrong once the navbar
+   makes / -> /changelog and / -> /prompts direct hops too: landing from
+   home and getting routed back through the wiki on the way out reads as
+   a bug. `document.referrer` (not a sessionStorage trail) is enough:
+   this only needs the immediately-previous page, and it degrades to the
+   old fixed /wiki behavior for a direct visit, a reload, or an external
+   link, which is the right fallback anyway. index.html has no matching
+   `[href="/wiki"]` link, so the querySelectorAll below is empty there and
+   this whole block is a no-op. */
+(function () {
+  var backLinks = document.querySelectorAll('a.about-trigger[href="/wiki"]');
+  if (!backLinks.length) return;
+  var ROUTES = { "/": "Home", "/wiki": "Wiki", "/changelog": "Changelog", "/prompts": "Prompts" };
+  var here = location.pathname;
+  var href = "/wiki";
+  var label = "Wiki";
+  try {
+    var ref = document.referrer && new URL(document.referrer);
+    if (ref && ref.origin === location.origin && ROUTES[ref.pathname] && ref.pathname !== here) {
+      href = ref.pathname;
+      label = ROUTES[ref.pathname];
+    }
+  } catch (e) {}
+  backLinks.forEach(function (el) {
+    el.href = href;
+    el.textContent = el.closest("footer") ? "Back to " + label : "← " + label;
+  });
+})();
+
 /* `enter`'s settle-filter fix (22/08/2026) — see the comment on
    `@keyframes enter` in main.css for the why. A CSS Animation interpolating
    away from a real `blur()` always resolves its end value to a concrete
