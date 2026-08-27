@@ -279,6 +279,60 @@ const people = {
         ["GitHub", "https://github.com/mZuil"],
       ],
     },
+    thomascullen: {
+      name: "Thomas Cullen",
+      role: "Design Engineer at Raycast · ex-Evervault",
+      bio: "Design Engineer at Raycast · ex-Evervault",
+      links: [
+        ["Site", "https://thomascullen.io"],
+        ["X", "https://x.com/thomasauros"],
+      ],
+    },
+    seththompson: {
+      name: "Seth Thompson",
+      role: "Designer + engineer · ex-Notion, Google · spatial visualization",
+      bio: "Designer + engineer · ex-Notion, Google · spatial visualization",
+      links: [
+        ["Site", "https://seththompson.com"],
+        ["X", "https://x.com/s3ththompson"],
+      ],
+    },
+    hamzaalabou: {
+      name: "Hamza Alabou",
+      role: "Founding Design Engineer · product + frontend",
+      bio: "Founding Design Engineer · product + frontend",
+      links: [
+        ["Site", "https://www.hamzaalabou.com"],
+        ["X", "https://x.com/hamzaalabou"],
+      ],
+    },
+    joshgrazier: {
+      name: "Josh Grazier",
+      role: "Studio Evra founder · product + brand + web",
+      bio: "Studio Evra founder · product + brand + web",
+      links: [
+        ["Site", "https://www.evra.design"],
+        ["X", "https://x.com/_joshrg"],
+      ],
+    },
+    prestonbooth: {
+      name: "Preston Booth",
+      role: "Product Designer & Builder · interaction + motion",
+      bio: "Product Designer & Builder · interaction + motion",
+      links: [
+        ["Site", "https://prestonb.xyz"],
+        ["X", "https://x.com/prestonb_xyz"],
+      ],
+    },
+    kosta: {
+      name: "Kosta Canatselis",
+      role: "Product Designer & Engineer · Steel",
+      bio: "Product Designer & Engineer · Steel",
+      links: [
+        ["Site", "https://kosta.works"],
+        ["X", "https://x.com/kosta4a"],
+      ],
+    },
   },
   phases = {
     f1: {
