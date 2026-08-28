@@ -1054,4 +1054,3 @@ var Lenis = class {
 //#endregion
 export { Lenis as default };
 
-//# sourceMappingURL=lenis.mjs.map
