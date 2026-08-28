@@ -85,6 +85,14 @@
 <p>Wheel and trackpad scrolling on every page now glides with <a href="https://lenis.dev" target="_blank" rel="noopener">Lenis</a>, vendored like the interaction sounds. Touch scrolling on phones stays native, the sidebar, sheets and the ⌘K list keep scrolling on their own, and with reduced motion turned on the page moves instantly, as before.</p>
 </article>
 <article class="timeline__item">
+<h3 class="timeline__title">FinQ Edu gets its real favicon back</h3>
+<p>The project row and its two links were showing a generic globe: the favicon service answers with a placeholder image when it cannot reach a site, and an image that loads is not an error, so the fallback chain never ran. The icons now point at the files the sites themselves declare.</p>
+</article>
+<article class="timeline__item">
+<h3 class="timeline__title">Link rows open from anywhere on the row</h3>
+<p>In a person, course, reading or reference detail, the rows under "Links" looked like every other row on the site but only the word itself was the link, so a click on the rest of the row went nowhere. A few readers wrote in about that ghost click. The whole row is now the link, the same way the people rows inside an entry already worked — and the landing-page cards in a portfolio project (image, name, description) open from anywhere on the card too, not just the name.</p>
+</article>
+<article class="timeline__item">
 <h3 class="timeline__title">The CI check is green again</h3>
 <p>Two UI smoke tests had been failing on every pull request since Aug 26 for reasons unrelated to the changes they flagged: one still expected the lowercase navbar labels, the other tried to load the prompts module in Node, where the vendored sound library's browser path cannot resolve. Both fixed, so a red check means something real again.</p>
 </article>

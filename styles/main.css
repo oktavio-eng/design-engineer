@@ -724,12 +724,19 @@ body.panel-modal .cpanel {
 .cmd-modal .entry-links {
   margin-top: var(--space-4);
 }
-/* People rows inside an entry are whole-row links (<a class="row">): the
-   only panel rows with a pointer cursor, since they are the only ones that
-   do something. Colour stays the row's own (.row .what beats `a`), and the
-   existing .row:hover .what lift to --ink is the hover feedback. */
-.panel .row[data-sub],
-.cmd-modal .row[data-sub] {
+/* Anchor rows (<a class="row">) are the only panel rows with a pointer
+   cursor, since they are the only ones that do something: people rows
+   inside an entry (data-sub, swap the modal's content) and, since
+   28/08/2026, the Links list. Links used to be a div.row with the <a> only
+   around the label — the row was full width and drawn like the page rows,
+   which open on a click anywhere, so people clicked the row's empty right
+   half and nothing happened (the "ghost click" users reported). Now the
+   whole row is the link, same shape the people rows already had. Colour
+   stays the row's own (.row .what beats `a`); the hover feedback is the
+   .row:hover .what lift where there is a .what, and the pointer itself
+   (cursor.mjs sticks to the row) where there is not. */
+.panel a.row,
+.cmd-modal a.row {
   cursor: pointer;
 }
 /* Sub-entry back (27/08/2026): a person opened from inside an entry swaps
@@ -2101,16 +2108,24 @@ body.mail-open .mail-modal {
 /* Sub-project cards (22/08/2026, escola-da-bel's Landing pages): same
    preview-image contract as .cmd-modal__preview above, one per linked page,
    stacked rather than gridded (image on top, name + description under it).
-   Only .subproject__name is the tap target (22/08/2026 follow-up) — a
-   card-wide `<a>` made hover read too heavy for what's meant to be one line
-   of text; the image/description are supporting context, not interactive.
-   `.subproject__name` picks up `.inline-link`'s underline treatment (see
-   its definition near the top of this file) via the class on the markup
-   side, so the "link inside a sentence" look stays in one place. */
+   The whole card is the tap target (28/08/2026). It was name-only from
+   22/08 — a card-wide `<a>` made hover read too heavy — but a card that
+   looks like one thing and only answers on one word is the ghost click
+   users reported on the Links rows, so the anchor is the card again and
+   the *hover* is what stays light: only the preview border and the name's
+   underline react (no fill, no lift), keyed on `.subproject:hover` now
+   that the name is no longer its own anchor. `.subproject__name` keeps
+   `.inline-link`'s underline treatment via the class on the markup side,
+   so the "link inside a sentence" look stays in one place; the description
+   sets its own colour because `a` would paint it --ink otherwise. */
 .cmd-modal__subprojects {
   display: flex;
   flex-direction: column;
   gap: var(--space-24);
+}
+.subproject {
+  display: block;
+  color: inherit;
 }
 .subproject__preview {
   display: block;
@@ -2131,8 +2146,11 @@ body.mail-open .mail-modal {
   margin-top: var(--space-4);
 }
 @media (hover: hover) and (pointer: fine) {
-  .subproject:has(.subproject__name:hover) .subproject__preview {
+  .subproject:hover .subproject__preview {
     border-color: var(--faint);
+  }
+  .subproject:hover .subproject__name {
+    text-decoration-color: var(--ink);
   }
 }
 .cmd-modal .label {
