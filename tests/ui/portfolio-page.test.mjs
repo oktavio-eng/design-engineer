@@ -236,7 +236,11 @@ test("/ (portfolio home) renders its collections, opens rows and photos in modal
   const nameBox = await page.locator("#cmdModal .subproject__name").first().boundingBox();
   const cardBox = await page.locator("#cmdModal .subproject").first().boundingBox();
   const imageBox = await page.locator("#cmdModal .subproject__preview").first().boundingBox();
-  assert.ok(nameBox.width < cardBox.width && imageBox.width === cardBox.width, "the tap target is the full card, image included, not the name's own width");
+  // Sub-pixel tolerance on purpose: this runs while the modal's open
+  // transition may still be scaling it, and two boxes with the same layout
+  // width can come back as slightly different floats mid-transform — a
+  // strict `===` here failed once on CI (28/08/2026) for exactly that.
+  assert.ok(nameBox.width < cardBox.width && Math.abs(imageBox.width - cardBox.width) < 1, "the tap target is the full card, image included, not the name's own width");
   await scanAxe(page, "portfolio, escola-da-bel sub-projects open");
   await page.keyboard.press("Escape");
   await page.waitForFunction(() => !document.body.classList.contains("cmd-detail-open"));

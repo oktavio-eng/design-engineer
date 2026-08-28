@@ -32,6 +32,7 @@ Um site pessoal single-page do Otavio (GOW Studio) — um "plano de transição 
 
 **Abra o doc correspondente antes de editar** qualquer coisa que caia num desses tópicos — o resumo de uma linha aqui existe pra achar o arquivo certo, não pra substituir a leitura dele.
 
+- **[CHANGELOG.md](CHANGELOG.md)** (raiz) — o log técnico interno, um bloco por dia, newest first; o `/changelog` do site é a versão narrada pro público. Toda mudança que vai pra `main` ganha um bullet aqui — no mesmo PR ou num PR "Changelog: …" logo depois (é assim que tem sido feito). Não estava neste índice até 28/08/2026 e por isso um dia inteiro de trabalho quase ficou de fora.
 - **[docs/architecture.md](docs/architecture.md)** — rotas, ordem de carregamento dos scripts, o que cada arquivo de JS compartilhado faz (`content.js`, `favicons.js`, `intro.js`, `mail.js`, `contrib.mjs`, `chrome.js`, `cursor.mjs`, `cmd.mjs`, portfolio), estrutura de `styles/main.css` + `@import` dos tokens.
 - **[docs/design-system.md](docs/design-system.md)** — cor (OKLCH), tipografia (Geist/variable font), layout e ritmo vertical (medido contra emilkowal.ski), a decisão sidebar×modal, motion, e o inventário completo de `styles/tokens/*.css`.
 - **[docs/patterns.md](docs/patterns.md)** — padrões já implementados que não devem ser "corrigidos" de volta pro jeito antigo: toggle ver mais/menos, fallback de favicon, persistência (`localStorage`/`sessionStorage`), tooltips de glossário, hover das listas, foco por vizinhança, ponteiro iPadOS, gráfico de contribuições abrindo nas semanas recentes.
