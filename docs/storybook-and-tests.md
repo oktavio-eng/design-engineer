@@ -37,6 +37,12 @@ O workflow `.github/workflows/storybook.yml` roda `npm ci`, build, stories/axe, 
 2. **Diff visual esperado:** regenere com `UPDATE_VISUAL_BASELINES=1`, inspecione, e **só o PNG da mudança entra no commit** — os outros têm que voltar byte-idênticos. Se não voltarem, o browser local não é o que gerou os baselines e o PNG novo não é confiável.
 3. **Antes de decidir se é regressão ou baseline velho**, baixe o artifact do run que falhou (`gh run download <id> -n storybook-visual-evidence`) e olhe o `*-diff.png` e o `*-actual.png`.
 
+**Lição do PR #77 (28/08/2026, smooth scroll com Lenis):** a suíte `test:product-ui` estava vermelha na `main` desde 26/08 por dois motivos alheios a qualquer PR — e por dois dias cada PR pareceu ter quebrado o CI (o #74 foi mergeado `UNSTABLE`). As causas e o que fica delas:
+
+1. **Teste que espelha texto de produto precisa mudar no mesmo commit do texto.** `dd798ae` capitalizou os labels da navbar (`Home`, `Wiki`, …) e `tests/ui/navigation-pages.test.mjs` continuou esperando minúsculas. Se o `grep` do checklist não pega (é string de teste, não markup), rodar `test:product-ui` antes do push pega.
+2. **Um `.mjs` de produto que importa um caminho absoluto do browser (`/vendor/...`) não pode ser importado pelo Node.** `prompts.mjs` passou a importar `/vendor/cuelume/index.js` (`a76c2cf`) e `tests/ui/prompts-page.test.mjs` fazia `import { PROMPTS } from "../../prompts.mjs"` — o arquivo inteiro falhava em `ERR_MODULE_NOT_FOUND` antes de qualquer teste rodar. O teste agora lê o dado pela própria página servida: `page.evaluate(() => import("/prompts.mjs").then((m) => m.PROMPTS))`. Regra: dado de produto entra nos testes pelo browser (que resolve `/vendor/` como a produção), nunca por import direto no Node. Vale pra `scroll.mjs`/`sound.mjs` e qualquer módulo novo que importe de `vendor/`.
+3. **Uma suíte vermelha "conhecida" não é neutra.** Ela esconde a falha nova atrás da velha. Se um teste quebra por mudança intencional, o fix vai no mesmo PR — e se herdou uma suíte vermelha, conserte antes de somar mais um PR em cima.
+
 ## UI / Storybook Contract
 
 Storybook is not a parallel implementation of the UI. It renders and

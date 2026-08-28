@@ -84,6 +84,10 @@
 <h3 class="timeline__title">Scrolling eases instead of stepping</h3>
 <p>Wheel and trackpad scrolling on every page now glides with <a href="https://lenis.dev" target="_blank" rel="noopener">Lenis</a>, vendored like the interaction sounds. Touch scrolling on phones stays native, the sidebar, sheets and the ⌘K list keep scrolling on their own, and with reduced motion turned on the page moves instantly, as before.</p>
 </article>
+<article class="timeline__item">
+<h3 class="timeline__title">The CI check is green again</h3>
+<p>Two UI smoke tests had been failing on every pull request since Aug 26 for reasons unrelated to the changes they flagged: one still expected the lowercase navbar labels, the other tried to load the prompts module in Node, where the vendored sound library's browser path cannot resolve. Both fixed, so a red check means something real again.</p>
+</article>
 </div>
 </li>
 <li class="timeline__entry">
