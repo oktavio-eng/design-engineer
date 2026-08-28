@@ -28,6 +28,7 @@ Linkado do índice em `AGENTS.md` — carregue este doc quando for mexer em cor,
 - Entrada de elementos: stagger animation via `@keyframes enter` (fade + `translateY` + blur leve).
 - Toda transição precisa ser **interruptível** — nunca travar o usuário no meio de uma animação.
 - Curvas de easing específicas por contexto, não uma curva genérica pra tudo (referência de craft: recent.design, deck.gallery).
+- Scroll (28/08/2026): a rolagem da janela é suavizada por Lenis (`scroll.mjs`), com os padrões da lib (`lerp: 0.1`, `duration: 1.2`) — o único valor de motion que hoje **não** é token, de propósito: tem um dono só; vira `--scroll-*` em `motion.css` se outro lugar passar a consumir o mesmo número. Toque fica nativo e reduced motion é instantâneo (a lib cuida). O que não deve ser revertido está em [patterns.md](patterns.md), a integração em [architecture.md](architecture.md).
 
 ## Tokens (`styles/tokens/`)
 

@@ -6,7 +6,7 @@ Documenta a estratégia, referências de craft, cursos, leituras e o plano de 4 
 
 ## Stack
 
-Zero-dependency, sem build step:
+Sem build step e sem dependência de runtime via npm — as duas libs que o site usa (som e smooth scroll) estão vendoradas em `vendor/`:
 
 ```
 index.html            — a home: o portfólio (dados em portfolio-content.js, página em portfolio.mjs)
@@ -20,6 +20,16 @@ chrome.js             — tema + navbar nas outras páginas
 cmd.mjs               — busca ⌘K, em todas as páginas
 contrib.mjs           — gráfico de contribuições (dados em data/contributions.json)
 favicons.js           — favicon() + cascata de fallback
+intro.js              — a saudação em 6 idiomas antes do conteúdo (home e wiki)
+mail.js               — o composer de e-mail (envelope na navbar)
+cursor.mjs            — o ponteiro estilo iPadOS
+sound.mjs             — som de interação (cuelume, vendorado)
+scroll.mjs            — smooth scroll (Lenis, vendorado)
+vendor/
+  cuelume/      — sons sintetizados via Web Audio (MIT)
+  lenis/        — smooth scroll (MIT)
+data/
+  contributions.json — o calendário do GitHub, atualizado 1×/dia por GitHub Action
 styles/
   main.css      — componentes, importa os tokens
   tokens/       — cores, tipografia, motion, spacing, radius
