@@ -1,6 +1,6 @@
 # Design Engineer, Plan
 
-Um documento pessoal de transição de carreira — de design visual pra design engineering. Site vivo em [design-engineer-phi.vercel.app](https://design-engineer-phi.vercel.app/).
+Um documento pessoal de transição de carreira — de design visual pra design engineering. Site vivo em [oktavio.vercel.app](https://oktavio.vercel.app/).
 
 Documenta a estratégia, referências de craft, cursos, leituras e o plano de 4 fases pra essa transição. A tese central: prova pública supera credencial — portfolio e código aberto acima de diploma.
 
