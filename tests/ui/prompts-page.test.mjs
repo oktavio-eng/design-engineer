@@ -2,7 +2,6 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { PROMPTS } from "../../prompts.mjs";
 import { launchChromium } from "./helpers/browser.mjs";
 import { serveDirectory } from "./helpers/static-server.mjs";
 
@@ -111,6 +110,12 @@ test("/prompts lists rows, opens the detail modal, copies the exact raw prompt, 
   });
 
   await page.goto(`${server.origin}/prompts`, { waitUntil: "domcontentloaded" });
+  // Read PROMPTS through the browser, not a Node import: prompts.mjs imports
+  // "/vendor/cuelume/index.js" (an absolute browser path, see sound.mjs) since
+  // 26/08/2026, which Node cannot resolve — the whole file failed to load
+  // before any test ran. The server above resolves it like production does.
+  const PROMPTS = await page.evaluate(() => import("/prompts.mjs").then((m) => m.PROMPTS));
+  assert.ok(Array.isArray(PROMPTS) && PROMPTS.length > 0, "PROMPTS must load from the served module");
   await page.waitForSelector(".prompt-row");
   assert.equal(new URL(page.url()).pathname, "/prompts", "clean URL stays extensionless");
   assert.equal(await page.locator("h1").textContent(), "Prompts");
