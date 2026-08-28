@@ -25,7 +25,7 @@ Um site pessoal single-page do Otavio (GOW Studio) — um "plano de transição 
 
 - **Stack:** arquivos estáticos, zero build step — `wiki.html` (o plano, markup), `styles/` (CSS), `script.js` (interação da wiki) e os arquivos de JS compartilhados entre as páginas: `content.js`, `favicons.js`, `intro.js`, `mail.js`, `chrome.js`, `cmd.mjs`, `cursor.mjs`, `scroll.mjs` (mais `prompts.mjs`, da página `/prompts`). Servidos direto, sem bundler, sem framework. `/` é o portfólio, `/wiki` é o plano — detalhes de rotas, ordem de scripts, o que cada arquivo de JS faz e por quê, e a estrutura de `styles/main.css`/tokens estão em **[docs/architecture.md](docs/architecture.md)**.
 - **Deploy:** Vercel, projeto **`design-engineer`** (team ID `team_mMftBNlEUa18031DuM84fBHt`). **NUNCA crie um projeto novo na Vercel — sempre atualize o existente.**
-- **URL de produção:** `design-engineer-phi.vercel.app`
+- **URL de produção:** `oktavio.vercel.app` (desde pelo menos 28/08/2026; o domínio antigo `design-engineer-phi.vercel.app` continua no ar e redireciona com 307 pra ele — se algum doc ou link ainda citar o antigo, é o mesmo projeto)
 - **Repo:** conectado ao GitHub (`oktavio-eng/design-engineer`) — push na `main` dispara deploy automático.
 
 ## Docs por tópico
