@@ -267,13 +267,12 @@ function render(e, t, n) {
         e.links
           .map(function (e) {
             return (
-              '<div class="row"><span class="who">' +
-              favicon(e[1]) +
-              '<a href="' +
+              '<a class="row" href="' +
               e[1] +
-              '" target="_blank" rel="noopener">' +
+              '" target="_blank" rel="noopener"><span class="who">' +
+              favicon(e[1]) +
               e[0] +
-              "</a></span></div>"
+              "</span></a>"
             );
           })
           .join("") +

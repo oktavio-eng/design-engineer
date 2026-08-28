@@ -724,12 +724,19 @@ body.panel-modal .cpanel {
 .cmd-modal .entry-links {
   margin-top: var(--space-4);
 }
-/* People rows inside an entry are whole-row links (<a class="row">): the
-   only panel rows with a pointer cursor, since they are the only ones that
-   do something. Colour stays the row's own (.row .what beats `a`), and the
-   existing .row:hover .what lift to --ink is the hover feedback. */
-.panel .row[data-sub],
-.cmd-modal .row[data-sub] {
+/* Anchor rows (<a class="row">) are the only panel rows with a pointer
+   cursor, since they are the only ones that do something: people rows
+   inside an entry (data-sub, swap the modal's content) and, since
+   28/08/2026, the Links list. Links used to be a div.row with the <a> only
+   around the label — the row was full width and drawn like the page rows,
+   which open on a click anywhere, so people clicked the row's empty right
+   half and nothing happened (the "ghost click" users reported). Now the
+   whole row is the link, same shape the people rows already had. Colour
+   stays the row's own (.row .what beats `a`); the hover feedback is the
+   .row:hover .what lift where there is a .what, and the pointer itself
+   (cursor.mjs sticks to the row) where there is not. */
+.panel a.row,
+.cmd-modal a.row {
   cursor: pointer;
 }
 /* Sub-entry back (27/08/2026): a person opened from inside an entry swaps

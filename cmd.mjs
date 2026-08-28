@@ -489,13 +489,12 @@ export function initCommandMenu() {
       for (let j = 0; j < e.links.length; j++) {
         const l = e.links[j];
         html +=
-          '<div class="row"><span class="who">' +
-          favicon(l[1]) +
-          '<a href="' +
+          '<a class="row" href="' +
           l[1] +
-          '" target="_blank" rel="noopener">' +
+          '" target="_blank" rel="noopener"><span class="who">' +
+          favicon(l[1]) +
           l[0] +
-          "</a></span></div>";
+          "</span></a>";
       }
       html += "</div>";
     }

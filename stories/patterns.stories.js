@@ -813,8 +813,8 @@ export const DeeperReference = {
             <div class="bio"><p>Simile is building AI systems that simulate human behaviour, allowing teams to explore how populations might respond to products, policies, pricing and other decisions before testing them in the real world.</p><p>What makes Simile especially interesting here is the overlap between research, product design and engineering.</p></div>
             <span class="label" data-a11y-debt="label-links">Links</span>
             <div>
-              <div class="row"><span class="who"><a href="https://www.simile.com/" target="_blank" rel="noopener">Website</a></span></div>
-              <div class="row"><span class="who"><a href="https://x.com/simile_ai" target="_blank" rel="noopener">X</a></span></div>
+              <a class="row" href="https://www.simile.com/" target="_blank" rel="noopener"><span class="who">Website</span></a>
+              <a class="row" href="https://x.com/simile_ai" target="_blank" rel="noopener"><span class="who">X</span></a>
             </div>
             <div>
               <span class="label" data-a11y-debt="label-people">People to follow</span>
