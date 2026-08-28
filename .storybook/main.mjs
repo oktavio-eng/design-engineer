@@ -11,6 +11,11 @@ const config = {
       from: "../styles",
       to: "/styles",
     },
+    {
+      // main.css @imports /vendor/lenis/lenis.css (see scroll.mjs)
+      from: "../vendor",
+      to: "/vendor",
+    },
   ],
 };
 

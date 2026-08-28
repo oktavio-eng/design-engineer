@@ -45,7 +45,7 @@ test("page links stay out of homepage scroll-spy and clean URLs keep sibling pag
   await page.waitForFunction(() => !document.documentElement.classList.contains("intro-playing"));
 
   const pageLinks = page.locator('.topbar__nav a[href^="/"]');
-  assert.deepEqual(await pageLinks.allTextContents(), ["home", "wiki", "changelog", "prompts"]);
+  assert.deepEqual(await pageLinks.allTextContents(), ["Home", "Wiki", "Changelog", "Prompts"]);
   assert.deepEqual(await pageLinks.evaluateAll((links) => links.map((link) => link.getAttribute("href"))), [
     "/",
     "/wiki",
@@ -93,7 +93,7 @@ test("page links stay out of homepage scroll-spy and clean URLs keep sibling pag
     "/prompts",
   );
   const changelogTopbarLinks = page.locator(".topbar__nav a[href^=\"/\"]");
-  assert.deepEqual(await changelogTopbarLinks.allTextContents(), ["home", "wiki", "changelog", "prompts"]);
+  assert.deepEqual(await changelogTopbarLinks.allTextContents(), ["Home", "Wiki", "Changelog", "Prompts"]);
   assert.deepEqual(
     await changelogTopbarLinks.evaluateAll((links) => links.map((link) => link.getAttribute("href"))),
     ["/", "/wiki", "/changelog", "/prompts"],
@@ -110,7 +110,7 @@ test("page links stay out of homepage scroll-spy and clean URLs keep sibling pag
   assert.equal(new URL(page.url()).pathname, "/prompts");
   assert.equal(await page.locator("h1").textContent(), "Prompts");
   const promptsTopbarLinks = page.locator(".topbar__nav a[href^=\"/\"]");
-  assert.deepEqual(await promptsTopbarLinks.allTextContents(), ["home", "wiki", "changelog", "prompts"]);
+  assert.deepEqual(await promptsTopbarLinks.allTextContents(), ["Home", "Wiki", "Changelog", "Prompts"]);
   assert.deepEqual(
     await promptsTopbarLinks.evaluateAll((links) => links.map((link) => link.getAttribute("href"))),
     ["/", "/wiki", "/changelog", "/prompts"],
@@ -119,7 +119,7 @@ test("page links stay out of homepage scroll-spy and clean URLs keep sibling pag
   await page.goto(server.origin, { waitUntil: "domcontentloaded" });
   assert.equal(new URL(page.url()).pathname, "/");
   assert.equal(await page.locator("h1").textContent(), "Portfolio");
-  assert.deepEqual(await page.locator(".topbar__nav a[href^=\"/\"]").allTextContents(), ["home", "wiki", "changelog", "prompts"]);
+  assert.deepEqual(await page.locator(".topbar__nav a[href^=\"/\"]").allTextContents(), ["Home", "Wiki", "Changelog", "Prompts"]);
 
   await page.goto(`${server.origin}/wiki`, { waitUntil: "domcontentloaded" });
   assert.equal(await page.locator("h1").textContent(), "Design Engineer");

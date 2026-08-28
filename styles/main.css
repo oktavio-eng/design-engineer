@@ -3,6 +3,7 @@
 @import url("tokens/spacing.css");
 @import url("tokens/typography.css");
 @import url("tokens/radius.css");
+@import url("../vendor/lenis/lenis.css"); /* vendored smooth-scroll base rules — see scroll.mjs */
 * {
   margin: 0;
   padding: 0;
