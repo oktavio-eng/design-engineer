@@ -43,8 +43,25 @@ sweepFavicons();
    /favicon.ico, only <link rel="icon" href="/brand/favicon.svg">, so Google
    and DuckDuckGo both 404). The real file goes first; if it ever fails the
    same cascade above still runs. wiki.html's row for the same domain uses
-   the same URL by hand. */
-const ICON_SOURCES = { "simile.com": "https://www.simile.com/brand/favicon.svg" };
+   the same URL by hand.
+
+   Why the cascade can't catch these on its own (28/08/2026, FinQ Edu): for
+   a domain it can't fetch, Google's service answers 404 *with a 16x16 globe
+   PNG in the body*, and DuckDuckGo does the same with its own placeholder.
+   An <img> renders any decodable body regardless of status, so `onerror`
+   never fires and the globe just sits there looking like a favicon. There
+   is no status code to read from an <img>, and sniffing "is it 16x16?"
+   would misfire on real 16px icons — so a domain that shows the globe gets
+   pinned here by hand to the file its own <link rel="icon"> points at.
+   FinQ: finqedu.com.br itself no longer answers (the row's faviconFrom in
+   portfolio-content.js keeps the brand domain as the key), and the two
+   Webflow subdomains serve their icons from Webflow's CDN. */
+const ICON_SOURCES = {
+  "simile.com": "https://www.simile.com/brand/favicon.svg",
+  "finqedu.com.br": "https://cdn.prod.website-files.com/67433c17156afcafa41a804f/6743460b06a920f998bed41d_fav-finq.png",
+  "finqedu.webflow.io": "https://cdn.prod.website-files.com/67433c17156afcafa41a804f/6743460b06a920f998bed41d_fav-finq.png",
+  "dev-finqedu.webflow.io": "https://cdn.prod.website-files.com/67fa3b5335fadc68fbc167da/68025b52149680be41d86f5b_fav.png",
+};
 function favicon(e) {
   let t = "";
   try {
