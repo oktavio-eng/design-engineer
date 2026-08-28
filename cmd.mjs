@@ -467,20 +467,24 @@ export function initCommandMenu() {
     }
     // `subprojects` (22/08/2026, escola-da-bel only): individual landing
     // pages worth a preview of their own, each its own live-fetched image +
-    // description, same onerror contract as `preview` above. Only the name
-    // is the link (22/08/2026 follow-up) — image and description are
-    // supporting context, not tap target; a card-wide `<a>` made hover read
-    // too heavy for what's meant to be a single line of text.
+    // description, same onerror contract as `preview` above. The whole card
+    // is the link (28/08/2026): it was name-only from 22/08 because a
+    // card-wide `<a>` made hover read too heavy — but users then clicked the
+    // image or the description and nothing happened (the same ghost click
+    // as the Links rows). The anchor is the card; the hover stays as light
+    // as the name-only version (preview border + name underline, main.css),
+    // and `data-cursor="merge"` keeps the iPadOS pointer from drawing a
+    // second rectangle over a card that already paints its own hover.
     if (e.subprojects) {
       html += '<span class="label p-stagger">Landing pages</span><div class="p-stagger cmd-modal__subprojects">';
       for (let k = 0; k < e.subprojects.length; k++) {
         const s = e.subprojects[k];
         html +=
-          '<div class="subproject">' +
+          '<a class="subproject" href="' + s.url + '" target="_blank" rel="noopener" data-cursor="merge">' +
           '<img class="subproject__preview" src="' + s.preview + '" onerror="this.remove()" alt="" loading="lazy">' +
-          '<a class="subproject__name inline-link" href="' + s.url + '" target="_blank" rel="noopener">' + esc(s.name) + "</a>" +
+          '<span class="subproject__name inline-link">' + esc(s.name) + "</span>" +
           '<p class="subproject__desc">' + s.description + "</p>" +
-          "</div>";
+          "</a>";
       }
       html += "</div>";
     }

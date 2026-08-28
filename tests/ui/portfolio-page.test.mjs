@@ -217,23 +217,26 @@ test("/ (portfolio home) renders its collections, opens rows and photos in modal
   await page.waitForFunction(() => !document.body.classList.contains("cmd-detail-open"));
 
   // Sub-projects (22/08/2026, escola-da-bel only): each is its own preview
-  // image + name + description; only .subproject__name is the tap target
-  // (22/08/2026 follow-up — a card-wide link made hover read too heavy),
-  // same "no reserved gap on failure" contract as the top-level preview.
+  // image + name + description, and since 28/08/2026 the whole card is the
+  // link (name-only from 22/08 read as a ghost click on the image and the
+  // description), same "no reserved gap on failure" contract as the
+  // top-level preview.
   await page.locator('[data-open="projects:escola-da-bel"]').click();
   await page.waitForFunction(() => document.body.classList.contains("cmd-detail-open"));
   assert.equal(await page.locator("#cmdModal .cmd-modal__preview").count(), 1, "escola-da-bel also carries its own top-level preview");
   assert.equal(await page.locator("#cmdModal .subproject").count(), 5, "five landing pages listed");
   assert.equal(await page.locator("#cmdModal .subproject__preview").count(), 5, "every sub-project card carries a preview image");
-  assert.equal(await page.locator("#cmdModal .subproject img").count(), 5, "the image is not itself a link");
+  assert.equal(await page.locator("#cmdModal a.subproject[href]").count(), 5, "every card is itself the link");
   assert.deepEqual(
-    await page.locator("#cmdModal .subproject__name").evaluateAll((as) => as.map((a) => a.getAttribute("target"))),
+    await page.locator("#cmdModal .subproject").evaluateAll((as) => as.map((a) => a.getAttribute("target"))),
     Array(5).fill("_blank"),
-    "only the name opens the live page, not the modal",
+    "the card opens the live page in a new tab, not in the modal",
   );
+  assert.equal(await page.locator("#cmdModal .subproject a, #cmdModal .subproject__name[href]").count(), 0, "no nested link inside the card — the name is a span, the image is an image");
   const nameBox = await page.locator("#cmdModal .subproject__name").first().boundingBox();
   const cardBox = await page.locator("#cmdModal .subproject").first().boundingBox();
-  assert.ok(nameBox.width < cardBox.width, "the tap target is the name's own width, not the full card");
+  const imageBox = await page.locator("#cmdModal .subproject__preview").first().boundingBox();
+  assert.ok(nameBox.width < cardBox.width && imageBox.width === cardBox.width, "the tap target is the full card, image included, not the name's own width");
   await scanAxe(page, "portfolio, escola-da-bel sub-projects open");
   await page.keyboard.press("Escape");
   await page.waitForFunction(() => !document.body.classList.contains("cmd-detail-open"));
