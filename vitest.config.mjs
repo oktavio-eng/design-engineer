@@ -24,6 +24,16 @@ export default defineConfig({
         ],
         test: {
           name: "storybook",
+          // One story file at a time. Browser mode runs each file in its own
+          // iframe and, by default, several at once — and a sibling iframe
+          // taking window focus makes `:focus-visible` stop matching in ours
+          // while `document.activeElement` still says the element is focused.
+          // `Phase · Glossary` (tooltip keyed on :focus-visible) failed on CI
+          // exactly that way on 28/08/2026 (PR #77 post-mortem in
+          // docs/storybook-and-tests.md). Six files, ~13s: serial costs ~4s.
+          // Top-level on purpose: `browser.fileParallelism` is deprecated in
+          // Vitest 4 and defers to this one.
+          fileParallelism: false,
           browser: {
             enabled: true,
             provider: playwright({ launchOptions }),
