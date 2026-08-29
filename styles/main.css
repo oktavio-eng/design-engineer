@@ -1703,6 +1703,44 @@ body.mail-open .mail-modal {
 .composer__input::placeholder {
   color: var(--faint);
 }
+/* Inline validation line under either textarea (29/08/2026): "Add your
+   email so I can reply." / "That email doesn't look right." on the email
+   step, "Couldn't send — try again." on the message step. Muted ink, not
+   red — the palette has no danger token and the site is monochrome on
+   purpose; the words carry the meaning (and `aria-invalid` + role="alert"
+   carry it to AT), the shake below carries the moment. Same 12px inset as
+   the textarea's own padding so it reads as part of the field. */
+.composer__hint {
+  margin: 0;
+  padding: 0 var(--space-12) var(--space-8);
+  font-size: var(--fs-13);
+  line-height: var(--lh-base);
+  color: var(--muted);
+}
+.composer__hint[hidden] {
+  display: none;
+}
+/* Short horizontal shake on the step whose validation failed — the
+   "wrong password" gesture. `translate`, not `transform`, so it never
+   fights the enter/leave slide above; ±4px, four beats, one duration. */
+.composer__step.is-invalid {
+  animation: composer-shake var(--duration-320) var(--ease);
+}
+@keyframes composer-shake {
+  20%,
+  60% {
+    translate: calc(var(--space-4) * -1) 0;
+  }
+  40%,
+  80% {
+    translate: var(--space-4) 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .composer__step.is-invalid {
+    animation: none;
+  }
+}
 .composer__actions {
   display: flex;
   align-items: center;

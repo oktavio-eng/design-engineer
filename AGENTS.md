@@ -38,6 +38,7 @@ Um site pessoal single-page do Otavio (GOW Studio) — um "plano de transição 
 - **[docs/patterns.md](docs/patterns.md)** — padrões já implementados que não devem ser "corrigidos" de volta pro jeito antigo: toggle ver mais/menos, fallback de favicon, persistência (`localStorage`/`sessionStorage`), tooltips de glossário, hover das listas, foco por vizinhança, ponteiro iPadOS, gráfico de contribuições abrindo nas semanas recentes.
 - **[docs/storybook-and-tests.md](docs/storybook-and-tests.md)** — comandos, o contrato Storybook↔produção, cobertura de testes interativos, Definition of Done pra mudanças de UI, versão do Chromium do Playwright nesta máquina e a lição do PR #71 (rode a suíte antes do push).
 - **[docs/intro-screensaver.md](docs/intro-screensaver.md)** — a saudação em 6 idiomas antes do conteúdo (`.intro`, `intro.js`): timing, por que corte seco, sessionStorage, bugs já corrigidos.
+- **[docs/messages.md](docs/messages.md)** — o composer de e-mail por dentro: validação do endereço (regra, textos, shake, `aria-invalid`), pra onde a mensagem vai (Web3Forms + tabela `messages` no Supabase via REST direto, sem SDK), por que a chave anon no `mail.js` é segura (RLS: `anon` só insere), e o setup em 3 passos no dashboard — `supabase/schema.sql` é o esquema.
 - **[docs/flat-type-experiment.md](docs/flat-type-experiment.md)** — o experimento de tipografia achatada (`styles/experiments/flat-type.css`): como reverter, por que a intro fica de fora, validação.
 
 ## Regras inegociáveis
