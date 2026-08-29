@@ -106,6 +106,10 @@ test("mail composer validates the reply email before sending and archives the me
   await openComposer();
   await page.waitForFunction(() => document.activeElement === document.getElementById("mailReply"));
   assert.equal(await replyHint.isVisible(), false, "no hint before the first attempt");
+  assert.equal(await stepEmail.locator(".composer__to").textContent(), "Used only to reply.", "the transparency line sits in the actions row");
+  // Field limits mirror the CHECK constraints in supabase/schema.sql.
+  assert.equal(await reply.getAttribute("maxlength"), "254");
+  assert.equal(await text.getAttribute("maxlength"), "5000");
 
   // 1. Empty → blocked with the "add your email" line, focus stays.
   await next.click();
@@ -136,6 +140,15 @@ test("mail composer validates the reply email before sending and archives the me
   await page.waitForFunction(() => document.activeElement === document.getElementById("mailText"));
   assert.equal(await stepEmail.isHidden(), true);
   assert.equal(await replyHint.isVisible(), false);
+
+  // The honeypot lives in this step: rendered (not display:none — bots skip
+  // those), but off-canvas, off the Tab order and out of the accessibility tree.
+  const trap = page.locator("#mailTrap");
+  assert.equal(await trap.count(), 1);
+  assert.equal(await trap.getAttribute("tabindex"), "-1");
+  assert.equal(await trap.getAttribute("aria-hidden"), "true");
+  assert.notEqual(await trap.evaluate((el) => getComputedStyle(el).display), "none");
+  assert.equal(await trap.evaluate((el) => el.getBoundingClientRect().right < 0), true, "off-canvas");
 
   // 4. Send: Web3Forms and Supabase both receive the message, the button
   //    lands on "sent", the sheet auto-closes.
@@ -176,6 +189,20 @@ test("mail composer validates the reply email before sending and archives the me
   assert.equal(await text.inputValue(), "Second try");
   await text.type("!");
   assert.equal(await textHint.isVisible(), false, "typing again clears the failure line");
+
+  // 6. Honeypot filled → nothing is posted anywhere, but the sheet plays the
+  //    same "sent" state so a bot sees no difference.
+  const posted = [];
+  await page.unroute(/^https?:\/\/(?!127\.0\.0\.1)/);
+  await page.route(/^https?:\/\/(?!127\.0\.0\.1)/, (route) => {
+    posted.push(route.request().url());
+    return route.fulfill({ status: 204, body: "" });
+  });
+  await trap.evaluate((el) => (el.value = "http://spam.example"));
+  await send.click();
+  await page.waitForFunction(() => document.getElementById("mailSend").getAttribute("data-mode") === "sent");
+  assert.deepEqual(posted.filter((u) => /web3forms|supabase/.test(u)), [], "a honeypot hit posts nothing");
+  await page.waitForFunction(() => !document.body.classList.contains("mail-open"), null, { timeout: 5_000 });
 
   assert.deepEqual(pageErrors, []);
 });

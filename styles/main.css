@@ -1659,10 +1659,13 @@ body.mail-open .mail-modal {
    button, just a different icon and no data-mode) verbatim instead of
    introducing its own field/button styling — asked for explicitly
    23/08/2026 after a first pass built a distinct single-line component
-   that didn't match. `.composer__actions--end` is the only new rule this
-   step needed: with just the one button and no `.composer__to` label to
-   balance against, plain `.composer__actions`'s `space-between` would pin
-   it to the left instead of matching the send button's position. */
+   that didn't match. Until 29/08/2026 the step had its own
+   `.composer__actions--end` (`justify-content: flex-end`) because it had
+   only the one button and no `.composer__to` label to balance against —
+   plain `.composer__actions`'s `space-between` would have pinned
+   the arrow left. Since then the step shows the transparency line
+   ("Used only to reply.") in the same `.composer__to` slot, so the two
+   steps share the exact same actions row. */
 .composer__step {
   transition:
     opacity var(--duration-200) var(--ease),
@@ -1720,6 +1723,17 @@ body.mail-open .mail-modal {
 .composer__hint[hidden] {
   display: none;
 }
+/* Honeypot (`#mailTrap`): off-canvas, not `display: none` — form bots skip
+   fields that aren't rendered and fill the ones that are. `aria-hidden` +
+   `tabindex="-1"` keep it out of AT and the Tab order, so no person meets it. */
+.composer__trap {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
 /* Short horizontal shake on the step whose validation failed — the
    "wrong password" gesture. `translate`, not `transform`, so it never
    fights the enter/leave slide above; ±4px, four beats, one duration. */
@@ -1748,9 +1762,6 @@ body.mail-open .mail-modal {
   gap: var(--space-16);
   padding-left: var(--space-12);
 }
-.composer__actions--end {
-  justify-content: flex-end;
-}
 /* Wraps `#mailBack` + `.composer__to` as one flex item so `.composer__actions`'s
    `space-between` still only ever sees two groups (this one, `.composer__send`)
    — without it, three direct children would spread the back button, the
@@ -1767,6 +1778,15 @@ body.mail-open .mail-modal {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+/* The email step's "Used only to reply." shares `.composer__to`'s slot and
+   size but not its `--faint`: the address on the message step is a
+   decoration the visitor already knows, this line is information they are
+   entitled to read — `--muted` (4.75:1 measured, see tokens/colors.css) is
+   the readable one. Storybook's axe run caught it (29/08/2026). */
+.composer__note {
+  color: var(--muted);
+  user-select: text;
 }
 /* Small, quiet — same chevron path as ⌘K's detail-view back button
    (`cmd-modal__back`), but without its circular wash-colored chrome: this
