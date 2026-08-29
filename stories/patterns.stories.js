@@ -897,14 +897,15 @@ export const MailComposerEmailValidation = {
   render: () => {
     const root = patternShell(
       "Mail composer · email validation",
-      "The reply address is required and checked before the message step. Blank or malformed shows a muted line under the field, shakes the step and keeps focus there; typing clears it.",
+      "The reply address is required and checked before the message step. Blank or malformed shows a muted line under the field, shakes the step and keeps focus there; typing clears it. The actions row carries the one-line privacy notice.",
       `
       <div class="composer sb-composer" style="max-width: 32rem">
         <div class="composer__stage">
           <div class="composer__step composer__step--email" id="sbStepEmail">
-            <textarea class="composer__input" id="sbMailReply" placeholder="Your email" rows="4" inputmode="email" autocomplete="email" aria-label="Your email" aria-describedby="sbMailReplyHint"></textarea>
+            <textarea class="composer__input" id="sbMailReply" placeholder="Your email" rows="4" maxlength="254" inputmode="email" autocomplete="email" aria-label="Your email" aria-describedby="sbMailReplyHint"></textarea>
             <p class="composer__hint" id="sbMailReplyHint" role="alert" hidden></p>
-            <div class="composer__actions composer__actions--end">
+            <div class="composer__actions">
+              <span class="composer__to composer__note">Used only to reply.</span>
               <button class="composer__send" id="sbMailNext" type="button" aria-label="Next">
                 <svg class="icon-next" viewBox="0 0 256 256" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z"/></svg>
               </button>

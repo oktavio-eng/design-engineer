@@ -70,6 +70,18 @@
    `SUPABASE_URL`/`SUPABASE_ANON_KEY` blank the insert is skipped entirely
    (a kill switch, not the shipped state — both are filled in below).
    Table, RLS and setup: supabase/schema.sql + docs/messages.md.
+
+   Hardening (29/08/2026, docs/messages.md "Segurança"): the email step
+   carries a one-line notice ("Used only to reply.") — the LGPD/GDPR
+   transparency line for a contact form, in the same `.composer__to` slot
+   the message step uses for the address. `#mailTrap` is a honeypot: a text
+   input moved off-screen (not display:none — bots skip those), tabindex -1
+   and aria-hidden so no human ever reaches it; when it has a value,
+   `sendMail()` plays the whole "sent" choreography and posts nothing.
+   `maxlength` on both fields mirrors the CHECK constraints in
+   supabase/schema.sql (254 / 5000) so a long message is stopped at the
+   keyboard, not by a 400 the sheet would never show (Web3Forms would still
+   accept it and the row would silently be missing).
 --------------------------------------------------------------------------- */
 (function () {
   var MAIL_TO = "oktavio@gowstudio.pro";
@@ -104,15 +116,17 @@
       '<div class="composer">' +
       '<div class="composer__stage" id="composerStage">' +
       '<div class="composer__step composer__step--email" id="stepEmail">' +
-      '<textarea class="composer__input" id="mailReply" placeholder="Your email" aria-label="Your email" rows="4" inputmode="email" autocomplete="email" aria-describedby="mailReplyHint"></textarea>' +
+      '<textarea class="composer__input" id="mailReply" placeholder="Your email" aria-label="Your email" rows="4" maxlength="254" inputmode="email" autocomplete="email" aria-describedby="mailReplyHint"></textarea>' +
       '<p class="composer__hint" id="mailReplyHint" role="alert" hidden></p>' +
-      '<div class="composer__actions composer__actions--end">' +
+      '<div class="composer__actions">' +
+      '<span class="composer__to composer__note">Used only to reply.</span>' +
       '<button class="composer__send" id="mailNext" type="button" aria-label="Next">' +
       '<svg class="icon-next" viewBox="0 0 256 256" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z"/></svg>' +
       "</button></div></div>" +
       '<div class="composer__step composer__step--message" id="stepMessage" hidden>' +
-      '<textarea class="composer__input" id="mailText" placeholder="Hey Oktavio!" aria-label="Message" rows="4" aria-describedby="mailTextHint"></textarea>' +
+      '<textarea class="composer__input" id="mailText" placeholder="Hey Oktavio!" aria-label="Message" rows="4" maxlength="5000" aria-describedby="mailTextHint"></textarea>' +
       '<p class="composer__hint" id="mailTextHint" role="alert" hidden></p>' +
+      '<input class="composer__trap" id="mailTrap" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">' +
       '<div class="composer__actions">' +
       '<span class="composer__from">' +
       '<button class="composer__back" id="mailBack" type="button" aria-label="Edit email"><svg viewBox="0 0 256 256" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M165.66,202.34a8,8,0,0,1-11.32,11.32l-80-80a8,8,0,0,1,0-11.32l80-80a8,8,0,0,1,11.32,11.32L91.31,128Z"/></svg></button>' +
@@ -136,6 +150,7 @@
     mailNext = document.getElementById("mailNext"),
     mailBack = document.getElementById("mailBack"),
     mailText = document.getElementById("mailText"),
+    mailTrap = document.getElementById("mailTrap"),
     mailSend = document.getElementById("mailSend");
 
   function autoGrow() {
@@ -292,11 +307,16 @@
     clearHint(mailTextHint);
     var body = mailText.value;
     var replyEmail = mailReply.value.trim();
-    var jobs = [sendViaWeb3Forms(replyEmail, body)];
-    if (SUPABASE_URL && SUPABASE_ANON_KEY) jobs.push(saveToSupabase(replyEmail, body));
+    var jobs = [];
+    // Honeypot filled → a bot. Post nothing, but play the success state so
+    // the script on the other end sees nothing to adapt to.
+    if (!mailTrap.value) {
+      jobs.push(sendViaWeb3Forms(replyEmail, body));
+      if (SUPABASE_URL && SUPABASE_ANON_KEY) jobs.push(saveToSupabase(replyEmail, body));
+    }
     Promise.allSettled(jobs).then(function (results) {
       sending = false;
-      var delivered = false;
+      var delivered = 0 === results.length;
       results.forEach(function (r) {
         if ("fulfilled" === r.status) delivered = true;
         else console.error("Mail send failed", r.reason);

@@ -47,3 +47,37 @@ grant insert on public.messages to anon;
 -- Newest first is the only query the dashboard runs.
 create index if not exists messages_created_at_idx
   on public.messages (created_at desc);
+
+-- Throttle (added 29/08/2026). The publishable key is public, so anyone can
+-- call the insert endpoint in a loop; the CHECKs bound one row, this bounds
+-- the rate so a script cannot fill the free-tier quota overnight. Global,
+-- not per-IP (PostgREST does not hand the client IP to a trigger reliably):
+-- more than 10 rows in the last minute or 200 in the last day → 429-ish
+-- error, which mail.js reports as "Couldn't send" only if Web3Forms failed
+-- too. SECURITY DEFINER because anon has no SELECT on the table and the
+-- count needs one; search_path pinned as the definer-function rule requires.
+create or replace function public.messages_throttle()
+returns trigger
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  last_minute integer;
+  last_day integer;
+begin
+  select count(*) into last_minute from public.messages where created_at > now() - interval '1 minute';
+  select count(*) into last_day from public.messages where created_at > now() - interval '1 day';
+  if last_minute >= 10 or last_day >= 200 then
+    raise exception 'too many messages, try again later' using errcode = 'P0001';
+  end if;
+  return new;
+end;
+$$;
+
+revoke all on function public.messages_throttle() from public;
+
+drop trigger if exists messages_throttle on public.messages;
+create trigger messages_throttle
+  before insert on public.messages
+  for each row execute function public.messages_throttle();
