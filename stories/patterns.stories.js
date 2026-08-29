@@ -878,3 +878,103 @@ export const DeeperReference = {
     ]);
   },
 };
+
+/**
+ * The mail composer's email step in its invalid state (mail.js, 29/08/2026).
+ * Markup mirrored from `mail.js`'s `insertAdjacentHTML` template — the file
+ * is a classic IIFE that mounts itself on `<body>` and looks for
+ * `#mailTrigger`, so, like the ⌘K story above, this pins the CSS contract of
+ * the state rather than importing the controller. `validate()` below is the
+ * same three-way rule as `validateEmail()` (blank → one line, no dot in the
+ * domain → another, else clear), with the same attribute writes; if that
+ * controller is ever extracted, this copy goes away. See docs/messages.md.
+ */
+const EMAIL_RE =
+  /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/;
+
+export const MailComposerEmailValidation = {
+  name: "Mail composer · email validation",
+  render: () => {
+    const root = patternShell(
+      "Mail composer · email validation",
+      "The reply address is required and checked before the message step. Blank or malformed shows a muted line under the field, shakes the step and keeps focus there; typing clears it.",
+      `
+      <div class="composer sb-composer" style="max-width: 32rem">
+        <div class="composer__stage">
+          <div class="composer__step composer__step--email" id="sbStepEmail">
+            <textarea class="composer__input" id="sbMailReply" placeholder="Your email" rows="4" inputmode="email" autocomplete="email" aria-label="Your email" aria-describedby="sbMailReplyHint"></textarea>
+            <p class="composer__hint" id="sbMailReplyHint" role="alert" hidden></p>
+            <div class="composer__actions composer__actions--end">
+              <button class="composer__send" id="sbMailNext" type="button" aria-label="Next">
+                <svg class="icon-next" viewBox="0 0 256 256" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>`,
+    );
+    const step = root.querySelector("#sbStepEmail");
+    const field = root.querySelector("#sbMailReply");
+    const hint = root.querySelector("#sbMailReplyHint");
+    const validate = () => {
+      const value = field.value.trim();
+      const problem =
+        value === "" ? "Add your email so I can reply." : EMAIL_RE.test(value) ? "" : "That email doesn’t look right.";
+      if (!problem) {
+        field.removeAttribute("aria-invalid");
+        hint.hidden = true;
+        hint.textContent = "";
+        return true;
+      }
+      field.setAttribute("aria-invalid", "true");
+      hint.textContent = problem;
+      hint.hidden = false;
+      step.classList.remove("is-invalid");
+      void step.offsetWidth;
+      step.classList.add("is-invalid");
+      field.focus();
+      return false;
+    };
+    root.querySelector("#sbMailNext").addEventListener("click", validate);
+    field.addEventListener("keydown", (event) => {
+      if (event.key !== "Enter") return;
+      event.preventDefault();
+      validate();
+    });
+    field.addEventListener("input", () => {
+      field.removeAttribute("aria-invalid");
+      hint.hidden = true;
+      hint.textContent = "";
+    });
+    step.addEventListener("animationend", () => step.classList.remove("is-invalid"));
+    return root;
+  },
+  play: async ({ canvasElement }) => {
+    const field = canvasElement.querySelector("#sbMailReply");
+    const hint = canvasElement.querySelector("#sbMailReplyHint");
+    const next = canvasElement.querySelector("#sbMailNext");
+
+    await expect(hint.hidden).toBe(true);
+    next.click();
+    await expect(hint.hidden).toBe(false);
+    await expect(hint.textContent).toBe("Add your email so I can reply.");
+    await expect(field.getAttribute("aria-invalid")).toBe("true");
+    await expect(field).toHaveFocus();
+
+    field.value = "name@gmail";
+    field.dispatchEvent(new Event("input", { bubbles: true }));
+    await expect(hint.hidden).toBe(true);
+    await expect(field.hasAttribute("aria-invalid")).toBe(false);
+    field.dispatchEvent(new KeyboardEvent("keydown", { key: "Enter", bubbles: true }));
+    await expect(hint.textContent).toBe("That email doesn’t look right.");
+    await expect(field.getAttribute("aria-invalid")).toBe("true");
+
+    await expectOnlyA11yDebt(canvasElement, []);
+
+    field.value = "visitor@example.com";
+    field.dispatchEvent(new Event("input", { bubbles: true }));
+    field.dispatchEvent(new KeyboardEvent("keydown", { key: "Enter", bubbles: true }));
+    await expect(hint.hidden).toBe(true);
+    await expect(field.hasAttribute("aria-invalid")).toBe(false);
+  },
+};

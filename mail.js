@@ -48,11 +48,48 @@
    barely any height delta to hide in the first place. The email step is
    skippable on purpose — clicking the arrow with it empty still advances;
    `sendMail()` only adds `email` to the payload when non-blank.
+
+   Email validation (29/08/2026): the email step is no longer skippable. The
+   arrow and Enter both go through `advance()`, which runs `validateEmail()`
+   — blank or malformed (WHATWG's input[type=email] pattern, plus at least
+   one dot in the domain so "name@gmail" doesn't pass) shows `#mailReplyHint`
+   under the field (`role="alert"`, the textarea gets `aria-invalid`), gives
+   the step a short horizontal shake (`.is-invalid`, off under reduced
+   motion) and keeps focus where it is. Typing clears it. `sendMail()`
+   re-checks before posting, and if the address has somehow gone bad it
+   returns to the email step with the hint instead of sending.
+
+   Storage (29/08/2026): each send also inserts a row into a Supabase
+   `messages` table (plain REST, `POST /rest/v1/messages` with the anon key,
+   no SDK — the site has no bundler) so there's an archive beyond the inbox.
+   Web3Forms and Supabase run in parallel via `Promise.allSettled`; the
+   sheet shows "sent" when at least one landed (the inbox is the primary
+   channel, the table is the copy — losing one shouldn't hide the message
+   the other delivered), and only when both fail does `#mailTextHint` say so
+   — before this, a failed send was a console.error and nothing else. With
+   `SUPABASE_URL`/`SUPABASE_ANON_KEY` blank the insert is skipped entirely
+   (a kill switch, not the shipped state — both are filled in below).
+   Table, RLS and setup: supabase/schema.sql + docs/messages.md.
 --------------------------------------------------------------------------- */
 (function () {
   var MAIL_TO = "oktavio@gowstudio.pro";
   var MAIL_SUBJECT = "Hey Oktavio";
   var WEB3FORMS_KEY = "81ee78a2-91c0-4dcb-8afa-926da9bafccc";
+  // Supabase project URL + publishable (public) key, from Project Settings →
+  // API Keys. The publishable key is meant to ship to the browser; what it
+  // can do is bounded by the RLS policy in supabase/schema.sql (insert only,
+  // never read — a GET with this key answers 42501). Blank either one to
+  // switch the archive off; the send then goes through Web3Forms alone.
+  var SUPABASE_URL = "https://kowjxmdbqlxerctikycm.supabase.co";
+  var SUPABASE_ANON_KEY = "sb_publishable_WpxEBd1unX-9B8FTcV-pIw_mGF7hCIv";
+  var SUPABASE_TABLE = "messages";
+  // WHATWG's input[type=email] pattern with one change: the domain needs at
+  // least one dot. Mirrored by the CHECK constraint in supabase/schema.sql.
+  var EMAIL_RE =
+    /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/;
+  var HINT_EMPTY = "Add your email so I can reply.";
+  var HINT_INVALID = "That email doesn\u2019t look right.";
+  var HINT_FAILED = "Couldn\u2019t send \u2014 try again.";
   var SENT_HOLD_MS = 1300;
   var STEP_EXIT_MS = 150;
   var STEP_ORDER = { email: 0, message: 1 };
@@ -67,13 +104,15 @@
       '<div class="composer">' +
       '<div class="composer__stage" id="composerStage">' +
       '<div class="composer__step composer__step--email" id="stepEmail">' +
-      '<textarea class="composer__input" id="mailReply" placeholder="Your email" rows="4" inputmode="email" autocomplete="email"></textarea>' +
+      '<textarea class="composer__input" id="mailReply" placeholder="Your email" aria-label="Your email" rows="4" inputmode="email" autocomplete="email" aria-describedby="mailReplyHint"></textarea>' +
+      '<p class="composer__hint" id="mailReplyHint" role="alert" hidden></p>' +
       '<div class="composer__actions composer__actions--end">' +
       '<button class="composer__send" id="mailNext" type="button" aria-label="Next">' +
       '<svg class="icon-next" viewBox="0 0 256 256" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z"/></svg>' +
       "</button></div></div>" +
       '<div class="composer__step composer__step--message" id="stepMessage" hidden>' +
-      '<textarea class="composer__input" id="mailText" placeholder="Hey Oktavio!" rows="4"></textarea>' +
+      '<textarea class="composer__input" id="mailText" placeholder="Hey Oktavio!" aria-label="Message" rows="4" aria-describedby="mailTextHint"></textarea>' +
+      '<p class="composer__hint" id="mailTextHint" role="alert" hidden></p>' +
       '<div class="composer__actions">' +
       '<span class="composer__from">' +
       '<button class="composer__back" id="mailBack" type="button" aria-label="Edit email"><svg viewBox="0 0 256 256" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M165.66,202.34a8,8,0,0,1-11.32,11.32l-80-80a8,8,0,0,1,0-11.32l80-80a8,8,0,0,1,11.32,11.32L91.31,128Z"/></svg></button>' +
@@ -92,6 +131,8 @@
     stepEmail = document.getElementById("stepEmail"),
     stepMessage = document.getElementById("stepMessage"),
     mailReply = document.getElementById("mailReply"),
+    mailReplyHint = document.getElementById("mailReplyHint"),
+    mailTextHint = document.getElementById("mailTextHint"),
     mailNext = document.getElementById("mailNext"),
     mailBack = document.getElementById("mailBack"),
     mailText = document.getElementById("mailText"),
@@ -112,6 +153,46 @@
       encodeURIComponent(MAIL_SUBJECT) +
       "&body=" +
       encodeURIComponent(mailText.value);
+  }
+  function isValidEmail(value) {
+    return EMAIL_RE.test(value);
+  }
+  function showHint(hintEl, text) {
+    hintEl.textContent = text;
+    hintEl.hidden = false;
+  }
+  function clearHint(hintEl) {
+    if (hintEl.hidden) return;
+    hintEl.hidden = true;
+    hintEl.textContent = "";
+  }
+  function shake(stepEl) {
+    stepEl.classList.remove("is-invalid");
+    // Restart the animation even if the class was just removed this frame.
+    void stepEl.offsetWidth;
+    stepEl.classList.add("is-invalid");
+  }
+  // Returns true when the reply address can be used; otherwise marks the
+  // field, explains why under it and shakes the step. Focus stays put.
+  function validateEmail() {
+    var value = mailReply.value.trim();
+    var problem = "" === value ? HINT_EMPTY : isValidEmail(value) ? "" : HINT_INVALID;
+    if (!problem) {
+      mailReply.removeAttribute("aria-invalid");
+      clearHint(mailReplyHint);
+      return true;
+    }
+    mailReply.setAttribute("aria-invalid", "true");
+    showHint(mailReplyHint, problem);
+    shake(stepEmail);
+    return false;
+  }
+  function advance() {
+    if (!validateEmail()) {
+      mailReply.focus();
+      return;
+    }
+    showStep("message", true);
   }
   function showStep(step, animate) {
     var showEl = "email" === step ? stepEmail : stepMessage;
@@ -166,45 +247,74 @@
     mailModal.setAttribute("aria-hidden", "true");
     mailModal.inert = true;
   }
-  function sendMail() {
-    if (sending) return;
-    sending = true;
-    var body = mailText.value;
-    var replyEmail = mailReply.value.trim();
-    var payload = {
-      access_key: WEB3FORMS_KEY,
-      subject: MAIL_SUBJECT,
-      from_name: "Oktavio Design",
-      message: body,
-    };
-    if (replyEmail) payload.email = replyEmail;
-    fetch("https://api.web3forms.com/submit", {
+  function sendViaWeb3Forms(email, body) {
+    return fetch("https://api.web3forms.com/submit", {
       method: "POST",
       headers: { "Content-Type": "application/json", Accept: "application/json" },
-      body: JSON.stringify(payload),
+      body: JSON.stringify({
+        access_key: WEB3FORMS_KEY,
+        subject: MAIL_SUBJECT,
+        from_name: "Oktavio Design",
+        email: email,
+        message: body,
+      }),
     })
       .then(function (res) {
         return res.json();
       })
       .then(function (data) {
-        sending = false;
-        if (data && data.success) {
-          mailText.value = "";
-          mailSend.setAttribute("data-mode", "sent");
-          mailSend.setAttribute("aria-label", "Sent");
-          sentTimer = setTimeout(function () {
-            sentTimer = null;
-            closeMail();
-            syncMailHref();
-          }, SENT_HOLD_MS);
-        } else {
-          console.error("Web3Forms error", data);
-        }
-      })
-      .catch(function (err) {
-        sending = false;
-        console.error("Mail send failed", err);
+        if (!data || !data.success) throw new Error("Web3Forms: " + JSON.stringify(data));
+        return "web3forms";
       });
+  }
+  function saveToSupabase(email, body) {
+    return fetch(SUPABASE_URL.replace(/\/$/, "") + "/rest/v1/" + SUPABASE_TABLE, {
+      method: "POST",
+      headers: {
+        apikey: SUPABASE_ANON_KEY,
+        Authorization: "Bearer " + SUPABASE_ANON_KEY,
+        "Content-Type": "application/json",
+        Prefer: "return=minimal",
+      },
+      body: JSON.stringify({ email: email, message: body, page: location.pathname }),
+    }).then(function (res) {
+      if (!res.ok) throw new Error("Supabase: HTTP " + res.status);
+      return "supabase";
+    });
+  }
+  function sendMail() {
+    if (sending) return;
+    if (!validateEmail()) {
+      showStep("email", true);
+      return;
+    }
+    sending = true;
+    clearHint(mailTextHint);
+    var body = mailText.value;
+    var replyEmail = mailReply.value.trim();
+    var jobs = [sendViaWeb3Forms(replyEmail, body)];
+    if (SUPABASE_URL && SUPABASE_ANON_KEY) jobs.push(saveToSupabase(replyEmail, body));
+    Promise.allSettled(jobs).then(function (results) {
+      sending = false;
+      var delivered = false;
+      results.forEach(function (r) {
+        if ("fulfilled" === r.status) delivered = true;
+        else console.error("Mail send failed", r.reason);
+      });
+      if (!delivered) {
+        showHint(mailTextHint, HINT_FAILED);
+        shake(stepMessage);
+        return;
+      }
+      mailText.value = "";
+      mailSend.setAttribute("data-mode", "sent");
+      mailSend.setAttribute("aria-label", "Sent");
+      sentTimer = setTimeout(function () {
+        sentTimer = null;
+        closeMail();
+        syncMailHref();
+      }, SENT_HOLD_MS);
+    });
   }
   window.openMail = openMail;
   window.closeMail = closeMail;
@@ -215,23 +325,32 @@
     });
   }
   mailWash.addEventListener("click", closeMail);
-  mailNext.addEventListener("click", function () {
-    showStep("message", true);
-  });
+  mailNext.addEventListener("click", advance);
   mailBack.addEventListener("click", function () {
     showStep("email", true);
   });
   mailReply.addEventListener("keydown", function (e) {
     if ("Enter" === e.key) {
       e.preventDefault();
-      showStep("message", true);
+      advance();
     }
+  });
+  mailReply.addEventListener("input", function () {
+    mailReply.removeAttribute("aria-invalid");
+    clearHint(mailReplyHint);
+  });
+  stepEmail.addEventListener("animationend", function () {
+    stepEmail.classList.remove("is-invalid");
+  });
+  stepMessage.addEventListener("animationend", function () {
+    stepMessage.classList.remove("is-invalid");
   });
   mailText.addEventListener("input", function () {
     if (sentTimer) {
       clearTimeout(sentTimer);
       sentTimer = null;
     }
+    clearHint(mailTextHint);
     syncMailHref();
     autoGrow();
   });
