@@ -25,17 +25,11 @@ Dois destinos, em paralelo (`Promise.allSettled` em `sendMail()`):
 - Uma função em `api/` na Vercel esconderia a chave, mas quebraria o fluxo de teste local (`python3 -m http.server` não roda função) e exigiria env vars no projeto. A chave **anon** é pública por desenho — o que ela consegue fazer é limitado pelo RLS, não pelo segredo.
 - **RLS é o que segura:** `anon` só tem `INSERT`. Não existe policy de `SELECT`, então a chave que está no `mail.js` não lê nada de volta — nem a própria linha que acabou de inserir. Ler é no dashboard (Table Editor) ou com a service role key, que **nunca** entra no repositório.
 
-### Setup (uma vez, no dashboard)
+### Setup (feito em 29/08/2026)
 
-1. [supabase.com/dashboard](https://supabase.com/dashboard) → **New project** (nome `design-engineer`, região mais perto do Brasil disponível, guarde a senha do banco — não precisa dela pro site).
-2. **SQL Editor → New query**, cole [`supabase/schema.sql`](../supabase/schema.sql) inteiro, **Run**. É idempotente; rodar de novo não duplica nada.
-3. **Project Settings → API**: copie **Project URL** e a chave **anon public**. Cole nas duas constantes no topo de `mail.js`:
-   ```js
-   var SUPABASE_URL = "https://xxxxxxxx.supabase.co";
-   var SUPABASE_ANON_KEY = "eyJ...";
-   ```
-   Enquanto qualquer uma das duas estiver vazia, `sendMail()` pula o insert e o envio continua só pelo Web3Forms — o site não quebra sem o projeto.
-4. Teste: sirva local, mande uma mensagem, veja a linha em **Table Editor → messages**.
+Projeto `kowjxmdbqlxerctikycm` (`https://kowjxmdbqlxerctikycm.supabase.co`), [`supabase/schema.sql`](../supabase/schema.sql) rodado no SQL Editor, e as duas constantes no topo de `mail.js` preenchidas com a Project URL e a chave **publishable** (`sb_publishable_…`, o formato novo que substitui a `anon` JWT — a API aceita as duas nos mesmos headers `apikey` + `Authorization: Bearer`; ficou a nova). Ler as mensagens: **Table Editor → messages** no dashboard.
+
+Pra recriar do zero (projeto novo): **New project** → **SQL Editor → New query**, colar o `schema.sql` inteiro, **Run** (idempotente) → **Project Settings → API Keys**, copiar Project URL + publishable key pras constantes. Pra desligar o arquivo sem tirar código: esvaziar qualquer uma das duas constantes — `sendMail()` pula o insert e o envio segue só pelo Web3Forms.
 
 ### Esquema
 
@@ -51,5 +45,5 @@ Não guarda user agent, IP nem nada além disso — é um formulário de contato
 
 ## Testes
 
-- `tests/ui/mail-composer.test.mjs` (`npm run test:product-ui`) roda o fluxo real na home: seta com campo vazio → aviso + `aria-invalid`; `nome@gmail` → aviso de formato; endereço válido → avança; envia com Web3Forms e Supabase interceptados e confere o corpo do `POST /rest/v1/messages`; axe no estado inválido. O teste injeta `SUPABASE_URL`/`SUPABASE_ANON_KEY` de mentira reescrevendo `mail.js` na rota, porque no repo as constantes ficam vazias até o projeto existir.
+- `tests/ui/mail-composer.test.mjs` (`npm run test:product-ui`) roda o fluxo real na home: seta com campo vazio → aviso + `aria-invalid`; `nome@gmail` → aviso de formato; endereço válido → avança; envia com Web3Forms e Supabase interceptados e confere o corpo do `POST /rest/v1/messages`; axe no estado inválido. O teste troca `SUPABASE_URL`/`SUPABASE_ANON_KEY` por valores de mentira reescrevendo `mail.js` na rota, pra nunca gravar na tabela de produção.
 - `stories/patterns.stories.js` → *Mail composer · email validation* espelha o markup do passo do e-mail com o hint visível, pra fixar o CSS e a baseline de acessibilidade do estado inválido (mesma abordagem da story do ⌘K: o markup é espelhado, o controlador de validação é uma cópia de três linhas).

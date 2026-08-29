@@ -67,19 +67,21 @@
    channel, the table is the copy — losing one shouldn't hide the message
    the other delivered), and only when both fail does `#mailTextHint` say so
    — before this, a failed send was a console.error and nothing else. With
-   `SUPABASE_URL`/`SUPABASE_ANON_KEY` blank the insert is skipped entirely.
+   `SUPABASE_URL`/`SUPABASE_ANON_KEY` blank the insert is skipped entirely
+   (a kill switch, not the shipped state — both are filled in below).
    Table, RLS and setup: supabase/schema.sql + docs/messages.md.
 --------------------------------------------------------------------------- */
 (function () {
   var MAIL_TO = "oktavio@gowstudio.pro";
   var MAIL_SUBJECT = "Hey Oktavio";
   var WEB3FORMS_KEY = "81ee78a2-91c0-4dcb-8afa-926da9bafccc";
-  // Supabase project URL + anon (public) key. Both blank until the project
-  // exists — paste them from Project Settings → API. The anon key is meant to
-  // ship to the browser; what it can do is bounded by the RLS policy in
-  // supabase/schema.sql (insert only, never read).
-  var SUPABASE_URL = "";
-  var SUPABASE_ANON_KEY = "";
+  // Supabase project URL + publishable (public) key, from Project Settings →
+  // API Keys. The publishable key is meant to ship to the browser; what it
+  // can do is bounded by the RLS policy in supabase/schema.sql (insert only,
+  // never read — a GET with this key answers 42501). Blank either one to
+  // switch the archive off; the send then goes through Web3Forms alone.
+  var SUPABASE_URL = "https://kowjxmdbqlxerctikycm.supabase.co";
+  var SUPABASE_ANON_KEY = "sb_publishable_WpxEBd1unX-9B8FTcV-pIw_mGF7hCIv";
   var SUPABASE_TABLE = "messages";
   // WHATWG's input[type=email] pattern with one change: the domain needs at
   // least one dot. Mirrored by the CHECK constraint in supabase/schema.sql.

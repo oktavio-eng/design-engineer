@@ -9,10 +9,9 @@ import { serveDirectory } from "./helpers/static-server.mjs";
 const repositoryRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 const axeScriptPath = path.resolve(repositoryRoot, "node_modules/axe-core/axe.min.js");
 
-// Stand-in Supabase project. The constants in mail.js stay blank in the repo
-// until the real project exists (docs/messages.md), so the test serves a copy
-// of mail.js with these pasted in — the same edit the setup asks a human to
-// make — and intercepts the REST call they produce.
+// Stand-in Supabase project. The test serves a copy of mail.js with the real
+// URL/key swapped for these, so the assertions below prove the request shape
+// (headers, body, path) without ever touching the production table.
 const FAKE_SUPABASE_URL = "https://test-project.supabase.co";
 const FAKE_SUPABASE_KEY = "anon-key-for-tests";
 
@@ -44,15 +43,17 @@ test("mail composer validates the reply email before sending and archives the me
   await page.addInitScript(() => sessionStorage.setItem("intro-shown-v1", "1"));
 
   const mailSource = await readFile(path.join(repositoryRoot, "mail.js"), "utf8");
-  assert.match(mailSource, /var SUPABASE_URL = "";/, "the repo keeps the Supabase URL blank");
-  assert.match(mailSource, /var SUPABASE_ANON_KEY = "";/, "the repo keeps the anon key blank");
+  const urlLine = /var SUPABASE_URL = "[^"]*";/;
+  const keyLine = /var SUPABASE_ANON_KEY = "[^"]*";/;
+  assert.match(mailSource, urlLine, "mail.js declares SUPABASE_URL");
+  assert.match(mailSource, keyLine, "mail.js declares SUPABASE_ANON_KEY");
   await page.route("**/mail.js", (route) =>
     route.fulfill({
       status: 200,
       contentType: "text/javascript",
       body: mailSource
-        .replace('var SUPABASE_URL = "";', `var SUPABASE_URL = "${FAKE_SUPABASE_URL}";`)
-        .replace('var SUPABASE_ANON_KEY = "";', `var SUPABASE_ANON_KEY = "${FAKE_SUPABASE_KEY}";`),
+        .replace(urlLine, `var SUPABASE_URL = "${FAKE_SUPABASE_URL}";`)
+        .replace(keyLine, `var SUPABASE_ANON_KEY = "${FAKE_SUPABASE_KEY}";`),
     }),
   );
 
