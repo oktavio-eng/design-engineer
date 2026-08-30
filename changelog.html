@@ -79,6 +79,24 @@
 <li class="timeline__entry">
 <div class="timeline__rail"><span class="timeline__marker"></span></div>
 <div class="timeline__content">
+<time class="label timeline__date" datetime="2026-08-29">Aug 29</time>
+<article class="timeline__item">
+<h3 class="timeline__title">The Writing rows are the first thing designed in Figma first</h3>
+<p>Until now, craft changes on this site were described in words and iterated in pull requests. From today they are drawn by hand in a Figma file and implemented from the frame &mdash; spacing, weight and rhythm are easier to decide by looking than by describing. The Writing rows on the home page are the first result: tighter padding and a smaller corner radius, rows sitting 4px apart, and a second line that is now a short tagline instead of the full summary that used to wrap. Hovering a row fills it with a flat gray that carries the page's warm hue &mdash; a neutral gray reads faintly blue on this background &mdash; and no longer lifts it as a card. The document icon was redrawn too: a 50&times;60 outlined shell, no shadow, with five 4px lines that read as a title and two paragraphs; under a hovered row its page gets a whisper of shadow. Every measurement was checked against the frame on the served page, light and dark. And every other list on the site &mdash; people, courses, readings, references, prompts, the project rows &mdash; follows the same hover from today: the same warm fill, no more card lifting off the page.</p>
+</article>
+<article class="timeline__item">
+<h3 class="timeline__title">The reply address is checked before a message sends</h3>
+<p>The email step in the mail composer used to be skippable, which meant some messages arrived with nowhere to reply to. It is now required and checked: a blank or malformed address (<code>name@gmail</code> with no dot after the @ counts as a typo) keeps you on the step with a short hint under the field and a small shake, and the hint clears as you type. And if a send fails on every route, the sheet now says so &mdash; "Couldn't send &mdash; try again." &mdash; instead of quietly logging an error.</p>
+</article>
+<article class="timeline__item">
+<h3 class="timeline__title">Messages are archived, and the composer is harder to abuse</h3>
+<p>Every message now also lands in a database of my own, alongside the mail delivery, so a hiccup on the mail service no longer loses it; the key the page carries can only write a row, never read one back. The email step says what the address is for &mdash; "Used only to reply." &mdash; and a few quiet guards went in with it: a hidden field that bots fill and people never see, length limits on both fields that match the database, a rate limit on inserts, and stricter security headers on every page. The site still sets no cookies and runs no analytics, so there is still nothing to consent to.</p>
+</article>
+</div>
+</li>
+<li class="timeline__entry">
+<div class="timeline__rail"><span class="timeline__marker"></span></div>
+<div class="timeline__content">
 <time class="label timeline__date" datetime="2026-08-28">Aug 28</time>
 <article class="timeline__item">
 <h3 class="timeline__title">Scrolling eases instead of stepping</h3>

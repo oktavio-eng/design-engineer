@@ -176,25 +176,30 @@ test("the People list keeps the selected row highlighted while a person's modal 
     false,
   );
 
-  // Real-pointer hover on a page row: the instant fill (no transition), the
-  // 8px bleed past the column, and no neighborhood dim on the other rows —
-  // the jakub.kr row contract (main.css, `main > section .row`).
+  // Real-pointer hover on a page row: the instant --row-hover fill (no
+  // shadow, no transition — same hover as the home's Writing rows since
+  // 29/08/2026), the bleed past the column, and no neighborhood dim on the
+  // other rows (main.css, `main > section .row`).
   await emil.hover();
   const hovered = await page.evaluate(() => {
     const row = document.querySelector('.people .row[data-person="emil"]');
     const other = document.querySelector('.people .row[data-person="rauno"] .who');
     const cs = getComputedStyle(row);
+    const token = getComputedStyle(document.documentElement).getPropertyValue("--row-hover").trim();
     return {
       bg: cs.backgroundColor,
-      transition: cs.transitionProperty,
+      token,
+      shadow: cs.boxShadow,
+      instant: cs.transitionDuration === "0s" || !/background|box-shadow|all/.test(cs.transitionProperty),
       marginLeft: parseFloat(cs.marginLeft),
       textLeft: row.querySelector(".who").getBoundingClientRect().left,
       sectionLeft: row.closest("section").getBoundingClientRect().left,
       otherOpacity: getComputedStyle(other).opacity,
     };
   });
-  assert.notEqual(hovered.bg, "rgba(0, 0, 0, 0)", "hovered row is filled");
-  assert.doesNotMatch(hovered.transition, /background/, "the fill is instant");
+  assert.equal(hovered.bg, hovered.token, "hovered row is filled with --row-hover");
+  assert.equal(hovered.shadow, "none", "no lift, fill only");
+  assert.equal(hovered.instant, true, "the fill is instant");
   assert.ok(hovered.marginLeft < 0, "the fill bleeds past the column");
   assert.equal(hovered.textLeft, hovered.sectionLeft, "the text column does not move");
   assert.equal(hovered.otherOpacity, "1", "no neighborhood dim on page rows");

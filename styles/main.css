@@ -49,10 +49,11 @@ main {
   max-width: var(--space-640);
   margin-inline: auto;
   /* Explicit, not just the default (22/08/2026): `main` is the one container
-     every `.row` hover shadow (`--shadow-lift`) has to bleed past on its way
-     to the viewport. Was already `visible` by inheritance, but that's one
-     accidental `overflow: hidden`/`clip` away from silently clipping every
-     list's hover on the page — pin it here so it can't regress quietly. */
+     every `.row` hover fill (12px past the column) has to bleed past on its
+     way to the viewport. Was already `visible` by inheritance, but that's
+     one accidental `overflow: hidden`/`clip` away from silently clipping
+     every list's hover on the page — pin it here so it can't regress
+     quietly. (Until 29/08/2026 the hover also had a shadow to clip.) */
   overflow: visible;
 }
 ::selection {
@@ -172,19 +173,18 @@ a:active {
   padding: var(--space-12) 0;
   cursor: pointer;
 }
-/* Hover on the page lists (22/08/2026): the row lifts — solid --white fill,
-   the same three-layer --shadow-lift the gallery/contrib card use —
-   corners at 16px, fill bleeds 12px past the column on each side
-   (padding-inline + negative margin, so the text itself never moves). Was a
-   flat --gray-955 fill with no transition (jakub.kr's Writing row, 16/08); the
-   gray read as inert once the page moved off pure white (see --bg), so the
-   row now reads as a small card lifting off the page instead of a tint
-   change. The fill itself stays instant on purpose — Emil's rule for
-   anything hovered dozens of times a session — only `box-shadow` transitions,
-   the same var(--duration-200) var(--ease-out) `.gallery__item` already uses
-   for the identical tokens: a shadow popping in over zero frames reads as a
-   glitch in a way a color swap doesn't, so it gets just enough motion to
-   avoid that, nothing more. Scoped to `main > section` so the link rows
+/* Hover on the page lists (29/08/2026): a flat --row-hover fill, instant,
+   no shadow, no transition — the same hover the home's Writing rows got
+   from the Figma `Article` the same day (see `.doc-item`). Corners at 16px,
+   fill bleeds 12px past the column on each side (padding-inline + negative
+   margin, so the text itself never moves). History: a flat --gray-955 fill
+   (jakub.kr's row, 16/08) read as inert once the page moved off pure white
+   (see --bg), so on 22/08 the row became a small card — --white +
+   --shadow-lift, the shadow transitioning over 200ms. The real fix was the
+   hue, not the shadow: --row-hover is the same lightness but carries --bg's
+   hue (docs/design-system.md), so the tint reads warm instead of bluish and
+   the card lift could go. Emil's rule for anything hovered dozens of times
+   a session: zero frames. Scoped to `main > section` so the link rows
    inside the panel/⌘K detail (which are `.row` too, cursor default) keep
    their plain layout. This replaces the neighborhood dim for these lists;
    the dim stays on phase items, panel items and palette results, where
@@ -196,12 +196,10 @@ main > section .row {
   padding-inline: var(--space-12);
   margin-inline: calc(-1 * var(--space-12));
   border-radius: var(--radius-16);
-  transition: box-shadow var(--duration-200) var(--ease-out);
 }
 @media (hover: hover) and (pointer: fine) {
   main > section .row:hover {
-    background: var(--white);
-    box-shadow: var(--shadow-lift);
+    background: var(--row-hover);
   }
 }
 /* `flex-shrink: 0` keeps the name whole. Letting it shrink even a hair is worse
@@ -2647,9 +2645,8 @@ body.mail-open .mail-modal {
      the page hue — with NO shadow and NO transition, on purpose: it's the
      instant fill Jakub and Emil use (checked in their served HTML: no
      `transition-*` on the row), and it's a row you'll pass over dozens of
-     times, which is exactly where motion should get out of the way. The
-     22/08 `--white` + `--shadow-lift` lift stays on the wiki `.row` for now
-     (whether it follows is still open — see the Figma doc).
+     times, which is exactly where motion should get out of the way. Every
+     page list (`main > section .row`) took the same hover the same day.
    - `.contrib` is the GitHub contribution graph as noechague.vercel.app draws
      it — same two-layer shell (radius 16 + padding 4 + `--shadow-lift`
      around a `--white` card with a `--line` border, radius 12, padding 16),
