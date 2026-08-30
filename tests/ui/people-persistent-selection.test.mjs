@@ -180,7 +180,17 @@ test("the People list keeps the selected row highlighted while a person's modal 
   // shadow, no transition — same hover as the home's Writing rows since
   // 29/08/2026), the bleed past the column, and no neighborhood dim on the
   // other rows (main.css, `main > section .row`).
-  await emil.hover();
+  // `hover()` scrolls the row into view and parks the pointer on it in one
+  // go, but the page scrolls through Lenis (scroll.mjs) — on CI the row was
+  // still gliding under the pointer when the next line measured it and came
+  // back unhovered (30/08/2026, PR #87). Hover until the row really is
+  // `:hover`; each retry re-aims at wherever the row has settled.
+  for (let attempt = 0; attempt < 10; attempt += 1) {
+    await emil.hover();
+    await page.waitForTimeout(100);
+    if (await emil.evaluate((row) => row.matches(":hover"))) break;
+  }
+  assert.equal(await emil.evaluate((row) => row.matches(":hover")), true, "the pointer rests on the row before the hover is measured");
   const hovered = await page.evaluate(() => {
     const row = document.querySelector('.people .row[data-person="emil"]');
     const other = document.querySelector('.people .row[data-person="rauno"] .who');

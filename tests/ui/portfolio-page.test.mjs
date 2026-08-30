@@ -252,13 +252,23 @@ test("/ (portfolio home) renders its collections, opens rows and photos in modal
     "the card opens the live page in a new tab, not in the modal",
   );
   assert.equal(await page.locator("#cmdModal .subproject a, #cmdModal .subproject__name[href]").count(), 0, "no nested link inside the card — the name is a span, the image is an image");
+  // Let the modal's open transition (scale 0.96 → 1) settle before measuring:
+  // mid-transform the three boxes are read at different frames and a strict
+  // `===` failed on CI (28/08/2026); the <1 tolerance below then failed too
+  // (30/08/2026, PR #87, once locally and once on CI). Waits on the modal's
+  // own computed transform — `translate(-50%, -50%) scale(1)` resolves to a
+  // matrix whose a/d are exactly 1 — not on `document.getAnimations()`,
+  // whose `finished` promises reject with AbortError when any animation on
+  // the page is cancelled (hover ones are, constantly).
+  await page.waitForFunction(() => {
+    const matrix = getComputedStyle(document.getElementById("cmdModal")).transform.match(/^matrix\(([^,]+), [^,]+, [^,]+, ([^,]+),/);
+    return matrix !== null && Number(matrix[1]) === 1 && Number(matrix[2]) === 1;
+  });
   const nameBox = await page.locator("#cmdModal .subproject__name").first().boundingBox();
   const cardBox = await page.locator("#cmdModal .subproject").first().boundingBox();
   const imageBox = await page.locator("#cmdModal .subproject__preview").first().boundingBox();
-  // Sub-pixel tolerance on purpose: this runs while the modal's open
-  // transition may still be scaling it, and two boxes with the same layout
-  // width can come back as slightly different floats mid-transform — a
-  // strict `===` here failed once on CI (28/08/2026) for exactly that.
+  // Sub-pixel tolerance kept on purpose: two boxes with the same layout width
+  // can still come back as slightly different floats.
   assert.ok(nameBox.width < cardBox.width && Math.abs(imageBox.width - cardBox.width) < 1, "the tap target is the full card, image included, not the name's own width");
   await scanAxe(page, "portfolio, escola-da-bel sub-projects open");
   await page.keyboard.press("Escape");
