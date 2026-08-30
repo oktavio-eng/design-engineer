@@ -32,16 +32,16 @@ Atenção: `get_variable_defs` do MCP lista só as variáveis **usadas** no nó 
 - **Sessão nova pra cada implementação grande.** A memória persistente da IA guarda IDs, tokens, decisões e gotchas; a conversa longa só encarece.
 - Implementação a partir do frame segue: ler o frame (`get_metadata` + `get_design_context`), comparar com produção **na mesma largura do frame**, listar os deltas, implementar, screenshot dos dois lados no PR.
 
-## Decisões já tomadas no Figma (ainda não implementadas)
+## Decisões já tomadas no Figma
 
-Registradas aqui pra não serem "corrigidas" de volta pro que produção faz hoje:
+Registradas aqui pra não serem "corrigidas" de volta pro que produção fazia. Cada uma diz se já está em código.
 
-- **`Article`** (row de Writing/Projects): padding `space-6` (prod 8), gap ícone→texto `space-10` (prod 12), raio `radius/12` (prod 16), largura **652** = 640 + 2×6 — sangra 6px pra cada lado, ícone na borda da coluna, texto em +60. Título e descrição em `text/16-regular`, ink/muted.
-- **Hover do `Article`**: **só fill**, em `color/row-hover` — sem `--shadow-lift`, sem anel, **sem transição** (Emil e Jakub não transicionam; conferido no HTML de produção deles: `hover:bg-[#F5F4F4]` e `hover-hover:hover:bg-[oklch(0.965_0_0)]`, sem classe `transition-*`). Em código: remover `transition: box-shadow` do `.doc-item`. **Pendente decidir** se as rows da wiki (`.row`, hoje "kept in sync" com o `.doc-item` em `main.css`) acompanham.
-- **Gap entre rows** da lista: `space-4` (prod 8) → pitch 76.
-- **`Doc icon`**: 50×60, borda `color/line`, página 44×54, cinco linhas de **4px** (16 / 30 26 / 20 12) — decisão do Otávio; a versão "igual a produção" (48×56, 3px, sombra) foi revertida em 29/08.
-- **Segunda linha da row é curta.** Emil/Jakub usam 1–6 palavras (categoria ou tagline). Em prod, Writing reaproveita o `bio` do modal e a 2ª row quebra em duas linhas. Vai virar um campo `summary` em `portfolio-content.js` (renderer: `portfolio.mjs` linha ~155, `post.bio` → `post.summary`); Projects já usa `role`, que é o padrão certo. Taglines propostas: "Principle, phases, people, discards." / "Written down as it ships." / "Kept with their context."
-- **`--row-hover`**: light `oklch(0.965 0.006 91.4)`, dark `var(--gray-955)` — por quê em [design-system.md](design-system.md) ("o cinza de hover tem que ter o matiz do fundo").
+- **`Article`** (row de Writing/Projects) — **implementado 29/08/2026** (`.doc-item` em `main.css`, branch `token-row-hover`): padding `space-6` (era 8), gap ícone→texto `space-10` (era 12), raio `radius/12` (era 16), largura **652** = 640 + 2×6 — sangra 6px pra cada lado, ícone na borda da coluna. Título e descrição em `text/16-regular`, ink/muted (em código o título segue `--fw-medium`, que a página servida resolve pra 400 via `flat-type.css` — mesmo resultado; só muda se o experimento sair). Medido na página local a 1440: row em x=394/652 de largura, padding 6, gap 10, raio 12.
+- **Hover do `Article`** — **implementado 29/08/2026**: **só fill**, em `color/row-hover` — sem `--shadow-lift`, sem anel, **sem transição** (Emil e Jakub não transicionam; conferido no HTML de produção deles: `hover:bg-[#F5F4F4]` e `hover-hover:hover:bg-[oklch(0.965_0_0)]`, sem classe `transition-*`). O `transition: box-shadow` saiu do `.doc-item`. **Pendente decidir** se as rows da wiki (`.row`, que ainda levantam como card `--white` + `--shadow-lift`) acompanham — até lá `.row` e `.doc-item` deixaram de ser "um padrão só".
+- **Gap entre rows** da lista — **implementado 29/08/2026**: `space-4` (era 8). O pitch de 76 do frame só fecha quando o `Doc icon` de 60 entrar (hoje 56 de altura → row 68, pitch 72).
+- **`Doc icon`** — **pendente**: 50×60, borda `color/line`, página 44×54, cinco linhas de **4px** (16 / 30 26 / 20 12) — decisão do Otávio; a versão "igual a produção" (48×56, 3px, sombra) foi revertida em 29/08. É o único delta que sobra entre o frame Home e a página na seção Writing (texto começa em +58 em vez de +60 por causa dos 48 de largura).
+- **Segunda linha da row é curta** — **implementado 29/08/2026**: campo `summary` em `portfolio-content.js` (Writing), renderer `portfolio.mjs` lê `post.summary`; `bio` continua sendo só o parágrafo do modal. O texto das três rows é o das instâncias na Home (`"The plan itself: principle, phases, people, and what got discarded."`, `"Written down as it ships."`, `"Kept with the context that made them useful."`); Emil/Jakub usam 1–6 palavras, então se quiser encurtar a 1ª e a 3ª as taglines propostas continuam valendo ("Principle, phases, people, discards." / "Kept with their context.") — troque no Figma e peça pra sincronizar. Projects já usa `role`, que é o padrão certo.
+- **`--row-hover`** — **implementado 29/08/2026** (token) e consumido pelo `.doc-item:hover` desde a mesma data: light `oklch(0.965 0.006 91.4)`, dark `var(--gray-955)` — por quê em [design-system.md](design-system.md) ("o cinza de hover tem que ter o matiz do fundo").
 
 ## Gotchas de escrever no Figma via MCP
 
@@ -54,8 +54,9 @@ Registradas aqui pra não serem "corrigidas" de volta pro que produção faz hoj
 
 ## Pendências no Figma (lado do Otávio)
 
-- Ligar o fill da variante `Status=Hover` em `color/row-hover` (hoje branco literal `255,255,255`) e apagar a row de teste "Test · row-hover" ao lado da Home.
-- `Resume` da 2ª instância de `Article` na Home está cortada ("…only counts if the") — trocar pela tagline.
-- `description` dos componentes `Article`/`Doc icon` ainda descreve a versão antiga.
+- Apagar a row de teste "Test · row-hover" ao lado da Home (se ainda estiver lá).
+- `description` do `Doc icon` (`16:2`) ainda descreve a versão antiga; as do `Article` foram atualizadas em 29/08.
 - `Doc icon` tem uma `Variant2` idêntica à Default — desenhar (hover?) ou apagar.
+
+Feitas em 29/08/2026: fill do `Status=Hover` ligado em `color/row-hover` (já estava ligado quando a IA foi conferir — checar com `use_figma` antes de "corrigir" o que o doc diz); `Resume` da 2ª instância trocada por "Written down as it ships."; `description` das duas variantes do `Article` reescrita pra spec atual.
 - Seção **Contributions** entre "What I do" e "Writing"; navbar; seções abaixo de Writing (Projects, Personal, Life); links "Read the wiki" / "the changelog".

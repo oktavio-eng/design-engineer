@@ -2633,12 +2633,18 @@ body.mail-open .mail-modal {
 
    - `.doc-item` is jakub.kr's Writing row: a document icon that is a raised
      shell (padding 2, radius 8, `--shadow-lift`) around a white 44×52 page
-     with a 1px rule and five 3px "lines of text"; title + one-line summary
-     beside it; the whole row is the link, with 8px padding bleeding 8px past
-     the column so the hover fill hugs the text. Hover has NO transition on
-     purpose — it's the instant fill Jakub uses, and it's a row you'll pass
-     over dozens of times, which is exactly where motion should get out of
-     the way.
+     with a 1px rule and five 3px "lines of text"; title + one short summary
+     beside it; the whole row is the link. Since 29/08/2026 the row is the
+     `Article` component of the Figma file (docs/figma-workflow.md): padding
+     6, icon→text gap 10, radius 12, 652 wide = the 640 column + 6 each side,
+     so the icon sits on the column edge and the text starts at +60; rows
+     4px apart. Hover is a fill only — `--row-hover`, the gray that carries
+     the page hue — with NO shadow and NO transition, on purpose: it's the
+     instant fill Jakub and Emil use (checked in their served HTML: no
+     `transition-*` on the row), and it's a row you'll pass over dozens of
+     times, which is exactly where motion should get out of the way. The
+     22/08 `--white` + `--shadow-lift` lift stays on the wiki `.row` for now
+     (whether it follows is still open — see the Figma doc).
    - `.contrib` is the GitHub contribution graph as noechague.vercel.app draws
      it — same two-layer shell (radius 16 + padding 4 + `--shadow-lift`
      around a `--white` card with a `--line` border, radius 12, padding 16),
@@ -2671,32 +2677,29 @@ body.mail-open .mail-modal {
 .doc-list {
   display: flex;
   flex-direction: column;
-  gap: var(--space-8);
+  gap: var(--space-4);
 }
 .doc-item {
   display: flex;
-  align-items: flex-start;
-  gap: var(--space-12);
-  padding: var(--space-8);
-  margin-inline: calc(-1 * var(--space-8));
-  border-radius: var(--radius-16);
+  align-items: center;
+  gap: var(--space-10);
+  padding: var(--space-6);
+  margin-inline: calc(-1 * var(--space-6));
+  border-radius: var(--radius-12);
   color: inherit;
   text-decoration: none;
-  /* Same lift as the page-list `.row` hover (22/08/2026) — see that comment
-     in main.css for the full reasoning; kept in sync because AGENTS.md
-     documents them as one pattern. */
-  transition: box-shadow var(--duration-200) var(--ease-out);
+  /* No `transition` here, and none on hover below — the fill lands in zero
+     frames (Figma `Article`, Status=Hover; see the block comment above). */
 }
 @media (hover: hover) and (pointer: fine) {
   .doc-item:hover {
-    background: var(--white);
-    box-shadow: var(--shadow-lift);
+    background: var(--row-hover);
   }
 }
 /* The portfolio's Writing rows are buttons (they open the shared modal);
    same look as the anchor form. */
 .doc-item--btn {
-  width: calc(100% + 2 * var(--space-8));
+  width: calc(100% + 2 * var(--space-6));
   border: none;
   background: 0 0;
   font: inherit;
@@ -2743,8 +2746,6 @@ body.mail-open .mail-modal {
 .doc-item__text {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  min-height: var(--space-56);
   min-width: 0;
 }
 .doc-item__title {

@@ -143,7 +143,9 @@ export function renderWriting(root) {
   const map = content.writing || {};
   if (!host) return 0;
   // Buttons, not links: a piece opens in the shared modal (cmd.mjs,
-  // `data-open`), and the modal carries the link to read it.
+  // `data-open`), and the modal carries the link to read it. The row shows
+  // `summary` (one short line, the Figma `Article`'s Resume); `bio` is the
+  // modal's paragraph and never goes in the row (29/08/2026).
   host.innerHTML = Object.keys(map)
     .filter((key) => showDrafts || !map[key].draft)
     .map((key) => {
@@ -152,7 +154,7 @@ export function renderWriting(root) {
         '<button class="doc-item doc-item--btn" type="button" data-cuelume-hover="tick" data-cuelume-toggle="bloom" data-open="writing:' + key + '" aria-haspopup="dialog">' +
         docIcon() +
         '<span class="doc-item__text"><span class="doc-item__title">' + esc(post.name) + "</span>" +
-        (post.bio ? '<span class="doc-item__desc">' + esc(post.bio) + "</span>" : "") +
+        (post.summary ? '<span class="doc-item__desc">' + esc(post.summary) + "</span>" : "") +
         "</span></button>"
       );
     })

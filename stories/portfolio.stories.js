@@ -104,7 +104,7 @@ export const WritingList = {
   render: () =>
     shell(
       "Writing list",
-      "jakub.kr's article row: a raised document icon beside a title and a one-line summary. The whole row is the link; hover fills it instantly, no transition.",
+      "jakub.kr's article row, as the Figma Article component: a raised document icon beside a title and one short summary, padding 6, radius 12, rows 4px apart. The whole row is the link; hover is a --row-hover fill only — no shadow, no transition.",
       `<h2 class="sb-pattern__title">Writing</h2>
        <div class="doc-list">${WRITING.map(docItem).join("")}</div>`,
     ),
@@ -122,8 +122,14 @@ export const WritingList = {
       (l) => getComputedStyle(l).width,
     );
     await expect(new Set(widths).size).toBe(5);
-    // Instant hover: no transition on the row background.
-    await expect(getComputedStyle(links[0]).transitionProperty).not.toMatch(/background/);
+    // Instant hover: nothing on the row transitions (fill only, no shadow).
+    const rowStyle = getComputedStyle(links[0]);
+    // (`a` itself transitions `color` globally — the fixture is an anchor; the
+    // row's own fill and shadow must not be in the list.)
+    await expect(rowStyle.transitionProperty).not.toMatch(/background|box-shadow|all/);
+    await expect(rowStyle.boxShadow).toBe("none");
+    await expect(rowStyle.paddingLeft).toBe("6px");
+    await expect(rowStyle.borderRadius).toBe("12px");
   },
 };
 
