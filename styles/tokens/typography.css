@@ -13,6 +13,12 @@
   --fw-semibold: 600;
   --lh-snug: 1.5;
   --lh-base: 1.6;
+  /* Prompt code block leading (30/08/2026, decided in the /prototype run —
+     see docs/patterns.md): 1.7 for Geist Mono at the body size, one notch
+     above prose's 1.6. The size itself is --fs-16, not a token of its own —
+     13px was on the table and lost: same size as the body keeps the
+     flat-type thesis (one size) intact. */
+  --lh-code: 1.7;
   --ls-tight: -0.01em;
   --ls-wide: 0.02em;
 }

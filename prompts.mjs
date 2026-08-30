@@ -242,6 +242,86 @@ function makeElement(tagName, className, text) {
   return element;
 }
 
+// Phosphor icons, same family as the ⌘K close/back glyphs in cmd.mjs.
+const ICON_CODE =
+  "M69.12,94.15,28.5,128l40.62,33.85a8,8,0,1,1-10.24,12.29l-48-40a8,8,0,0,1,0-12.29l48-40a8,8,0,0,1,10.24,12.3Zm176,27.7-48-40a8,8,0,1,0-10.24,12.3L227.5,128l-40.62,33.85a8,8,0,1,0,10.24,12.29l48-40a8,8,0,0,0,0-12.29ZM162.73,32.48a8,8,0,0,0-10.25,4.79l-64,176a8,8,0,0,0,4.79,10.26A8.14,8.14,0,0,0,96,224a8,8,0,0,0,7.52-5.27l64-176A8,8,0,0,0,162.73,32.48Z";
+const ICON_COPY =
+  "M216,32H88a8,8,0,0,0-8,8V80H40a8,8,0,0,0-8,8V216a8,8,0,0,0,8,8H168a8,8,0,0,0,8-8V176h40a8,8,0,0,0,8-8V40A8,8,0,0,0,216,32ZM160,208H48V96H160Zm48-48H176V88a8,8,0,0,0-8-8H96V48H208Z";
+const ICON_CHECK =
+  "M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z";
+
+function makeIcon(path, className) {
+  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svg.setAttribute("viewBox", "0 0 256 256");
+  svg.setAttribute("fill", "currentColor");
+  svg.setAttribute("aria-hidden", "true");
+  if (className) svg.setAttribute("class", className);
+  const shape = document.createElementNS("http://www.w3.org/2000/svg", "path");
+  shape.setAttribute("d", path);
+  svg.appendChild(shape);
+  return svg;
+}
+
+// Syntax color for the prompt body (30/08/2026, after ChatGPT's code block).
+// Prompts are markdown-ish prose, so the "grammar" is the handful of shapes
+// they actually use — a line that is only **Section:**, "- " / "1. " list
+// markers, a short "Key: value" line (Reference: …), and inline URLs,
+// "quoted strings", `code`, **bold** and numbers (with px/%/ranges). Every
+// character stays in the DOM as-is (the markers included), only wrapped in
+// spans, so the pre's textContent is still the prompt verbatim and the tests
+// that compare it keep holding. Colors live in --code-* (colors.css).
+const INLINE_TOKEN =
+  /(https?:\/\/[^\s)]+)|("[^"\n]*")|(`[^`\n]+`)|(\*\*[^*\n]+\*\*)|(\b\d+(?:[.,]\d+)?(?:[–-]\d+(?:[.,]\d+)?)?(?:px|ms|rem|em|%)?(?!\w))/g;
+const HEADING_LINE = /^\*\*[^*]+\*\*:?$/;
+const LIST_MARKER = /^(\s*(?:[-*•]|\d+\.)\s+)(.*)$/;
+const KEY_LINE = /^([A-Z][\w-]*(?: [A-Za-z][\w-]*)?:)(\s.*)$/;
+
+function appendInline(target, text) {
+  let last = 0;
+  INLINE_TOKEN.lastIndex = 0;
+  let match;
+  while ((match = INLINE_TOKEN.exec(text))) {
+    if (match.index > last) target.appendChild(document.createTextNode(text.slice(last, match.index)));
+    const className = match[1]
+      ? "tok-url"
+      : match[2]
+        ? "tok-str"
+        : match[3]
+          ? "tok-code"
+          : match[4]
+            ? "tok-strong"
+            : "tok-num";
+    target.appendChild(makeElement("span", className, match[0]));
+    last = match.index + match[0].length;
+  }
+  if (last < text.length) target.appendChild(document.createTextNode(text.slice(last)));
+}
+
+export function highlightPrompt(text) {
+  const fragment = document.createDocumentFragment();
+  text.split("\n").forEach((line, index) => {
+    if (index) fragment.appendChild(document.createTextNode("\n"));
+    if (HEADING_LINE.test(line)) {
+      fragment.appendChild(makeElement("span", "tok-head", line));
+      return;
+    }
+    const list = line.match(LIST_MARKER);
+    if (list) {
+      fragment.appendChild(makeElement("span", "tok-punct", list[1]));
+      appendInline(fragment, list[2]);
+      return;
+    }
+    const key = line.match(KEY_LINE);
+    if (key) {
+      fragment.appendChild(makeElement("span", "tok-key", key[1]));
+      appendInline(fragment, key[2]);
+      return;
+    }
+    appendInline(fragment, line);
+  });
+  return fragment;
+}
+
 // The list shows one row per prompt (title + category, the shared `.row`
 // layout); everything else lives in the detail modal a row opens.
 function renderPrompt(prompt) {
@@ -265,16 +345,6 @@ export function renderPromptDetail(prompt) {
   const head = makeElement("div", "p-stagger");
   const eyebrow = makeElement("div", "prompt-modal__eyebrow");
   eyebrow.appendChild(makeElement("span", "label", prompt.category));
-
-  const copyButton = makeElement("button", "txtbtn prompt-copy", "Copy prompt");
-  copyButton.type = "button";
-  copyButton.dataset.promptSlug = prompt.slug;
-  eyebrow.appendChild(copyButton);
-
-  const copyStatus = makeElement("span", "sr-only prompt-copy__status");
-  copyStatus.setAttribute("role", "status");
-  copyStatus.setAttribute("aria-live", "polite");
-  eyebrow.appendChild(copyStatus);
   head.appendChild(eyebrow);
   head.appendChild(makeElement("h2", "prompt-modal__title", prompt.title));
   fragment.appendChild(head);
@@ -286,9 +356,41 @@ export function renderPromptDetail(prompt) {
   prompt.tags.forEach((tag) => tags.appendChild(makeElement("li", "prompt-tag", tag)));
   fragment.appendChild(tags);
 
-  const content = makeElement("pre", "prompt-modal__content p-stagger", prompt.prompt);
+  // The prompt itself, as a code block: header bar (label + copy) over the
+  // highlighted text. Copy lives here, not in the eyebrow, since 30/08/2026 —
+  // the button sits on the thing it copies, like ChatGPT's.
+  const code = makeElement("div", "prompt-code p-stagger");
+  const bar = makeElement("div", "prompt-code__bar");
+  const lang = makeElement("span", "prompt-code__lang");
+  lang.appendChild(makeIcon(ICON_CODE));
+  lang.appendChild(document.createTextNode("prompt"));
+  bar.appendChild(lang);
+
+  const copyButton = makeElement("button", "prompt-copy");
+  copyButton.type = "button";
+  copyButton.dataset.promptSlug = prompt.slug;
+  const glyph = makeElement("span", "prompt-copy__glyph");
+  glyph.appendChild(makeIcon(ICON_COPY, "prompt-copy__icon"));
+  glyph.appendChild(makeIcon(ICON_CHECK, "prompt-copy__check"));
+  copyButton.appendChild(glyph);
+  // Icon-only, always. The sr-only label is the accessible name and flips
+  // to "Copied" / "Copy failed" with the state — see attachPromptCopy().
+  copyButton.appendChild(makeElement("span", "prompt-copy__label sr-only", "Copy prompt"));
+  bar.appendChild(copyButton);
+
+  const copyStatus = makeElement("span", "sr-only prompt-copy__status");
+  copyStatus.setAttribute("role", "status");
+  copyStatus.setAttribute("aria-live", "polite");
+  bar.appendChild(copyStatus);
+  code.appendChild(bar);
+
+  const content = makeElement("pre", "prompt-modal__content");
   content.dataset.promptContent = prompt.slug;
-  fragment.appendChild(content);
+  const body = makeElement("code");
+  body.appendChild(highlightPrompt(prompt.prompt));
+  content.appendChild(body);
+  code.appendChild(content);
+  fragment.appendChild(code);
 
   return fragment;
 }
@@ -312,7 +414,12 @@ async function writeClipboard(text) {
 
 // Delegated "Copy prompt" handler for any container that shows a prompt
 // detail: this page's modal and the ⌘K detail modal both call it once.
+// How long the check glyph stays before the copy icon comes back (decided
+// on the /prototype slider, 30/08/2026).
+const COPY_RESET_MS = 2000;
+
 export function attachPromptCopy(container, prompts = PROMPTS, copy = writeClipboard) {
+  let resetTimer = 0;
   container.addEventListener("click", async (event) => {
     const button = event.target.closest(".prompt-copy");
     if (!button) return;
@@ -321,16 +428,26 @@ export function attachPromptCopy(container, prompts = PROMPTS, copy = writeClipb
     if (!prompt) return;
 
     const status = container.querySelector(".prompt-copy__status");
+    const label = button.querySelector(".prompt-copy__label");
+    // Only the glyph changes on screen; the sr-only label carries the state
+    // as the accessible name (tests wait for a button named "Copied").
+    const setState = (state, text) => {
+      button.classList.toggle("is-copied", state === "copied");
+      label.textContent = text;
+    };
+
+    clearTimeout(resetTimer);
     try {
       await copy(prompt.prompt);
-      button.textContent = "Copied";
+      setState("copied", "Copied");
       status.textContent = "Prompt copied to clipboard.";
       play("success");
     } catch (error) {
-      button.textContent = "Copy failed";
+      setState("failed", "Copy failed");
       status.textContent = "Unable to copy. Select the prompt text and copy it manually.";
       play("error");
     }
+    resetTimer = setTimeout(() => setState("", "Copy prompt"), COPY_RESET_MS);
   });
 }
 

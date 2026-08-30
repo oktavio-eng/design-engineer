@@ -49,6 +49,24 @@
      hover lands with the Figma-driven implementation. */
   --row-hover: oklch(0.965 0.006 91.4);
   --bg-a90: oklch(0.985 0.0041 91.4 / 0.9);
+  /* Prompt code block (30/08/2026) — the /prompts and ⌘K prompt sheet render
+     the prompt text as a code block, ChatGPT-style, with a light syntax
+     color. The ramp is the site's own blue (#00B9FF = oklch 0.741 0.157 235,
+     the contribution graph's level 3) walked toward cyan: hues 200–240 with
+     lightness pulled down until every step clears 4.5:1 on --code-bg (the
+     card fill = --row-hover, L 0.965), and chroma trimmed to what sRGB can
+     hold at that lightness — 0.13 at L 0.45 already clips. Measured:
+     key 6.60:1, str 5.26:1, num 5.21:1, url 4.90:1. Body text stays --ink and
+     the markdown markers (**, -, 1.) go --muted (5.91:1), not --faint (2.60:1,
+     which axe would flag on the modal story). Fill carries the page hue, per
+     the --row-hover rule above. */
+  --code-bg: var(--row-hover);
+  --code-fg: var(--ink);
+  --code-punct: var(--muted);
+  --code-key: oklch(0.45 0.095 235);
+  --code-str: oklch(0.5 0.08 215);
+  --code-num: oklch(0.5 0.085 200);
+  --code-url: oklch(0.52 0.12 240);
   --ink-a5: color-mix(in srgb, var(--ink) 5%, transparent);
   --ink-a7: color-mix(in srgb, var(--ink) 7%, transparent);
   --wash-bg: color-mix(in srgb, var(--bg) 55%, transparent);
@@ -223,6 +241,15 @@
      current dark hover fill) resolves to — so the dark hover doesn't move. */
   --row-hover: var(--gray-955);
   --bg-a90: oklch(0.179 0.026 246 / 0.9);
+  /* Code block ramp, mirrored: light tints on the Dim card (--gray-955,
+     L 0.2193). --code-url is #00B9FF itself here — it only fails on the
+     light card (2.4:1), on the dark one it clears 7.72:1. key 9.43:1,
+     str 8.93:1, num 9.59:1. --code-bg/--code-fg/--code-punct re-resolve
+     through --row-hover/--ink/--muted and need no override. */
+  --code-key: oklch(0.8 0.1 235);
+  --code-str: oklch(0.78 0.1 215);
+  --code-num: oklch(0.8 0.09 200);
+  --code-url: oklch(0.741 0.157 235);
   /* Zeroed, not just dimmed (22/08/2026, /better-colors review): a black
      drop-shadow composited over --bg (L 0.24) here measures ~1.1:1 contrast
      at every alpha step below (a06's 0.45 alpha renders at 1.11:1; a02's

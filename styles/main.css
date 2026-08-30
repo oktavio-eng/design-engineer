@@ -2565,17 +2565,150 @@ body.mail-open .mail-modal {
   margin-inline-start: var(--space-12);
   color: var(--line);
 }
+/* Prompt body as a code block (30/08/2026), after ChatGPT's: a rounded card
+   on --code-bg (= --row-hover, the fill that carries the page hue) with a
+   header bar — "prompt" label left, copy button right — and the text set in
+   Geist Mono at the body size (--fs-16, --lh-code 1.7), with a light syntax
+   color in the site's cyan ramp (--code-* in colors.css; contrast ratios in
+   their comments). What gets colored is what the prompts actually contain —
+   highlightPrompt() in prompts.mjs: **section headers**, list markers,
+   "Key:" lines, URLs, "quoted strings", `code`, numbers. Was a --muted
+   <pre> under a hairline, with a "Copy prompt" text button up in the eyebrow.
+   Decided in a /prototype run against "Terminal" (inverted block) and "Bare"
+   (no card, sticky copy) — the decision block is in docs/patterns.md.
+   The copy button is icon-only, always: on copy the glyph crossfades to a
+   check (blur bridges the swap, Emil's trick) for two seconds and back. No
+   color change, no "Copied" text — asked for explicitly; the sr-only label
+   still flips to "Copied" so the accessible name and the live region tell
+   the story the eye doesn't need. */
+.prompt-code {
+  margin-top: var(--space-32);
+  border: var(--border-w) solid var(--line);
+  border-radius: var(--radius-16);
+  background: var(--code-bg);
+  overflow: hidden;
+}
+.prompt-code__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-12);
+  padding: var(--space-4) var(--space-4) var(--space-4) var(--space-16);
+}
+.prompt-code__lang {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-8);
+  font-family: var(--font-mono);
+  font-size: var(--fs-12);
+  color: var(--muted);
+  cursor: default;
+  user-select: none;
+}
+.prompt-code__lang svg,
+.prompt-copy svg {
+  width: var(--space-16);
+  height: var(--space-16);
+  flex-shrink: 0;
+}
+/* 40px square, same footprint as .panel-close — the bar stays 48 tall. */
+.prompt-copy {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--space-40);
+  min-height: var(--space-40);
+  padding: 0 var(--space-12);
+  background: 0 0;
+  border: none;
+  border-radius: var(--radius-12);
+  color: var(--faint);
+  cursor: pointer;
+  touch-action: manipulation;
+  transition-property: color, background-color, scale;
+  transition-duration: var(--duration-150), var(--duration-150), var(--duration-160);
+  transition-timing-function: var(--ease), var(--ease), var(--ease-pop);
+  user-select: none;
+}
+@media (hover: hover) and (pointer: fine) {
+  .prompt-copy:hover {
+    color: var(--ink);
+    background-color: var(--ink-a5);
+  }
+}
+.prompt-copy:active {
+  scale: 0.96;
+}
+/* Both glyphs share one grid cell; the swap is a crossfade with a 2px blur
+   and a small scale so the eye reads one shape changing, not two icons
+   trading places. Interruptible (transitions, not keyframes): a second
+   click mid-swap retargets instead of restarting. */
+.prompt-copy__glyph {
+  display: grid;
+  width: var(--space-16);
+  height: var(--space-16);
+}
+.prompt-copy__glyph svg {
+  grid-area: 1 / 1;
+  transition-property: opacity, filter, scale;
+  transition-duration: var(--duration-160);
+  transition-timing-function: var(--ease-out);
+}
+.prompt-copy__check,
+.prompt-copy.is-copied .prompt-copy__icon {
+  opacity: 0;
+  filter: blur(2px);
+  scale: 0.8;
+}
+.prompt-copy.is-copied .prompt-copy__check {
+  opacity: 1;
+  filter: blur(0);
+  scale: 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  .prompt-copy,
+  .prompt-copy__glyph svg {
+    transition: none;
+  }
+}
 .prompt-modal__content {
   max-width: 100%;
-  margin-top: var(--space-32);
-  padding-top: var(--space-24);
-  border-top: var(--border-w) solid var(--line);
-  color: var(--muted);
-  font: inherit;
+  margin: 0;
+  padding: var(--space-8) var(--space-16) var(--space-20);
+  color: var(--code-fg);
+  font-family: var(--font-mono);
+  font-size: var(--fs-16);
+  font-weight: var(--fw-regular);
+  line-height: var(--lh-code);
   white-space: pre-wrap;
   overflow-wrap: anywhere;
+  tab-size: 2;
 }
-.prompt-copy,
+.prompt-modal__content code {
+  font: inherit;
+}
+.tok-head,
+.tok-key,
+.tok-strong {
+  color: var(--code-key);
+  font-weight: var(--fw-medium);
+}
+.tok-str,
+.tok-code {
+  color: var(--code-str);
+}
+.tok-num {
+  color: var(--code-num);
+}
+.tok-url {
+  color: var(--code-url);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--code-url) 40%, transparent);
+  text-underline-offset: var(--space-3);
+}
+.tok-punct {
+  color: var(--code-punct);
+}
 .prompt-clear {
   min-height: var(--space-44);
 }
