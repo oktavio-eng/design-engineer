@@ -2637,7 +2637,9 @@ body.mail-open .mail-modal {
      shadow): a 50×60 outlined shell (`--line` border, padding 2, radius 8,
      no shadow) around a white 44×54 page (`--line` border, padding 6,
      radius 6) with five 4px "lines of text" — 16 / 30 26 / 20 12, the title
-     line then two paragraphs 6px apart, lines 4px apart inside them. Since 29/08/2026 the row is the
+     line then two paragraphs 6px apart, lines 4px apart inside them. While
+     the row is hovered the page gets `--shadow-doc-hover` (Figma `Doc icon`
+     Status=Hover) — instant, like the row fill, for the same reason. Since 29/08/2026 the row is the
      `Article` component of the Figma file (docs/figma-workflow.md): padding
      6, icon→text gap 10, radius 12, 652 wide = the 640 column + 6 each side,
      so the icon sits on the column edge and the text starts at +60; rows
@@ -2697,6 +2699,9 @@ body.mail-open .mail-modal {
 @media (hover: hover) and (pointer: fine) {
   .doc-item:hover {
     background: var(--row-hover);
+  }
+  .doc-item:hover .doc-icon__page {
+    box-shadow: var(--shadow-doc-hover);
   }
 }
 /* The portfolio's Writing rows are buttons (they open the shared modal);

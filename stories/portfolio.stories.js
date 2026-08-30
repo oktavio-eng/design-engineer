@@ -104,7 +104,7 @@ export const WritingList = {
   render: () =>
     shell(
       "Writing list",
-      "jakub.kr's article row, as the Figma Article component: an outlined 50×60 document icon (no shadow) beside a title and one short summary, padding 6, radius 12, rows 4px apart. The whole row is the link; hover is a --row-hover fill only — no shadow, no transition.",
+      "jakub.kr's article row, as the Figma Article component: an outlined 50×60 document icon (no shadow) beside a title and one short summary, padding 6, radius 12, rows 4px apart. The whole row is the link; hover is a --row-hover fill on the row and a soft --shadow-doc-hover on the icon's page — no transition.",
       `<h2 class="sb-pattern__title">Writing</h2>
        <div class="doc-list">${WRITING.map(docItem).join("")}</div>`,
     ),
@@ -123,10 +123,19 @@ export const WritingList = {
     );
     await expect(new Set(widths).size).toBe(5);
     // Instant hover: nothing on the row transitions (fill only, no shadow).
+    // `a` transitions `color` globally and an element with no transition at
+    // all computes to `all 0s` — so "instant" means: zero duration, or a list
+    // that leaves fill and shadow out.
+    const instant = (cs) => cs.transitionDuration === "0s" || !/background|box-shadow|all/.test(cs.transitionProperty);
     const rowStyle = getComputedStyle(links[0]);
-    // (`a` itself transitions `color` globally — the fixture is an anchor; the
-    // row's own fill and shadow must not be in the list.)
-    await expect(rowStyle.transitionProperty).not.toMatch(/background|box-shadow|all/);
+    await expect(instant(rowStyle)).toBe(true);
+    // The icon's page carries no shadow at rest and would not transition one
+    // in; the hover itself (row fill + page shadow) needs a real pointer —
+    // `userEvent.hover` never sets CSS :hover — so it's asserted on the served
+    // page in tests/ui/portfolio-page.test.mjs, like the page-list rows.
+    const page = links[0].querySelector(".doc-icon__page");
+    await expect(getComputedStyle(page).boxShadow).toBe("none");
+    await expect(instant(getComputedStyle(page))).toBe(true);
     await expect(rowStyle.boxShadow).toBe("none");
     await expect(rowStyle.paddingLeft).toBe("6px");
     await expect(rowStyle.borderRadius).toBe("12px");

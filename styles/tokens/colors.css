@@ -94,6 +94,10 @@
     0 0 0 1px var(--shadow-a08),
     0 1px 2px -1px var(--shadow-a08),
     0 2px 4px 0 var(--shadow-a06);
+  /* The page inside the Writing row's doc icon while the row is hovered
+     (29/08/2026, Figma `Doc icon` Status=Hover): one soft layer, 5% black,
+     bound to `color/shadow-a05` in the file so the two stay one value. */
+  --shadow-doc-hover: 0 1px 4px 0 var(--shadow-a05);
   /* Contribution graph — GitHub's five-step scale, in the site's blue.
      Level 3 is #00B9FF exactly (oklch 0.741 0.157 235); 1–2 lighten toward
      the page, 4 deepens; 0 is the same gray as the rules. Hue is held at 235
