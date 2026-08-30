@@ -39,7 +39,15 @@ const cases = [
     state: "prompt-modal",
     fullPage: false,
     // Normalizes deterministic CoreText/macOS ↔ FreeType/Linux rasterization found in CI, not visual regressions.
-    blurRadius: 3,
+    // 30/08/2026: the prompt body became a Geist Mono block, and mono glyph
+    // advances drift across each line between the two rasterizers — measured
+    // against the CI capture (PR #87): raw 1.77%, perceptual 2.03% @2 /
+    // 1.31% @3 / 0.81% @4 / 0.56% @5, while a synthetic 4px layout shift
+    // scores 3.99 / 3.20 / 2.07 / 0.77% at the same radii. Radius 5 would
+    // let a 4px shift through, so: radius 4 with the limit raised to 1.2% —
+    // platform noise sits at 68% of it, a 4px shift at 173%.
+    blurRadius: 4,
+    perceptualLimit: 0.012,
   },
   { name: "prompts-empty-dark", story: "patterns-prompts--search-and-open", theme: "dark", flatType: "on", width: 320, height: 800, state: "prompt-empty", fullPage: false },
   // Portfolio components (16/08/2026): the doc-icon writing row and the blue
@@ -238,12 +246,13 @@ async function compareScreenshot(visualCase, screenshot) {
   const totalPixels = actual.width * actual.height;
   const rawMismatchRatio = rawMismatchedPixels / totalPixels;
   const perceptualMismatchRatio = perceptualMismatchedPixels / totalPixels;
-  if (rawMismatchRatio > 0.04 || perceptualMismatchRatio > 0.008) {
+  const perceptualLimit = visualCase.perceptualLimit ?? 0.008;
+  if (rawMismatchRatio > 0.04 || perceptualMismatchRatio > perceptualLimit) {
     await writeFile(path.join(artifactDirectory, `${name}-diff.png`), PNG.sync.write(output));
   }
   assert.ok(
-    rawMismatchRatio <= 0.04 && perceptualMismatchRatio <= 0.008,
-    `${name}: raw ${(rawMismatchRatio * 100).toFixed(2)}% (limit 4.00%), perceptual ${(perceptualMismatchRatio * 100).toFixed(2)}% (limit 0.80%)`,
+    rawMismatchRatio <= 0.04 && perceptualMismatchRatio <= perceptualLimit,
+    `${name}: raw ${(rawMismatchRatio * 100).toFixed(2)}% (limit 4.00%), perceptual ${(perceptualMismatchRatio * 100).toFixed(2)}% (limit ${(perceptualLimit * 100).toFixed(2)}%)`,
   );
   return { rawMismatchRatio, perceptualMismatchRatio, updated: false };
 }
