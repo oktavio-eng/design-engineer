@@ -227,24 +227,30 @@
 
   // Writing — the doc-icon list (jakub.kr's row). Each entry opens in the
   // same modal as a project (title, summary, then the link to read it), so
-  // clicking never leaves the page. Same shape as everything else: `bio` is
-  // the summary shown in the row, `links` carries where the piece lives.
+  // clicking never leaves the page. Same shape as everything else, plus
+  // `summary`: the row's second line, one short line (1–6 words is what
+  // Emil/Jakub use; the text comes from the Figma `Article` instances on
+  // Home). `bio` is the modal's paragraph only, `links` where the piece
+  // lives.
   const writing = {
     plan: {
       name: "Design Engineer — a transition plan",
       role: "Writing · 2026",
+      summary: "The plan itself: principle, phases, people, and what got discarded.",
       bio: "The plan itself: principle, phases, people, and what got discarded.",
       links: [["Read", "/"]],
     },
     changelog: {
       name: "Changelog, as a habit",
       role: "Writing · 2026",
+      summary: "Written down as it ships.",
       bio: "Every change written down as it ships — building in public only counts if the record is public too.",
       links: [["Read", "/changelog"]],
     },
     prompts: {
       name: "Prompts used in real work",
       role: "Writing · 2026",
+      summary: "Kept with the context that made them useful.",
       bio: "Kept with the context that made them useful.",
       links: [["Read", "/prompts"]],
     },

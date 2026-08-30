@@ -129,6 +129,25 @@ test("/ (portfolio home) renders its collections, opens rows and photos in modal
   // the shared modal in place — never a navigation.
   assert.equal(await page.locator(".doc-list .doc-item").count(), 3);
   assert.equal(await page.locator(".doc-list .doc-icon").first().getAttribute("aria-hidden"), "true");
+  // Real pointer over a row (Figma `Article`/`Doc icon` Status=Hover): the
+  // row fills with --row-hover and the icon's page gets --shadow-doc-hover,
+  // both in zero frames — nothing on either element transitions.
+  const firstRow = page.locator(".doc-list .doc-item").first();
+  await firstRow.hover();
+  const hovered = await firstRow.evaluate((row) => {
+    const rs = getComputedStyle(row);
+    const ps = getComputedStyle(row.querySelector(".doc-icon__page"));
+    const token = getComputedStyle(document.documentElement).getPropertyValue("--row-hover").trim();
+    // No `transition` at all computes to `all 0s`, so "instant" is: zero
+    // duration, or a property list that leaves fill and shadow out.
+    const instant = (cs) => cs.transitionDuration === "0s" || !/background|box-shadow|all/.test(cs.transitionProperty);
+    return { bg: rs.backgroundColor, token, rowShadow: rs.boxShadow, pageShadow: ps.boxShadow, instant: instant(rs) && instant(ps) };
+  });
+  assert.equal(hovered.bg, hovered.token, "hovered row is filled with --row-hover");
+  assert.equal(hovered.rowShadow, "none", "the row itself has no lift");
+  assert.notEqual(hovered.pageShadow, "none", "the icon's page gets --shadow-doc-hover");
+  assert.equal(hovered.instant, true, "hover lands instantly");
+  await page.mouse.move(0, 0);
   await page.locator('[data-open="writing:changelog"]').click();
   await page.waitForFunction(() => document.body.classList.contains("cmd-detail-open"));
   assert.equal(new URL(page.url()).pathname, "/", "writing opens in a modal, not another page");

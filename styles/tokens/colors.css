@@ -38,6 +38,16 @@
   --white-a60: oklch(1 0 0 / 0.6);
   --gray-870: oklch(0.87 0 0);
   --gray-955: oklch(0.955 0 0);
+  /* Row hover fill (29/08/2026, designed in Figma first — `color/row-hover`).
+     Jakub's hover is oklch(0.965 0 0) on a neutral page; the same neutral
+     gray on this warm --bg reads bluish by simultaneous contrast (it's what
+     made the 22/08 gray hover look "inert" and pushed rows to white+shadow).
+     So: --bg's own hue (91.4°), lightness one notch down, chroma a hair
+     above --bg's 0.0041 because a darker tone needs slightly more to read
+     equally warm. Any large fill on this page must carry --bg's hue; thin
+     lines (--line) get away with neutral. No consumer yet — the Article/row
+     hover lands with the Figma-driven implementation. */
+  --row-hover: oklch(0.965 0.006 91.4);
   --bg-a90: oklch(0.985 0.0041 91.4 / 0.9);
   --ink-a5: color-mix(in srgb, var(--ink) 5%, transparent);
   --ink-a7: color-mix(in srgb, var(--ink) 7%, transparent);
@@ -84,6 +94,10 @@
     0 0 0 1px var(--shadow-a08),
     0 1px 2px -1px var(--shadow-a08),
     0 2px 4px 0 var(--shadow-a06);
+  /* The page inside the Writing row's doc icon while the row is hovered
+     (29/08/2026, Figma `Doc icon` Status=Hover): one soft layer, 5% black,
+     bound to `color/shadow-a05` in the file so the two stay one value. */
+  --shadow-doc-hover: 0 1px 4px 0 var(--shadow-a05);
   /* Contribution graph — GitHub's five-step scale, in the site's blue.
      Level 3 is #00B9FF exactly (oklch 0.741 0.157 235); 1–2 lighten toward
      the page, 4 deepens; 0 is the same gray as the rules. Hue is held at 235
@@ -204,6 +218,10 @@
   --white-a60: oklch(1 0 0 / 0.08);
   --gray-870: oklch(0.3593 0.018 246);
   --gray-955: oklch(0.2193 0.02 246);
+  /* Same rule as light, mirrored: --bg's hue (246°), lightness one notch
+     UP. Lands on the ramp's existing step, which is also what --white (the
+     current dark hover fill) resolves to — so the dark hover doesn't move. */
+  --row-hover: var(--gray-955);
   --bg-a90: oklch(0.179 0.026 246 / 0.9);
   /* Zeroed, not just dimmed (22/08/2026, /better-colors review): a black
      drop-shadow composited over --bg (L 0.24) here measures ~1.1:1 contrast

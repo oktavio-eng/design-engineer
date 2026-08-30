@@ -173,7 +173,7 @@ a:active {
   cursor: pointer;
 }
 /* Hover on the page lists (22/08/2026): the row lifts — solid --white fill,
-   the same three-layer --shadow-lift the doc icon/gallery/contrib card use —
+   the same three-layer --shadow-lift the gallery/contrib card use —
    corners at 16px, fill bleeds 12px past the column on each side
    (padding-inline + negative margin, so the text itself never moves). Was a
    flat --gray-955 fill with no transition (jakub.kr's Writing row, 16/08); the
@@ -2631,14 +2631,25 @@ body.mail-open .mail-modal {
    a Storybook story and no consumer yet. Two references, both measured in a
    real Chrome rather than eyeballed:
 
-   - `.doc-item` is jakub.kr's Writing row: a document icon that is a raised
-     shell (padding 2, radius 8, `--shadow-lift`) around a white 44×52 page
-     with a 1px rule and five 3px "lines of text"; title + one-line summary
-     beside it; the whole row is the link, with 8px padding bleeding 8px past
-     the column so the hover fill hugs the text. Hover has NO transition on
-     purpose — it's the instant fill Jakub uses, and it's a row you'll pass
-     over dozens of times, which is exactly where motion should get out of
-     the way.
+   - `.doc-item` is jakub.kr's Writing row: a document icon beside a title
+     and one short summary; the whole row is the link. The icon is the Figma
+     `Doc icon` (29/08/2026, Otávio's own take, not Jakub's 48×56 with a
+     shadow): a 50×60 outlined shell (`--line` border, padding 2, radius 8,
+     no shadow) around a white 44×54 page (`--line` border, padding 6,
+     radius 6) with five 4px "lines of text" — 16 / 30 26 / 20 12, the title
+     line then two paragraphs 6px apart, lines 4px apart inside them. While
+     the row is hovered the page gets `--shadow-doc-hover` (Figma `Doc icon`
+     Status=Hover) — instant, like the row fill, for the same reason. Since 29/08/2026 the row is the
+     `Article` component of the Figma file (docs/figma-workflow.md): padding
+     6, icon→text gap 10, radius 12, 652 wide = the 640 column + 6 each side,
+     so the icon sits on the column edge and the text starts at +60; rows
+     4px apart. Hover is a fill only — `--row-hover`, the gray that carries
+     the page hue — with NO shadow and NO transition, on purpose: it's the
+     instant fill Jakub and Emil use (checked in their served HTML: no
+     `transition-*` on the row), and it's a row you'll pass over dozens of
+     times, which is exactly where motion should get out of the way. The
+     22/08 `--white` + `--shadow-lift` lift stays on the wiki `.row` for now
+     (whether it follows is still open — see the Figma doc).
    - `.contrib` is the GitHub contribution graph as noechague.vercel.app draws
      it — same two-layer shell (radius 16 + padding 4 + `--shadow-lift`
      around a `--white` card with a `--line` border, radius 12, padding 16),
@@ -2671,32 +2682,32 @@ body.mail-open .mail-modal {
 .doc-list {
   display: flex;
   flex-direction: column;
-  gap: var(--space-8);
+  gap: var(--space-4);
 }
 .doc-item {
   display: flex;
-  align-items: flex-start;
-  gap: var(--space-12);
-  padding: var(--space-8);
-  margin-inline: calc(-1 * var(--space-8));
-  border-radius: var(--radius-16);
+  align-items: center;
+  gap: var(--space-10);
+  padding: var(--space-6);
+  margin-inline: calc(-1 * var(--space-6));
+  border-radius: var(--radius-12);
   color: inherit;
   text-decoration: none;
-  /* Same lift as the page-list `.row` hover (22/08/2026) — see that comment
-     in main.css for the full reasoning; kept in sync because AGENTS.md
-     documents them as one pattern. */
-  transition: box-shadow var(--duration-200) var(--ease-out);
+  /* No `transition` here, and none on hover below — the fill lands in zero
+     frames (Figma `Article`, Status=Hover; see the block comment above). */
 }
 @media (hover: hover) and (pointer: fine) {
   .doc-item:hover {
-    background: var(--white);
-    box-shadow: var(--shadow-lift);
+    background: var(--row-hover);
+  }
+  .doc-item:hover .doc-icon__page {
+    box-shadow: var(--shadow-doc-hover);
   }
 }
 /* The portfolio's Writing rows are buttons (they open the shared modal);
    same look as the anchor form. */
 .doc-item--btn {
-  width: calc(100% + 2 * var(--space-8));
+  width: calc(100% + 2 * var(--space-6));
   border: none;
   background: 0 0;
   font: inherit;
@@ -2710,17 +2721,16 @@ body.mail-open .mail-modal {
 .doc-icon {
   flex: none;
   padding: var(--space-2);
+  border: var(--border-w) solid var(--line);
   border-radius: var(--radius-8);
-  background: var(--white);
-  box-shadow: var(--shadow-lift);
 }
+/* 44 wide; the height (54) falls out of the lines below — no token for it. */
 .doc-icon__page {
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
   width: var(--space-44);
-  height: var(--space-52);
-  padding: var(--space-4);
+  padding: var(--space-6);
   border: var(--border-w) solid var(--line);
   border-radius: var(--radius-6);
   background: var(--white);
@@ -2729,22 +2739,21 @@ body.mail-open .mail-modal {
 }
 .doc-icon__line {
   display: block;
-  height: var(--space-3);
+  height: var(--space-4);
   border-radius: var(--radius-full);
   background: var(--line);
 }
-/* Five lines, the widths and beats Jakub uses: a short first line (a title),
-   a long one, then a paragraph that tails off — read as text, not stripes. */
-.doc-icon__line:nth-child(1) { width: var(--space-16); margin-top: var(--space-2); }
-.doc-icon__line:nth-child(2) { width: var(--space-32); margin-top: var(--space-4); }
-.doc-icon__line:nth-child(3) { width: var(--space-24); }
-.doc-icon__line:nth-child(4) { width: var(--space-20); margin-top: var(--space-4); }
+/* Five lines: a short first line (a title), then two paragraphs that tail
+   off — read as text, not stripes. Lines sit 4px apart (the flex gap); the
+   paragraph breaks are 6px, so the first line of each adds 2px on top. */
+.doc-icon__line:nth-child(1) { width: var(--space-16); }
+.doc-icon__line:nth-child(2) { width: var(--space-30); margin-top: var(--space-2); }
+.doc-icon__line:nth-child(3) { width: var(--space-26); }
+.doc-icon__line:nth-child(4) { width: var(--space-20); margin-top: var(--space-2); }
 .doc-icon__line:nth-child(5) { width: var(--space-12); }
 .doc-item__text {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  min-height: var(--space-56);
   min-width: 0;
 }
 .doc-item__title {
@@ -2906,7 +2915,7 @@ body.mail-open .mail-modal {
   }
 }
 /* Fixed aspect per cell so the grid never jumps as photos load; the shell is
-   the same two-layer lift the doc icon and the graph use, so the gallery
+   the same two-layer lift the graph uses, so the gallery
    reads as part of the same family. */
 .gallery__item {
   display: block;
