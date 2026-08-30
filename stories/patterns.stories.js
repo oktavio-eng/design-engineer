@@ -80,7 +80,7 @@ export const Rows = {
   render: () =>
     patternShell(
       "Rows",
-      "The repeated .row pattern used for people, courses, readings and references. Hover an item: it fills instantly (no transition), bleeding 8px past the column — the jakub.kr row.",
+      "The repeated .row pattern used for people, courses, readings and references. Hover an item: it fills instantly with --row-hover (no shadow, no transition), bleeding past the column — the same hover as the home's Writing rows.",
       `
         <section>
           <h2>People</h2>
