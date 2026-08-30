@@ -104,7 +104,7 @@ export const WritingList = {
   render: () =>
     shell(
       "Writing list",
-      "jakub.kr's article row, as the Figma Article component: a raised document icon beside a title and one short summary, padding 6, radius 12, rows 4px apart. The whole row is the link; hover is a --row-hover fill only — no shadow, no transition.",
+      "jakub.kr's article row, as the Figma Article component: an outlined 50×60 document icon (no shadow) beside a title and one short summary, padding 6, radius 12, rows 4px apart. The whole row is the link; hover is a --row-hover fill only — no shadow, no transition.",
       `<h2 class="sb-pattern__title">Writing</h2>
        <div class="doc-list">${WRITING.map(docItem).join("")}</div>`,
     ),
@@ -117,7 +117,7 @@ export const WritingList = {
     await expect(icon).toHaveAttribute("aria-hidden", "true");
     const lines = canvasElement.querySelectorAll(".doc-icon__line");
     await expect(lines).toHaveLength(15);
-    // Five distinct widths per icon (16/32/24/20/12) — the "text" read.
+    // Five distinct widths per icon (16/30/26/20/12) — the "text" read.
     const widths = [...canvasElement.querySelectorAll(".doc-icon:first-of-type .doc-icon__line")].map(
       (l) => getComputedStyle(l).width,
     );
