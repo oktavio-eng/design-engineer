@@ -377,10 +377,10 @@ const people = {
       role: "Phase 03 · how to sell yourself",
       bio: "Title changes the salary bracket. Design engineer gets evaluated against the engineering band, not the design one. You already deliver what the role asks for: production code with design judgment.",
       items: [
-        "Apply as mid-level remote. Never junior: full <span class='gloss' tabindex='0'>handoff<span class='gloss-tip'>Handing off a design ready for implementation, with specs, assets, and behavior documented.</span></span>, API, a real squad, and production aren't a junior profile anywhere.",
+        "Target product design and design engineering roles where strong visual craft and implementation experience are an advantage. Evaluate level by scope, team structure and growth opportunity, rather than title alone.",
         "Resume in English, starting from Lupa's resume: lead with what ran in production, not with mockups.",
         "Every application points to the phase 02 public proof, not to a PDF.",
-        "Target: remote early-stage startups, where the design+code hybrid is worth more because one person covers two.",
+        "Target product teams where design and engineering collaborate closely, especially consumer products and early-stage environments.",
         "The deng list shows where this category actually gets hired. Study the companies that show up there.",
         "Price benchmark: agencies like Blissful Studio sell design engineering as a standalone service, starting at $10K per fixed-scope project or $6K/month embedded. A market reference to calibrate your own rate.",
       ],
@@ -399,7 +399,7 @@ const people = {
         "Ask for code review as routine, not as exception. It's the cheapest, densest feedback there is.",
         "Contribute to the canon's repos: open issues on shadcn/ui, cmdk, Vaul. Small, well-made <span class='gloss' tabindex='0'>PRs<span class='gloss-tip'>Pull requests: proposed code changes submitted for review before entering the project.</span></span> are real networking.",
         "Presence on X: comment with substance on what the group publishes. That's how this market notices people, far more than LinkedIn.",
-        "Earn in dollars, stay in Brazil. Relocation remains plan B, decided by life, not by career.",
+        "Currently based in Brazil and open to remote international work or relocation when the role, team and life opportunity align.",
       ],
       links: [
         ["shadcn/ui issues", "https://github.com/shadcn-ui/ui/issues"],

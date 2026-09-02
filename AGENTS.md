@@ -21,7 +21,7 @@ No Codex, invoque como `$vocabulary`; no Claude Code, como `/vocabulary`. A invo
 
 ## O que é este projeto
 
-Um site pessoal single-page do Otavio (GOW Studio) — um "plano de transição de carreira" pra design engineer, com estudo de referências (Rauno Freiberg, Emil Kowalski, Jakub Krehel, floguo, Paco Coursey, shadcn, etc.), cursos, leituras e craft references. Também funciona como prova pública de trabalho (portfolio > diploma).
+Um site pessoal single-page do Otavio (GOW Design) — um "plano de transição de carreira" pra design engineer, com estudo de referências (Rauno Freiberg, Emil Kowalski, Jakub Krehel, floguo, Paco Coursey, shadcn, etc.), cursos, leituras e craft references. Também funciona como prova pública de trabalho (portfolio > diploma).
 
 - **Stack:** arquivos estáticos, zero build step — `wiki.html` (o plano, markup), `styles/` (CSS), `script.js` (interação da wiki) e os arquivos de JS compartilhados entre as páginas: `content.js`, `favicons.js`, `intro.js`, `mail.js`, `chrome.js`, `cmd.mjs`, `cursor.mjs`, `scroll.mjs` (mais `prompts.mjs`, da página `/prompts`). Servidos direto, sem bundler, sem framework. `/` é o portfólio, `/wiki` é o plano — detalhes de rotas, ordem de scripts, o que cada arquivo de JS faz e por quê, e a estrutura de `styles/main.css`/tokens estão em **[docs/architecture.md](docs/architecture.md)**.
 - **Deploy:** Vercel, projeto **`design-engineer`** (team ID `team_mMftBNlEUa18031DuM84fBHt`). **NUNCA crie um projeto novo na Vercel — sempre atualize o existente.**

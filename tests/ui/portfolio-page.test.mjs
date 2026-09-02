@@ -211,7 +211,7 @@ test("/ (portfolio home) renders its collections, opens rows and photos in modal
   // ⌘K indexes the portfolio collections, projects included (real content
   // since 22/08/2026, not draft-gated).
   await page.locator("#cmdInput").fill("gow");
-  assert.equal(await page.locator('.cmd__item:has-text("GOW Studio")').count(), 1);
+  assert.equal(await page.locator('.cmd__item:has-text("GOW Design")').count(), 1);
   await page.locator("#cmdInput").fill("Sphera");
   assert.equal(await page.locator(".cmd__item").count(), 1, "project rows are searchable");
   await page.keyboard.press("Escape");
