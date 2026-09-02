@@ -183,30 +183,45 @@ test("the People list keeps the selected row highlighted while a person's modal 
   // `hover()` scrolls the row into view and parks the pointer on it in one
   // go, but the page scrolls through Lenis (scroll.mjs) — on CI the row was
   // still gliding under the pointer when the next line measured it and came
-  // back unhovered (30/08/2026, PR #87). Hover until the row really is
-  // `:hover`; each retry re-aims at wherever the row has settled.
+  // back unhovered (30/08/2026, PR #87). Re-hovering until `:hover` matched
+  // was not enough: Chromium re-resolves the hovered element once the scroll
+  // ends, so a row that read `:hover` in one round-trip was unhovered by the
+  // next (01/09/2026, PR #88). Now each attempt waits for the page to stop
+  // moving, re-aims the pointer at the settled row, and reads `:hover` and
+  // the fill in the same evaluate — retrying the whole thing until both hold.
+  const measureHover = () =>
+    page.evaluate(() => {
+      const row = document.querySelector('.people .row[data-person="emil"]');
+      const other = document.querySelector('.people .row[data-person="rauno"] .who');
+      const cs = getComputedStyle(row);
+      const token = getComputedStyle(document.documentElement).getPropertyValue("--row-hover").trim();
+      return {
+        isHover: row.matches(":hover"),
+        bg: cs.backgroundColor,
+        token,
+        shadow: cs.boxShadow,
+        instant: cs.transitionDuration === "0s" || !/background|box-shadow|all/.test(cs.transitionProperty),
+        marginLeft: parseFloat(cs.marginLeft),
+        textLeft: row.querySelector(".who").getBoundingClientRect().left,
+        sectionLeft: row.closest("section").getBoundingClientRect().left,
+        otherOpacity: getComputedStyle(other).opacity,
+      };
+    });
+  let hovered;
   for (let attempt = 0; attempt < 10; attempt += 1) {
     await emil.hover();
-    await page.waitForTimeout(100);
-    if (await emil.evaluate((row) => row.matches(":hover"))) break;
+    await page.waitForFunction(
+      () =>
+        new Promise((resolve) => {
+          const y = window.scrollY;
+          setTimeout(() => resolve(window.scrollY === y), 150);
+        }),
+    );
+    await emil.hover();
+    hovered = await measureHover();
+    if (hovered.isHover && hovered.bg === hovered.token) break;
   }
-  assert.equal(await emil.evaluate((row) => row.matches(":hover")), true, "the pointer rests on the row before the hover is measured");
-  const hovered = await page.evaluate(() => {
-    const row = document.querySelector('.people .row[data-person="emil"]');
-    const other = document.querySelector('.people .row[data-person="rauno"] .who');
-    const cs = getComputedStyle(row);
-    const token = getComputedStyle(document.documentElement).getPropertyValue("--row-hover").trim();
-    return {
-      bg: cs.backgroundColor,
-      token,
-      shadow: cs.boxShadow,
-      instant: cs.transitionDuration === "0s" || !/background|box-shadow|all/.test(cs.transitionProperty),
-      marginLeft: parseFloat(cs.marginLeft),
-      textLeft: row.querySelector(".who").getBoundingClientRect().left,
-      sectionLeft: row.closest("section").getBoundingClientRect().left,
-      otherOpacity: getComputedStyle(other).opacity,
-    };
-  });
+  assert.equal(hovered.isHover, true, "the pointer rests on the row before the hover is measured");
   assert.equal(hovered.bg, hovered.token, "hovered row is filled with --row-hover");
   assert.equal(hovered.shadow, "none", "no lift, fill only");
   assert.equal(hovered.instant, true, "the fill is instant");

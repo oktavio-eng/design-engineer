@@ -48,6 +48,18 @@
   // links[0][1]; see portfolio.mjs's renderList call site). Live as of
   // 22/08/2026 — see the file header and task-projects-home-v2.md.
   const projects = {
+    "caderno-de-erros": {
+      name: "Caderno de Erros",
+      role: "UX/UI + Identity + Website · EdTech",
+      preview: "https://framerusercontent.com/images/3hNIyBkZHnghlMhz2wT4u2MiDw.jpg",
+      bio: "Visual identity and full platform — desktop, tablet, and mobile, light and dark — for a study method built around logging mistakes by cause and reviewing them on a spaced schedule. Designed end-to-end in Figma and shipped to Framer, including the subscription flow with a custom coupon system (live price updates via DOM overrides) and ASAAS payment integration. 15K Instagram followers; beta testers have specifically praised logging discursive (essay-style) questions and the clean, distraction-free interface.",
+      items: [
+        "Full platform design across desktop/tablet/mobile, light/dark — Figma → Framer.",
+        "Built the subscription page's coupon logic as reusable Framer overrides.",
+        "Kept the interface deliberately quiet so the study method stays the focus.",
+      ],
+      links: [["Live site", "https://www.cadernodeerros.com.br/"]],
+    },
     "sphera-academy": {
       name: "Sphera Academy",
       role: "UX/UI + Design System",
@@ -61,52 +73,11 @@
       ],
       links: [["Live site", "https://www.spheraacademy.com/"]],
     },
-    "caderno-de-erros": {
-      name: "Caderno de Erros",
-      role: "UX/UI + Identity + Website · EdTech",
-      preview: "https://framerusercontent.com/images/3hNIyBkZHnghlMhz2wT4u2MiDw.jpg",
-      bio: "Visual identity and full platform — desktop, tablet, and mobile, light and dark — for a study method built around logging mistakes by cause and reviewing them on a spaced schedule. Designed end-to-end in Figma and shipped to Framer, including the subscription flow with a custom coupon system (live price updates via DOM overrides) and ASAAS payment integration. 15K Instagram followers; beta testers have specifically praised logging discursive (essay-style) questions and the clean, distraction-free interface.",
-      items: [
-        "Full platform design across desktop/tablet/mobile, light/dark — Figma → Framer.",
-        "Built the subscription page's coupon logic as reusable Framer overrides.",
-        "Kept the interface deliberately quiet so the study method stays the focus.",
-      ],
-      links: [["Live site", "https://www.cadernodeerros.com.br/"]],
-    },
-    "cloudfaster-academy": {
-      name: "CloudFaster Academy",
-      role: "UX/UI + Identity + Website · Cloud/AWS training",
-      preview: "https://cloudfaster.academy/assets/og-image.png",
-      bio: "Visual identity and website for an AWS certification training brand serving individual learners and corporate teams — built on solid UI/UX fundamentals for a straightforward certification-prep flow. The brand has since expanded to a mobile app and B2B plans, a later business decision outside this project's scope.",
-      links: [["Live site", "https://cloudfaster.academy/"]],
-    },
-    dascia: {
-      name: "DascIA",
-      role: "UX/UI + Identity + Website · AI Education",
-      bio: "Visual identity and website, via GOW Design, for an AI-education brand positioned against shallow 'AI in three clicks' courses — built to read as technical and credible.",
-      items: ["Compressed, mixed-weight capital headline as the core brand device."],
-      links: [["Live site", "https://dascia.com.br/"]],
-    },
-    "finq-edu": {
-      name: "FinQ Edu",
-      role: "UX/UI + Identity + Website · Investment Banking prep",
-      bio: "Visual identity and initial website version, at company launch, for an investment-banking/private-equity prep brand founded by people with real Wall Street backgrounds — built to give women a foothold in an IB/PE space that's highly competitive and visually closed off. Bet on gradients and vivid color, a deliberate break from every competitor's visual convention in the category. Structured the first version of the site and built out the app and web system screens; the live site has evolved since.",
-      items: [
-        "Identity built to stand out for women in IB/PE — a category where competitor branding is uniformly conservative.",
-        "Gradients and vivid color as a deliberate break from category convention.",
-        "Structured the first site version and built the app + web system screens — not the version currently live.",
-      ],
-      faviconFrom: "https://www.finqedu.com.br/",
-      links: [
-        ["App LP", "https://finqedu.webflow.io/"],
-        ["Original site", "https://dev-finqedu.webflow.io/"],
-      ],
-    },
     "escola-da-bel": {
       name: "Escola da Bel",
-      role: "Campaign key visuals · Medical aesthetics",
+      role: "Interactive Product + Campaigns · Medical Education",
       preview: "https://framerusercontent.com/images/BP6trVJNYC4N4uySVf4sXwSvUA.jpg",
-      bio: "Ongoing campaign key visuals inside an already-established brand identity — includes surrealist matte-painting series (Fresh Frozen Paris, Las Vegas) and a full anatomical illustration set for a medical-education atlas. Also built a Framer-based diagnostic quiz (7-course recommendation engine) with a Google Sheets webhook and iframe height-sync, used as a lead-gen tool on the site — it generated around 600 leads at a single event of 1,500–2,000 attendees.",
+      bio: "Interactive product work and campaign systems for a medical-education company. Built a Framer-based diagnostic quiz with a seven-course recommendation engine, Google Sheets webhook and iframe height sync, used as a lead-generation tool on the site. It generated around 600 leads at a single event with 1,500–2,000 attendees. Ongoing campaign work also includes the Fresh Frozen Paris and Las Vegas series and a full anatomical illustration set for a medical-education atlas.",
       items: [
         "Surrealist campaign series: Fresh Frozen Paris, Las Vegas.",
         "Anatomical illustration set for a course atlas.",
@@ -154,6 +125,35 @@
       ],
       links: [["Live site", "https://escoladabel.com/"]],
     },
+    "cloudfaster-academy": {
+      name: "CloudFaster Academy",
+      role: "UX/UI + Identity + Website · Cloud/AWS training",
+      preview: "https://cloudfaster.academy/assets/og-image.png",
+      bio: "Visual identity and website for an AWS certification training brand serving individual learners and corporate teams — built on solid UI/UX fundamentals for a straightforward certification-prep flow. The brand has since expanded to a mobile app and B2B plans, a later business decision outside this project's scope.",
+      links: [["Live site", "https://cloudfaster.academy/"]],
+    },
+    dascia: {
+      name: "DascIA",
+      role: "UX/UI + Identity + Website · AI Education",
+      bio: "Visual identity and website, via GOW Design, for an AI-education brand positioned against shallow 'AI in three clicks' courses — built to read as technical and credible.",
+      items: ["Compressed, mixed-weight capital headline as the core brand device."],
+      links: [["Live site", "https://dascia.com.br/"]],
+    },
+    "finq-edu": {
+      name: "FinQ Edu",
+      role: "UX/UI + Identity + Website · Investment Banking prep",
+      bio: "Visual identity and initial website version, at company launch, for an investment-banking/private-equity prep brand founded by people with real Wall Street backgrounds — built to give women a foothold in an IB/PE space that's highly competitive and visually closed off. Bet on gradients and vivid color, a deliberate break from every competitor's visual convention in the category. Structured the first version of the site and built out the app and web system screens; the live site has evolved since.",
+      items: [
+        "Identity built to stand out for women in IB/PE — a category where competitor branding is uniformly conservative.",
+        "Gradients and vivid color as a deliberate break from category convention.",
+        "Structured the first site version and built the app + web system screens — not the version currently live.",
+      ],
+      faviconFrom: "https://www.finqedu.com.br/",
+      links: [
+        ["App LP", "https://finqedu.webflow.io/"],
+        ["Original site", "https://dev-finqedu.webflow.io/"],
+      ],
+    },
     "jlcp-tecnologia": {
       name: "JLCP Tecnologia",
       role: "Brand Identity + Positioning · IT Observability",
@@ -197,7 +197,7 @@
       links: [["Open", "https://oktavio.vercel.app/prompts"]],
     },
     "gow-studio": {
-      name: "GOW Studio",
+      name: "GOW Design",
       role: "Studio · ongoing",
       bio: "The studio the client work ships under, since 2019 — interface design, brand systems, and design engineering.",
       links: [["Site", "https://gowdesign.framer.website/"]],
@@ -208,7 +208,7 @@
     brazil: {
       name: "Brazil, remote",
       role: "Where I work from",
-      bio: "Earning in dollars, staying in Brazil. Relocation is plan B, not a prerequisite — the work travels, I don't have to.",
+      bio: "Currently based in Brazil, working remotely with international teams and open to relocating for the right product opportunity.",
       links: [],
     },
     "design-circuit": {
@@ -263,7 +263,7 @@
   // replace/extend with real photos.
   const gallery = [
     { src: "/avatar.webp", alt: "Portrait of Otavio Alexandre", caption: "Otavio", width: 150, height: 150 },
-    { src: "/Logo%20Black.svg", alt: "GOW Studio mark", caption: "GOW Studio", width: 44, height: 56 },
+    { src: "/Logo%20Black.svg", alt: "GOW Design mark", caption: "GOW Design", width: 44, height: 56 },
     { src: "/og.jpg", alt: "The plan page's share card", caption: "The plan, as a card", width: 1200, height: 628 },
   ];
 
