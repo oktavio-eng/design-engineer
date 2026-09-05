@@ -70,7 +70,7 @@ const INTERACTIVE = [
 
 /* Elements whose own :hover already paints the highlight (see main.css). The
    pointer merges into these instead of drawing a second fill on top. */
-const MERGE = "main > section .row, .row-btn, .doc-item, .cmd__item";
+const MERGE = "main > section .row, .row-btn, .doc-item, .cmd__item, .admin-content-row, .admin-nav-item, .admin-inbox-row";
 
 const TEXT_FIELDS = "input:not([type=button]):not([type=submit]):not([type=checkbox]):not([type=radio]):not([type=range]), textarea, [contenteditable='']:not([contenteditable='false']), [contenteditable='true']";
 
@@ -372,6 +372,7 @@ export function mountCursor(options = {}) {
     visible = true;
     win.clearTimeout(idleTimer);
     idleTimer = win.setTimeout(() => {
+      if (doc.body.classList.contains('admin-page') && hoverEl?.matches(TEXT_FIELDS)) return;
       target.o = 0;
       kick();
     }, IDLE_MS);

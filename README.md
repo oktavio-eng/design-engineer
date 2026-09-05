@@ -55,3 +55,7 @@ python3 -m http.server 8000
 ```
 
 Nunca abrir via `file://` — os caminhos de `styles/main.css` e `script.js` são absolutos e não resolvem sem servidor.
+
+## Studio de conteúdo
+
+Dashboard com edição, rascunhos e lixeira das coleções do portfólio, usando Cloudflare D1. Rode `npm ci` e `npm run dev:admin`, depois abra `http://127.0.0.1:8787/admin` (`admin` / `admin123`, somente local). Setup, arquitetura, testes e migração de mensagens em [docs/studio.md](docs/studio.md). Produção ainda depende da configuração do Cloudflare Access e dos rewrites.

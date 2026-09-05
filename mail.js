@@ -59,17 +59,11 @@
    re-checks before posting, and if the address has somehow gone bad it
    returns to the email step with the hint instead of sending.
 
-   Storage (29/08/2026): each send also inserts a row into a Supabase
-   `messages` table (plain REST, `POST /rest/v1/messages` with the anon key,
-   no SDK — the site has no bundler) so there's an archive beyond the inbox.
-   Web3Forms and Supabase run in parallel via `Promise.allSettled`; the
-   sheet shows "sent" when at least one landed (the inbox is the primary
-   channel, the table is the copy — losing one shouldn't hide the message
-   the other delivered), and only when both fail does `#mailTextHint` say so
-   — before this, a failed send was a console.error and nothing else. With
-   `SUPABASE_URL`/`SUPABASE_ANON_KEY` blank the insert is skipped entirely
-   (a kill switch, not the shipped state — both are filled in below).
-   Table, RLS and setup: supabase/schema.sql + docs/messages.md.
+   Archive (04/09/2026): POST /api/contact stores the message in Cloudflare
+   D1. Web3Forms still delivers the email. Both requests run in parallel;
+   one success is enough to confirm delivery. The Worker validates and
+   throttles inserts; reading messages requires an admin session.
+   See docs/studio.md for the local and production setup.
 
    Hardening (29/08/2026, docs/messages.md "Segurança"): the email step
    carries a one-line notice ("Used only to reply.") — the LGPD/GDPR
@@ -78,8 +72,9 @@
    input moved off-screen (not display:none — bots skip those), tabindex -1
    and aria-hidden so no human ever reaches it; when it has a value,
    `sendMail()` plays the whole "sent" choreography and posts nothing.
-   `maxlength` on both fields mirrors the CHECK constraints in
-   supabase/schema.sql (254 / 5000) so a long message is stopped at the
+   `maxlength` on both fields mirrors the length CHECK constraints in
+   cloudflare/migrations/0001_studio.sql (254 / 5000; the email pattern is
+   enforced by the Worker, not the table) so a long message is stopped at the
    keyboard, not by a 400 the sheet would never show (Web3Forms would still
    accept it and the row would silently be missing).
 --------------------------------------------------------------------------- */
@@ -87,16 +82,11 @@
   var MAIL_TO = "oktavio@gowstudio.pro";
   var MAIL_SUBJECT = "Hey Oktavio";
   var WEB3FORMS_KEY = "81ee78a2-91c0-4dcb-8afa-926da9bafccc";
-  // Supabase project URL + publishable (public) key, from Project Settings →
-  // API Keys. The publishable key is meant to ship to the browser; what it
-  // can do is bounded by the RLS policy in supabase/schema.sql (insert only,
-  // never read — a GET with this key answers 42501). Blank either one to
-  // switch the archive off; the send then goes through Web3Forms alone.
-  var SUPABASE_URL = "https://kowjxmdbqlxerctikycm.supabase.co";
-  var SUPABASE_ANON_KEY = "sb_publishable_WpxEBd1unX-9B8FTcV-pIw_mGF7hCIv";
-  var SUPABASE_TABLE = "messages";
+  // Same-origin route, forwarded to the Cloudflare Worker in production.
+  var CONTACT_ENDPOINT = "/api/contact";
   // WHATWG's input[type=email] pattern with one change: the domain needs at
-  // least one dot. Mirrored by the CHECK constraint in supabase/schema.sql.
+  // least one dot. The Worker re-checks the same pattern before the D1 insert
+  // (cloudflare/worker.mjs EMAIL_RE); the migration itself only bounds lengths.
   var EMAIL_RE =
     /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/;
   var HINT_EMPTY = "Add your email so I can reply.";
@@ -282,19 +272,14 @@
         return "web3forms";
       });
   }
-  function saveToSupabase(email, body) {
-    return fetch(SUPABASE_URL.replace(/\/$/, "") + "/rest/v1/" + SUPABASE_TABLE, {
+  function saveToArchive(email, body) {
+    return fetch(CONTACT_ENDPOINT, {
       method: "POST",
-      headers: {
-        apikey: SUPABASE_ANON_KEY,
-        Authorization: "Bearer " + SUPABASE_ANON_KEY,
-        "Content-Type": "application/json",
-        Prefer: "return=minimal",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email: email, message: body, page: location.pathname }),
     }).then(function (res) {
-      if (!res.ok) throw new Error("Supabase: HTTP " + res.status);
-      return "supabase";
+      if (!res.ok) throw new Error("Message archive: HTTP " + res.status);
+      return "cloudflare-d1";
     });
   }
   function sendMail() {
@@ -312,7 +297,7 @@
     // the script on the other end sees nothing to adapt to.
     if (!mailTrap.value) {
       jobs.push(sendViaWeb3Forms(replyEmail, body));
-      if (SUPABASE_URL && SUPABASE_ANON_KEY) jobs.push(saveToSupabase(replyEmail, body));
+      jobs.push(saveToArchive(replyEmail, body));
     }
     Promise.allSettled(jobs).then(function (results) {
       sending = false;

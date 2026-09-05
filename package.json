@@ -8,7 +8,11 @@
     "test-storybook:watch": "vitest --project=storybook",
     "test:product-ui": "node --test tests/ui/*.test.mjs",
     "test:visual": "node --test tests/visual/storybook.visual.test.mjs",
-    "test:ui": "npm run test-storybook && npm run test:product-ui && npm run test:visual"
+    "test:ui": "npm run test-storybook && npm run test:product-ui && npm run test:visual",
+    "dev:admin": "npm run build:worker && wrangler d1 migrations apply oktavio-studio --local && wrangler dev --ip 127.0.0.1 --port 8787 --var LOCAL_DEV:true",
+    "build:worker": "node scripts/build-worker.mjs",
+    "test:admin": "npm run build:worker && node --test tests/admin/*.test.mjs",
+    "deploy:studio": "node scripts/check-studio-deploy.mjs && npm run build:worker && wrangler deploy"
   },
   "devDependencies": {
     "@blazediff/core": "1.9.1",
@@ -20,7 +24,8 @@
     "playwright": "1.58.2",
     "pngjs": "7.0.0",
     "storybook": "10.5.7",
-    "vitest": "4.1.10"
+    "vitest": "4.1.10",
+    "wrangler": "4.129.0"
   },
   "dependencies": {
     "cuelume": "^0.2.2",

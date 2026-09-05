@@ -38,6 +38,9 @@ jobs:
       - name: Run production UI smoke test
         run: npm run test:product-ui
 
+      - name: Run Studio and D1 tests
+        run: npm run test:admin
+
       - name: Run visual regression tests
         run: npm run test:visual
 

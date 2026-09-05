@@ -2,3 +2,15 @@
 /storybook-static/
 /artifacts/
 /.claude/settings.local.json
+
+/.local/
+/.wrangler/
+/.worker-assets/
+/.worker-generated/
+/.dev.vars
+/.dev.vars.*
+/.env
+/.env.*
+
+# macOS
+.DS_Store
