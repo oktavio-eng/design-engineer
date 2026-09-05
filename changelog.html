@@ -79,6 +79,24 @@
 <li class="timeline__entry">
 <div class="timeline__rail"><span class="timeline__marker"></span></div>
 <div class="timeline__content">
+<time class="label timeline__date" datetime="2026-09-05">Sep 5</time>
+<article class="timeline__item">
+<h3 class="timeline__title">The content now comes from a studio of my own</h3>
+<p>Until today every person, course, reading, reference, prompt and project on this site lived in two JavaScript files, and changing a line meant a pull request and a deploy. There is now a small content studio behind a login: eleven collections, a structured editor, drafts, a trash that can restore, a live preview and an export. The public pages read the content from a database at the edge, so an edit shows up on the next reload, and the files in the repository became the seed the studio starts from. The studio lives on its own host, not on this domain, and nothing about it is reachable from here.</p>
+</article>
+<article class="timeline__item">
+<h3 class="timeline__title">Messages moved house</h3>
+<p>The archive that started on Aug 29 moved from a hosted Postgres to the same edge database, along with the three messages it held, and the studio grew an inbox for them: unread markers, search, archive and restore, and a reply that opens your mail client. The composer on this site is unchanged; it now archives through a route on this domain instead of calling the old database directly, and the page carries no database key at all anymore.</p>
+</article>
+<article class="timeline__item">
+<h3 class="timeline__title">What it took to trust it</h3>
+<p>Content the studio writes is plain text everywhere except the glossary marks the wiki already used, and those are filtered before they reach the page. A review in eight passes went over the new code before it shipped; what it found is fixed or listed in the repository&rsquo;s changelog for later.</p>
+</article>
+</div>
+</li>
+<li class="timeline__entry">
+<div class="timeline__rail"><span class="timeline__marker"></span></div>
+<div class="timeline__content">
 <time class="label timeline__date" datetime="2026-08-29">Aug 29</time>
 <article class="timeline__item">
 <h3 class="timeline__title">The Writing rows are the first thing designed in Figma first</h3>

@@ -58,4 +58,4 @@ Nunca abrir via `file://` — os caminhos de `styles/main.css` e `script.js` sã
 
 ## Studio de conteúdo
 
-Dashboard com edição, rascunhos e lixeira das coleções do portfólio, usando Cloudflare D1. Rode `npm ci` e `npm run dev:admin`, depois abra `http://127.0.0.1:8787/admin` (`admin` / `admin123`, somente local). Setup, arquitetura, testes e migração de mensagens em [docs/studio.md](docs/studio.md). Produção ainda depende da configuração do Cloudflare Access e dos rewrites.
+Dashboard com edição, rascunhos e lixeira das coleções do portfólio, usando Cloudflare D1. Rode `npm ci` e `npm run dev:admin`, depois abra `http://127.0.0.1:8787/admin` (`admin` / `admin123`, somente local). Setup, arquitetura, testes e migração de mensagens em [docs/studio.md](docs/studio.md). Em produção o Studio roda num Cloudflare Worker próprio, atrás do Cloudflare Access; o site público lê o conteúdo dele pelos rewrites do `vercel.json`.
