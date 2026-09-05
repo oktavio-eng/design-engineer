@@ -29,5 +29,23 @@
         }
       ]
     }
+  ],
+  "rewrites": [
+    {
+      "source": "/api/contact",
+      "destination": "https://oktavio-studio.oktavio.workers.dev/api/contact"
+    },
+    {
+      "source": "/content.js",
+      "destination": "https://oktavio-studio.oktavio.workers.dev/content.js"
+    },
+    {
+      "source": "/portfolio-content.js",
+      "destination": "https://oktavio-studio.oktavio.workers.dev/portfolio-content.js"
+    },
+    {
+      "source": "/prompts.mjs",
+      "destination": "https://oktavio-studio.oktavio.workers.dev/prompts.mjs"
+    }
   ]
 }

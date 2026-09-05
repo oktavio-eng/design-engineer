@@ -14,6 +14,7 @@ const staticDirectory = path.join(repositoryRoot, "storybook-static");
 const baselineDirectory = path.join(repositoryRoot, "tests/visual/baselines");
 const artifactDirectory = path.join(repositoryRoot, "artifacts/visual");
 const updateBaselines = process.env.UPDATE_VISUAL_BASELINES === "1";
+const requestedCases = process.env.VISUAL_CASES?.split(',');
 
 const cases = [
   { name: "colors-light", story: "foundations--colors", theme: "light", flatType: "off", width: 1024, height: 768 },
@@ -57,6 +58,16 @@ const cases = [
   { name: "portfolio-writing-light", story: "patterns-portfolio--writing-list", theme: "light", flatType: "on", width: 1024, height: 700 },
   { name: "portfolio-contrib-dark", story: "patterns-portfolio--contributions", theme: "dark", flatType: "on", width: 1024, height: 700 },
   { name: "portfolio-gallery-light", story: "patterns-portfolio--gallery", theme: "light", flatType: "on", width: 1024, height: 700 },
+  { name: "studio-inbox-light", story: "studio-content--message-inbox", theme: "light", flatType: "off", width: 1200, height: 800, state: "inbox-reading", fullPage: false },
+  { name: "studio-inbox-dark", story: "studio-content--message-inbox", theme: "dark", flatType: "on", width: 1200, height: 800, state: "inbox-reading", fullPage: false },
+  { name: "studio-inbox-narrow", story: "studio-content--message-inbox", theme: "light", flatType: "on", width: 320, height: 800, state: "inbox-reading", fullPage: false },
+  // Studio typeface (05/09/2026): the slider popover over the sidebar foot in
+  // light, and the whole shell re-set in Geist Pixel in dark — where the
+  // ELSH Square grid and the native-400 exception to the Medium floor show.
+  // Pixel/mono advances drift between CoreText and FreeType like the prompt
+  // block does (see prompts-modal-light above), hence the same radius/limit.
+  { name: "studio-typeface-light", story: "studio-content--typeface-switcher", theme: "light", flatType: "off", width: 1200, height: 800, state: "typeface-open", fullPage: false },
+  { name: "studio-typeface-pixel-dark", story: "studio-content--typeface-switcher", theme: "dark", flatType: "on", width: 1200, height: 800, state: "typeface-pixel", fullPage: false, blurRadius: 4, perceptualLimit: 0.012 },
 ];
 
 async function captureStable(page, fullPage = true) {
@@ -71,6 +82,26 @@ async function captureStable(page, fullPage = true) {
 }
 
 async function applyState(page, visualCase) {
+  if (visualCase.state === 'inbox-reading') {
+    await page.getByRole('heading', { name: 'ana@example.com' }).waitFor();
+    await page.evaluate(() => document.activeElement?.blur());
+    await page.mouse.move(0, 0);
+  }
+  if (visualCase.state === "typeface-open" || visualCase.state === "typeface-pixel") {
+    // The story's play walks Sans → Mono → Pixel → Sans and closes the popover;
+    // wait for its marker before opening the resting state for the capture.
+    await page.locator('.admin-page[data-play-done="true"]').waitFor();
+    await page.getByRole("button", { name: "Fonte do Studio: Geist Sans" }).click();
+    await page.locator("#admin-typeface-popover:popover-open").waitFor();
+    await page.waitForFunction(() => document.activeElement?.classList.contains("admin-typeface-range"));
+    if (visualCase.state === "typeface-pixel") {
+      await page.keyboard.press("End");
+      await page.waitForFunction(() => document.querySelector(".admin-page")?.dataset.typeface === "pixel");
+    }
+    await page.evaluate(() => document.fonts.ready);
+    await page.evaluate(() => document.activeElement?.blur());
+    await page.mouse.move(0, 0);
+  }
   if (visualCase.state === "expanded") {
     const button = page.locator(".see-more");
     if ((await button.getAttribute("aria-expanded")) !== "true") await button.click();
@@ -258,6 +289,7 @@ async function compareScreenshot(visualCase, screenshot) {
 }
 
 test("Storybook visual matrix stays within reviewed baselines", { timeout: 60_000 }, async (context) => {
+  if (requestedCases) assert.ok(requestedCases.every(name => cases.some(entry => entry.name === name)), 'Unknown VISUAL_CASES entry');
   assert.ok(existsSync(path.join(staticDirectory, "index.html")), "Run npm run build-storybook first");
   await mkdir(baselineDirectory, { recursive: true });
   await mkdir(artifactDirectory, { recursive: true });
@@ -269,13 +301,13 @@ test("Storybook visual matrix stays within reviewed baselines", { timeout: 60_00
     await server.close();
   });
 
-  for (const visualCase of cases) {
+  for (const visualCase of cases.filter(entry => !requestedCases || requestedCases.includes(entry.name))) {
     const page = await browserContext.newPage();
     await page.setViewportSize({ width: visualCase.width, height: visualCase.height });
     const globals = `theme:${visualCase.theme};flatType:${visualCase.flatType}`;
     const url = `${server.origin}/iframe.html?id=${visualCase.story}&viewMode=story&globals=${globals}`;
     await page.goto(url, { waitUntil: "domcontentloaded" });
-    await page.waitForSelector("#storybook-root .sb-inventory");
+    await page.waitForSelector(visualCase.story.startsWith('studio-') ? '#storybook-root .admin-page' : '#storybook-root .sb-inventory');
     await page.evaluate(() => document.fonts.ready);
     await page.addStyleTag({ content: "* { caret-color: transparent !important; }" });
     await page.waitForTimeout(1_200);

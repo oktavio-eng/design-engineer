@@ -1,0 +1,23 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "oktavio-studio",
+  "account_id": "843e0281e05ed362758615a004de933b",
+  "main": "cloudflare/worker.mjs",
+  "compatibility_date": "2026-09-04",
+  "workers_dev": true,
+  "preview_urls": false,
+  "assets": { "directory": ".worker-assets", "binding": "ASSETS", "run_worker_first": true },
+  "d1_databases": [{
+    "binding": "DB",
+    "database_name": "oktavio-studio",
+    "database_id": "9c0f040a-6b64-4a1d-9e26-263b0cb2dada",
+    "migrations_dir": "cloudflare/migrations"
+  }],
+  "vars": {
+    "LOCAL_DEV": "false",
+    "SITE_ORIGIN": "https://oktavio.vercel.app",
+    "ACCESS_TEAM_DOMAIN": "https://oktavio.cloudflareaccess.com",
+    "ACCESS_AUD": "770041307546001a17307fa6eb407784b9ec1b076b89572853f8ae7e973ae3a6",
+    "ADMIN_EMAIL": "oktavio@gowstudio.pro"
+  }
+}

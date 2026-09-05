@@ -9,7 +9,9 @@
    in content.js and are published on window.SITE_CONTENT — shared with cmd.mjs,
    which indexes them for the ⌘K palette on every page. content.js is loaded
    before this file (see the <script> order in index.html). */
-const { people, phases, refs, courses, readings } = window.SITE_CONTENT,
+// Since the Studio cutover /content.js is proxied to the Worker and can fail on
+// its own; empty collections keep the panel, theme and mail wiring alive.
+const { people = {}, phases = {}, refs = {}, courses = {}, readings = {} } = window.SITE_CONTENT || {},
   panel = document.getElementById("panel"),
   panelWash = document.getElementById("panelWash"),
   content = document.getElementById("panelContent"),
@@ -407,7 +409,7 @@ rows.forEach(function (e, t) {
   e.addEventListener("click", function () {
     activeRow !== e ? openAt("people", t) : close();
   }),
-    e.querySelector("a").addEventListener("click", function (n) {
+    e.querySelector("a")?.addEventListener("click", function (n) {
       n.metaKey ||
         n.ctrlKey ||
         n.shiftKey ||
@@ -457,7 +459,7 @@ lists.phase.els.forEach(function (e, t) {
       t.addEventListener("click", function () {
         activeRow !== t ? openAt(e, n) : close();
       }),
-        t.querySelector("a").addEventListener("click", function (a) {
+        t.querySelector("a")?.addEventListener("click", function (a) {
           a.metaKey ||
             a.ctrlKey ||
             a.shiftKey ||

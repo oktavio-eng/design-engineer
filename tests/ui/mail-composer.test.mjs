@@ -9,12 +9,6 @@ import { serveDirectory } from "./helpers/static-server.mjs";
 const repositoryRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 const axeScriptPath = path.resolve(repositoryRoot, "node_modules/axe-core/axe.min.js");
 
-// Stand-in Supabase project. The test serves a copy of mail.js with the real
-// URL/key swapped for these, so the assertions below prove the request shape
-// (headers, body, path) without ever touching the production table.
-const FAKE_SUPABASE_URL = "https://test-project.supabase.co";
-const FAKE_SUPABASE_KEY = "anon-key-for-tests";
-
 async function scanAxe(page, state) {
   const violations = await page.evaluate(async () => {
     const result = await window.axe.run(document.getElementById("mailModal"), {
@@ -28,7 +22,7 @@ async function scanAxe(page, state) {
   assert.deepEqual(violations, [], `${state} must be axe-clean`);
 }
 
-test("mail composer validates the reply email before sending and archives the message in Supabase", { timeout: 60_000 }, async (context) => {
+test("mail composer validates the reply email before sending and archives the message in Cloudflare D1", { timeout: 60_000 }, async (context) => {
   const server = await serveDirectory(repositoryRoot);
   const browser = await launchChromium();
   context.after(async () => {
@@ -42,23 +36,8 @@ test("mail composer validates the reply email before sending and archives the me
   // The home plays the intro since 16/08/2026 (intro.js) — skip it.
   await page.addInitScript(() => sessionStorage.setItem("intro-shown-v1", "1"));
 
-  const mailSource = await readFile(path.join(repositoryRoot, "mail.js"), "utf8");
-  const urlLine = /var SUPABASE_URL = "[^"]*";/;
-  const keyLine = /var SUPABASE_ANON_KEY = "[^"]*";/;
-  assert.match(mailSource, urlLine, "mail.js declares SUPABASE_URL");
-  assert.match(mailSource, keyLine, "mail.js declares SUPABASE_ANON_KEY");
-  await page.route("**/mail.js", (route) =>
-    route.fulfill({
-      status: 200,
-      contentType: "text/javascript",
-      body: mailSource
-        .replace(urlLine, `var SUPABASE_URL = "${FAKE_SUPABASE_URL}";`)
-        .replace(keyLine, `var SUPABASE_ANON_KEY = "${FAKE_SUPABASE_KEY}";`),
-    }),
-  );
-
   const web3formsRequests = [];
-  const supabaseRequests = [];
+  const archiveRequests = [];
   await page.route(/^https?:\/\/(?!127\.0\.0\.1)/, (route) => {
     const request = route.request();
     const url = request.url();
@@ -66,14 +45,15 @@ test("mail composer validates the reply email before sending and archives the me
       web3formsRequests.push(request.postDataJSON());
       return route.fulfill({ status: 200, contentType: "application/json", body: '{"success":true}' });
     }
-    if (url.startsWith(FAKE_SUPABASE_URL)) {
-      supabaseRequests.push({ url, headers: request.headers(), body: request.postDataJSON() });
-      return route.fulfill({ status: 201, body: "" });
-    }
     if (request.resourceType() === "stylesheet") {
       return route.fulfill({ status: 200, contentType: "text/css", body: "" });
     }
     return route.fulfill({ status: 204, body: "" });
+  });
+
+  await page.route("**/api/contact", route => {
+    archiveRequests.push({ url: route.request().url(), body: route.request().postDataJSON() });
+    return route.fulfill({ status: 201, contentType: "application/json", body: '{"ok":true}' });
   });
 
   await page.goto(`${server.origin}/`, { waitUntil: "load" });
@@ -107,7 +87,7 @@ test("mail composer validates the reply email before sending and archives the me
   await page.waitForFunction(() => document.activeElement === document.getElementById("mailReply"));
   assert.equal(await replyHint.isVisible(), false, "no hint before the first attempt");
   assert.equal(await stepEmail.locator(".composer__to").textContent(), "Used only to reply.", "the transparency line sits in the actions row");
-  // Field limits mirror the CHECK constraints in supabase/schema.sql.
+  // Field limits mirror the CHECK constraints in cloudflare/migrations/0001_studio.sql.
   assert.equal(await reply.getAttribute("maxlength"), "254");
   assert.equal(await text.getAttribute("maxlength"), "5000");
 
@@ -150,7 +130,7 @@ test("mail composer validates the reply email before sending and archives the me
   assert.notEqual(await trap.evaluate((el) => getComputedStyle(el).display), "none");
   assert.equal(await trap.evaluate((el) => el.getBoundingClientRect().right < 0), true, "off-canvas");
 
-  // 4. Send: Web3Forms and Supabase both receive the message, the button
+  // 4. Send: Web3Forms and Cloudflare D1 both receive the message, the button
   //    lands on "sent", the sheet auto-closes.
   await text.fill("Hello from the test suite");
   assert.equal(await send.getAttribute("data-mode"), "send");
@@ -161,12 +141,9 @@ test("mail composer validates the reply email before sending and archives the me
   assert.equal(web3formsRequests[0].email, "visitor@example.com", "the reply address is trimmed");
   assert.equal(web3formsRequests[0].message, "Hello from the test suite");
 
-  assert.equal(supabaseRequests.length, 1, "one Supabase insert");
-  assert.equal(supabaseRequests[0].url, `${FAKE_SUPABASE_URL}/rest/v1/messages`);
-  assert.equal(supabaseRequests[0].headers.apikey, FAKE_SUPABASE_KEY);
-  assert.equal(supabaseRequests[0].headers.authorization, `Bearer ${FAKE_SUPABASE_KEY}`);
-  assert.equal(supabaseRequests[0].headers.prefer, "return=minimal");
-  assert.deepEqual(supabaseRequests[0].body, {
+  assert.equal(archiveRequests.length, 1, "one Cloudflare D1 insert");
+  assert.equal(archiveRequests[0].url, `${server.origin}/api/contact`);
+  assert.deepEqual(archiveRequests[0].body, {
     email: "visitor@example.com",
     message: "Hello from the test suite",
     page: "/",
@@ -175,6 +152,8 @@ test("mail composer validates the reply email before sending and archives the me
   await page.waitForFunction(() => !document.body.classList.contains("mail-open"), null, { timeout: 5_000 });
   assert.equal(await text.inputValue(), "", "the draft is cleared after a successful send");
 
+  await page.unroute("**/api/contact");
+  await page.route("**/api/contact", route => route.fulfill({ status: 500, body: "{}" }));
   // 5. Both destinations down → the message step says so instead of going
   //    silent, and nothing is cleared.
   await page.unroute(/^https?:\/\/(?!127\.0\.0\.1)/);
@@ -198,10 +177,16 @@ test("mail composer validates the reply email before sending and archives the me
     posted.push(route.request().url());
     return route.fulfill({ status: 204, body: "" });
   });
+  // /api/contact is same-origin, so the external route above never sees it: record it separately.
+  await page.unroute("**/api/contact");
+  await page.route("**/api/contact", (route) => {
+    posted.push(route.request().url());
+    return route.fulfill({ status: 201, contentType: "application/json", body: '{"ok":true}' });
+  });
   await trap.evaluate((el) => (el.value = "http://spam.example"));
   await send.click();
   await page.waitForFunction(() => document.getElementById("mailSend").getAttribute("data-mode") === "sent");
-  assert.deepEqual(posted.filter((u) => /web3forms|supabase/.test(u)), [], "a honeypot hit posts nothing");
+  assert.deepEqual(posted.filter((u) => /web3forms|api\/contact/.test(u)), [], "a honeypot hit posts nothing");
   await page.waitForFunction(() => !document.body.classList.contains("mail-open"), null, { timeout: 5_000 });
 
   assert.deepEqual(pageErrors, []);
