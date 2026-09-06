@@ -333,6 +333,16 @@ const people = {
         ["X", "https://x.com/kosta4a"],
       ],
     },
+    mds: {
+      name: "Matt D. Smith",
+      role: "Founder, Shift Nudge · Float Label creator",
+      bio: "Twenty years leading interface design for startups and global brands, under the handle @mds. Created the Float Label pattern, later adopted by Apple and Google. Shift Nudge is his systematic framework for typography, layout, and color.",
+      links: [
+        ["Site", "https://mattdsmith.com"],
+        ["Shift Nudge", "https://www.shiftnudge.com"],
+        ["X", "https://x.com/mds"],
+      ],
+    },
   },
   phases = {
     f1: {
@@ -666,6 +676,12 @@ const people = {
       role: "Emil Kowalski &amp; Glenn Hitchcock · UI craft education · Evaluate",
       bio: "A UI craft education platform from Emil Kowalski and Glenn Hitchcock, launching fall 2026.",
       links: [["Open", "https://index.how"]],
+    },
+    shiftnudge: {
+      name: "Shift Nudge",
+      role: "Matt D. Smith · Evaluate",
+      bio: "Professional interface design training: 85+ videos on typography, layout, and color, plus critique vaults and an AI feedback tool trained on his method.",
+      links: [["Open", "https://www.shiftnudge.com"]],
     },
   },
   readings = {

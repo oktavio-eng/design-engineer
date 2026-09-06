@@ -101,8 +101,14 @@
 .admin-error:empty { display: none; }
 .admin-dialog { margin: auto; padding: 0; border: 0; border-radius: var(--radius-16); background: var(--bg); color: var(--ink); box-shadow: var(--shadow-card); width: min(calc(100% - var(--space-32)), var(--space-480)); max-height: calc(100dvh - var(--space-48)); overflow: auto; overscroll-behavior: contain; }
 .admin-dialog::backdrop { background: var(--wash-bg); backdrop-filter: blur(var(--glass-blur-sm)); }
-.admin-editor-dialog { width: min(calc(100% - var(--space-48)), calc(var(--space-960) + var(--space-128))); }
-.admin-editor-header { display: flex; justify-content: space-between; align-items: center; gap: var(--space-16); padding: var(--space-24) var(--space-32); background: var(--bg); border: 0; }
+.admin-editor-dialog { width: min(calc(100% - var(--space-48)), calc(var(--space-960) + var(--space-128))); background: var(--white); }
+.admin-editor-header { display: flex; justify-content: space-between; align-items: center; gap: var(--space-16); padding: var(--space-24) var(--space-32); background: var(--white); border: 0; }
+/* Editor dialog direction, 06/09: the dialog surface itself goes 100% white
+   (overriding .admin-dialog's --bg above); fields swap the other way and
+   pick up --bg, so they read as beige wells sitting on the white sheet
+   instead of white-on-beige. Scoped to .admin-editor-dialog so the smaller
+   confirm dialogs (openDialog() without `wide`) keep the beige surface. */
+.admin-editor-dialog .admin-field input, .admin-editor-dialog .admin-field textarea, .admin-editor-dialog .admin-field select, .admin-editor-dialog .admin-repeat-item > input, .admin-editor-dialog .admin-repeat-item > textarea, .admin-editor-dialog .admin-visibility select { background: var(--bg); }
 .admin-editor-header h2 { margin-top: var(--space-6); overflow-wrap: anywhere; }
 .admin-editor-layout { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); }
 .admin-editor-fields { padding: var(--space-32); }
@@ -222,10 +228,10 @@
 .admin-content-row { padding-inline: var(--space-16); }
 .admin-item-icon { height: var(--space-40); }
 .admin-field input, .admin-field select, .admin-visibility select { padding-inline: var(--space-20); }
-.admin-field textarea, .admin-repeat-item > textarea { border-radius: var(--radius-32); padding: var(--space-20) var(--space-24); }
+.admin-field textarea, .admin-repeat-item > textarea { border-radius: var(--radius-24); padding: var(--space-20) var(--space-24); }
 .admin-repeat-item { padding: var(--space-20) var(--space-24); }
-#entry-preview { border-radius: var(--radius-32); padding: var(--space-32); }
-.admin-dialog { border-radius: var(--radius-32); }
+#entry-preview { border-radius: var(--radius-24); padding: var(--space-32); }
+.admin-dialog { border-radius: var(--radius-24); }
 .admin-page .ipad-cursor[popover] { margin: 0; padding: 0; border: 0; inset: 0 auto auto 0; overflow: visible; }
 @media (max-width: 760px) {
   .admin-overview { padding-inline: var(--space-8); }
@@ -233,7 +239,7 @@
   .admin-content-row { padding-inline: var(--space-12); }
   .admin-repeat-item { padding: var(--space-12); }
   .admin-item-icon { height: var(--space-32); }
-  .admin-editor-dialog { border-radius: var(--radius-32); }
+  .admin-editor-dialog { border-radius: var(--radius-24); }
 }
 
 /* User direction: one continuous canvas, separated by space and surfaces. */
@@ -249,7 +255,7 @@
 /* A single inset workspace surface: sidebar belongs to the outer canvas. */
 .admin-shell { padding: var(--space-12); gap: var(--space-12); height: 100dvh; min-height: 0; }
 .admin-sidebar { height: calc(100dvh - var(--space-24)); padding-top: var(--space-24); }
-.admin-workspace { background: var(--white); border-radius: var(--radius-32); overflow-y: auto; overscroll-behavior: contain; min-height: 0; }
+.admin-workspace { background: var(--white); border-radius: var(--radius-24); overflow-y: auto; overscroll-behavior: contain; min-height: 0; }
 .admin-topbar { background: transparent; padding-top: var(--space-24); }
 .admin-main { padding-top: var(--space-40); }
 .admin-overview { background: var(--bg); }
@@ -282,10 +288,10 @@
 @media (max-width: 760px) {
   .admin-shell { height: auto; min-height: 100dvh; padding: var(--space-8); }
   .admin-sidebar { height: auto; padding: var(--space-12) var(--space-8); }
-  .admin-workspace { overflow: visible; border-radius: var(--radius-32); min-height: calc(100dvh - var(--space-220)); }
+  .admin-workspace { overflow: visible; border-radius: var(--radius-24); min-height: calc(100dvh - var(--space-220)); }
   .admin-topbar { padding-top: var(--space-20); }
   .admin-main { padding: var(--space-24) var(--space-16) var(--space-40); }
-  .admin-overview { border-radius: var(--radius-32); }
+  .admin-overview { border-radius: var(--radius-24); }
   .admin-sidebar-header { margin-bottom: var(--space-12); }
   .admin-sidebar-header .admin-brand { margin-bottom: 0; }
   .admin-shell[data-sidebar-collapsed="true"] .admin-sidebar nav { display: none; }
@@ -295,8 +301,8 @@
 }
 
 /* Cards use the existing 32px token; compact controls keep full rounding. */
-.admin-overview, .admin-repeat-item { border-radius: var(--radius-32); }
-.admin-toast { display: flex; align-items: center; gap: var(--space-12); width: max-content; border-radius: var(--radius-32); }
+.admin-overview, .admin-repeat-item { border-radius: var(--radius-24); }
+.admin-toast { display: flex; align-items: center; gap: var(--space-12); width: max-content; border-radius: var(--radius-24); }
 .admin-toast .admin-icon-button { flex-shrink: 0; }
 .admin-toast .admin-icon-button:hover { background: transparent; opacity: .7; }
 
@@ -337,7 +343,7 @@
 .admin-inbox-results { min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: var(--space-4); flex: 1; }
 .admin-inbox-list { list-style: none; padding: 0; margin: 0; display: grid; gap: var(--space-4); }
 .admin-inbox-list > li { min-width: 0; }
-.admin-inbox-row { display: flex; width: 100%; align-items: center; gap: var(--space-12); padding: var(--space-16); border: 0; border-radius: var(--radius-32); background: transparent; text-align: start; }
+.admin-inbox-row { display: flex; width: 100%; align-items: center; gap: var(--space-12); padding: var(--space-16); border: 0; border-radius: var(--radius-24); background: transparent; text-align: start; }
 .admin-inbox-row:hover { background: var(--bg); }
 .admin-inbox-row[aria-pressed="true"] { background: var(--ink-a5); }
 .admin-inbox-avatar { display: grid; place-items: center; flex-shrink: 0; width: var(--space-44); height: var(--space-44); border-radius: var(--radius-full); background: var(--bg); color: var(--muted); font-size: var(--fs-14); font-weight: var(--fw-medium); }
@@ -352,12 +358,12 @@
 .admin-inbox-list-empty { display: grid; justify-items: center; gap: var(--space-12); padding: var(--space-40) var(--space-16); text-align: center; font-size: var(--fs-14); }
 .admin-inbox-list-empty > svg { width: var(--space-32); height: var(--space-32); color: var(--muted); }
 .admin-inbox-list-empty > span { color: var(--muted); font-size: var(--fs-13); max-width: var(--space-240); }
-.admin-inbox-reader { min-width: 0; min-height: 0; border-radius: var(--radius-32); background: var(--bg); overflow-y: auto; overscroll-behavior: contain; }
+.admin-inbox-reader { min-width: 0; min-height: 0; border-radius: var(--radius-24); background: var(--bg); overflow-y: auto; overscroll-behavior: contain; }
 .admin-inbox-idle { min-height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--space-12); padding: var(--space-40) var(--space-24); text-align: center; }
 .admin-inbox-illustration { display: grid; place-items: center; width: var(--space-128); height: var(--space-128); margin-bottom: var(--space-16); border-radius: var(--radius-full); background: var(--white); color: var(--muted); }
 .admin-inbox-illustration svg { width: var(--space-64); height: var(--space-64); stroke-width: 1; }
 .admin-inbox-idle p { color: var(--muted); font-size: var(--fs-13); max-width: var(--space-240); }
-.admin-inbox-reader-toolbar { position: sticky; top: 0; z-index: 1; display: flex; align-items: center; gap: var(--space-8); padding: var(--space-16); background: var(--bg); border-radius: var(--radius-32); }
+.admin-inbox-reader-toolbar { position: sticky; top: 0; z-index: 1; display: flex; align-items: center; gap: var(--space-8); padding: var(--space-16); background: var(--bg); border-radius: var(--radius-24); }
 .admin-inbox-source { flex: 1; font-size: var(--fs-12); color: var(--muted); }
 .admin-inbox-message { padding: var(--space-24) var(--space-32) var(--space-40); }
 .admin-inbox-message-header { display: flex; align-items: center; gap: var(--space-12); }
