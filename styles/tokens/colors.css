@@ -42,7 +42,14 @@
      with axe-core if the floor ever gets tight again. See main.css and
      tests/ui/people-persistent-selection.test.mjs. */
   --row-dim: oklch(0.533 0 0);
-  --line: oklch(0.94 0 0);
+  /* Hairlines (composer border, the doc icon's outline, the · between
+     prompt tags). 0.94 → 0.905 on 06/09/2026: it was 0.045 below the old
+     --bg (0.985) and sat at 0.94 vs the new 0.95 — 1.03:1, the outline
+     visibly gone in the CI render of portfolio-writing-light. 0.905 restores
+     the same 0.045 step and stays a hair below --row-hover (0.93), so a
+     hairline still reads on a hovered row. Not text: no 4.5:1 floor applies.
+     Dark mode keeps its own --line below. */
+  --line: oklch(0.905 0 0);
   /* `--white` does double duty: solid card/modal surfaces (.composer,
      .cmd__card) AND the contrast color for text sitting on an ink-filled
      button (.composer__send). Both readings point the same direction in dark
