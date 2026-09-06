@@ -5,11 +5,18 @@
      value). A hair off neutral on purpose: chroma this small (0.004) reads as
      "paper", not as a visible tint, but keeps the page from feeling like a
      blank browser window. Was oklch(0.991 0 0) (true neutral, L 0.991) — see
-     git history for that value. --row-dim's measured ratio below shifted
-     slightly (4.79:1 → 4.71:1 against the new --bg) but still clears the
-     4.5:1 floor with margin; re-verify with axe-core if that floor ever gets
-     tight. Dark mode's --bg is untouched. */
-  --bg: oklch(0.985 0.0041 91.4);
+     git history for that value.
+     Darkened again 06/09/2026 (L 0.985 → 0.95, same hue/chroma) so the admin
+     editor dialog's fields — now on --bg, with the dialog surface itself
+     flipped to --white (styles/admin.css) — read as a visibly beige well
+     against a white sheet. Pulling --bg down without a compensating pass
+     would have quietly broken two things measured against its old L:
+     --row-dim's contrast (4.71:1 → 4.25:1, under the 4.5:1 floor) and
+     --row-hover's fill, which was designed one step *below* --bg (0.965)
+     and would have gone lighter than the page instead. Both were retuned
+     alongside this value — see their own comments. Dark mode's --bg is
+     untouched. */
+  --bg: oklch(0.95 0.0041 91.4);
   --ink: oklch(0.173 0 0);
   --muted: oklch(0.52 0 0);
   --faint: oklch(0.68 0 0);
@@ -21,10 +28,13 @@
      share one color at the edge of what's legible, instead of opacity fading
      toward --bg (which is what produced 1.99:1/1.5:1 failures at the old
      0.3). Measured 4.75:1 with axe-core against the real page (pre-22/08/2026
-     --bg; recomputed against the current --bg at 4.71:1, still clears 4.5:1),
-     not just computed — see main.css and
+     --bg; recomputed against the 0.985 --bg at 4.71:1, still clears 4.5:1) —
+     not just computed. Retuned again 06/09/2026 when --bg dropped to 0.95
+     (L 0.547 → 0.533): unchanged, the pairing would have read 4.25:1, under
+     the 4.5:1 floor. 0.533 restores ~4.5:1 against the new --bg — re-verify
+     with axe-core if the floor ever gets tight again. See main.css and
      tests/ui/people-persistent-selection.test.mjs. */
-  --row-dim: oklch(0.547 0 0);
+  --row-dim: oklch(0.533 0 0);
   --line: oklch(0.94 0 0);
   /* `--white` does double duty: solid card/modal surfaces (.composer,
      .cmd__card) AND the contrast color for text sitting on an ink-filled
@@ -45,28 +55,41 @@
      So: --bg's own hue (91.4°), lightness one notch down, chroma a hair
      above --bg's 0.0041 because a darker tone needs slightly more to read
      equally warm. Any large fill on this page must carry --bg's hue; thin
-     lines (--line) get away with neutral. No consumer yet — the Article/row
-     hover lands with the Figma-driven implementation. */
-  --row-hover: oklch(0.965 0.006 91.4);
-  --bg-a90: oklch(0.985 0.0041 91.4 / 0.9);
+     lines (--line) get away with neutral. Retuned 06/09/2026 (L 0.965 → 0.93)
+     to stay that one notch below --bg after --bg dropped to 0.95 — left at
+     0.965 it would have gone lighter than the page it fills, inverting the
+     hover on every row/list, the admin sidebar, and --code-bg. Chroma
+     unchanged. This darkened --code-bg too (it's var(--row-hover)) — that
+     moves it *closer* to the dark syntax colors below, shrinking their
+     contrast margin rather than growing it; see the code block comment for
+     what that required. */
+  --row-hover: oklch(0.93 0.006 91.4);
+  --bg-a90: oklch(0.95 0.0041 91.4 / 0.9);
   /* Prompt code block (30/08/2026) — the /prompts and ⌘K prompt sheet render
      the prompt text as a code block, ChatGPT-style, with a light syntax
      color. The ramp is the site's own blue (#00B9FF = oklch 0.741 0.157 235,
      the contribution graph's level 3) walked toward cyan: hues 200–240 with
      lightness pulled down until every step clears 4.5:1 on --code-bg (the
-     card fill = --row-hover, L 0.965), and chroma trimmed to what sRGB can
-     hold at that lightness — 0.13 at L 0.45 already clips. Measured:
-     key 6.60:1, str 5.26:1, num 5.21:1, url 4.90:1. Body text stays --ink and
-     the markdown markers (**, -, 1.) go --muted (5.91:1), not --faint (2.60:1,
-     which axe would flag on the modal story). Fill carries the page hue, per
-     the --row-hover rule above. */
+     card fill = --row-hover), and chroma trimmed to what sRGB can hold at
+     that lightness — 0.13 at L 0.45 already clips. Fill carries the page
+     hue, per the --row-hover rule above.
+     Re-measured 06/09/2026 against --row-hover's new L 0.93 (was 0.965):
+     the darker fill sits closer to these dark text colors, so contrast
+     *dropped* for every step, not improved — key 5.95:1, str 4.74:1,
+     num 4.69:1 still clear 4.5:1, but url (0.52) fell to 4.41:1 and needed
+     pulling to L 0.515 (4.50:1). --code-punct stopped pointing at --muted
+     for the same reason: --muted (0.52) reads 5.91:1 against --bg but only
+     4.48:1 against this darker --code-bg specifically, under the floor —
+     it now has its own value, 0.51 (4.55:1), instead of quietly failing
+     inside one component while --muted itself stays correct everywhere
+     else it's used. */
   --code-bg: var(--row-hover);
   --code-fg: var(--ink);
-  --code-punct: var(--muted);
+  --code-punct: oklch(0.51 0 0);
   --code-key: oklch(0.45 0.095 235);
   --code-str: oklch(0.5 0.08 215);
   --code-num: oklch(0.5 0.085 200);
-  --code-url: oklch(0.52 0.12 240);
+  --code-url: oklch(0.515 0.12 240);
   --ink-a5: color-mix(in srgb, var(--ink) 5%, transparent);
   --ink-a7: color-mix(in srgb, var(--ink) 7%, transparent);
   --wash-bg: color-mix(in srgb, var(--bg) 55%, transparent);

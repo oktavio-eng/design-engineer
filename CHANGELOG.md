@@ -4,6 +4,9 @@ Notable changes to this site, in the order they landed on `main`. Newest first. 
 
 ## 2026-09-06
 
+- Wiki: Shift Nudge (Matt D. Smith) entra em "Courses & materials" como próximo investimento (status "Evaluate") e Matt D. Smith entra em "The people", com o Shift Nudge linkado no modal dele.
+- Dashboard: todo `border-radius: 32px` do admin (`styles/admin.css`) desce para 24px (`--radius-24`, escopo restrito ao Studio). O modal do editor de conteúdo (`.admin-editor-dialog`) vira 100% branco e seus campos passam a usar `--bg` (bege) — o diálogo de confirmação menor continua bege como antes.
+- `--bg` (o fundo bege do site inteiro) desce de L 0.985 para 0.95 — pedido pra dar mais contraste aos campos bege do editor. Retunados junto pra não furar os pisos de contraste que o próprio token documenta: `--row-dim` (dim persistente da lista de pessoas, 0.547→0.533), `--row-hover` (fill de hover em linhas/sidebar/botões/`--code-bg`, 0.965→0.93, pra continuar um degrau abaixo do `--bg`), e no bloco de código do `/prompts`, `--code-url` (0.52→0.515) e `--code-punct` (ganha valor próprio, 0.51, em vez de `var(--muted)`). Todas as mudanças verificadas pela fórmula de contraste do WCAG, não só pelo `L` do OKLCH — ver comentários em `styles/tokens/colors.css`.
 - Caixa de entrada: seleção imediata durante gravações, marcação da última seleção em fila e cancelamento ao voltar/buscar/filtrar; renderização incremental por ID preserva linhas intactas. Testes cobrem sucesso, falha e cancelamento. Supabase legado pausado com confirmação no painel.
 
 - Excluir `.DS_Store` dos assets do Worker; agrupar digitação na busca do Studio com debounce de 150 ms, cancelado ao navegar ou sair; atualizar a documentação para o estado publicado e corrigir a descrição da importação em fatias.
