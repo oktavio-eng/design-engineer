@@ -30,7 +30,8 @@ export function mountInbox(host, { api, notify = () => {} }) {
   let messages = [], selected = null, view = 'inbox', query = '', unread = 0, total = 0, nextCursor = null;
   let loading = false, busy = false, disposed = false, request, searchTimer, error = '';
   let activeAppend = false, pendingLoad = null;
-  let readerSignature = '';
+  let readerSignature = '', pendingRead = null;
+  const rows = new Map();
   const focused = () => host.contains(document.activeElement) ? document.activeElement : null;
   const focusRow = id => (Array.from(list.querySelectorAll('button')).find(button => button.dataset.messageId === id) || list.querySelector('button') || search).focus({ preventScroll: true });
 
@@ -39,9 +40,18 @@ export function mountInbox(host, { api, notify = () => {} }) {
     summary.textContent = loading && !messages.length ? 'Carregando…' : quantity(unread, 'mensagem não lida', 'mensagens não lidas');
     host.querySelectorAll('[data-inbox-view]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.inboxView === view)));
     list.setAttribute('aria-busy', String(loading));
-    list.innerHTML = messages.map(message => `<li><button type="button" class="admin-inbox-row" data-cuelume-hover="tick" data-message-id="${esc(message.id)}" aria-pressed="${selected?.id === message.id}" aria-label="${esc(message.email)} · ${message.read_at ? 'Lida' : 'Não lida'} · ${esc(fullDate(message.created_at))}">
+    const liveIds = new Set(messages.map(message => message.id));
+    for (const [id, row] of rows) if (!liveIds.has(id)) { row.node.remove(); rows.delete(id); }
+    messages.forEach((message, index) => {
+      const html = `<button type="button" class="admin-inbox-row" data-cuelume-hover="tick" data-message-id="${esc(message.id)}" aria-pressed="false" aria-label="${esc(message.email)} · ${message.read_at ? 'Lida' : 'Não lida'} · ${esc(fullDate(message.created_at))}">
       ${avatar(message.email)}<span class="admin-inbox-copy"><span class="admin-inbox-sender">${!message.read_at ? '<span class="admin-inbox-unread" aria-hidden="true"></span>' : ''}<span>${esc(message.email)}</span></span><span class="admin-inbox-preview">${esc(message.message)}</span></span><time datetime="${esc(message.created_at)}">${esc(relativeTime(message.created_at))}</time>
-    </button></li>`).join('');
+    </button>`;
+      let row = rows.get(message.id);
+      if (!row) { row = { node: document.createElement('li'), html: '' }; rows.set(message.id, row); }
+      if (row.html !== html) { row.node.innerHTML = html; row.html = html; }
+      row.node.firstElementChild.setAttribute('aria-pressed', String(selected?.id === message.id));
+      if (list.children[index] !== row.node) list.insertBefore(row.node, list.children[index] || null);
+    });
     const emptyTitle = query ? 'Nenhuma mensagem encontrada.' : view === 'archived' ? 'Nenhuma mensagem arquivada.' : view === 'unread' ? 'Tudo em dia.' : 'Sua caixa está tranquila.';
     const emptyText = query ? 'Tente outro e-mail ou trecho da mensagem.' : view === 'archived' ? 'O que você arquivar fica aqui, sem se perder.' : view === 'unread' ? 'Você leu todas as mensagens recebidas.' : 'As conversas do formulário do portfólio chegam aqui.';
     feedback.innerHTML = error ? `<div class="admin-inbox-list-empty"><p role="alert">${esc(error)}</p><button type="button" class="admin-button admin-quiet" data-inbox-action="refresh">Tentar novamente</button></div>` : !messages.length ? `<div class="admin-inbox-list-empty">${icon(loading ? 'clock' : 'inbox')}<p>${loading ? 'Buscando suas mensagens…' : emptyTitle}</p>${loading ? '' : `<span>${emptyText}</span>`}</div>` : '';
@@ -50,7 +60,7 @@ export function mountInbox(host, { api, notify = () => {} }) {
     if (focusId) focusRow(focusId);
   }
   function renderReader() {
-    const signature = JSON.stringify(selected ? [selected.id, selected.read_at, selected.archived_at] : ['idle', unread]);
+    const signature = JSON.stringify(selected ? [selected.id, selected.read_at, selected.archived_at, selected.email, selected.message, selected.page, selected.created_at] : ['idle', unread]);
     if (signature === readerSignature) return;
     readerSignature = signature;
     const focusId = reader.contains(focused()) ? focused()?.id : null;
@@ -103,7 +113,7 @@ export function mountInbox(host, { api, notify = () => {} }) {
   }
   async function change(action, message = selected) {
     if (busy || disposed) return;
-    if (loading) pendingLoad = activeAppend;
+    if (loading && pendingLoad === null) pendingLoad = activeAppend;
     clearTimeout(searchTimer);
     request?.abort(); loading = false; busy = true; syncDisabled();
     const id = message?.id;
@@ -130,7 +140,10 @@ export function mountInbox(host, { api, notify = () => {} }) {
     finally {
       busy = false;
       if (!disposed) {
-        if (pendingLoad !== null) {
+        const readId = pendingRead; pendingRead = null;
+        if (readId && selected?.id === readId && !selected.read_at) {
+          void change('read', selected);
+        } else if (pendingLoad !== null) {
           const append = pendingLoad; pendingLoad = null;
           void load(append);
         } else syncDisabled();
@@ -138,21 +151,26 @@ export function mountInbox(host, { api, notify = () => {} }) {
     }
   }
   function back() {
+    pendingRead = null;
     const id = selected?.id; selected = null; renderReader(); renderList(); focusRow(id);
   }
   function onClick(event) {
     const row = event.target.closest('.admin-inbox-row[data-message-id]');
     if (row) {
-      if (busy) return;
       selected = messages.find(message => message.id === row.dataset.messageId);
       renderList(); renderReader(); reader.scrollTop = 0;
       reader.querySelector('h2')?.focus({ preventScroll: true });
-      if (!selected.read_at) void change('read', selected);
+      pendingRead = null;
+      if (!selected.read_at) {
+        if (busy) pendingRead = selected.id;
+        else void change('read', selected);
+      }
       return;
     }
     const tab = event.target.closest('[data-inbox-view]');
     if (tab) {
       clearTimeout(searchTimer);
+      pendingRead = null;
       view = tab.dataset.inboxView; selected = null; messages = []; nextCursor = null;
       renderReader(); void load(); return;
     }
@@ -164,6 +182,7 @@ export function mountInbox(host, { api, notify = () => {} }) {
     else if (['archive', 'restore', 'read-all'].includes(action)) void change(action);
   }
   function onInput() {
+    pendingRead = null;
     clearTimeout(searchTimer); request?.abort(); query = search.value; selected = null; nextCursor = null; messages = [];
     activeAppend = false;
     renderReader(); loading = true; renderList();

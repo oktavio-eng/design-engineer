@@ -41,6 +41,41 @@ test('Inbox: respostas atrasadas, escrita concorrente, paginação e última bus
   const reply = (page, index, value) => page.evaluate(({ index, value }) => window.inboxRequests[index].resolve(value), { index, value });
   const idle = page => page.waitForFunction(() => document.querySelector('.admin-inbox-list').getAttribute('aria-busy') === 'false');
 
+  for (const fails of [false, true]) await t.test(`troca a leitura durante gravação ${fails ? 'falha' : 'bem-sucedida'} sem recriar linhas intactas`, async () => {
+    const page = await mount();
+    try {
+      await request(page, 0); await reply(page, 0, results([ana, bruno])); await idle(page);
+      await page.evaluate(() => { window.brunoRow = document.querySelector('[data-message-id="bruno"]'); });
+      await page.getByRole('button', { name: /ana@example.com · Não lida/ }).click();
+      await request(page, 1);
+      await page.getByRole('button', { name: /bruno@example.com · Não lida/ }).click();
+      assert.equal(await page.locator('#inbox-sender').textContent(), bruno.email);
+      assert.equal(await page.evaluate(() => window.brunoRow === document.querySelector('[data-message-id="bruno"]')), true);
+      assert.equal(await page.evaluate(() => window.inboxRequests.length), 2);
+      if (fails) await page.evaluate(() => window.inboxRequests[1].reject(new Error('Falha temporária.')));
+      else await reply(page, 1, { message: readAna, unreadCount: 1 });
+      assert.deepEqual((await request(page, 2)).body, { action: 'read', id: 'bruno' });
+      await reply(page, 2, { message: { ...bruno, read_at: readAna.read_at }, unreadCount: fails ? 1 : 0 });
+      await page.getByRole('button', { name: /bruno@example.com · Lida/ }).waitFor();
+      assert.equal(await page.locator('#inbox-sender').textContent(), bruno.email);
+      assert.equal(await page.locator('#inbox-sender').evaluate(node => node === document.activeElement), true);
+    } finally { await page.close(); }
+  });
+
+  await t.test('voltar cancela a marcação pendente da próxima mensagem', async () => {
+    const page = await mount();
+    try {
+      await request(page, 0); await reply(page, 0, results([ana, bruno])); await idle(page);
+      await page.getByRole('button', { name: /ana@example.com · Não lida/ }).click(); await request(page, 1);
+      await page.getByRole('button', { name: /bruno@example.com · Não lida/ }).click();
+      await page.getByRole('button', { name: 'Voltar à caixa de entrada' }).click();
+      await reply(page, 1, { message: readAna, unreadCount: 1 });
+      await page.getByRole('button', { name: /ana@example.com · Lida/ }).waitFor();
+      assert.equal(await page.evaluate(() => window.inboxRequests.length), 2);
+      assert.equal(await page.locator('.admin-inbox').getAttribute('data-reading'), 'false');
+    } finally { await page.close(); }
+  });
+
   for (const fails of [false, true]) await t.test(`retoma o filtro interrompido mesmo se a gravação ${fails ? 'falhar' : 'passar'}`, async () => {
     const page = await mount();
     try {

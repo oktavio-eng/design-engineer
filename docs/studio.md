@@ -1,6 +1,6 @@
 # Studio — dashboard de conteúdo
 
-Implementação local na branch `feat/content-dashboard`. O portfólio continua estático na Vercel; o Studio e o arquivo de mensagens usam um Worker com Cloudflare D1. A infraestrutura de produção e a importação das mensagens históricas ainda precisam ser configuradas e validadas antes do deploy.
+Studio publicado em 05/09/2026 (PR #89). A Vercel serve o portfólio e encaminha os módulos de conteúdo e o formulário ao Worker com Cloudflare D1. O histórico do Supabase foi importado; o acesso administrativo usa Cloudflare Access.
 
 ## Testar localmente
 
@@ -42,7 +42,7 @@ O acervo fica em uma linha JSON com revisão transacional em `cms_state` (limite
 
 `content-sync.js` sincroniza a lista HTML da wiki com os dados dinâmicos antes de `script.js`. Sem `CMS_BASE`, a versão estática permanece como hoje. O Worker gera `content.js`, `portfolio-content.js` e `prompts.mjs` com os conteúdos visíveis; os renderizadores públicos e seus modais são mantidos.
 
-## Produção — checklist (etapa pendente)
+## Produção — estado e procedimento de referência
 
 A URL `/admin` não é um segredo. O acesso deve ser restringido pelo Cloudflare Access e novamente validado no Worker, por assinatura RS256, issuer, audience, validade e e-mail autorizado (`cloudflare/access.mjs`). Headers de identidade sem assinatura válida não concedem acesso. A senha simples nunca habilita login em um hostname público.
 
@@ -116,7 +116,7 @@ Confira o diff: quatro rewrites em `vercel.json` (`/api/contact`, `/content.js`,
 node scripts/verify-studio-production.mjs https://HOST-REAL-DO-STUDIO   # só leitura; sai com 1 se algo falhar
 ```
 
-O script confere, pelo domínio público e pelo host do Worker: MIME dos três módulos e ausência de HTML (404 da Vercel, login do Access) neles, público e Worker servindo o mesmo módulo (prova o rewrite), 401/redirect do Access em `/admin` e `/api/admin/*` anônimos e com header de e-mail forjado, 403 em `/api/contact` sem `Origin` válido (404 no público = rewrite ausente) e o preflight ecoando a origem pública (prova que o proxy da Vercel repassa `Origin`). Rodado em 05/09 contra o domínio atual: os módulos estáticos ainda respondem e `/api/contact` dá 404, como esperado antes do cutover.
+O script confere, pelo domínio público e pelo host do Worker: MIME dos três módulos e ausência de HTML (404 da Vercel, login do Access) neles, público e Worker servindo o mesmo módulo (prova o rewrite), 401/redirect do Access em `/admin` e `/api/admin/*` anônimos e com header de e-mail forjado, 403 em `/api/contact` sem `Origin` válido (404 no público = rewrite ausente) e o preflight ecoando a origem pública (prova que o proxy da Vercel repassa `Origin`). Após o corte em 05/09/2026, o verificador passou em 32/32 checagens.
 
 
 Validar pelo `oktavio.vercel.app`: módulos públicos com MIME certo e sem HTML de login; drafts fora do público; um contato controlado aparece na caixa de entrada; export do admin traz acervo, lixeira e mensagens; admin/API rejeitam acesso anônimo em todos os hostnames. Antes do deploy, guardar a versão anterior do frontend/`vercel.json` e um backup (`/api/admin/export`). Reverter frontend **e** rewrites juntos se falhar; nunca apagar D1 nem Supabase durante a transição.
@@ -127,9 +127,9 @@ Validar pelo `oktavio.vercel.app`: módulos públicos com MIME certo e sem HTML 
 Revisão em oito ângulos sobre a árvore inteira antes do merge; os bugs claros foram corrigidos no próprio PR #89 (sanitização dos itens de fase em `content-sync.js`, `script.js` tolerando `/content.js` ausente, campo `prompt` fora da checagem de tags, boot do Studio mostrando erro em vez de travar, `stateFrom()` completando coleções novas com o seed). O que ficou, sem mudança de comportamento:
 
 - **Duplicações**: engine de tooltip (`admin/tooltips.mjs` × `contrib.mjs`); toggle de tema (`admin/app.mjs` × `chrome.js`) e bootstrap de tema (`admin/theme.js` × as quatro páginas); `fail()` em três módulos do Worker; regex/limites do contato em quatro lugares; harness de browser copiado entre `inbox.test.mjs` e `dashboard.test.mjs`; splice do `prompts.mjs` em `worker.mjs` × `seed-content.mjs`.
-- **Performance**: módulos públicos sem ETag/cache (cada visita relê o D1); `run_worker_first: true` manda CSS/vendor do Studio pelo Worker e verifica o JWT por asset; `updateContent` faz três passagens extras no blob; busca do Studio sem debounce; `renderList` do inbox reconstrói a lista a cada clique.
-- **Arquitetura a observar**: `validateArchive` recusa um backup sem alguma das onze coleções; `/api/contact` exige `Origin === SITE_ORIGIN`, então previews da Vercel e o domínio antigo não arquivam no D1 (Web3Forms segue entregando); throttle global de 10/min e 200/dia; o 403 de origem sai sem CORS (irrelevante atrás do rewrite same-origin); no inbox, clicar em outra linha com uma escrita em voo é ignorado sem aviso; `tests/admin/migrations.mjs` só suporta um trigger por arquivo; `cursor.mjs` acoplado a classes do Studio (poderia usar `data-cursor="merge"`); `preview-head.html` carrega `admin.css` em todas as stories; o build sobe `.DS_Store` como asset (excluir em `scripts/build-worker.mjs`).
-- **Operação**: pausar o projeto Supabase legado (chave publishable ainda no histórico do Git, só insere); restringir a chave do Web3Forms ao domínio no painel; as 3 mensagens importadas aparecem como não lidas.
+- **Performance**: módulos públicos sem ETag/cache (cada visita relê o D1); `run_worker_first: true` manda CSS/vendor pelo Worker; a validação JWT é restrita aos caminhos administrativos, incluindo os módulos `/admin/*`; `updateContent` faz três passagens extras no blob.
+- **Arquitetura a observar**: `validateArchive` recusa um backup sem alguma das onze coleções; `/api/contact` exige `Origin === SITE_ORIGIN`, então previews da Vercel e o domínio antigo não arquivam no D1 (Web3Forms segue entregando); throttle global de 10/min e 200/dia; o 403 de origem sai sem CORS (irrelevante atrás do rewrite same-origin); `tests/admin/migrations.mjs` só suporta um trigger por arquivo; `cursor.mjs` acoplado a classes do Studio (poderia usar `data-cursor="merge"`); `preview-head.html` carrega `admin.css` em todas as stories.
+- **Operação**: Supabase legado pausado em 06/09/2026, confirmado no painel; restringir a chave do Web3Forms ao domínio no painel; as 3 mensagens importadas aparecem como não lidas.
 
 ## Transferir o acervo do Studio local
 
@@ -143,13 +143,13 @@ npx wrangler d1 execute oktavio-studio --remote --file=.local/acervo-import.sql 
 ```
 
 - Tudo passa por `validateArchive()`: as mesmas regras por conteúdo que o Worker aplica ao salvar, mais a forma da linha (11 coleções, identificadores, `slug` dos prompts, lixeira, até 100 atividades, limite de 1,5 MB). Drafts, identificadores e lixeira são preservados exatamente; de um backup, só `messages` é descartado.
-- O SQL gerado é **uma** instrução idempotente. Sem flag, só preenche um banco vazio (`ON CONFLICT DO NOTHING`): um remoto já em uso fica intacto. Com `--replace-revision N`, substitui a linha apenas enquanto a revisão remota ainda for `N` e a avança para `N+1` — a mesma trava otimista das abas do Studio. O arquivo termina com `SELECT revision, length(data)`; o CLI diz qual revisão esperar, então `changes = 0`/revisão inalterada significa que nada foi gravado.
+- O SQL gerado usa instruções em fatias de até 40 KB, montadas em `cms_import`, para respeitar o limite de 100 KB por instrução do D1. A gravação final é idempotente. Sem flag, só preenche um banco vazio (`ON CONFLICT DO NOTHING`): um remoto já em uso fica intacto. Com `--replace-revision N`, substitui a linha apenas enquanto a revisão remota ainda for `N` e a avança para `N+1` — a mesma trava otimista das abas do Studio. O arquivo termina com `SELECT revision, length(data)`; o CLI diz qual revisão esperar, então `changes = 0`/revisão inalterada significa que nada foi gravado.
 - Para saber a revisão remota antes de substituir: `npx wrangler d1 execute oktavio-studio --remote --command "SELECT revision, length(data) AS bytes FROM cms_state WHERE id = 1"`. Faça backup do remoto (`/api/admin/export`) antes de qualquer `--replace-revision`.
 - `tests/admin/content-transfer.test.mjs` cobre o ciclo em dois D1 temporários: export fiel (drafts, lixeira, revisão), import em banco vazio servido pelo Worker com draft fora do público, recusa de sobrescrever, trava de revisão errada/certa, revisão continuando a avançar depois, arquivos inválidos e o CLI de ponta a ponta.
 
 ## Migrar mensagens do Supabase
 
-Nenhum histórico remoto foi importado ainda. Exporte a tabela `public.messages` como uma lista JSON contendo `id`, `created_at`, `email`, `message` e `page`. Guarde o arquivo em `.local/`, nunca no Git. Dois caminhos, ambos **(você)**, porque exigem o painel ou a chave `service_role` do projeto (a chave `anon` do `mail.js` só insere, por RLS):
+O histórico de 3 mensagens foi importado no D1 remoto em 05/09/2026. O procedimento abaixo serve para futuras importações ou conferência de mensagens posteriores ao corte. Exporte a tabela `public.messages` como uma lista JSON contendo `id`, `created_at`, `email`, `message` e `page`. Guarde o arquivo em `.local/`, nunca no Git. Dois caminhos, ambos **(você)**, porque exigem o painel ou a chave `service_role` do projeto (a chave `anon` do `mail.js` só insere, por RLS):
 
 - **SQL Editor do Supabase**: rode `select json_agg(m order by m.created_at) from public.messages m;`, copie o valor da única célula e salve como `.local/messages.json`. Confira que começa com `[` e que `select count(*) from public.messages;` bate com o número de itens.
 - **REST, da sua máquina**: `curl "https://<projeto>.supabase.co/rest/v1/messages?select=id,created_at,email,message,page&order=created_at.asc" -H "apikey: <service_role>" -H "Authorization: Bearer <service_role>" -o .local/messages.json`. A chave fica só no terminal; não entra em arquivo, log nem no frontend.
@@ -164,3 +164,7 @@ npx wrangler d1 execute oktavio-studio --local --file=.local/messages-import.sql
 O script preserva IDs e datas e produz `INSERT OR IGNORE`; execuções repetidas não duplicam IDs. Conferir o número de registros e os IDs do JSON contra o banco de destino. O trigger de limite permanece ativo: lotes muito recentes podem exigir intervalo entre execuções. Depois da verificação local, a importação remota usa o mesmo arquivo e `--remote` no lugar de `--local`, na etapa de publicação autorizada.
 
 Não remover o banco de origem antes de conferir o histórico e testar um novo envio ponta a ponta. `supabase/schema.sql` permanece no repositório como referência do legado; nenhuma chave Supabase é necessária no novo frontend.
+
+### Ajustes da caixa de entrada — 06/09/2026
+
+A seleção muda imediatamente durante uma gravação. Só a última mensagem selecionada fica na fila para marcação como lida; voltar, buscar ou trocar o filtro cancela essa marcação pendente. Falhas da escrita anterior não bloqueiam a próxima leitura. A lista reutiliza as linhas por ID e atualiza somente o conteúdo alterado, preservando foco e elementos intactos. Nenhum cache de conteúdo ou relaxamento de autenticação foi introduzido.

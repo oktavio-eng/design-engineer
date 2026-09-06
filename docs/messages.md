@@ -19,7 +19,7 @@ Dois destinos em paralelo (`Promise.allSettled` em `sendMail()`):
 
 “Sent” aparece quando pelo menos um destino aceita a mensagem. Se ambos falharem, o composer preserva os campos e mostra o erro. O desenho, os estados e as animações do composer permanecem os mesmos.
 
-A integração D1 está implementada e disponível no servidor local. A troca em produção depende do Worker e do rewrite `/api/contact`. O histórico do Supabase (3 mensagens de 29/08/2026) foi importado no D1 remoto em 05/09/2026, com IDs e datas preservados; o Supabase não foi apagado. Consulte [studio.md](studio.md) para setup, limites, autenticação, testes e ordem de migração.
+A integração D1 está em produção desde 05/09/2026, através do Worker e do rewrite `/api/contact` na Vercel. Um envio pelo domínio público foi confirmado no D1 após o corte. O histórico do Supabase (3 mensagens de 29/08/2026) foi importado no D1 remoto em 05/09/2026, com IDs e datas preservados; o Supabase não foi apagado. Consulte [studio.md](studio.md) para setup, limites, autenticação, testes e ordem de migração.
 
 ## Validação e armazenamento
 
