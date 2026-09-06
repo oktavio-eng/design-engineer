@@ -36,12 +36,13 @@
      toward --bg (which is what produced 1.99:1/1.5:1 failures at the old
      0.3). Measured 4.75:1 with axe-core against the real page (pre-22/08/2026
      --bg; recomputed against the 0.985 --bg at 4.71:1, still clears 4.5:1) —
-     not just computed. Retuned again 06/09/2026 when --bg dropped to 0.95
-     (L 0.547 → 0.533): unchanged, the pairing would have read 4.25:1, under
-     the 4.5:1 floor. 0.533 restores ~4.5:1 against the new --bg — re-verify
-     with axe-core if the floor ever gets tight again. See main.css and
-     tests/ui/people-persistent-selection.test.mjs. */
-  --row-dim: oklch(0.533 0 0);
+     not just computed. Retuned 06/09/2026 when --bg dropped to 0.95: at
+     0.547 the pairing would have read 4.25:1, under the floor; 0.533 landed
+     at 4.53:1 on 8-bit sRGB (#6c6c6c on #efeeeb) — passing with no room,
+     and axe rounds. Same day, pulled to 0.52 (#696969, 4.73:1) to get back
+     the margin the token always had (4.71–4.79:1 in its earlier lives).
+     See main.css and tests/ui/people-persistent-selection.test.mjs. */
+  --row-dim: oklch(0.52 0 0);
   /* Hairlines (composer border, the doc icon's outline, the · between
      prompt tags). 0.94 → 0.905 on 06/09/2026: it was 0.045 below the old
      --bg (0.985) and sat at 0.94 vs the new 0.95 — 1.03:1, the outline
