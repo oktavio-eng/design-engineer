@@ -112,3 +112,7 @@ found a gap, it doesn't just record one.
 - [ ] A matriz visual relevante cobre light/dark, Flat type, viewport estreito e reduced-motion; toda baseline atualizada foi inspecionada, não apenas regenerada.
 - [ ] Foco por teclado nunca termina dentro de um ancestral `aria-hidden`/`inert`, e overlays restauram o opener após dismiss completo.
 - [ ] Nenhum arquivo gerado de `storybook-static/` entrou no commit e nenhum comportamento de produção mudou só para satisfazer o harness.
+
+## Hover com Lenis nos testes de produto (30/08 e 01/09/2026)
+
+`tests/ui/people-persistent-selection.test.mjs` mede o fill `--row-hover` de uma row com ponteiro real. Flakou duas vezes no CI com o mesmo sintoma: `:hover` casava, mas o background vinha transparente. Causa: `page.hover()` rola e mira num passo só enquanto o Lenis ainda desliza a página; o Chromium re-resolve o elemento em hover quando o scroll termina, então a row estava "des-hovered" no round-trip seguinte. O loop de re-hover de 30/08 parava assim que `:hover` lia `true` — cedo demais. Desde 01/09 cada tentativa espera o `scrollY` ficar parado por 150 ms, re-mira o ponteiro e lê `:hover` e o fill **num único `evaluate`**, repetindo até os dois valerem juntos. Mesmo princípio do smoke do portfólio de 30/08 (esperar o `transform` do `#cmdModal` assentar em scale 1 antes de medir, não `document.getAnimations()`, cujo `finished` rejeita quando um hover cancela a animação). Regra geral: com scroll ou transição em curso, meça estado e estilo na mesma leitura e espere o movimento parar antes.

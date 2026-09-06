@@ -28,3 +28,9 @@ Linkado do índice em `AGENTS.md` — carregue este doc quando for mexer em rote
 ## Studio de conteúdo (04/09/2026)
 
 A branch do dashboard adiciona uma API Cloudflare Worker/D1 e uma interface administrativa separada. O frontend público continua estático, consumindo os mesmos módulos de conteúdo por rewrites após a configuração de produção. `content-sync.js` entra antes de `script.js` na wiki para refletir inclusões, edições e exclusões na lista. Sem o backend configurado, não altera a lista estática. Ver [studio.md](studio.md) para a fonte de verdade sobre arquitetura e migração.
+
+## Documentação (06/09/2026)
+
+Três camadas, cada fato num arquivo só: `AGENTS.md` é o índice carregado em toda sessão (curto de propósito), `docs/*.md` guarda o porquê por tópico, `CHANGELOG.md` lista o quê/onde/PR por dia. Em 06/09 o changelog tinha 187 linhas / 69 KB (~17k tokens) com 110 bullets de 620 caracteres em média — o problema era densidade, não quantidade de dias: os bullets carregavam o porquê inline, duplicando o que já estava (ou devia estar) nos docs.
+
+Decisão: **um `CHANGELOG.md` só, com o mês corrente**, bullets curtos que apontam pro doc, e **arquivo mensal** em `docs/changelog/AAAA-MM.md` quando o mês fecha, com link nos dois sentidos (Keep a Changelog recomenda arquivar sem reescrever; agosto foi movido verbatim). Rejeitado: um arquivo por dia (`2026-09-06-changelog.md`) — perde a leitura corrida do log e não ganha o foco por decisão do modelo ADR; o git já dá a fatia por dia. Se a seção "Decisões já tomadas" de um doc de tópico passar de ~15 entradas, aí sim vale o formato ADR (um arquivo por decisão em `docs/decisions/`, o doc atual vira índice).
