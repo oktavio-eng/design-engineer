@@ -1,31 +1,26 @@
 :root {
   color-scheme: light;
-  /* Warm off-white (22/08/2026), not pure white — #FBFAF7 converted to OKLCH
-     (L 0.985, C 0.0041, H 91.4°; verified #FBFAF7 round-trips through this
-     value). A hair off neutral on purpose: chroma this small (0.004) reads as
-     "paper", not as a visible tint, but keeps the page from feeling like a
-     blank browser window. Was oklch(0.991 0 0) (true neutral, L 0.991) — see
-     git history for that value.
-     Darkened again 06/09/2026 (L 0.985 → 0.95, same hue/chroma) so the admin
-     editor dialog's fields — now on --bg, with the dialog surface itself
-     flipped to --white (styles/admin.css) — read as a visibly beige well
-     against a white sheet. Pulling --bg down without a compensating pass
-     would have quietly broken two things measured against its old L:
-     --row-dim's contrast (4.71:1 → 4.25:1, under the 4.5:1 floor) and
-     --row-hover's fill, which was designed one step *below* --bg (0.965)
-     and would have gone lighter than the page instead. Both were retuned
-     alongside this value — see their own comments. Dark mode's --bg is
+  /* Warm off-white, not pure white. #FAF9F5 picked by Otavio on 06/09/2026
+     and converted to OKLCH (L 0.982, C 0.0054, H 95.1°; round-trips to
+     #FAF9F5 exactly). A hair off neutral on purpose: chroma this small reads
+     as "paper", not as a visible tint, but keeps the page from feeling like
+     a blank browser window. History: oklch(0.991 0 0) (true neutral), then
+     #FBFAF7 = oklch(0.985 0.0041 91.4) from 22/08/2026, then one day at
+     L 0.95 (06/09, to make the Studio editor's --bg fields read against its
+     white dialog — rejected as too dark; the fields got a 1px --ink-a8
+     stroke instead, styles/admin.css). Every token calibrated against --bg
+     keeps the relationship it was designed with, re-measured on 8-bit sRGB
+     the way the browser and axe see it (floating-point OKLCH math is ~0.02
+     optimistic near a floor): --row-hover one notch below, --line 0.045
+     below, --row-dim/--muted at their documented ratios. Dark mode's --bg is
      untouched. */
-  --bg: oklch(0.95 0.0041 91.4);
+  --bg: oklch(0.982 0.0054 95.1);
   --ink: oklch(0.173 0 0);
-  /* --muted 0.52 → 0.51 (06/09/2026): it sits as text on --row-hover in the
-     Studio filters, the inbox view buttons and every hovered row's .what,
-     and against the darker --row-hover (0.93) the old value measured
-     4.47:1 in axe (CI, Message Inbox story) — under the 4.5:1 floor. 0.51
-     (#666666) reads 4.68:1 on --row-hover, 4.95:1 on --bg, 5.74:1 on
-     --white. Measured on 8-bit sRGB, the way the browser and axe see it —
-     floating-point OKLCH math is ~0.02 optimistic near the floor. */
-  --muted: oklch(0.51 0 0);
+  /* --muted also sits as text on --row-hover (Studio filters, inbox view
+     buttons, every hovered row's .what) — that pairing is the tight one, not
+     --bg: 0.52 (#696969) reads 5.21:1 on --bg and 4.91:1 on --row-hover.
+     (On 06/09/2026's one-day L 0.95 --bg it fell to 4.47:1 in axe.) */
+  --muted: oklch(0.52 0 0);
   --faint: oklch(0.68 0 0);
   /* Persisted People-list dim (styles/main.css, `.people:has(.row.active)`):
      the lightest gray this palette allows against --bg while still clearing
@@ -36,21 +31,18 @@
      toward --bg (which is what produced 1.99:1/1.5:1 failures at the old
      0.3). Measured 4.75:1 with axe-core against the real page (pre-22/08/2026
      --bg; recomputed against the 0.985 --bg at 4.71:1, still clears 4.5:1) —
-     not just computed. Retuned 06/09/2026 when --bg dropped to 0.95: at
-     0.547 the pairing would have read 4.25:1, under the floor; 0.533 landed
-     at 4.53:1 on 8-bit sRGB (#6c6c6c on #efeeeb) — passing with no room,
-     and axe rounds. Same day, pulled to 0.52 (#696969, 4.73:1) to get back
-     the margin the token always had (4.71–4.79:1 in its earlier lives).
-     See main.css and tests/ui/people-persistent-selection.test.mjs. */
-  --row-dim: oklch(0.52 0 0);
+     not just computed. 0.547 → 0.54 on 06/09/2026 with the #FAF9F5 --bg:
+     0.54 (#6F6F6F) is 4.77:1 on 8-bit sRGB, the margin this token has always
+     carried; 0.547 would have been 4.63:1. See main.css and
+     tests/ui/people-persistent-selection.test.mjs. */
+  --row-dim: oklch(0.54 0 0);
   /* Hairlines (composer border, the doc icon's outline, the · between
-     prompt tags). 0.94 → 0.905 on 06/09/2026: it was 0.045 below the old
-     --bg (0.985) and sat at 0.94 vs the new 0.95 — 1.03:1, the outline
-     visibly gone in the CI render of portfolio-writing-light. 0.905 restores
-     the same 0.045 step and stays a hair below --row-hover (0.93), so a
-     hairline still reads on a hovered row. Not text: no 4.5:1 floor applies.
-     Dark mode keeps its own --line below. */
-  --line: oklch(0.905 0 0);
+     prompt tags): 0.045 below --bg, which is what keeps them readable —
+     1.14:1 on 8-bit sRGB (#EAEAEA on #FAF9F5). The one day --bg sat at 0.95
+     with --line still at 0.94 (1.03:1) the doc icon's outline vanished in
+     the CI render, so if --bg moves, move this with it. Not text: no 4.5:1
+     floor applies. Dark mode keeps its own --line below. */
+  --line: oklch(0.937 0 0);
   /* `--white` does double duty: solid card/modal surfaces (.composer,
      .cmd__card) AND the contrast color for text sitting on an ink-filled
      button (.composer__send). Both readings point the same direction in dark
@@ -67,19 +59,17 @@
      Jakub's hover is oklch(0.965 0 0) on a neutral page; the same neutral
      gray on this warm --bg reads bluish by simultaneous contrast (it's what
      made the 22/08 gray hover look "inert" and pushed rows to white+shadow).
-     So: --bg's own hue (91.4°), lightness one notch down, chroma a hair
-     above --bg's 0.0041 because a darker tone needs slightly more to read
+     So: --bg's own hue (95.1°), lightness one notch down, chroma a hair
+     above --bg's 0.0054 because a darker tone needs slightly more to read
      equally warm. Any large fill on this page must carry --bg's hue; thin
-     lines (--line) get away with neutral. Retuned 06/09/2026 (L 0.965 → 0.93)
-     to stay that one notch below --bg after --bg dropped to 0.95 — left at
-     0.965 it would have gone lighter than the page it fills, inverting the
-     hover on every row/list, the admin sidebar, and --code-bg. Chroma
-     unchanged. This darkened --code-bg too (it's var(--row-hover)) — that
-     moves it *closer* to the dark syntax colors below, shrinking their
-     contrast margin rather than growing it; see the code block comment for
-     what that required. */
-  --row-hover: oklch(0.93 0.006 91.4);
-  --bg-a90: oklch(0.95 0.0041 91.4 / 0.9);
+     lines (--line) get away with neutral. Follows --bg: 0.962 is the same
+     0.02 step below #FAF9F5 that 0.965 was below the 22/08 --bg (1.06:1,
+     #F4F2EE). If --bg moves, move this with it — the day --bg dropped to
+     0.95 and this stayed put, the hover would have gone lighter than the
+     page it fills. It is also --code-bg, so the syntax colors below are
+     measured against it, not against --bg. */
+  --row-hover: oklch(0.962 0.006 95.1);
+  --bg-a90: oklch(0.982 0.0054 95.1 / 0.9);
   /* Prompt code block (30/08/2026) — the /prompts and ⌘K prompt sheet render
      the prompt text as a code block, ChatGPT-style, with a light syntax
      color. The ramp is the site's own blue (#00B9FF = oklch 0.741 0.157 235,
@@ -88,23 +78,25 @@
      card fill = --row-hover), and chroma trimmed to what sRGB can hold at
      that lightness — 0.13 at L 0.45 already clips. Fill carries the page
      hue, per the --row-hover rule above.
-     Re-measured 06/09/2026 against --row-hover's new L 0.93 (was 0.965),
-     on 8-bit sRGB the way axe sees it: the darker fill sits closer to
-     these dark text colors, so contrast *dropped* for every step, not
-     improved — key 5.92:1, str 4.71:1, num 4.72:1 still clear 4.5:1, but
-     url (0.52) fell to 4.41:1 and was pulled to L 0.5 (4.80:1, the same
-     band as str/num). The markers (--code-punct) keep pointing at --muted:
-     --muted itself moved to 0.51 for the same fill (see its comment), so
-     they read 4.68:1 here. */
+     Re-measured 06/09/2026 on 8-bit sRGB against --row-hover 0.962
+     (#F4F2EE): key 6.50:1, str 5.17:1, num 5.18:1, url 4.86:1, markers
+     (--code-punct = --muted) 4.91:1. A darker --code-bg moves *closer* to
+     these dark text colors and shrinks the margin — the one day it sat at
+     0.93, url and the markers fell under 4.5:1 — so re-measure here first
+     whenever --row-hover moves. */
   --code-bg: var(--row-hover);
   --code-fg: var(--ink);
   --code-punct: var(--muted);
   --code-key: oklch(0.45 0.095 235);
   --code-str: oklch(0.5 0.08 215);
   --code-num: oklch(0.5 0.085 200);
-  --code-url: oklch(0.5 0.12 240);
+  --code-url: oklch(0.52 0.12 240);
   --ink-a5: color-mix(in srgb, var(--ink) 5%, transparent);
   --ink-a7: color-mix(in srgb, var(--ink) 7%, transparent);
+  /* Studio editor fields (06/09/2026): resting 1px stroke at 8%, focus ring
+     at 10% — see .admin-editor-dialog in styles/admin.css. */
+  --ink-a8: color-mix(in srgb, var(--ink) 8%, transparent);
+  --ink-a10: color-mix(in srgb, var(--ink) 10%, transparent);
   --wash-bg: color-mix(in srgb, var(--bg) 55%, transparent);
   --shadow-a0086: oklch(0 0 0 / 0.0086);
   --shadow-a0128: oklch(0 0 0 / 0.0128);

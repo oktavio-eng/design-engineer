@@ -108,7 +108,26 @@
    pick up --bg, so they read as beige wells sitting on the white sheet
    instead of white-on-beige. Scoped to .admin-editor-dialog so the smaller
    confirm dialogs (openDialog() without `wide`) keep the beige surface. */
-.admin-editor-dialog .admin-field input, .admin-editor-dialog .admin-field textarea, .admin-editor-dialog .admin-field select, .admin-editor-dialog .admin-repeat-item > input, .admin-editor-dialog .admin-repeat-item > textarea, .admin-editor-dialog .admin-visibility select { background: var(--bg); }
+.admin-editor-dialog .admin-field input, .admin-editor-dialog .admin-field textarea, .admin-editor-dialog .admin-field select, .admin-editor-dialog .admin-repeat-item > input, .admin-editor-dialog .admin-repeat-item > textarea, .admin-editor-dialog .admin-visibility select { background: var(--bg); box-shadow: inset 0 0 0 var(--border-w) var(--ink-a8); }
+/* Editor fields, 06/09 (user direction): --bg well on the white sheet is only
+   1.05:1, so the field carries a resting 1px stroke at --ink-a8 — an inset
+   shadow, not a border, so nothing shifts and it hugs the pill. On focus the
+   page-wide 2px --ink outline (line 10) gives way to a 1px *dashed* ring at
+   10% with 8px dashes. CSS `dashed` has no dash length (Chromium draws ~3px),
+   so the ring is an SVG rect painted as the background: no viewBox, so its
+   user units are the element's own px and stroke-dasharray is a true 8/8;
+   stroke-width 2 centered on the edge leaves exactly 1px inside the box; rx
+   matches the pill (44px tall → 22) and the textarea's --radius-24. The
+   color is --ink (#101010) at .1 inline — a data: URL can't read a custom
+   property — and the dark block below repaints it in --white. Note for a
+   future audit: a 10% ring sits far below the 3:1 WCAG 2.4.13 guidance for
+   focus indicators; chosen deliberately for this authenticated, single-user
+   surface. */
+.admin-editor-dialog .admin-field input:focus-visible, .admin-editor-dialog .admin-field select:focus-visible, .admin-editor-dialog .admin-repeat-item > input:focus-visible, .admin-editor-dialog .admin-visibility select:focus-visible,
+.admin-editor-dialog .admin-field textarea:focus-visible, .admin-editor-dialog .admin-repeat-item > textarea:focus-visible { outline: none; box-shadow: none; background-repeat: no-repeat; background-size: 100% 100%; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100%25' height='100%25' rx='22' fill='none' stroke='rgba(16,16,16,0.1)' stroke-width='2' stroke-dasharray='8 8'/%3E%3C/svg%3E"); }
+.admin-editor-dialog .admin-field textarea:focus-visible, .admin-editor-dialog .admin-repeat-item > textarea:focus-visible { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100%25' height='100%25' rx='24' fill='none' stroke='rgba(16,16,16,0.1)' stroke-width='2' stroke-dasharray='8 8'/%3E%3C/svg%3E"); }
+:root[data-theme="dark"] .admin-editor-dialog .admin-field input:focus-visible, :root[data-theme="dark"] .admin-editor-dialog .admin-field select:focus-visible, :root[data-theme="dark"] .admin-editor-dialog .admin-repeat-item > input:focus-visible, :root[data-theme="dark"] .admin-editor-dialog .admin-visibility select:focus-visible { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100%25' height='100%25' rx='22' fill='none' stroke='rgba(255,255,255,0.1)' stroke-width='2' stroke-dasharray='8 8'/%3E%3C/svg%3E"); }
+:root[data-theme="dark"] .admin-editor-dialog .admin-field textarea:focus-visible, :root[data-theme="dark"] .admin-editor-dialog .admin-repeat-item > textarea:focus-visible { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100%25' height='100%25' rx='24' fill='none' stroke='rgba(255,255,255,0.1)' stroke-width='2' stroke-dasharray='8 8'/%3E%3C/svg%3E"); }
 .admin-editor-header h2 { margin-top: var(--space-6); overflow-wrap: anywhere; }
 .admin-editor-layout { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); }
 .admin-editor-fields { padding: var(--space-32); }
