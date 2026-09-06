@@ -33,7 +33,9 @@ async function api(route, options = {}, retried = false) {
 }
 const LOCAL_HOSTS = ['localhost', '127.0.0.1', '[::1]'];
 
+let searchTimer;
 function login(message = '') {
+  clearTimeout(searchTimer);
   disposeInbox?.(); disposeTypeface?.(); disposeTypeface = null;
   if (!LOCAL_HOSTS.includes(location.hostname)) {
     // Published Studio: identity comes from Cloudflare Access, never a password.
@@ -59,13 +61,14 @@ async function start() {
 }
 let disposeSidebar, disposeInbox, disposeTypeface;
 function shell() {
+  clearTimeout(searchTimer);
   disposeSidebar?.(); disposeInbox?.(); disposeTypeface?.();
   root.innerHTML = `<div class="admin-shell">${sidebar()}<div class="admin-workspace"><header class="admin-topbar"><span class="admin-breadcrumb">Studio <span>/</span> <span id="breadcrumb-current">Conteúdos</span></span><div class="admin-toolbar-actions"><span class="admin-environment"><span class="admin-dot"></span><span id="environment-label">${session.mode === 'local' ? 'Ambiente local' : 'Cloudflare D1'}</span></span>${typefaceButton('admin-mobile-typeface')}<button class="admin-icon-button admin-mobile-logout" data-logout aria-label="Sair do studio">${icon("logout")}</button><button class="admin-icon-button" id="theme-toggle" aria-label="Alternar tema">${icon('sun')}</button><a class="admin-button admin-quiet" href="/" target="_blank" rel="noopener">Ver portfólio ${icon('external')}</a></div></header><main class="admin-main" id="admin-main"><div id="message-inbox" class="admin-inbox-host" hidden></div><div class="admin-heading"><div><h1 id="collection-title">Todos os conteúdos</h1><p id="collection-description">Um lugar para cuidar do que você compartilha.</p></div><button class="admin-button admin-primary" id="new-content">${icon('plus')} Novo conteúdo</button></div><div class="admin-overview" id="overview"></div><div class="admin-list-header"><div class="admin-filters" aria-label="Visibilidade"><button data-filter="all" aria-pressed="true">Todos</button><button data-filter="visible" aria-pressed="false">Visíveis</button><button data-filter="draft" aria-pressed="false">Rascunhos</button></div><label class="admin-search">${icon('search')}<input id="content-search" type="search" placeholder="Buscar conteúdo…" aria-label="Buscar conteúdo"><kbd>⌘ K</kbd></label></div><div class="admin-result-count" role="status" id="result-count"></div><div class="admin-content-list" id="content-list"></div><footer class="admin-list-footer"><span>Feito com o mesmo cuidado do seu portfólio.</span><a href="/api/admin/export" download class="admin-text-button">${icon('download')} Exportar backup</a></footer></main></div></div>`;
   disposeSidebar = setupSidebar(root);
   disposeTypeface = setupTypeface(root);
   root.querySelectorAll('[data-collection]').forEach(button => button.addEventListener('click', () => { active = button.dataset.collection; query = ''; root.querySelector('#content-search').value = ''; renderList(); }));
   root.querySelectorAll('[data-filter]').forEach(button => button.addEventListener('click', () => { filter = button.dataset.filter; renderList(); }));
-  root.querySelector('#content-search').addEventListener('input', e => { query = e.target.value; renderList(); });
+  root.querySelector('#content-search').addEventListener('input', e => { query = e.target.value; clearTimeout(searchTimer); searchTimer = setTimeout(renderList, 150); });
   root.querySelector('#new-content').addEventListener('click', () => edit(COLLECTIONS.some(c => c.id === active) ? active : 'projects'));
   root.querySelector('#content-list').addEventListener('click', e => {
     const row = e.target.closest('[data-edit]'); if (row) edit(...row.dataset.edit.split(':'));
@@ -83,6 +86,7 @@ function shell() {
 }
 
 async function renderList() {
+  clearTimeout(searchTimer);
   disposeInbox?.(); disposeInbox = null;
   const isInbox = active === 'messages';
   root.querySelector('.admin-workspace').dataset.view = isInbox ? 'messages' : 'content';

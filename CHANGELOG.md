@@ -2,6 +2,12 @@
 
 Notable changes to this site, in the order they landed on `main`. Newest first. This is the technical log — for the narrated version, see `/changelog` on the site itself. See `AGENTS.md` for the deeper "why" behind several of these; a few entries below only summarize it.
 
+## 2026-09-06
+
+- Caixa de entrada: seleção imediata durante gravações, marcação da última seleção em fila e cancelamento ao voltar/buscar/filtrar; renderização incremental por ID preserva linhas intactas. Testes cobrem sucesso, falha e cancelamento. Supabase legado pausado com confirmação no painel.
+
+- Excluir `.DS_Store` dos assets do Worker; agrupar digitação na busca do Studio com debounce de 150 ms, cancelado ao navegar ou sair; atualizar a documentação para o estado publicado e corrigir a descrição da importação em fatias.
+
 ## 2026-09-05 — Studio no ar: piso Medium, seletor de fonte, transferência do acervo, revisão, corte (#89)
 
 - **Corte feito no fim do dia (#89).** Worker `oktavio-studio` publicado (o `wrangler login` precisa dos escopos padrão), PR mergeado pelo Otavio, deploy da Vercel no ar: verificador 32/32 pelo domínio público e pelo Worker, envio controlado pelo `/api/contact` de `oktavio.vercel.app` gravado no D1, `/`, `/wiki`, `/prompts` e `/changelog` servindo os três módulos do Worker. Varredura de segredos no histórico inteiro e no secret scanning do GitHub: nada exposto; a chave publishable do Supabase (histórico) e a do Web3Forms (`mail.js`) são de cliente por desenho. `HANDOFF.md` sai do repositório (log operacional com IDs de conta; fica local, ignorado) e as pendências do review passam para `docs/studio.md` ("Pendências pós-corte"). `/changelog` narra o dia.
