@@ -6,6 +6,10 @@ Notable changes to this site, in the order they landed on `main`. Newest first. 
 
 **Meses anteriores:** [agosto de 2026](docs/changelog/2026-08.md) (01/08–30/08 — recuperação do site, tokens, intro, ⌘K, `/prompts`, portfólio na home, Figma-first, Lenis, composer + Supabase).
 
+## 2026-09-07
+
+- Caixa de entrada: “Responder por e-mail” vira “Responder no Gmail” (compose do Gmail em aba nova) com o `mailto:` como link secundário — `admin/inbox.mjs`, `styles/admin.css`, teste em `tests/admin/inbox.test.mjs`. Motivo em `docs/studio.md`.
+
 ## 2026-09-06
 
 - Changelog reorganizado: agosto arquivado verbatim em `docs/changelog/2026-08.md` (link nos dois sentidos), bullets de setembro reescritos curtos com o porquê movido pros docs, regra de formato no topo deste arquivo e no `AGENTS.md`. Motivo e alternativas rejeitadas (arquivo por dia) em `docs/architecture.md` ("Documentação").

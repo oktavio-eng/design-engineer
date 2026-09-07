@@ -59,6 +59,13 @@ export function mountInbox(host, { api, notify = () => {} }) {
     syncDisabled();
     if (focusId) focusRow(focusId);
   }
+  // Gmail compose in a new tab is the primary reply: `mailto:` depends on an
+  // OS mail handler, and on a Mac without one Chrome just opens a blank tab
+  // (reported 07/09/2026). The mailto stays as a quiet alternative for desktop clients.
+  function replyLinks(email) {
+    const to = encodeURIComponent(email), subject = encodeURIComponent('Re: Contato pelo portfólio');
+    return `<a class="admin-button admin-inbox-reply-gmail" href="https://mail.google.com/mail/?view=cm&fs=1&to=${esc(to)}&su=${subject}" target="_blank" rel="noopener">${icon('mail')} Responder no Gmail ${icon('external')}</a><a class="admin-text-button admin-inbox-reply-mailto" href="mailto:${esc(to)}?subject=${subject}">Abrir no app de e-mail</a>`;
+  }
   function renderReader() {
     const signature = JSON.stringify(selected ? [selected.id, selected.read_at, selected.archived_at, selected.email, selected.message, selected.page, selected.created_at] : ['idle', unread]);
     if (signature === readerSignature) return;
@@ -74,7 +81,7 @@ export function mountInbox(host, { api, notify = () => {} }) {
     }
     const message = selected;
     reader.innerHTML = `<div class="admin-inbox-reader-toolbar">${iconButton('back', 'Voltar à caixa de entrada', 'back')}<span class="admin-inbox-source">Formulário de contato</span><div class="admin-inbox-actions">${iconButton('toggle-read', message.read_at ? 'Marcar como não lida' : 'Marcar como lida', message.read_at ? 'mail' : 'mailRead')}${iconButton(message.archived_at ? 'restore' : 'archive', message.archived_at ? 'Mover para entrada' : 'Arquivar mensagem', message.archived_at ? 'inbox' : 'archive')}</div></div>
-      <article class="admin-inbox-message${entering ? ' admin-inbox-enter' : ''}"><div class="admin-inbox-message-header">${avatar(message.email)}<div><h2 tabindex="-1" id="inbox-sender">${esc(message.email)}</h2><time datetime="${esc(message.created_at)}">${esc(fullDate(message.created_at))}</time></div></div><p class="admin-inbox-origin">Enviada por ${esc(message.page || '/')}${message.archived_at ? '<span class="admin-inbox-tag">Arquivada</span>' : ''}</p><p class="admin-inbox-body">${esc(message.message)}</p><a class="admin-button admin-inbox-reply" href="mailto:${esc(encodeURIComponent(message.email))}?subject=${encodeURIComponent('Re: Contato pelo portfólio')}">${icon('mail')} Responder por e-mail ${icon('external')}</a></article>`;
+      <article class="admin-inbox-message${entering ? ' admin-inbox-enter' : ''}"><div class="admin-inbox-message-header">${avatar(message.email)}<div><h2 tabindex="-1" id="inbox-sender">${esc(message.email)}</h2><time datetime="${esc(message.created_at)}">${esc(fullDate(message.created_at))}</time></div></div><p class="admin-inbox-origin">Enviada por ${esc(message.page || '/')}${message.archived_at ? '<span class="admin-inbox-tag">Arquivada</span>' : ''}</p><p class="admin-inbox-body">${esc(message.message)}</p><div class="admin-inbox-reply">${replyLinks(message.email)}</div></article>`;
     syncDisabled();
     if (focusAction) reader.querySelector(`[data-inbox-action="${focusAction}"]`)?.focus({ preventScroll: true });
     else if (focusId) reader.querySelector(`#${focusId}`)?.focus({ preventScroll: true });

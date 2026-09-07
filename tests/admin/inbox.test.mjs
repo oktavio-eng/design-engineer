@@ -73,7 +73,10 @@ test('Inbox real: leitura, filtros, arquivo, foco, erros, temas e 320px', { time
   assert.equal(await page.locator('#inbox-sender').evaluate(node => document.activeElement === node), true, 'reader receives and retains keyboard focus after the read is saved');
   assert.equal(await page.locator('.admin-inbox-body').textContent(), body);
   assert.ok((await db.prepare('SELECT read_at FROM messages WHERE id = ?').bind('ana').first()).read_at);
-  assert.match(await page.getByRole('link', { name: 'Responder por e-mail' }).getAttribute('href'), /^mailto:ana%40example\.com/);
+  const gmail = page.getByRole('link', { name: 'Responder no Gmail' });
+  assert.match(await gmail.getAttribute('href'), /^https:\/\/mail\.google\.com\/mail\/\?view=cm&fs=1&to=ana%40example\.com&su=/);
+  assert.equal(await gmail.getAttribute('target'), '_blank');
+  assert.match(await page.getByRole('link', { name: 'Abrir no app de e-mail' }).getAttribute('href'), /^mailto:ana%40example\.com/);
   await page.addScriptTag({ path: path.join(root, 'node_modules/axe-core/axe.min.js') });
   async function axe(label) {
     const violations = await page.evaluate(async () => (await window.axe.run({ runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa', 'wcag21aa'] } })).violations.map(v => ({ id: v.id, nodes: v.nodes.map(n => n.target) })));
