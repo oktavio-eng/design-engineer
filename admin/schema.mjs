@@ -25,7 +25,7 @@ export function validateEntry(collection, entry) {
   if (entry.draft !== undefined && typeof entry.draft !== 'boolean') invalid('Visibilidade inválida.');
   function walk(value, key = '', depth = 0) {
     if (depth > 12) invalid('O conteúdo tem níveis demais.');
-    if (['links', 'items', 'tags', 'list', 'sections', 'subprojects', 'entries', 'people'].includes(key) && !Array.isArray(value)) invalid('Esse campo precisa ser uma lista.');
+    if (['links', 'items', 'tags', 'list', 'sections', 'subprojects', 'gallery', 'entries', 'people'].includes(key) && !Array.isArray(value)) invalid('Esse campo precisa ser uma lista.');
     if (typeof value === 'string') {
       if (value.length > 100_000) invalid('Um dos textos é muito longo.');
       // Existing inline glossary markup is supported. Arbitrary HTML is not.
@@ -53,7 +53,7 @@ export function validateEntry(collection, entry) {
   walk(entry);
   for (const field of ['name', 'role', 'summary', 'preview', 'faviconFrom', 'title', 'description', 'category', 'prompt', 'alt', 'src', 'caption']) if (entry[field] !== undefined && typeof entry[field] !== 'string') invalid(`O campo ${field} precisa ser texto.`);
   if (entry.bio !== undefined && typeof entry.bio !== 'string' && !(Array.isArray(entry.bio) && entry.bio.every(v => typeof v === 'string'))) invalid('Descrição inválida.');
-  for (const key of ['links', 'items', 'sections', 'subprojects', 'tags']) if (entry[key] !== undefined && !Array.isArray(entry[key])) invalid(`O campo ${key} precisa ser uma lista.`);
+  for (const key of ['links', 'items', 'sections', 'subprojects', 'gallery', 'tags']) if (entry[key] !== undefined && !Array.isArray(entry[key])) invalid(`O campo ${key} precisa ser uma lista.`);
   if (collection === 'prompts' && (!entry.prompt?.trim() || !entry.category?.trim() || !Array.isArray(entry.tags))) invalid('Preencha o texto, a categoria e as tags do prompt.');
   if (collection === 'gallery' && (!safeURL(entry.src) || !Number.isInteger(entry.width) || entry.width < 1 || !Number.isInteger(entry.height) || entry.height < 1)) invalid('Preencha a imagem e suas dimensões em pixels.');
   function objectList(items, fields, name) {
@@ -65,6 +65,11 @@ export function validateEntry(collection, entry) {
     }
   }
   objectList(entry.subprojects, ['name', 'url', 'preview', 'description'], 'Subprojetos');
+  // Galeria do projeto (12/09/2026): as fotos que o detalhe do projeto
+  // mostra entre a descrição e os destaques. `src` já passa pelo safeURL
+  // do walk() acima, junto com `preview` e os outros campos de URL.
+  objectList(entry.gallery, ['src', 'alt', 'caption'], 'Galeria do projeto');
+  for (const photo of entry.gallery || []) if (!safeURL(photo.src)) invalid('Cada foto da galeria precisa de uma imagem válida.');
   objectList(entry.sections, ['label', 'text'], 'Seções');
   for (const section of entry.sections || []) {
     objectList(section.entries, ['name', 'role', 'what'], 'Conteúdos da seção');

@@ -1,0 +1,654 @@
+/* ===========================================================================
+   PROTÓTIPO — nova home: Projects em cards + drawer de detalhe
+   Servido em /testes/prototipo-nova-home. Nada aqui entra em produção: o
+   arquivo é carregado DEPOIS de main.css + flat-type.css e só adiciona
+   classes com prefixo `p` (`.pcard`, `.pjt`, `.pdrawer`, `.pgal`). Nenhuma
+   regra de produção é sobrescrita, então apagar o <link> devolve a página ao
+   estado normal — a mesma disciplina do experimento flat-type.
+
+   Origem das medidas: Figma `Oktavio` (H0X3JmAFN32LWINqemEhXs) —
+   card 124:562, seção 124:1280, modal 133:248. Onde o frame não diz
+   (motion, foco, reduced-motion, breakpoints), vale produção, e o desvio
+   está comentado na regra.
+
+   Os três eixos em aberto viram atributos em <html>, trocáveis pelo painel
+   no canto: `data-proto-carousel` (bleed|column), `data-proto-surface`
+   (drawer|modal) e `data-proto-hover` (ring|fill). É o jeito de decidir
+   olhando em vez de no texto.
+   =========================================================================== */
+
+:root {
+  /* Medidas do frame que ainda não são token de produção. Ficam com escopo
+     de componente (o precedente é `--panel-w`/`--cpanel-w` em spacing.css) e
+     viram `--space-N` de verdade se o protótipo virar a home. */
+  --pcard-w: 266px;
+  --pcard-h: 332px;
+  --pcard-mark: 64px;
+  --pshot-h: 400px;
+  --pdrawer-w: 1000px;
+  /* Passo do carrossel: um card + o gap da lista. */
+  --pjt-step: calc(var(--pcard-w) + var(--space-16));
+}
+
+/* ---------------------------------------------------------------------------
+   A seção Projects — cabeçalho (título + setas) e a trilha do carrossel.
+--------------------------------------------------------------------------- */
+.pjt__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-16);
+  /* O `h2` de produção já traz `margin-top: 72` e `margin-bottom: 24`; o
+     frame pede 24 do cabeçalho até a lista, então a margem de baixo sai do
+     título e vem pro container — senão as setas não participam dela. */
+  margin-bottom: var(--space-24);
+}
+.pjt__head h2 {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+/* Pílula das setas (frame 124:1283): fundo --bg dentro de uma página --bg, o
+   que a deixa legível só pela borda. É o desenho do Figma; o contraste real
+   quem carrega é o botão ativo, em --white. */
+.pjt__arrows {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-4);
+  border: var(--border-w) solid var(--line);
+  border-radius: var(--radius-full);
+  background: var(--bg);
+}
+.pjt__arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4) var(--space-8);
+  border: 0;
+  border-radius: var(--radius-full);
+  background: transparent;
+  color: var(--faint);
+  cursor: pointer;
+  /* Só a cor e o fundo reagem. Sem transform: a seta não deve pular quando
+     habilita/desabilita no meio de um scroll. */
+  transition:
+    background-color var(--duration-120) var(--ease),
+    color var(--duration-120) var(--ease);
+}
+/* Habilitado = fundo --white e seta --ink (frame: Next Button Container).
+   Desabilitado = sem fundo e seta --faint (frame: Previous). O estado nasce
+   do scroll da trilha, não de um índice — ver prototipo.mjs. */
+.pjt__arrow:not([disabled]) {
+  background: var(--white);
+  color: var(--ink);
+}
+.pjt__arrow[disabled] {
+  cursor: default;
+}
+.pjt__arrow:focus-visible {
+  outline: var(--border-w) solid var(--ink);
+  outline-offset: var(--space-2);
+}
+/* A seta pixelada (componente `Arrow Pixelate`, 110:325): cinco quadrados de
+   2px numa caixa de 14×16, desenhados com box-shadow a partir de um único
+   pseudo-elemento — o mesmo truque de "arte em CSS" custa menos que cinco
+   spans e mantém a cor em `currentColor`, então herda o estado do botão. */
+.pjt__arrow svg {
+  display: block;
+  width: var(--space-14);
+  height: var(--space-16);
+}
+.pjt__arrow--prev svg {
+  transform: scaleX(-1);
+}
+
+/* A trilha. `overflow-x: auto` + scroll-snap: as setas empurram o scroll, mas
+   arrastar, rolar com trackpad e Tab pro próximo card continuam funcionando —
+   um carrossel que só anda pelo botão quebra teclado e toque. */
+.pjt__track {
+  display: flex;
+  gap: var(--space-16);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  /* O card tem foco visível e sombra nenhuma, mas o anel de foco precisa de
+     folga pra não ser cortado pelo overflow do scroller. */
+  padding-block: var(--space-4);
+  margin-block: calc(-1 * var(--space-4));
+  scrollbar-width: none;
+}
+.pjt__track::-webkit-scrollbar {
+  display: none;
+}
+/* Variante "bleed": a trilha sai da coluna de 640 e vai até a borda da
+   janela. `50% - 50vw` medido de dentro de `main` dá exatamente a distância
+   da borda direita da coluna até a borda da viewport. `html` já tem
+   `overflow-x: clip` (main.css), então isso não cria barra horizontal. */
+[data-proto-carousel="bleed"] .pjt__track {
+  margin-right: calc(50% - 50vw);
+  padding-right: var(--space-24);
+}
+/* Variante "column": a trilha respeita a coluna; o excesso só rola. */
+[data-proto-carousel="column"] .pjt__track {
+  margin-right: 0;
+  padding-right: 0;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .pjt__track {
+    scroll-behavior: smooth;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   O card (frame 124:561 / 124:563).
+--------------------------------------------------------------------------- */
+.pcard {
+  flex: 0 0 var(--pcard-w);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: var(--pcard-w);
+  height: var(--pcard-h);
+  padding: var(--space-20);
+  border: var(--border-w) solid transparent;
+  border-radius: var(--radius-16);
+  background: var(--white);
+  scroll-snap-align: start;
+  text-align: left;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  /* `justify-content: space-between` é o que o frame usa: o ar entre a linha
+     do ícone, a marca e o texto é sobra dividida, não um gap fixo. Em 332 de
+     altura sobram ~66px de cada lado da marca. */
+}
+/* Hover — o eixo em disputa. `ring` é o que o Figma desenhou (borda --line,
+   sem preenchimento); `fill` é a regra que a row `Article` já segue no site
+   (só fill --row-hover, sem anel, sem transição — ver docs/figma-workflow.md).
+   As duas convivem na mesma página hoje, então dá pra comparar de perto. */
+@media (hover: hover) and (pointer: fine) {
+  [data-proto-hover="ring"] .pcard:hover {
+    border-color: var(--line);
+  }
+  [data-proto-hover="fill"] .pcard:hover {
+    background: var(--row-hover);
+  }
+}
+.pcard:focus-visible {
+  outline: var(--border-w) solid var(--ink);
+  outline-offset: var(--space-2);
+}
+/* Linha de cima: só o ícone de expandir, alinhado à direita (frame 133:181).
+   Em --faint, não --ink: no frame o SVG exportado vem na cor do modo escuro
+   nos dois estados, então a cor virou decisão nossa — o afeto é uma dica, não
+   um botão, e some junto com o resto do card no hover. */
+.pcard__top {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 100%;
+}
+.pcard__expand {
+  display: block;
+  width: var(--space-16);
+  height: var(--space-16);
+  color: var(--faint);
+}
+/* A marca do projeto: 64×64, raio 12, borda --line. O frame preenche com
+   branco a 5% — que em Dark é o `--ink-a5` do site e em Light desaparece.
+   Aqui o fill é `--ink-a5` nos dois modos, que é o token equivalente e se
+   comporta igual nos dois (é ink, não white). A imagem, quando existe,
+   cobre tudo; quando falha, o elemento sai e sobra o quadrado (regra 4 do
+   AGENTS.md). */
+.pcard__mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--pcard-mark);
+  height: var(--pcard-mark);
+  border: var(--border-w) solid var(--line);
+  border-radius: var(--radius-12);
+  background: var(--ink-a5);
+  overflow: hidden;
+}
+.pcard__mark img {
+  width: var(--space-32);
+  height: var(--space-32);
+  object-fit: contain;
+  border-radius: var(--radius-6);
+}
+.pcard__text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  width: 100%;
+}
+.pcard__title {
+  font-weight: var(--fw-medium);
+  letter-spacing: var(--ls-tight);
+  line-height: var(--lh-base);
+  color: var(--ink);
+  /* Dois nomes longos ("CloudFaster Academy") cabem em uma linha a 266 −
+     40 de padding; um terceiro não caberia, e a altura do card é fixa, então
+     o título corta em uma linha e a descrição fica com as duas dela. */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.pcard__desc {
+  line-height: var(--lh-snug);
+  color: var(--muted);
+  /* Duas linhas no frame. Mais que isso empurraria a marca pra cima e
+     quebraria o alinhamento entre cards vizinhos. */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+}
+
+/* ---------------------------------------------------------------------------
+   O detalhe do projeto (frame 133:248) — "estilo Vaul do Emil".
+
+   Uma superfície, dois modos. `drawer` sobe de baixo com alça de arrastar e
+   escala a página atrás; `modal` centraliza e troca a alça por um botão de
+   fechar (uma alça que não arrasta é uma promessa falsa). O conteúdo é o
+   mesmo nos dois.
+
+   z-index 54/55: abaixo do lightbox (60/61 em main.css) de propósito — uma
+   foto da galeria abre POR CIMA do detalhe, e o Escape do lightbox já roda
+   em fase de captura e para ali.
+--------------------------------------------------------------------------- */
+.pdrawer-wash {
+  position: fixed;
+  inset: 0;
+  z-index: 54;
+  /* Igual ao `.cmd-wash` do site, cor e desfoque: `--wash-bg` é o fundo a
+     55% e sozinho quase não vela uma página que já é quase branca — quem
+     faz a separação é o blur. Com a escala da página atrás, dá o mesmo par
+     "scale-and-blur" que o prompt de drawer deste repo descreve
+     (prompts.mjs, o kit Sonner/Vaul). */
+  background: var(--wash-bg);
+  backdrop-filter: blur(var(--glass-blur-lg)) saturate(var(--glass-sat));
+  -webkit-backdrop-filter: blur(var(--glass-blur-lg)) saturate(var(--glass-sat));
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--duration-250) var(--ease);
+}
+.pdrawer-wash[aria-hidden="false"] {
+  opacity: 1;
+  pointer-events: auto;
+}
+.pdrawer {
+  position: fixed;
+  z-index: 55;
+  display: flex;
+  flex-direction: column;
+  width: min(var(--pdrawer-w), calc(100vw - var(--space-48)));
+  padding: var(--space-20);
+  border-radius: var(--radius-24);
+  background: var(--white);
+  box-shadow: var(--shadow-modal);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  pointer-events: none;
+  opacity: 0;
+}
+.pdrawer[aria-hidden="false"] {
+  pointer-events: auto;
+  opacity: 1;
+}
+
+/* --- modo drawer ---------------------------------------------------------
+   Ancorado embaixo, encostado na borda inferior: os 24 de raio de baixo
+   saem da tela e o que se vê são os de cima, que é o desenho do Vaul. A
+   altura para em 92vh pra sempre sobrar um pedaço da página atrás — é o que
+   diz "isto é uma camada", sem precisar de texto. */
+[data-proto-surface="drawer"] .pdrawer {
+  left: 50%;
+  bottom: 0;
+  max-height: 92vh;
+  transform: translate(-50%, 100%);
+  transition:
+    transform var(--duration-400) var(--ease-out),
+    opacity var(--duration-160) var(--ease);
+}
+[data-proto-surface="drawer"] .pdrawer[aria-hidden="false"] {
+  transform: translate(-50%, 0);
+}
+/* Enquanto o dedo/ponteiro arrasta, quem manda é o JS: a transição sai pra
+   que o gesto seja 1:1 com o cursor e possa ser interrompido no meio. */
+[data-proto-surface="drawer"] .pdrawer.is-dragging {
+  transition: none;
+  user-select: none;
+}
+/* A página atrás encolhe, como no iOS. Em `body > main`, não em `body`: um
+   `transform` no body quebraria o `position: fixed` de tudo que está dentro
+   dele — inclusive este drawer. */
+[data-proto-surface="drawer"] body.pdrawer-open > main {
+  transform: scale(0.97);
+  transform-origin: 50% 0;
+  border-radius: var(--radius-12);
+}
+[data-proto-surface="drawer"] body > main {
+  transition: transform var(--duration-400) var(--ease-out);
+}
+/* O topbar sai de cena junto, por opacidade. NUNCA por transform: o estado
+   escondido dele já é um `translate(-50%, …) scale()` (main.css), e
+   sobrescrever a propriedade inteira jogaria a barra pra fora do centro —
+   foi o que aconteceu na primeira captura. */
+body.pdrawer-open > .topbar {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* --- modo modal ----------------------------------------------------------
+   A geometria do `.cmd-modal` (top/left 50%, scale 0.96 → 1, `--ease-pop`),
+   pra que os dois modais do site continuem lendo como uma superfície só —
+   a decisão de 15/08/2026 registrada em docs/design-system.md. */
+[data-proto-surface="modal"] .pdrawer {
+  top: 50%;
+  left: 50%;
+  max-height: calc(100vh - var(--space-96));
+  transform: translate(-50%, -50%) scale(0.96);
+  transition:
+    transform var(--duration-250) var(--ease-pop),
+    opacity var(--duration-200) var(--ease);
+}
+[data-proto-surface="modal"] .pdrawer[aria-hidden="false"] {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+/* A alça (frame 133:251): 48×4 em --line, dentro dos 20 de padding do topo.
+   Só existe no modo drawer, e é ela que recebe o gesto — daí o alvo de
+   toque de 20px de altura em volta de uma barra de 4. */
+.pdrawer__grip {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: grab;
+  touch-action: none;
+}
+.pdrawer__grip::before {
+  content: "";
+  display: block;
+  width: var(--space-48);
+  height: var(--space-4);
+  margin: 0 auto var(--space-12);
+  border-radius: var(--radius-full);
+  background: var(--line);
+}
+.pdrawer__grip:active {
+  cursor: grabbing;
+}
+[data-proto-surface="modal"] .pdrawer__grip {
+  display: none;
+}
+[data-proto-surface="drawer"] .pdrawer__close {
+  display: none;
+}
+.pdrawer__close {
+  position: absolute;
+  top: var(--space-16);
+  right: var(--space-16);
+  z-index: 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  .pdrawer,
+  .pdrawer-wash,
+  body > main,
+  .topbar {
+    transition: none;
+  }
+}
+
+/* --- conteúdo do detalhe -------------------------------------------------
+   Ritmo do frame: imagem principal colada no topo, depois 40 de respiro e 40
+   entre blocos. */
+.pdrawer__shot {
+  display: block;
+  width: 100%;
+  aspect-ratio: 960 / 400;
+  object-fit: cover;
+  border-radius: var(--radius-16);
+  background: var(--bg);
+}
+.pdrawer__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-40);
+  padding-top: var(--space-40);
+}
+.pdrawer__head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+.pdrawer__title {
+  font-weight: var(--fw-medium);
+  letter-spacing: var(--ls-tight);
+  line-height: var(--lh-base);
+  margin: 0;
+}
+.pdrawer__role {
+  color: var(--muted);
+  line-height: var(--lh-snug);
+  margin: 0;
+}
+.pdrawer__bio {
+  color: var(--muted);
+  line-height: var(--lh-snug);
+  margin: var(--space-16) 0 0;
+}
+.pdrawer__bio + .pdrawer__bio {
+  margin-top: var(--space-12);
+}
+.pdrawer__section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+}
+/* `.label` de produção já é --faint e, com o flat-type no ar, 16/400 — que é
+   exatamente o que o frame pede. Só a margem precisa zerar: a versão do
+   `.cmd-modal` traz 32 de topo, e aqui o espaço vem do gap do container. */
+.pdrawer .label {
+  margin: 0;
+}
+.pdrawer__items {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+/* O frame pinta o primeiro item em --ink e os demais em --muted: o primeiro
+   "Destaque" é a frase que resume o projeto, o resto é apoio. */
+.pdrawer__item {
+  color: var(--muted);
+  line-height: var(--lh-snug);
+  margin: 0;
+}
+.pdrawer__item:first-child {
+  color: var(--ink);
+}
+.pdrawer__links {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+.pdrawer__link {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  width: fit-content;
+  color: var(--muted);
+}
+/* O frame usa ícone de 20, contra os 13 do `.fav` de produção. Como a linha
+   do link é a única coisa clicável do bloco, o ícone maior ajuda o alvo. */
+.pdrawer__link .fav {
+  width: var(--space-20);
+  height: var(--space-20);
+  margin-right: 0;
+  border-radius: var(--radius-6);
+}
+@media (hover: hover) and (pointer: fine) {
+  .pdrawer__link:hover {
+    color: var(--ink);
+  }
+}
+.pdrawer__link:focus-visible {
+  outline: var(--border-w) solid var(--ink);
+  outline-offset: var(--space-2);
+  border-radius: var(--radius-3);
+}
+
+/* --- a galeria -----------------------------------------------------------
+   O frame alterna duas meias e uma inteira, repetindo. Em grid de 2 colunas
+   isso é só marcar as inteiras com `span 2`; quem decide quais é o JS, que
+   também cobre o caso de número ímpar de fotos. Proporções do frame:
+   472×400 na meia (1.18:1) e 960×400 na inteira (2.4:1). */
+.pgal {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-16);
+}
+.pgal__item {
+  display: block;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-16);
+  background: var(--bg);
+  overflow: hidden;
+  cursor: zoom-in;
+}
+.pgal__item--wide {
+  grid-column: span 2;
+}
+.pgal__img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 472 / 400;
+  object-fit: cover;
+}
+.pgal__item--wide .pgal__img {
+  aspect-ratio: 960 / 400;
+}
+.pgal__item:focus-visible {
+  outline: var(--border-w) solid var(--ink);
+  outline-offset: var(--space-2);
+}
+
+/* Mobile: o detalhe ocupa a largura toda e a galeria vira uma coluna. No
+   modo drawer isso já é o comportamento nativo do Vaul. */
+@media (max-width: 560px) {
+  .pdrawer {
+    width: 100vw;
+    padding: var(--space-12);
+    border-radius: var(--radius-24) var(--radius-24) 0 0;
+  }
+  [data-proto-surface="modal"] .pdrawer {
+    width: calc(100vw - var(--space-24));
+    border-radius: var(--radius-24);
+  }
+  .pgal {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .pgal__item--wide {
+    grid-column: span 1;
+  }
+  .pgal__img,
+  .pgal__item--wide .pgal__img {
+    aspect-ratio: 472 / 400;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   O painel de controle do protótipo. Só existe nesta rota; some no print e
+   não participa do craft que está sendo julgado.
+--------------------------------------------------------------------------- */
+/* Canto inferior ESQUERDO: numa janela de 1440 a folha de 1000 deixa 220 de
+   cada lado, e o painel à direita encobria a borda dela. Recolhível pelo
+   mesmo motivo — pra julgar o card sem um retângulo de teste na frente. */
+.proto-panel {
+  position: fixed;
+  left: var(--space-16);
+  bottom: var(--space-16);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+  padding: var(--space-16);
+  border: var(--border-w) solid var(--line);
+  border-radius: var(--radius-16);
+  background: var(--white);
+  box-shadow: var(--shadow-card);
+  font-size: var(--fs-12);
+}
+.proto-panel[hidden] {
+  display: none;
+}
+.proto-panel__toggle {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--muted);
+  font: inherit;
+  cursor: pointer;
+}
+.proto-panel__dot {
+  width: var(--space-8);
+  height: var(--space-8);
+  border-radius: var(--radius-full);
+  background: var(--faint);
+}
+.proto-panel__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+}
+.proto-panel--closed .proto-panel__body {
+  display: none;
+}
+.proto-panel__row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  justify-content: space-between;
+}
+.proto-panel__label {
+  color: var(--muted);
+}
+.proto-panel__seg {
+  display: flex;
+  gap: var(--space-2);
+  padding: var(--space-2);
+  border: var(--border-w) solid var(--line);
+  border-radius: var(--radius-full);
+}
+.proto-panel__seg button {
+  padding: var(--space-4) var(--space-10);
+  border: 0;
+  border-radius: var(--radius-full);
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  cursor: pointer;
+}
+.proto-panel__seg button[aria-pressed="true"] {
+  background: var(--ink);
+  color: var(--bg);
+}
+.proto-panel__note {
+  max-width: var(--space-240);
+  color: var(--faint);
+  line-height: var(--lh-snug);
+  margin: 0;
+}
+@media (max-width: 560px) {
+  .proto-panel {
+    right: var(--space-16);
+  }
+}

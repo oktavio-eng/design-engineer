@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<!-- Mesmo preflight de tema das outras páginas, byte a byte: resolve o tema
+     persistido/do sistema antes do CSS pintar. -->
+<script>
+(function () {
+  try {
+    var stored = localStorage.getItem("theme");
+    var dark = stored ? stored === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+    if (dark) document.documentElement.setAttribute("data-theme", "dark");
+  } catch (e) {}
+})();
+</script>
+<title>Protótipo — nova home</title>
+<meta name="description" content="Ambiente de teste: Projects em cards e o detalhe do projeto como drawer. Não é a home publicada.">
+<!-- Rota de teste: fora do índice dos buscadores, e sem og:* — não é pra ser
+     compartilhada como página do site. O header equivalente também está no
+     vercel.json, pro caso de alguém linkar direto. -->
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/png" href="/new-favicon.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&amp;family=Geist+Mono:wght@100..900&amp;display=swap" rel="stylesheet">
+
+<!-- A ordem importa: tokens e main.css, depois o experimento flat-type (é o
+     que produção serve), e só então o CSS do protótipo. Comparar com o
+     main.css sozinho dá números errados — ver docs/figma-workflow.md. -->
+<link rel="stylesheet" href="/styles/main.css">
+<link rel="stylesheet" href="/styles/experiments/flat-type.css">
+<link rel="stylesheet" href="/testes/prototipo.css">
+</head>
+<!-- Sem a intro: `html` não carrega `.intro-playing`, então os `.stagger`
+     entram na carga como de costume e a página não faz esperar em cada
+     reload. O resto do chrome (topbar, tema, ⌘K, cursor, som, scroll) é o
+     mesmo da home. -->
+<body class="portfolio-page">
+<header class="topbar" aria-hidden="true" inert>
+  <a href="/" class="topbar__logo" aria-label="Home">
+    <svg width="44" height="56" viewBox="0 0 44 56" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M22.2308 41.1974C33.2757 41.1974 42.2294 44.2682 42.2296 48.0565C42.2296 51.8448 33.2759 54.9158 22.2308 54.9158C11.1857 54.9158 2.23175 51.8448 2.23175 48.0565C2.23194 44.2682 11.1858 41.1974 22.2308 41.1974Z" fill="black"/>
+      <path d="M26.01 1.13301C26.8922 0.942593 27.8093 1.19536 28.4739 1.76271C29.0102 2.26793 29.2628 2.93249 29.1696 3.59316V3.58922L27.5607 15.87L25.0656 37.7187L22.4774 38.3834L24.8753 17.0747L18.6882 17.5177L18.2452 20.6425C18.183 21.2759 17.74 21.7459 17.1727 21.781L2.77784 23.1063C1.98892 23.1374 1.29326 22.5389 1.35544 21.8433L2.33482 12.0887C2.36591 11.6145 2.74666 11.2375 3.25188 11.1093L7.44915 10.0366C7.51132 10.0366 7.60837 10.0366 7.67053 10.0055L9.46996 9.53149L14.6466 8.23739C14.9614 8.1441 15.214 7.82525 15.214 7.47939C15.2139 7.44827 15.1827 7.38607 15.1827 7.32006C15.0583 6.94315 14.6775 6.69045 14.2656 6.78371L9.62534 7.98473L9.78467 6.1853C9.84687 5.23706 10.6049 4.44806 11.6464 4.22654L26.01 1.13301Z" fill="black"/>
+    </svg>
+  </a>
+  <nav class="topbar__nav" aria-label="Primary"><a href="/" data-cuelume-hover="tick">Home</a> <a href="/wiki" data-cuelume-hover="tick">Wiki</a> <a href="/changelog" data-cuelume-hover="tick">Changelog</a> <a href="/prompts" data-cuelume-hover="tick">Prompts</a></nav>
+  <div class="topbar__social">
+    <button class="topbar__icon theme-toggle" id="themeTrigger" type="button" aria-label="Toggle dark mode" data-mode="light" data-cuelume-toggle>
+      <svg class="icon-sun" viewBox="0 0 256 256" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M120,40V16a8,8,0,0,1,16,0V40a8,8,0,0,1-16,0Zm72,88a64,64,0,1,1-64-64A64.07,64.07,0,0,1,192,128Zm-16,0a48,48,0,1,0-48,48A48.05,48.05,0,0,0,176,128ZM58.34,69.66A8,8,0,0,0,69.66,58.34l-16-16A8,8,0,0,0,42.34,53.66Zm0,116.68-16,16a8,8,0,0,0,11.32,11.32l16-16a8,8,0,0,0-11.32-11.32ZM192,72a8,8,0,0,0,5.66-2.34l16-16a8,8,0,0,0-11.32-11.32l-16,16A8,8,0,0,0,192,72Zm5.66,114.34a8,8,0,0,0-11.32,11.32l16,16a8,8,0,0,0,11.32-11.32ZM48,128a8,8,0,0,0-8-8H16a8,8,0,0,0,0,16H40A8,8,0,0,0,48,128Zm80,80a8,8,0,0,0-8,8v24a8,8,0,0,0,16,0V216A8,8,0,0,0,128,208Zm112-88H216a8,8,0,0,0,0,16h24a8,8,0,0,0,0-16Z"/></svg>
+      <svg class="icon-moon" viewBox="0 0 256 256" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M233.54,142.23a8,8,0,0,0-8-2,88.08,88.08,0,0,1-109.8-109.8,8,8,0,0,0-10-10,104.84,104.84,0,0,0-52.91,37A104,104,0,0,0,136,224a103.09,103.09,0,0,0,62.52-20.88,104.84,104.84,0,0,0,37-52.91A8,8,0,0,0,233.54,142.23ZM188.9,190.34A88,88,0,0,1,65.66,67.11a89,89,0,0,1,31.4-26A106,106,0,0,0,96,56,104.11,104.11,0,0,0,200,160a106,106,0,0,0,14.92-1.06A89,89,0,0,1,188.9,190.34Z"/></svg>
+    </button>
+  </div>
+</header>
+
+<main data-portfolio-root>
+  <section class="stagger">
+    <div class="profile">
+      <button class="profile__avatar" type="button" data-cursor="ring" aria-label="Enlarge photo of Oktavio Alexandre" data-lightbox-src="/avatar.webp" data-lightbox-alt="Oktavio Alexandre" data-lightbox-caption="Otavio">
+        <img src="/avatar.webp" alt="Oktavio Alexandre" width="52" height="52">
+      </button>
+      <div class="profile__id">
+        <div class="profile__name">Oktavio Alexandre</div>
+        <div class="profile__role">Product &amp; Visual Designer · GOW Design</div>
+      </div>
+    </div>
+    <h1>Portfolio</h1>
+    <p class="subtitle">Projects, personal work, and the work in public.</p>
+  </section>
+
+  <section class="stagger" id="positioning">
+    <h2>What I do</h2>
+    <p>I work across product and interface design, brand systems, and design engineering — the same eye for type, color, spacing, and motion, carried from design into Framer, Webflow, or code. I've run GOW Design since 2019, working remotely from Brazil with product teams and small studios that care how software feels, not only that it works.</p>
+    <p>Everything on this site — the palette, the ⌘K search, the tests behind it — is written down as it ships. <a href="/wiki" class="inline-link">Read the wiki</a> or <a href="/changelog" class="inline-link">the changelog</a>.</p>
+  </section>
+
+  <section class="stagger" id="contributions" hidden>
+    <h2>Contributions</h2>
+    <div class="contrib" data-contrib>
+      <div class="contrib__card">
+        <div class="contrib__grid" aria-hidden="true"></div>
+        <div class="contrib__meta">
+          <span data-contrib-total></span>
+          <span class="contrib__legend" aria-hidden="true">Less
+            <span class="contrib__cell" data-level="0"></span>
+            <span class="contrib__cell" data-level="1"></span>
+            <span class="contrib__cell" data-level="2"></span>
+            <span class="contrib__cell" data-level="3"></span>
+            <span class="contrib__cell" data-level="4"></span>
+          More</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- O frame chama esta seção de "Experiences"; mantida como "Writing" de
+       propósito, pra que o protótipo teste uma mudança de cada vez. -->
+  <section class="stagger" id="writing">
+    <h2>Writing</h2>
+    <div class="doc-list" data-writing></div>
+  </section>
+
+  <!-- A peça nova. Sem `data-list="projects"`, então o renderer de produção
+       (portfolio.mjs) não monta a lista de rows aqui e a seção fica inteira
+       com prototipo.mjs. O cabeçalho e as setas também nascem lá, porque o
+       estado das setas depende do scroll da trilha. -->
+  <section class="stagger" id="projects" data-proto-projects hidden></section>
+
+  <section class="stagger" id="personal" hidden>
+    <h2>Personal projects</h2>
+    <div data-list="personal"></div>
+  </section>
+
+  <section class="stagger" id="life" hidden>
+    <h2>Life</h2>
+    <div data-list="life"></div>
+  </section>
+
+  <footer class="stagger">
+    <span>Otavio · GOW Design</span>
+    <div class="footer__right">
+      <a href="/" class="about-trigger">Home publicada</a>
+      <a href="/changelog" class="about-trigger">Changelog</a>
+      <a href="/wiki" class="about-trigger">The plan</a>
+    </div>
+  </footer>
+</main>
+
+<!-- O detalhe do projeto. Uma marcação, dois modos (drawer / modal): o que
+     muda entre eles é CSS, e a alça só é arrastável no modo drawer. -->
+<div class="pdrawer-wash" data-proto-wash aria-hidden="true"></div>
+<div class="pdrawer" role="dialog" aria-modal="true" aria-label="Projeto" aria-hidden="true" inert tabindex="-1" data-proto-sheet>
+  <button class="pdrawer__grip" type="button" aria-label="Arrastar para baixo para fechar" data-proto-grip></button>
+  <button class="panel-close pdrawer__close" type="button" aria-label="Fechar" data-proto-close data-cuelume-toggle="droplet"><svg viewBox="0 0 256 256" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z"/></svg></button>
+  <div data-proto-sheet-body></div>
+</div>
+
+<!-- O lightbox de produção, reaproveitado: as fotos da galeria carregam
+     `data-lightbox-src` e portfolio.mjs já escuta isso no documento inteiro.
+     Ele fica em z-index 61, acima do detalhe (55), então uma foto abre por
+     cima e o Escape fecha a foto primeiro. -->
+<div class="cmd-wash lightbox-wash" data-lightbox-wash aria-hidden="true"></div>
+<div class="lightbox" role="dialog" aria-modal="true" aria-label="Photo" aria-hidden="true" inert data-lightbox>
+  <button class="panel-close lightbox__close" type="button" aria-label="Close" data-lightbox-close data-cuelume-toggle="droplet"><svg viewBox="0 0 256 256" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z"/></svg></button>
+  <figure class="lightbox__figure">
+    <img class="lightbox__img" alt="" data-lightbox-img>
+    <figcaption class="lightbox__caption" data-lightbox-text></figcaption>
+  </figure>
+</div>
+
+<!-- Os três eixos que o Figma não fecha. Estão aqui, e não num doc, porque
+     são decisões de olhar: troque e compare. A escolha fica no localStorage,
+     então sobrevive ao reload. -->
+<aside class="proto-panel" data-proto-panel aria-label="Controles do protótipo">
+  <button class="proto-panel__toggle" type="button" data-proto-toggle aria-expanded="true">
+    <span class="proto-panel__dot" aria-hidden="true"></span>protótipo
+  </button>
+  <div class="proto-panel__body" data-proto-panel-body>
+  <div class="proto-panel__row">
+    <span class="proto-panel__label">Carrossel</span>
+    <div class="proto-panel__seg">
+      <button type="button" data-axis="carousel" data-value="bleed" aria-pressed="false">sangra</button>
+      <button type="button" data-axis="carousel" data-value="column" aria-pressed="false">coluna</button>
+    </div>
+  </div>
+  <div class="proto-panel__row">
+    <span class="proto-panel__label">Detalhe</span>
+    <div class="proto-panel__seg">
+      <button type="button" data-axis="surface" data-value="drawer" aria-pressed="false">drawer</button>
+      <button type="button" data-axis="surface" data-value="modal" aria-pressed="false">modal</button>
+    </div>
+  </div>
+  <div class="proto-panel__row">
+    <span class="proto-panel__label">Hover do card</span>
+    <div class="proto-panel__seg">
+      <button type="button" data-axis="hover" data-value="ring" aria-pressed="false">anel</button>
+      <button type="button" data-axis="hover" data-value="fill" aria-pressed="false">fill</button>
+    </div>
+  </div>
+  <p class="proto-panel__note">Ambiente de teste. <a href="/" class="inline-link">Home publicada</a>.</p>
+  </div>
+</aside>
+
+<script src="/chrome.js" defer></script>
+<script src="/favicons.js" defer></script>
+<script src="/content.js" defer></script>
+<script src="/portfolio-content.js" defer></script>
+<!-- portfolio.mjs continua dono de tudo que não mudou (writing, personal,
+     life, contribuições, lightbox); prototipo.mjs só acrescenta a seção
+     Projects e o detalhe. -->
+<script type="module" src="/portfolio.mjs"></script>
+<script type="module" src="/testes/prototipo.mjs"></script>
+<script type="module" src="/cmd.mjs"></script><script type="module" src="/cursor.mjs"></script><script type="module" src="/sound.mjs"></script><script type="module" src="/scroll.mjs"></script>
+</body>
+</html>
