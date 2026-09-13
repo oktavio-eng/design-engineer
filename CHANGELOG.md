@@ -6,6 +6,11 @@ Notable changes to this site, in the order they landed on `main`. Newest first. 
 
 **Meses anteriores:** [agosto de 2026](docs/changelog/2026-08.md) (01/08–30/08 — recuperação do site, tokens, intro, ⌘K, `/prompts`, portfólio na home, Figma-first, Lenis, composer + Supabase).
 
+## 2026-09-12
+
+- Protótipo da nova home em `/testes/prototipo-nova-home` (rota `noindex`, fora de produção): Projects vira carrossel de cards e o detalhe do projeto vira uma folha grande com galeria de fotos — `testes/prototipo-nova-home.html`, `testes/prototipo.css`, `testes/prototipo.mjs`, teste em `tests/ui/proto-nova-home.test.mjs`. Três decisões que o Figma não fecha (carrossel sangrando × na coluna, drawer × modal, hover em anel × fill) ficam num painel de troca na própria página. Medidas, deltas contra produção e o que ficou em aberto em `docs/nova-home-projetos.md`.
+- Conteúdo ganha dois campos: `summary` (a linha curta do card, um registro diferente do `role`) nos sete projetos, e `gallery` (`[{src, alt, caption}]`) com quatro telas reais do Caderno de Erros — `portfolio-content.js`. Os dois são editáveis no Studio (`admin/app.mjs`, `admin/ui.mjs`, `admin/schema.mjs`) como "Resumo na home" e "Galeria do projeto". Só entram no site publicado depois de preenchidos no Studio, porque `portfolio-content.js` é servido pelo Worker.
+
 ## 2026-09-07
 
 - Caixa de entrada: “Responder por e-mail” vira “Responder no Gmail” (compose do Gmail em aba nova) com o `mailto:` como link secundário — `admin/inbox.mjs`, `styles/admin.css`, teste em `tests/admin/inbox.test.mjs`. Motivo em `docs/studio.md`.

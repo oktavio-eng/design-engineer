@@ -6,7 +6,7 @@
 
    Every entry keeps the shape the site's detail renderer expects:
 
-     { name, role, preview?, bio, items?, subprojects?, links, draft? }
+     { name, role, summary?, preview?, bio, items?, gallery?, subprojects?, links, draft? }
 
    `preview` (22/08/2026): a live-fetched image URL (the entry's own
    `og:image`, hotlinked, not downloaded — same "live external asset, remove
@@ -20,6 +20,16 @@
    pages worth calling out inside one project's detail — same "live image +
    onerror removal" contract as the top-level `preview`. See cmd.mjs's
    `entryHtml()` for how both render.
+
+   `summary` e `gallery` (12/09/2026) nasceram do protótipo da nova home
+   (/testes/prototipo-nova-home, frames 124:562 e 133:248 do Figma).
+   `summary` é a linha curta do card — um registro diferente do `role`: o
+   card diz o que o projeto é ("Founding design for a medical-education
+   company"), o `role` diz a disciplina ("Interactive Product + Campaigns ·
+   Medical Education"). Writing já usava o campo com o mesmo sentido.
+   `gallery` é um array de `{ src, alt, caption }` com as fotos do detalhe
+   do projeto; sem ele o protótipo cai nas capas dos `subprojects`. Os dois
+   são editáveis no Studio ("Resumo na home" e "Galeria do projeto").
 
    `draft: true` marks an entry that is a placeholder for Otavio to replace —
    the page hides drafts unless the URL carries `?draft` (or on localhost),
@@ -51,6 +61,7 @@
     "caderno-de-erros": {
       name: "Caderno de Erros",
       role: "UX/UI + Identity + Website · EdTech",
+      summary: "Founding design for website and multi-device platform",
       preview: "https://framerusercontent.com/images/3hNIyBkZHnghlMhz2wT4u2MiDw.jpg",
       bio: "Visual identity and full platform — desktop, tablet, and mobile, light and dark — for a study method built around logging mistakes by cause and reviewing them on a spaced schedule. Designed end-to-end in Figma and shipped to Framer, including the subscription flow with a custom coupon system (live price updates via DOM overrides) and ASAAS payment integration. 15K Instagram followers; beta testers have specifically praised logging discursive (essay-style) questions and the clean, distraction-free interface.",
       items: [
@@ -58,11 +69,43 @@
         "Built the subscription page's coupon logic as reusable Framer overrides.",
         "Kept the interface deliberately quiet so the study method stays the focus.",
       ],
+      // `gallery` (12/09/2026): as fotos do detalhe do projeto, no ritmo do
+      // frame 133:248 — duas meias, depois inteiras. Mesmo contrato de
+      // imagem externa do `preview` acima: hotlink, `onerror` remove, e só
+      // entra URL conferida. Estas quatro são telas reais do produto,
+      // baixadas da própria home do Caderno de Erros e abertas uma a uma
+      // antes de entrar aqui (regra 7 do AGENTS.md, aplicada a imagem).
+      // O campo é editável no Studio ("Galeria do projeto"); um projeto sem
+      // ele cai nas capas dos `subprojects`, e sem nenhum dos dois o bloco
+      // não aparece.
+      gallery: [
+        {
+          src: "https://framerusercontent.com/images/4mVd8cIXTAWMJcjRNnR9amYNGAw.png",
+          alt: "Caderno de Erros home screen with study streak, daily goal and mastery levels",
+          caption: "Home — streak, daily goal, and mastery levels",
+        },
+        {
+          src: "https://framerusercontent.com/images/0Cd7SnzI0cVyId7kF0ZDBFvNI.png",
+          alt: "The notebook screen, with the subject tree beside a rich-text editor",
+          caption: "The notebook — subject tree and editor",
+        },
+        {
+          src: "https://framerusercontent.com/images/4V0XVkH2RkvjjDelHIfX0ZnK0.png",
+          alt: "Progress dashboard with study time, answer rate and a focus calendar",
+          caption: "Progress — study time, accuracy, and focus",
+        },
+        {
+          src: "https://framerusercontent.com/images/RIFaJsvpbtKaYUyn5BRWhZDo6E.png",
+          alt: "Question card with answer options and a dropdown for tagging the cause of a mistake",
+          caption: "Logging a mistake by its cause",
+        },
+      ],
       links: [["Live site", "https://www.cadernodeerros.com.br/"]],
     },
     "sphera-academy": {
       name: "Sphera Academy",
       role: "UX/UI + Design System",
+      summary: "Interface craft for EdTech with academic clean style",
       preview: "https://framerusercontent.com/images/PgbsHlNgpSQclDuYYOPfMT6Zo.png",
       bio: "Design system and visual language for a university-admissions coaching platform, built around academic-university aesthetic — matching the credibility register that students and families already associate with the schools they're applying to. Designed the identity plus the core screens that set the system's components and tone (onboarding, home, class list/modules, classroom), then handed the file to the dev team to extend and trained a junior designer to take ownership of it. The client has used the identity and those first screens ever since; students describe the study environment as comfortable and immersive. The platform today documents dozens of admissions to schools including Duke, Cornell, and Columbia.",
       items: [
@@ -76,6 +119,7 @@
     "escola-da-bel": {
       name: "Escola da Bel",
       role: "Interactive Product + Campaigns · Medical Education",
+      summary: "Founding design for a medical-education company",
       preview: "https://framerusercontent.com/images/BP6trVJNYC4N4uySVf4sXwSvUA.jpg",
       bio: "Interactive product work and campaign systems for a medical-education company. Built a Framer-based diagnostic quiz with a seven-course recommendation engine, Google Sheets webhook and iframe height sync, used as a lead-generation tool on the site. It generated around 600 leads at a single event with 1,500–2,000 attendees. Ongoing campaign work also includes the Fresh Frozen Paris and Las Vegas series and a full anatomical illustration set for a medical-education atlas.",
       items: [
@@ -128,6 +172,7 @@
     "cloudfaster-academy": {
       name: "CloudFaster Academy",
       role: "UX/UI + Identity + Website · Cloud/AWS training",
+      summary: "Identity and website for AWS certification training",
       preview: "https://cloudfaster.academy/assets/og-image.png",
       bio: "Visual identity and website for an AWS certification training brand serving individual learners and corporate teams — built on solid UI/UX fundamentals for a straightforward certification-prep flow. The brand has since expanded to a mobile app and B2B plans, a later business decision outside this project's scope.",
       links: [["Live site", "https://cloudfaster.academy/"]],
@@ -135,6 +180,7 @@
     dascia: {
       name: "DascIA",
       role: "UX/UI + Identity + Website · AI Education",
+      summary: "Identity and website for an AI-education brand",
       bio: "Visual identity and website, via GOW Design, for an AI-education brand positioned against shallow 'AI in three clicks' courses — built to read as technical and credible.",
       items: ["Compressed, mixed-weight capital headline as the core brand device."],
       links: [["Live site", "https://dascia.com.br/"]],
@@ -142,6 +188,7 @@
     "finq-edu": {
       name: "FinQ Edu",
       role: "UX/UI + Identity + Website · Investment Banking prep",
+      summary: "Launch identity for an investment-banking prep brand",
       bio: "Visual identity and initial website version, at company launch, for an investment-banking/private-equity prep brand founded by people with real Wall Street backgrounds — built to give women a foothold in an IB/PE space that's highly competitive and visually closed off. Bet on gradients and vivid color, a deliberate break from every competitor's visual convention in the category. Structured the first version of the site and built out the app and web system screens; the live site has evolved since.",
       items: [
         "Identity built to stand out for women in IB/PE — a category where competitor branding is uniformly conservative.",
@@ -157,6 +204,7 @@
     "jlcp-tecnologia": {
       name: "JLCP Tecnologia",
       role: "Brand Identity + Positioning · IT Observability",
+      summary: "Brand redesign for the #1 Zabbix partner in Brazil",
       preview: "https://www.jlcp.com.br/images/favicon.svg",
       bio: "Brand and logomark redesign for the #1 Zabbix partner in Brazil, an IT observability consultancy serving enterprise clients like Globo, Riachuelo, and EcoRodovias. Replaced a dated isometric-cube mark with a modular grid of squares — data points, monitored environments — resolving into a minimalist star, repositioning the brand as AI-first. Defended the direction against a competing AI-generated concept the founder had produced himself, then wrote the presentation rationale that won the room.",
       items: [
