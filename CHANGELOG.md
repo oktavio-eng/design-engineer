@@ -8,6 +8,8 @@ Notable changes to this site, in the order they landed on `main`. Newest first. 
 
 ## 2026-10-21
 
+- Conteúdo profissional alinhado às notas do Otavio: apresentação, SEO, Wiki, escopo dos cases, descrição do projeto de aprendizado e links do plano; changelog público atualizado. Decisões e fontes em [docs/content-alignment.md](docs/content-alignment.md).
+
 - Drawer: restaura a seção Landing pages com nomes, descrições e links originais de `subprojects`, além da galeria ampliável (`projects.mjs`, `styles/projects.css`); links continuam disponíveis se imagens falharem. Home e protótipo: subtítulo do perfil passa a “UI/UX & Visual Designer”.
 
 - Pixel Office: capa do drawer trocada pela tela de boas-vindas fornecida pelo Otavio (`assets/projects/pixel-office/cover.png`, `project-media.mjs`); as 12 imagens da galeria permanecem.

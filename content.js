@@ -385,7 +385,7 @@ const people = {
     f3: {
       name: "Positioning",
       role: "Phase 03 · how to sell yourself",
-      bio: "Title changes the salary bracket. Design engineer gets evaluated against the engineering band, not the design one. You already deliver what the role asks for: production code with design judgment.",
+      bio: "Position as a UI/UX and Visual Designer with strong visual craft, product experience and close collaboration with developers. Build toward Design Engineering through React, modern CSS, interaction work and shipped projects; evaluate roles by scope, team structure and growth opportunity.",
       items: [
         "Target product design and design engineering roles where strong visual craft and implementation experience are an advantage. Evaluate level by scope, team structure and growth opportunity, rather than title alone.",
         "Resume in English, starting from Lupa's resume: lead with what ran in production, not with mockups.",

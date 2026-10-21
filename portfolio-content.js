@@ -60,14 +60,14 @@
   const projects = {
     "caderno-de-erros": {
       name: "Caderno de Erros",
-      role: "UX/UI + Identity + Website · EdTech",
+      role: "UX/UI + Design Systems · EdTech SaaS",
       summary: "Founding design for website and multi-device platform",
       preview: "https://framerusercontent.com/images/3hNIyBkZHnghlMhz2wT4u2MiDw.jpg",
-      bio: "Visual identity and full platform — desktop, tablet, and mobile, light and dark — for a study method built around logging mistakes by cause and reviewing them on a spaced schedule. Designed end-to-end in Figma and shipped to Framer, including the subscription flow with a custom coupon system (live price updates via DOM overrides) and ASAAS payment integration. 15K Instagram followers; beta testers have specifically praised logging discursive (essay-style) questions and the clean, distraction-free interface.",
+      bio: "UX/UI and visual identity for an EdTech SaaS platform built around logging mistakes by cause and reviewing them on a spaced schedule. I design user flows, reusable design systems and responsive interfaces across desktop, tablet and mobile, in light and dark themes, collaborating with developers and stakeholders from product decisions and prototyping through handoff and QA. Website and subscription pages are built in Framer, including a custom coupon system (live price updates via DOM overrides) and ASAAS payment integration. 15K Instagram followers; beta testers have specifically praised logging discursive (essay-style) questions and the clean, distraction-free interface.",
       items: [
-        "Full platform design across desktop/tablet/mobile, light/dark — Figma → Framer.",
+        "Platform UX/UI across desktop, tablet and mobile, light and dark — user flows, design systems, Figma prototypes, developer handoff and QA.",
         "Built the subscription page's coupon logic as reusable Framer overrides.",
-        "Kept the interface deliberately quiet so the study method stays the focus.",
+        "Kept the interface deliberately quiet so the study method stays the focus."
       ],
       // `gallery` (12/09/2026): as fotos do detalhe do projeto, no ritmo do
       // frame 133:248 — duas meias, depois inteiras. Mesmo contrato de
@@ -112,16 +112,16 @@
         "Visual language built around academic-university aesthetic to match the credibility register students expect — not generic edtech UI.",
         "Designed identity + core screens (onboarding, home, class list/modules, classroom) to set the system's components; dev team extended from there.",
         "Client has used the identity and those screens since launch; students describe the environment as comfortable and immersive.",
-        "Mentored a junior designer into ownership of the file; structure now being revisited as the internal team grows.",
+        "Mentored a junior designer into ownership of the file."
       ],
       links: [["Live site", "https://www.spheraacademy.com/"]],
     },
     "escola-da-bel": {
       name: "Escola da Bel",
-      role: "Interactive Product + Campaigns · Medical Education",
+      role: "Web + UX/UI + Visual Design · Aesthetics Education",
       summary: "Founding design for a medical-education company",
       preview: "https://framerusercontent.com/images/BP6trVJNYC4N4uySVf4sXwSvUA.jpg",
-      bio: "Interactive product work and campaign systems for a medical-education company. Built a Framer-based diagnostic quiz with a seven-course recommendation engine, Google Sheets webhook and iframe height sync, used as a lead-generation tool on the site. It generated around 600 leads at a single event with 1,500–2,000 attendees. Ongoing campaign work also includes the Fresh Frozen Paris and Las Vegas series and a full anatomical illustration set for a medical-education atlas.",
+      bio: "Web design, UX/UI and visual communication for a Brazilian education brand in the aesthetics industry. I design and evolve the main website, landing pages, course and event pages, responsive interfaces and interactive experiences in Figma and Framer, collaborating with developers on frontend and product implementation. Built a Framer-based diagnostic quiz with a seven-course recommendation engine, Google Sheets webhook and iframe height sync, used as a lead-generation tool on the site. It generated around 600 leads at a single event with 1,500–2,000 attendees. Interactive work also includes a voting experience for the brand's reality show. Ongoing campaign work includes the Fresh Frozen Paris and Las Vegas series and a full anatomical illustration set for an educational atlas.",
       items: [
         "Surrealist campaign series: Fresh Frozen Paris, Las Vegas.",
         "Anatomical illustration set for a course atlas.",
@@ -187,13 +187,13 @@
     },
     "finq-edu": {
       name: "FinQ Edu",
-      role: "UX/UI + Identity + Website · Investment Banking prep",
+      role: "UX/UI + Brand + Web & Mobile · IB/PE Education",
       summary: "Launch identity for an investment-banking prep brand",
-      bio: "Visual identity and initial website version, at company launch, for an investment-banking/private-equity prep brand founded by people with real Wall Street backgrounds — built to give women a foothold in an IB/PE space that's highly competitive and visually closed off. Bet on gradients and vivid color, a deliberate break from every competitor's visual convention in the category. Structured the first version of the site and built out the app and web system screens; the live site has evolved since.",
+      bio: "Visual identity, product interfaces and the initial website, at company launch, for an investment-banking/private-equity prep brand founded by people with real Wall Street backgrounds — built to give women a foothold in an IB/PE space that's highly competitive and visually closed off. Bet on gradients and vivid color, a deliberate break from every competitor's visual convention in the category. Designed the first website version, core flows, responsive interfaces and reusable components for the web platform and mobile app; the live site has evolved since.",
       items: [
         "Identity built to stand out for women in IB/PE — a category where competitor branding is uniformly conservative.",
         "Gradients and vivid color as a deliberate break from category convention.",
-        "Structured the first site version and built the app + web system screens — not the version currently live.",
+        "Designed the first website version and interfaces for the web platform and mobile app — the live site has evolved since."
       ],
       faviconFrom: "https://www.finqedu.com.br/",
       links: [
@@ -221,12 +221,12 @@
     "design-engineer": {
       name: "Design Engineer",
       role: "This site · 2026",
-      bio: "A single-page site — palette, ⌘K search, glossary tooltips, a Storybook + visual-regression harness — static HTML/CSS/JS, zero build step, every decision written down as it ships.",
+      bio: "A public learning and building project: a static HTML/CSS/JS portfolio with a Wiki, Changelog, shared design tokens, command search, glossary tooltips and a Storybook + visual-regression harness. I study React, modern CSS, interaction design, motion and component systems, and apply the learning directly to real interfaces. Design decisions, accessibility work, frontend architecture and technical experiments are documented as they ship.",
       items: [
-        "Type and spacing measured against emilkowal.ski in a real browser, not eyeballed: one size, two weights, 128px between sections.",
-        "OKLCH tokens for color, motion, spacing, typography and radius; every literal lives in one token file.",
-        "Motion stays interruptible; nothing animates on the keyboard path (⌘K opens instantly).",
-        "Storybook renders the production CSS, axe runs on every state, and eleven visual baselines gate each pull request.",
+        "Type and spacing measured against emilkowal.ski in a real browser — one size, two weights and a shared spacing scale.",
+        "Shared OKLCH color tokens plus motion, spacing, typography and radius tokens keep the interface consistent.",
+        "Motion stays interruptible; keyboard interactions preserve focus and support reduced motion.",
+        "Storybook renders the production CSS; accessibility checks, browser interaction tests and visual regression checks help catch changes before release."
       ],
       links: [
         ["Site", "https://oktavio.vercel.app"],
@@ -252,7 +252,7 @@
     "gow-studio": {
       name: "GOW Design",
       role: "Studio · ongoing",
-      bio: "The studio the client work ships under, since 2019 — interface design, brand systems, and design engineering.",
+      bio: "The studio I've run since 2019 — UI/UX, visual design and brand systems, with a growing focus on implementation and design engineering.",
       links: [["Site", "https://gowdesign.framer.website/"]],
     },
   };
@@ -274,7 +274,12 @@
       name: "The canon",
       role: "What I study",
       bio: "Rauno, Emil, Jakub, Josh — the design engineers whose public work set the yardstick this site is measured against. The reading order and why is on the plan page.",
-      links: [["The plan", "https://oktavio.vercel.app/#people"]],
+      links: [
+        [
+          "The plan",
+          "https://oktavio.vercel.app/wiki#people"
+        ]
+      ],
     },
   };
 
@@ -291,7 +296,12 @@
       role: "Writing · 2026",
       summary: "The plan itself: principle, phases, people, and what got discarded.",
       bio: "The plan itself: principle, phases, people, and what got discarded.",
-      links: [["Read", "/"]],
+      links: [
+        [
+          "Read",
+          "/wiki"
+        ]
+      ],
     },
     changelog: {
       name: "Changelog, as a habit",
