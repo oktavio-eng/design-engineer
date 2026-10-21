@@ -328,6 +328,19 @@ function detailMarkup(entry, key) {
       entry.items.map((item) => '<p class="pdrawer__item">' + item + "</p>").join("") +
       "</div></div>";
   }
+  if (entry.subprojects?.length) {
+    html +=
+      '<div class="pdrawer__section">' +
+      '<span class="label">Landing pages</span>' +
+      '<div class="pdrawer__landings">' +
+      entry.subprojects.map((sub) =>
+        '<a class="subproject" href="' + esc(sub.url) + '" target="_blank" rel="noopener" data-cursor="merge">' +
+        '<span class="subproject__name inline-link">' + esc(sub.name) + '</span>' +
+        (sub.description ? '<p class="subproject__desc">' + esc(sub.description) + '</p>' : '') +
+        '</a>',
+      ).join('') +
+      '</div></div>';
+  }
   if (entry.links && entry.links.length) {
     html +=
       '<div class="pdrawer__section">' +

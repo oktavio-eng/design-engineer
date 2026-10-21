@@ -452,6 +452,14 @@ body.pdrawer-open > .topbar {
   flex-direction: column;
   gap: var(--space-12);
 }
+.pdrawer__landings {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-24);
+}
+.pdrawer__landings .subproject__name {
+  margin-top: 0;
+}
 /* `.label` de produção já é --faint e, com o flat-type no ar, 16/400 — que é
    exatamente o que o frame pede. Só a margem precisa zerar: a versão do
    `.cmd-modal` traz 32 de topo, e aqui o espaço vem do gap do container. */
@@ -498,7 +506,8 @@ body.pdrawer-open > .topbar {
     color: var(--ink);
   }
 }
-.pdrawer__link:focus-visible {
+.pdrawer__link:focus-visible,
+.pdrawer__landings .subproject:focus-visible {
   outline: var(--border-w) solid var(--ink);
   outline-offset: var(--space-2);
   border-radius: var(--radius-3);

@@ -86,3 +86,9 @@ O detalhe mantém Tab dentro da folha, Enter/Space na alça fecha para quem usa 
 As 12 capturas de 21/10/2026 estão em `assets/projects/pixel-office/`, na ordem enviada, sem recorte nem conversão. `project-media.mjs` reconhece o registro pessoal pelo link `gow-pixel-office.vercel.app` e preenche apenas `gallery`/`preview` ausentes. A capa é `cover.png`, a captura da tela de boas-vindas enviada depois; as 12 imagens anteriores continuam na galeria. Isso permite publicar os assets pelo mesmo deploy estático sem sobrescrever o D1; conteúdo definido no Studio tem prioridade. O identificador remoto permanece `personal/prompts` (já renomeado para Pixel Office no Studio); a seed local foi alinhada a esse registro.
 
 `portfolio.mjs` encaminha linhas de Personal com galeria para o detalhe de `projects.mjs`, passando a coleção no gatilho. As outras linhas continuam no detalhe do ⌘K. `project-media.mjs` também entra na allowlist do build do Worker. A suíte da home verifica as 12 imagens, capa, lightbox da última captura, Escape por camada e retorno do foco à linha.
+
+### Links das landing pages
+
+A promoção havia usado apenas `subprojects[].preview` na galeria, descartando os URLs e descrições que o detalhe anterior mostrava. Corrigido em 21/10/2026: todo registro com `subprojects` ganha uma seção **Landing pages** com o nome e a descrição dentro do link, abrindo a LP em nova aba (`target="_blank"`, `rel="noopener"`). A galeria continua ampliando imagens; a seção de links existe independentemente de uma capa carregar ou falhar. Na Escola da Bel, os cinco destinos são preservados integralmente. O teste compara nomes, descrições e URLs com os dados de conteúdo e cobre falha das imagens.
+
+O subtítulo de perfil da home e do protótipo agora é **UI/UX & Visual Designer**, a pedido do Otavio.

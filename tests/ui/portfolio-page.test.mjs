@@ -88,6 +88,7 @@ test("/ (portfolio home) renders its collections, opens rows and photos in modal
   // renderGallery()) — the section still exists in the markup, just
   // permanently hidden until that's restored.
   assert.deepEqual(sections, ["positioning", "contributions", "writing", "projects", "personal", "life", "gallery:hidden"]);
+  assert.equal(await page.locator(".profile__role").textContent(), "UI/UX & Visual Designer");
 
   assert.equal(await page.locator("#projects .pcard").count(), 7, "all projects render as cards");
   assert.equal(await page.locator("[data-proto-panel]").count(), 0, "no prototype controls on the public homepage");
@@ -211,6 +212,16 @@ test("/ (portfolio home) renders its collections, opens rows and photos in modal
   await page.locator('[data-proto-open="escola-da-bel"]').click();
   await page.locator('.pdrawer[aria-hidden="false"]').waitFor();
   assert.equal(await page.locator(".pgal__item").count(), 5, "subproject covers populate the gallery");
+  const landings = await page.locator(".pdrawer__landings .subproject").evaluateAll(links => links.map(link => ({
+    name: link.querySelector(".subproject__name").textContent,
+    description: link.querySelector(".subproject__desc")?.textContent,
+    href: link.getAttribute("href"), target: link.target, rel: link.rel,
+  })));
+  const expectedLandings = await page.evaluate(() => window.PORTFOLIO_CONTENT.projects["escola-da-bel"].subprojects.map(sub => ({
+    name: sub.name, description: sub.description, href: sub.url, target: "_blank", rel: "noopener",
+  })));
+  assert.deepEqual(landings, expectedLandings, "all original landing-page links and descriptions survive the drawer migration");
+  await scanAxe(page, "project landing-page links");
   await page.locator(".pgal__item").first().click();
   await page.locator('[data-lightbox][aria-hidden="false"]').waitFor();
   await page.keyboard.press("Escape");
@@ -336,4 +347,8 @@ test("a broken project preview image removes itself, no reserved gap", { timeout
   await page.waitForFunction(() => document.querySelector(".pdrawer__shot") === null);
   assert.equal(await page.locator(".pdrawer__shot").count(), 0, "the broken image removed itself, not just failed silently");
   assert.equal(await page.locator(".pdrawer__bio").count(), 1, "the rest of the detail still renders");
+  await page.keyboard.press("Escape");
+  await page.locator('[data-proto-open="escola-da-bel"]').click();
+  await page.locator('.pdrawer[aria-hidden="false"]').waitFor();
+  assert.equal(await page.locator(".pdrawer__landings a[href]").count(), 5, "LP links remain available even when their preview images fail");
 });

@@ -8,6 +8,8 @@ Notable changes to this site, in the order they landed on `main`. Newest first. 
 
 ## 2026-10-21
 
+- Drawer: restaura a seção Landing pages com nomes, descrições e links originais de `subprojects`, além da galeria ampliável (`projects.mjs`, `styles/projects.css`); links continuam disponíveis se imagens falharem. Home e protótipo: subtítulo do perfil passa a “UI/UX & Visual Designer”.
+
 - Pixel Office: capa do drawer trocada pela tela de boas-vindas fornecida pelo Otavio (`assets/projects/pixel-office/cover.png`, `project-media.mjs`); as 12 imagens da galeria permanecem.
 
 - Pixel Office: 12 capturas fornecidas pelo Otavio em `assets/projects/pixel-office/`, primeira como capa; a linha em Personal abre o drawer com galeria e lightbox. `project-media.mjs` complementa o registro público sem substituir campos preenchidos no Studio; seed local sincronizado com o Pixel Office. Detalhes em [docs/nova-home-projetos.md](docs/nova-home-projetos.md).
