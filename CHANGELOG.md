@@ -8,6 +8,8 @@ Notable changes to this site, in the order they landed on `main`. Newest first. 
 
 ## 2026-10-21
 
+- Pixel Office: capa do drawer trocada pela tela de boas-vindas fornecida pelo Otavio (`assets/projects/pixel-office/cover.png`, `project-media.mjs`); as 12 imagens da galeria permanecem.
+
 - Pixel Office: 12 capturas fornecidas pelo Otavio em `assets/projects/pixel-office/`, primeira como capa; a linha em Personal abre o drawer com galeria e lightbox. `project-media.mjs` complementa o registro público sem substituir campos preenchidos no Studio; seed local sincronizado com o Pixel Office. Detalhes em [docs/nova-home-projetos.md](docs/nova-home-projetos.md).
 
 - Home: Projects passa a carrossel sangrando + drawer com galeria + hover em anel (`projects.mjs`, `styles/projects.css`), compartilhados com o protótipo. Fotos sem recorte, capas locais de fallback para CloudFaster/DascIA/FinQ, navegação por teclado e build do Studio atualizados. Detalhes em [docs/nova-home-projetos.md](docs/nova-home-projetos.md).

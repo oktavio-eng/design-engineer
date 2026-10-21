@@ -67,6 +67,6 @@ export function applyProjectMedia(content) {
   for (const entry of Object.values(content.personal || {})) {
     if (!entry.links?.some(([, url]) => /^https:\/\/gow-pixel-office\.vercel\.app(?:\/|$)/.test(url))) continue;
     if (!entry.gallery?.length) entry.gallery = pixelOfficeGallery;
-    if (!entry.preview) entry.preview = pixelOfficeGallery[0].src;
+    if (!entry.preview) entry.preview = "/assets/projects/pixel-office/cover.png";
   }
 }

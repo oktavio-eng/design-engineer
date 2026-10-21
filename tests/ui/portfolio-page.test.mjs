@@ -233,7 +233,7 @@ test("/ (portfolio home) renders its collections, opens rows and photos in modal
   await pixelOffice.click();
   assert.equal(await page.locator("[data-proto-sheet]").getAttribute("aria-label"), "Pixel Office");
   assert.equal(await page.locator(".pgal__item").count(), 12, "Pixel Office shows all twelve supplied screenshots");
-  assert.equal(await page.locator(".pdrawer__shot").getAttribute("src"), "/assets/projects/pixel-office/01-office.png");
+  assert.equal(await page.locator(".pdrawer__shot").getAttribute("src"), "/assets/projects/pixel-office/cover.png");
   await page.locator(".pgal__item").last().click();
   await page.locator('[data-lightbox][aria-hidden="false"]').waitFor();
   assert.match(await page.locator("[data-lightbox-img]").getAttribute("src"), /12-usage\.png$/);
