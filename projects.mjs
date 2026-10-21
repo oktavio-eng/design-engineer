@@ -16,7 +16,7 @@
                 ("Resumo na home", hoje só preenchido em Writing). Sem ele o
                 card cai pro `role`, que todo projeto tem.
      preview  → a imagem principal do detalhe ("Imagem de capa" no Studio).
-     gallery  → [{src, alt, caption}] — o campo novo. Sem ele, a galeria é
+     gallery  → [{src, alt, caption, width?, height?, layout?}]. Sem ele, a galeria é
                 montada a partir das capas dos `subprojects`, que é o que a
                 Escola da Bel já tem hoje; sem nenhum dos dois, o bloco
                 simplesmente não aparece (regra 4 do AGENTS.md: nada de
@@ -25,6 +25,9 @@
    Assim a home funciona com os dados que já estão no ar, e melhora
    sozinha conforme o Studio for preenchido.
 --------------------------------------------------------------------------- */
+
+import { bindDragCarousel } from '/carousel.mjs';
+import { suppliedProjectMedia } from "/project-media.mjs";
 
 const content = window.PORTFOLIO_CONTENT || {};
 const root = document.documentElement;
@@ -150,27 +153,27 @@ function pixelArrow() {
   );
 }
 
-// A marca do projeto dentro do quadrado de 64. O frame deixa o quadrado
-// vazio, então a fonte é decisão nossa: o favicon do primeiro link, que é
-// exatamente o que a row de Projects já mostra hoje (portfolio.mjs,
-// `renderList` com `favicon: true`). Se falhar, `favFallback` remove o <img>
-// e sobra o quadrado — nunca um ícone quebrado.
-function cardMark(entry) {
-  const source = entry.faviconFrom || (entry.links && entry.links[0] && entry.links[0][1]);
-  const icon = source ? favicon(source) : "";
-  return '<span class="pcard__mark" aria-hidden="true">' + icon + "</span>";
+// User-supplied marks load directly, including entries without a saved icon.
+// External brand domains keep the shared favicon cascade.
+function cardMark(entry, key) {
+  const source = entry.faviconFrom || suppliedProjectMedia[key]?.faviconFrom || entry.links?.[0]?.[1];
+  const local = typeof source === "string" && /^\/assets\/projects\/[a-z0-9/_-]+\.(?:webp|png|jpe?g|svg)$/i.test(source);
+  const icon = local
+    ? '<img class="fav" src="' + esc(source) + '" alt="" loading="lazy" onerror="this.remove()">'
+    : source ? favicon(source) : "";
+  return '<span class="pcard__mark' + (local ? " pcard__mark--artwork" : "") + '" aria-hidden="true">' + icon + "</span>";
 }
 
 function cardMarkup(key, entry) {
   return (
     '<button class="pcard" type="button" data-proto-open="' + esc(key) + '" aria-haspopup="dialog"' +
-    ' data-cuelume-hover="tick" data-cursor="merge">' +
+    ' data-cuelume-hover="tick" data-cursor="none">' +
     '<span class="pcard__top">' +
     '<svg class="pcard__expand" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">' +
     '<path d="M10 3H13V6"/><path d="M9 7L13 3"/><path d="M6 13H3V10"/><path d="M7 9L3 13"/>' +
     "</svg>" +
     "</span>" +
-    cardMark(entry) +
+    cardMark(entry, key) +
     '<span class="pcard__text">' +
     '<span class="pcard__title">' + esc(entry.name) + "</span>" +
     // `summary` é o texto do frame ("Interface craft for EdTech with academic
@@ -184,6 +187,7 @@ function cardMarkup(key, entry) {
 }
 
 let track = null;
+let clearCarousel = () => {};
 let prevButton = null;
 let nextButton = null;
 
@@ -218,6 +222,7 @@ export function renderProjects(host) {
   const keys = Object.keys(map).filter((key) => showDrafts || !map[key].draft);
   if (!keys.length) return 0;
 
+  clearCarousel();
   host.innerHTML =
     '<div class="pjt__head">' +
     "<h2>Projects</h2>" +
@@ -231,6 +236,7 @@ export function renderProjects(host) {
     "</div>";
 
   track = host.querySelector("[data-proto-track]");
+  clearCarousel = bindDragCarousel(track);
   prevButton = host.querySelector("[data-proto-prev]");
   nextButton = host.querySelector("[data-proto-next]");
   prevButton.addEventListener("click", () => step(-1));
@@ -274,27 +280,102 @@ function galleryPhotos(entry) {
   return [];
 }
 
-function galleryMarkup(entry) {
-  const photos = galleryPhotos(entry);
+const suppliedPhotos = new Map(Object.values(suppliedProjectMedia)
+  .flatMap(media => media.gallery.map(photo => [photo.src, photo])));
+
+let galleryRenderCount = 0;
+
+export function galleryMarkup(entry) {
+  const photos = galleryPhotos(entry).map(photo => ({ ...suppliedPhotos.get(photo.src), ...photo }));
   if (!photos.length) return "";
-  return (
-    '<div class="pgal">' +
-    photos
-      .map((photo, index) => {
-        const alt = photo.alt || photo.caption || "";
-        return (
-          '<button class="pgal__item' + (isWide(index, photos.length) ? " pgal__item--wide" : "") + '" type="button"' +
-          ' data-cursor="ring" aria-label="' + esc(alt || "Enlarge image") + '"' +
-          ' data-lightbox-src="' + esc(photo.src) + '"' +
-          ' data-lightbox-alt="' + esc(alt) + '"' +
-          ' data-lightbox-caption="' + esc(photo.caption || "") + '">' +
-          '<img class="pgal__img" src="' + esc(photo.src) + '" alt="" loading="lazy" decoding="async" onerror="this.parentElement.remove()">' +
-          "</button>"
-        );
-      })
-      .join("") +
-    "</div>"
-  );
+  const galleryID = "pgal-" + (++galleryRenderCount);
+  let imageCount = 0;
+  function imageButton(photo, wide = false) {
+    const captionID = galleryID + "-caption-" + imageCount++;
+    const alt = photo.alt || photo.caption || "";
+    const mobile = photo.layout === "mobile";
+    const dimensions = Number.isInteger(photo.width) && photo.width > 0 && Number.isInteger(photo.height) && photo.height > 0
+      ? ' width="' + photo.width + '" height="' + photo.height + '"' : "";
+    return '<button class="pgal__item' + (mobile ? " pgal__item--mobile" : wide ? " pgal__item--wide" : "") +
+      (photo.layout === "full" ? " pgal__item--full" : "") +
+      (photo.caption ? " pgal__item--captioned" : "") + '" type="button"' +
+      ' data-cursor="ring" aria-label="' + esc(alt || "Enlarge image") + '"' +
+      (photo.caption ? ' aria-describedby="' + captionID + '"' : "") +
+      ' data-lightbox-src="' + esc(photo.src) + '"' +
+      ' data-lightbox-alt="' + esc(alt) + '"' +
+      ' data-lightbox-caption="' + esc(photo.caption || "") + '">' +
+      '<img class="pgal__img" data-cursor="ring" src="' + esc(photo.src) + '" alt=""' + dimensions +
+      ' loading="lazy" decoding="async" onerror="this.parentElement.remove()">' +
+      (photo.caption ? '<span class="pgal__caption" id="' + captionID + '">' + esc(photo.caption) + '</span>' : "") +
+      '</button>';
+  }
+  let html = '<div class="pgal">';
+  for (let index = 0; index < photos.length;) {
+    const mobile = photos[index].layout === "mobile";
+    const run = [];
+    while (index < photos.length && (photos[index].layout === "mobile") === mobile) run.push(photos[index++]);
+    if (mobile) html += '<div class="pgal__mobile-row">' + run.map(photo => imageButton(photo)).join("") + '</div>';
+    else html += run.map((photo, i) => imageButton(photo, photo.layout === "wide" || photo.layout === "full" || isWide(i, run.length))).join("");
+  }
+  return html + '</div>';
+}
+
+// Keep captions below the visual row, including when three columns become two.
+export function arrangeMobileCaptions(root) {
+  const cleanups = [];
+  for (const grid of root.querySelectorAll(".pgal__mobile-row")) {
+    const cards = [...grid.querySelectorAll(":scope > .pgal__item")];
+    const captions = new Map(cards.map(card => [card, card.querySelector(".pgal__caption")]));
+    let columns = 0;
+    let active = true;
+    const sync = () => {
+      if (!active) return;
+      const next = getComputedStyle(grid).gridTemplateColumns.split(" ").length;
+      if (columns === next) return;
+      columns = next;
+      const focused = grid.contains(document.activeElement) ? document.activeElement : null;
+      const visible = cards.filter(card => grid.contains(card));
+      const fragment = document.createDocumentFragment();
+      for (let i = 0; i < visible.length; i += columns) {
+        const row = visible.slice(i, i + columns);
+        const notes = document.createElement("div");
+        notes.className = "pgal__mobile-captions";
+        for (const card of row) {
+          fragment.append(card);
+          const caption = captions.get(card);
+          if (caption) notes.append(caption);
+        }
+        if (notes.children.length) fragment.append(notes);
+      }
+      grid.replaceChildren(fragment);
+      if (focused?.isConnected) focused.focus({ preventScroll: true });
+    };
+    const onError = event => {
+      const card = event.target.closest?.(".pgal__item");
+      if (!card) return;
+      captions.get(card)?.remove();
+      queueMicrotask(() => { columns = 0; sync(); });
+    };
+    grid.addEventListener("error", onError, true);
+    sync();
+    const observer = new ResizeObserver(() => {
+      if (!grid.isConnected) { observer.disconnect(); return; }
+      sync();
+    });
+    observer.observe(grid);
+    cleanups.push(() => { active = false; observer.disconnect(); grid.removeEventListener("error", onError, true); });
+  }
+  return () => cleanups.forEach(cleanup => cleanup());
+}
+
+function caseSectionsMarkup(entry) {
+  return (entry.sections || []).map(section =>
+    '<section class="pdrawer__section pdrawer__decision">' +
+    (section.label ? '<h3 class="label">' + esc(section.label) + '</h3>' : "") +
+    (section.text ? '<p class="pdrawer__item">' + esc(section.text) + '</p>' : "") +
+    (section.list || []).map(text => '<p class="pdrawer__item">' + esc(text) + '</p>').join("") +
+    '</section>'
+  ).join("");
 }
 
 function detailMarkup(entry, key) {
@@ -316,6 +397,8 @@ function detailMarkup(entry, key) {
       ? entry.bio.map((p) => '<p class="pdrawer__bio">' + p + "</p>").join("")
       : entry.bio ? '<p class="pdrawer__bio">' + entry.bio + "</p>" : "") +
     "</div>";
+
+  html += caseSectionsMarkup(entry);
 
   const gallery = galleryMarkup(entry);
   if (gallery) html += gallery;
@@ -372,6 +455,7 @@ export function initDetail(doc = document) {
 
   let opener = null;
   let open = false;
+  let clearGallery = () => {};
 
   // A página atrás sai da ordem de foco enquanto o detalhe está de pé. O
   // `.cmd-modal` do site não faz isso (a folha é pequena e o conteúdo atrás
@@ -383,7 +467,9 @@ export function initDetail(doc = document) {
   function show(key, collection = "projects") {
     const entry = (content[collection] || {})[key];
     if (!entry) return;
+    clearGallery();
     body.innerHTML = detailMarkup(entry, key);
+    clearGallery = arrangeMobileCaptions(body);
     sheet.setAttribute("aria-label", entry.name);
     sheet.scrollTop = 0;
     open = true;
@@ -399,6 +485,7 @@ export function initDetail(doc = document) {
 
   function hide() {
     if (!open) return;
+    clearGallery();
     open = false;
     document.body.classList.remove("pdrawer-open");
     behind.forEach((el) => (el.inert = false));

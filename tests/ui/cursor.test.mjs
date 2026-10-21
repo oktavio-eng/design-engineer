@@ -118,10 +118,13 @@ test("cursor.mjs: mounts on mouse move, resolves modes per target, hides/restore
   await page.waitForTimeout(250); // background-color transition (--duration-120)
   const ringStyle = await page.evaluate(() => {
     const cs = getComputedStyle(document.querySelector(".ipad-cursor"));
-    return { bg: cs.backgroundColor, shadow: cs.boxShadow };
+    const stroke = getComputedStyle(document.querySelector(".ipad-cursor__ring"));
+    return { bg: cs.backgroundColor, dash: stroke.strokeDasharray, stroke: stroke.stroke, width: stroke.strokeWidth };
   });
   assert.equal(ringStyle.bg, "rgba(0, 0, 0, 0)", "ring has no fill");
-  assert.match(ringStyle.shadow, /inset/, "ring is drawn as an inset stroke");
+  assert.equal(ringStyle.dash, "12px, 12px", "ring uses exact dash and gap lengths");
+  assert.match(ringStyle.stroke, /0\.2/, "ring stroke has 20% opacity");
+  assert.equal(ringStyle.width, "1px");
 
   // Native escape: the sidebar resize handle keeps col-resize. Only "The
   // plan" phases open #panel as a sidebar (people open it as a modal).
@@ -207,4 +210,22 @@ test("cursor.mjs: never mounts under prefers-reduced-motion; other pages load it
     assert.deepEqual(pageErrors, [], `${route}: no page errors`);
     await page.close();
   }
+});
+
+
+test("cursor ring cannot paint a black rectangle without its CSS", { timeout: 20_000 }, async context => {
+  const server = await serveDirectory(repositoryRoot);
+  const browser = await launchChromium();
+  context.after(async () => { await browser.close(); await server.close(); });
+  const page = await browser.newPage();
+  await page.goto(server.origin);
+  const fill = await page.evaluate(async () => {
+    document.querySelectorAll('link[rel="stylesheet"]').forEach(link => link.remove());
+    const module = await import(document.querySelector('script[src*="/cursor.mjs"]').src);
+    const overlay = document.createElement('div');
+    document.body.appendChild(overlay);
+    module.paintCursor(overlay, { x: 400, y: 300, w: 700, h: 300, r: 16, o: 1, mode: 'ring' });
+    return getComputedStyle(overlay.querySelector('rect')).fill;
+  });
+  assert.equal(fill, 'none', 'SVG stays transparent even with missing or stale stylesheet');
 });

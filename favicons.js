@@ -63,6 +63,10 @@ const ICON_SOURCES = {
   "dev-finqedu.webflow.io": "https://cdn.prod.website-files.com/67fa3b5335fadc68fbc167da/68025b52149680be41d86f5b_fav.png",
 };
 function favicon(e) {
+  // User-supplied project marks do not require a public brand domain.
+  if (typeof e === "string" && /^\/assets\/projects\/[a-z0-9/_-]+\.(?:webp|png|jpe?g|svg)$/i.test(e)) {
+    return '<img class="fav" src="' + e + '" alt="" loading="lazy" onerror="this.remove()">';
+  }
   let t = "";
   try {
     t = new URL(e).hostname.replace(/^www\./, "");

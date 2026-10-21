@@ -27,7 +27,7 @@ Nada disso precisou de token novo: `--ls-tight` é exatamente o `-0.16px` a 16px
 
 O cabeçalho inteiro recebe a margem superior de seção (72 no desktop, 64 até 560px), igual a Contributions → Writing. Zerar as margens do `h2` dentro do flex sem transferir a superior ao cabeçalho havia colado Projects à última linha de Writing; corrigido em 21/10/2026.
 
-**Detalhe** — folha de 1000 com padding 20 e raio 24, alça de 48×4 em `--line`. Imagem principal com raio 16, depois 40 de respiro e 40 entre blocos. Galeria com gap 16 alternando duas meias e uma inteira. Desde 21/10/2026, a pedido, capa e fotos mantêm suas proporções naturais: os recortes fixos do frame truncavam capturas de produto. "In practice" e "Links" em `--faint`, primeiro destaque em `--ink` e os demais em `--muted`.
+**Detalhe** — folha de 1000 com padding 20 e raio 24, alça de 48×4 em `--line`. Imagem principal com raio 24 (atualizado em 21/10 a pedido), depois 40 de respiro e 40 entre blocos. Galeria com gap 16 alternando duas meias e uma inteira. Desde 21/10/2026, a pedido, capa e fotos mantêm suas proporções naturais: os recortes fixos do frame truncavam capturas de produto. "In practice" e "Links" em `--faint`, primeiro destaque em `--ink` e os demais em `--muted`.
 
 ## Decisões que a IA tomou (o frame não diz)
 
@@ -92,3 +92,61 @@ As 12 capturas de 21/10/2026 estão em `assets/projects/pixel-office/`, na ordem
 A promoção havia usado apenas `subprojects[].preview` na galeria, descartando os URLs e descrições que o detalhe anterior mostrava. Corrigido em 21/10/2026: todo registro com `subprojects` ganha uma seção **Landing pages** com o nome e a descrição dentro do link, abrindo a LP em nova aba (`target="_blank"`, `rel="noopener"`). A galeria continua ampliando imagens; a seção de links existe independentemente de uma capa carregar ou falhar. Na Escola da Bel, os cinco destinos são preservados integralmente. O teste compara nomes, descrições e URLs com os dados de conteúdo e cobre falha das imagens.
 
 O subtítulo de perfil da home e do protótipo agora é **UI/UX & Visual Designer**, a pedido do Otavio.
+
+### Portfolio.zip — Bullster, CloudFaster, FinQ e Sphera
+
+As 138 imagens fornecidas em 21/10/2026 ficam em pastas próprias de `assets/projects/`, convertidas para WebP nas dimensões originais (PNG sem perda; JPEG com qualidade 90). O conjunto passou de 65,9 MiB para 19,8 MiB. `project-media.mjs` complementa galerias ausentes: CloudFaster 15, FinQ 12, Sphera 14 e Bullster 7. Não substitui galerias preenchidas no Studio. A capa `01-cover` do Sphera substitui somente a URL legada conhecida ou uma capa ausente; CloudFaster e FinQ mantêm suas capas existentes.
+
+O ícone do Google e um recorte isolado de campo do FinQ, o canvas de visão geral e o comparativo de botão do Bullster ficam nos assets, fora da galeria; a capa do Sphera não se repete nela. Bullster usa `web-cover.jpg`, fornecida depois do ZIP, como capa. A galeria foi reduzida a seis telas representativas (home, dashboard, campanhas, automações, integrações e resumo de configurações), seguidas pela landing page completa em largura inteira, a pedido para reduzir repetição e comprimento. Seu texto foi fornecido pelo Otavio nesta sessão, sem datas, métricas de resultado ou URL inventados. A seed inclui o case; a publicação exige também criar o registro `projects/bullster` no D1, preservando a revisão atual conforme [content-alignment.md](content-alignment.md).
+
+Capas, miniaturas de projeto e imagens ampliadas usam `--radius-24`. O lightbox recebe o modificador `.lightbox--project` ao abrir pela galeria de um projeto; imagens ampliadas mantêm a proporção e o raio na própria imagem, inclusive capturas verticais. A moldura externa usa raio 28 com padding 4. O lightbox do avatar mantém seu estilo existente.
+
+### Telas mobile e contexto dos cases — 21/10/2026
+
+Revisão das dimensões de todos os assets: CloudFaster tem 33 capturas verticais e FinQ tem 42; Sphera e Pixel Office são telas de desktop, e a LP longa do Bullster continua em largura inteira. `gallery[].layout = "mobile"` identifica as capturas compactas, com `width`/`height` nas dimensões originais para reservar a proporção antes do carregamento. `layout = "wide"` preserva a LP. A classificação vem dos arquivos conhecidos e do contexto do projeto, não só da orientação — uma LP vertical não é uma tela mobile. URLs locais conhecidas também recebem esses metadados no renderer quando a galeria do Studio ainda só tem `src`/`alt`.
+
+Após a conferência visual, a seleção foi reduzida a 15 imagens no CloudFaster e 12 no FinQ, priorizando fluxos e decisões diferentes e retirando estados repetidos de splash, login e teclado. Os arquivos completos continuam nos assets. Os grupos de telas mobile usam três colunas, gap 24 e altura máxima de imagem 480. Quando a largura útil da galeria cai a 620, passam a duas colunas, gap 16 e altura máxima 420. As imagens mantêm a proporção, sem recorte, com raio 24 e ampliação pelo mesmo lightbox. A ordem original é preservada, inclusive quando um grupo mobile aparece entre telas de desktop. Legendas passam a ser visíveis abaixo de capturas selecionadas, com gap 12; os metadados de largura e altura não limitam a versão ampliada.
+
+O arquivo `joam-interview-project-cheat-sheet.md` enviado pelo Otavio fundamenta seções curtas de desafio e decisões em Bullster, Sphera, CloudFaster, Caderno de Erros, DascIA, Escola da Bel e Pixel Office. FinQ usa apenas os fatos já aprovados na seed, pois não consta nessa referência. As seções usam `sections` do schema existente e aparecem antes da galeria; as legendas ligam a leitura às telas. O escopo de CloudFaster foi corrigido para incluir UI web/mobile, conforme a nova fonte. Melhor scanability e conforto no Bullster são intenções de design, sem alegar resultados medidos. Não foram publicados links privados do Pixel Office nem acrescentados projetos que só aparecem na preparação da entrevista. As alterações de texto estão espelhadas na seed e preparadas em `.local/case-content-updates.json`; sua publicação ainda exige aplicar os campos ao D1 com trava de revisão.
+
+`Fav.jpg` do Bullster foi convertido para `assets/projects/bullster/favicon.webp`. O registro usa esse caminho em `faviconFrom`; `favicons.js` aceita imagens locais de `assets/projects/` sem inventar um domínio para o projeto. Falha no arquivo remove o `<img>`, mantendo a cascata externa dos demais ícones.
+
+### Refinamento do drawer e recorte das miniaturas — 21/10/2026
+
+Após revisão no navegador do Otavio, o card do Bullster foi confirmado vazio, apesar de carregar em um browser novo de teste. O card agora renderiza a marca local diretamente, ocupando a moldura de 64 para manter a arte legível, independente do helper global de favicon, e `project-media.mjs` complementa `faviconFrom` ausente pelo identificador `bullster`. O teste de regressão cobre helper sem suporte local e registro sem campo de ícone. Não se atribuiu a causa a cache sem comprovação.
+
+A pedido do Otavio, a regra anterior de não recortar cede **somente nas miniaturas mobile**: todas usam moldura `9 / 19.5`, largura máxima 220, `object-fit: cover` e alinhamento no topo. Isso uniformiza largura e altura em cada linha; fontes completas continuam nos assets e na ampliação. Em galerias de até 620 de largura, a moldura tem limite de altura equivalente a 420. Capas, desktop e a LP do Bullster mantêm a proporção original.
+
+O drawer passa a padding 32 no desktop e 20 no celular. Capa → conteúdo tem 48 de respiro (32 no celular); blocos têm gap 56 (40 no celular). O texto usa uma coluna de até 640. Galerias desktop têm gaps 48 vertical / 32 horizontal; grupos mobile, 56 / 32, caindo para 40 / 20 quando a largura útil é até 620. Legendas ficam 24 abaixo da imagem (16 no celular). Título/subtítulo usam gap 8, bio tem 24 antes, seções têm 16 entre rótulo e texto. Todos os valores vêm dos tokens existentes; o raio das imagens continua 24.
+
+### Alturas alinhadas e raio 16 — 21/10/2026
+
+A revisão seguinte mostrou que o desnível também acontecia nas imagens de desktop, como automações e integrações do Bullster. A pedido do Otavio, todas as miniaturas desktop agora usam moldura 16:10, com `object-fit: cover` e recorte pelo canto superior esquerdo para preservar o início da interface. Assim, imagens lado a lado têm a mesma altura e as legendas começam alinhadas. Miniaturas mobile mantêm a moldura 9:19.5 já uniforme. A LP final também recebe o recorte na prévia; a captura completa, incluindo o conteúdo abaixo da dobra, continua na ampliação.
+
+O raio de capas, miniaturas e imagens ampliadas passa de 24 para **16**, substituindo a decisão anterior. A moldura do lightbox de projeto passa para 20 com padding 4. O raio externo do drawer e as marcas dos cards seguem seus componentes. Mockups de MacBook/iPhone foram mencionados como possibilidade futura, explicitamente fora desta etapa.
+
+**Exceção aprovada na sequência:** a LP final do Bullster usa `layout: "full"` e mantém sua altura natural no próprio drawer. As demais miniaturas continuam com recorte uniforme e todas as imagens de projeto mantêm raio 16.
+
+**Espaço real entre miniaturas mobile:** o grupo tem largura máxima de três imagens de 220 + dois gaps de 32, centrado na galeria. Isso remove o espaço extra que sobrava dentro das colunas flexíveis. Na largura útil até 620, são duas colunas com gap 24; a largura máxima acompanha o limite de altura 420. O teste mede a distância entre as bordas das imagens, além do gap declarado no grid.
+
+**Legendas das telas mobile:** ficam fora dos botões e ocupam a linha inteira do grupo, alinhadas ao início. Um `ResizeObserver` reorganiza as legendas após cada linha visual de três ou duas imagens, sem duplicar o texto nem recriar os botões. O vínculo `aria-describedby` é preservado, e os observers são desligados ao fechar/trocar o case. Falhas de imagem removem a legenda vinculada antes de reorganizar o grupo.
+
+
+**Introdução centralizada após a capa (21/10/2026):** somente `.pdrawer__head` (título, função e bio) tem margens laterais automáticas, mantendo a coluna de até 640 e o texto alinhado ao início. As seções seguintes e a galeria preservam seu alinhamento.
+
+
+**Coluna única para os blocos de texto (21/10/2026):** após revisão seguinte, a centralização também se aplica a todas as seções de texto diretamente no corpo (“The challenge”, “Design decisions”, “In practice”, links e afins). Compartilham a mesma largura máxima 640 e margens laterais automáticas da introdução, preservando alinhamento do texto ao início. Galeria e legendas continuam com suas próprias larguras. Esta decisão substitui a manutenção das seções à esquerda registrada acima.
+
+
+**Marcas centralizadas nos cards (21/10/2026):** imagens da marca zeram a margem herdada de `.fav` (7px à direita, prevista para ícone ao lado de texto) e não encolhem no flex. A moldura mantém 64×64; o ícone externo mantém 32×32 e a arte local ocupa seu interior.
+
+
+**Transição da última imagem para o rodapé do case (21/10/2026):** a legenda da última imagem que ocupa a largura inteira usa a coluna centralizada de até 640. Assim, a última legenda e os blocos “In practice”/“Links” compartilham a mesma borda de leitura. Legendas de pares desktop e grupos mobile continuam ligadas às respectivas linhas de imagens.
+
+
+**Legendas completas por par e revisão de escrita (21/10/2026):** a revisão seguinte esclareceu que pares desktop devem manter duas legendas, uma por imagem, com extensão e tom próximos. As 14 telas do Sphera agora têm descrições específicas, após inspeção das capturas (calendário, bolsas, mapas, filtros, universidades, mensagens e perfil). As descrições curtas do Caderno e do Pixel Office ganharam contexto a partir dos campos e funcionalidades já documentados; no Bullster, os trechos de automação, integrações e tema escuro foram refinados. Não foram adicionados resultados medidos ou novas responsabilidades.
+
+As legendas usam `text-wrap: pretty`, como as descrições do site já faziam, para reduzir palavras isoladas sem travar as quebras. A revisão por Range mediu 37 legendas em 320, 390, 768 e 1440px (148 renderizações), sem última linha de uma única palavra após os ajustes. Isso é uma verificação nessas larguras, não uma promessa para toda combinação de fonte e viewport. O layout em pares e a regra de legendas compartilhadas por linha mobile foram preservados.
+
+
+**Legenda de imagem grande entre outras imagens (21/10/2026):** quando a imagem ocupa a linha inteira e ainda há imagens depois dela, a legenda usa toda a largura da galeria e `text-wrap: balance`. Isso permite uma linha mais ampla ou linhas equilibradas, conforme o espaço. A última legenda mantém a coluna de até 640 para a transição aos blocos finais; pares desktop e linhas mobile preservam suas regras. A condição é estrutural (`.pgal__item--wide:not(:last-child)`), sem índices fixos de conteúdo.

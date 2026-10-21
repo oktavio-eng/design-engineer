@@ -324,6 +324,76 @@ export const Gallery = {
   },
 };
 
+export const ProjectImages = {
+  render: () => {
+    const root = Gallery.render();
+    root.insertAdjacentHTML("afterbegin", '<link rel="stylesheet" href="/styles/projects.css">');
+    root.querySelector("h1").textContent = "Project images";
+    root.querySelector("[data-gallery]").outerHTML = `
+      <img class="pdrawer__shot" src="${GALLERY_PHOTO}" alt="Project cover">
+      <div class="pgal" style="margin-top: var(--space-16)">
+        <button class="pgal__item pgal__item--wide pgal__item--full" type="button" aria-label="Enlarge project image"
+          data-lightbox-src="${GALLERY_PHOTO}" data-lightbox-alt="Blue disc on a pale field">
+          <img class="pgal__img" src="${GALLERY_PHOTO}" alt="">
+        </button>
+      </div>`;
+    return root;
+  },
+  play: async ({ canvasElement, userEvent }) => {
+    const box = canvasElement.querySelector("[data-lightbox]");
+    const trigger = canvasElement.querySelector(".pgal__item");
+    await waitFor(() => expect(getComputedStyle(trigger).borderRadius).toBe("16px"));
+    await expect(getComputedStyle(canvasElement.querySelector(".pdrawer__shot")).borderRadius).toBe("16px");
+    const fullImage = trigger.querySelector("img");
+    await waitFor(() => expect(fullImage.naturalWidth).toBeGreaterThan(0));
+    await expect(Math.abs(fullImage.getBoundingClientRect().width / fullImage.getBoundingClientRect().height - fullImage.naturalWidth / fullImage.naturalHeight)).toBeLessThan(.01);
+
+    await userEvent.click(trigger);
+    await waitFor(() => expect(box).toHaveAttribute("aria-hidden", "false"));
+    await expect(box).toHaveClass("lightbox--project");
+    await expect(getComputedStyle(canvasElement.querySelector(".lightbox__img")).borderRadius).toBe("16px");
+    await userEvent.keyboard("{Escape}");
+    await expect(trigger).toHaveFocus();
+  },
+};
+
+export const MobileProjectImages = {
+  render: () => {
+    const root = Gallery.render();
+    root.insertAdjacentHTML("afterbegin", '<link rel="stylesheet" href="/styles/projects.css">');
+    root.querySelector("h1").textContent = "Mobile project images";
+    root.querySelector("[data-gallery]").outerHTML = '<div data-project-gallery></div>';
+    const phone = "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="390" height="844"><rect width="390" height="844" fill="#e6e1f9"/><rect x="24" y="72" width="342" height="160" rx="20" fill="#8674d9"/><rect x="24" y="264" width="220" height="24" rx="12" fill="#51428a"/></svg>');
+    import("../projects.mjs").then(({ galleryMarkup, arrangeMobileCaptions }) => {
+      root.querySelector("[data-project-gallery]").innerHTML = galleryMarkup({ gallery: [1, 2, 3].map(n => ({
+        src: phone, alt: `Mobile screen ${n}`, width: 390, height: 844, layout: "mobile",
+        caption: n === 1 ? "Reusable patterns keep the learning flow consistent across devices." : "",
+      })) });
+      arrangeMobileCaptions(root);
+    });
+    return root;
+  },
+  play: async ({ canvasElement, userEvent }) => {
+    await waitFor(() => expect(canvasElement.querySelectorAll(".pgal__item--mobile")).toHaveLength(3));
+    const images = canvasElement.querySelectorAll(".pgal__img");
+    await waitFor(() => expect(images[0].naturalWidth).toBe(390));
+    for (const img of images) {
+      await expect(img.getBoundingClientRect().height).toBeLessThanOrEqual(480);
+      await expect(getComputedStyle(img).objectFit).toBe("cover");
+      await expect(Math.abs(img.getBoundingClientRect().width / img.getBoundingClientRect().height - 9 / 19.5)).toBeLessThan(.01);
+    }
+    const notes = canvasElement.querySelector(".pgal__mobile-captions");
+    await expect(getComputedStyle(notes).textAlign).toBe("start");
+    await expect(Math.abs(notes.getBoundingClientRect().width - notes.parentElement.getBoundingClientRect().width)).toBeLessThan(1);
+    const trigger = canvasElement.querySelector(".pgal__item");
+    trigger.focus();
+    await userEvent.keyboard("{Enter}");
+    await waitFor(() => expect(canvasElement.querySelector("[data-lightbox]")).toHaveAttribute("aria-hidden", "false"));
+    await userEvent.keyboard("{Escape}");
+    await expect(trigger).toHaveFocus();
+  },
+};
+
 // The Projects row list: the same .row/.row-btn clients/personal/life use,
 // plus the two things unique to this group — a favicon left of the name
 // (opt-in, from entry.links[0][1]) and a show-more overflow past a

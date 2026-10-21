@@ -65,7 +65,7 @@ function favicon(url) {
 // wiki.html/script.js's wireSeeMore already animates.
 function rowMarkup(group, key, entry, opts) {
   opts = opts || {};
-  const icon = opts.favicon && entry.links && entry.links[0]
+  const icon = opts.favicon && (entry.faviconFrom || entry.links?.[0])
     ? favicon(entry.faviconFrom || entry.links[0][1])
     : "";
   const trigger = group === "personal" && entry.gallery?.length
@@ -235,6 +235,7 @@ export function initLightbox(root) {
 
   function openLightbox(trigger) {
     opener = trigger;
+    box.classList.toggle("lightbox--project", Boolean(trigger.closest(".pgal")));
     img.src = trigger.dataset.lightboxSrc;
     img.alt = trigger.dataset.lightboxAlt || "";
     if (caption) caption.textContent = trigger.dataset.lightboxCaption || "";

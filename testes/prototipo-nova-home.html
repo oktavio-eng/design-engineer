@@ -29,9 +29,9 @@
 <!-- A ordem importa: tokens e main.css, depois o experimento flat-type (é o
      que produção serve), e só então o CSS do protótipo. Comparar com o
      main.css sozinho dá números errados — ver docs/figma-workflow.md. -->
-<link rel="stylesheet" href="/styles/main.css">
+<link rel="stylesheet" href="/styles/main.css?v=cursor-ui-20261021-2">
 <link rel="stylesheet" href="/styles/experiments/flat-type.css">
-<link rel="stylesheet" href="/testes/prototipo.css">
+<link rel="stylesheet" href="/testes/prototipo.css?v=case-columns-20261021">
 </head>
 <!-- Sem a intro: `html` não carrega `.intro-playing`, então os `.stagger`
      entram na carga como de costume e a página não faz esperar em cada
@@ -192,6 +192,6 @@
      Projects e o detalhe. -->
 <script type="module" src="/portfolio.mjs"></script>
 <script type="module" src="/testes/prototipo.mjs"></script>
-<script type="module" src="/cmd.mjs"></script><script type="module" src="/cursor.mjs"></script><script type="module" src="/sound.mjs"></script><script type="module" src="/scroll.mjs"></script>
+<script type="module" src="/cmd.mjs"></script><script type="module" src="/cursor.mjs?v=cursor-ui-20261021-2"></script><script type="module" src="/sound.mjs"></script><script type="module" src="/scroll.mjs"></script>
 </body>
 </html>

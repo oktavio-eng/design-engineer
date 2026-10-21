@@ -1,0 +1,75 @@
+import assert from 'node:assert/strict';
+import { test } from 'node:test';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { launchChromium } from './helpers/browser.mjs';
+import { serveDirectory } from './helpers/static-server.mjs';
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
+
+test('draggable project rail keeps a dot and Drag pill, separates drag from opening a case', { timeout: 40_000 }, async context => {
+  const server = await serveDirectory(root);
+  const browser = await launchChromium();
+  context.after(async () => { await browser.close(); await server.close(); });
+  const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
+  await page.route(/^https?:\/\/(?!127\.0\.0\.1)/, route => route.abort());
+  await page.addInitScript(() => sessionStorage.setItem('intro-shown-v1', '1'));
+  await page.goto(server.origin, { waitUntil: 'networkidle' });
+  const revisions = await page.evaluate(() => ({
+    css: new URL(document.querySelector('link[href*="/styles/main.css"]').href).searchParams.get('v'),
+    cursor: new URL(document.querySelector('script[src*="/cursor.mjs"]').src).searchParams.get('v')
+  }));
+  assert.ok(revisions.css);
+  assert.equal(revisions.css, revisions.cursor, 'CSS and cursor must share the same asset revision');
+  const rail = page.locator('[data-drag-carousel]');
+  await rail.scrollIntoViewIfNeeded();
+  const card = page.locator('.pcard').first();
+  assert.equal(await card.getAttribute('data-cursor'), 'none', 'card explicitly blocks rectangular cursor expansion');
+  const box = await card.boundingBox();
+  const x = box.x + box.width - 30;
+  const y = box.y + box.height / 2;
+  await page.mouse.move(x, y);
+  await page.waitForTimeout(250);
+  assert.equal(await page.evaluate(() => window.__ipadCursor.target.mode), 'dot');
+  assert.equal(await page.evaluate(() => window.__ipadCursor.target.o), 1);
+  assert.equal(await page.locator('.carousel-drag-hint').innerText(), 'Drag');
+  assert.equal(await page.locator('.carousel-drag-hint').evaluate(el => getComputedStyle(el).opacity), '1');
+  const hint = await page.locator('.carousel-drag-hint').boundingBox();
+  assert.ok(Math.abs(hint.x - x - 10) < 1, 'dot is above and to the left of the pill');
+  assert.equal(hint.y, y + 24, 'dot stays above the pill');
+  await page.mouse.move(x + 100, y);
+  const moving = await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => {
+    const pill = document.querySelector('.carousel-drag-hint').getBoundingClientRect();
+    const dot = document.querySelector('.ipad-cursor').getBoundingClientRect();
+    resolve({ pillX: pill.x, dotX: dot.x + dot.width / 2 });
+  })));
+  assert.ok(Math.abs(moving.dotX - (x + 100)) < 1, 'dot follows the mouse without lag');
+  assert.ok(moving.pillX < x + 100, 'pill trails the pointer through its spring');
+  await page.waitForTimeout(180);
+  const following = await page.locator('.carousel-drag-hint').boundingBox();
+  assert.ok(following.x > moving.pillX + 10, 'pill continues moving after the mouse stops');
+  await page.waitForTimeout(2200);
+  const resting = await page.locator('.carousel-drag-hint').boundingBox();
+  assert.ok(Math.abs(resting.x - (x + 110)) < 1, 'spring settles at the intended offset');
+  assert.equal(await page.evaluate(() => window.__ipadCursor.target.o), 1, 'dot stays on the draggable surface when idle');
+  await page.screenshot({ path: '.local/carousel-drag-hover.png' });
+  await page.mouse.move(x, y);
+  await page.mouse.down();
+  await page.mouse.move(x - 210, y, { steps: 12 });
+  assert.ok(await rail.evaluate(el => el.scrollLeft) > 150, 'mouse directly scrolls rail');
+  await page.mouse.up();
+  await page.waitForTimeout(400);
+  assert.equal(await page.locator('.pdrawer').getAttribute('aria-hidden'), 'true', 'drag must not open the card');
+  assert.equal(await rail.getAttribute('data-dragging'), null);
+  await page.mouse.move(1400, 50);
+  await page.waitForTimeout(200);
+  assert.equal(await page.locator('.carousel-drag-hint').evaluate(el => getComputedStyle(el).opacity), '0');
+  await card.focus();
+  await page.keyboard.press('Enter');
+  await page.waitForTimeout(350);
+  assert.equal(await page.locator('.pdrawer').getAttribute('aria-hidden'), 'false', 'keyboard still opens a case');
+  await page.keyboard.press('Escape');
+  await page.waitForTimeout(350);
+  await card.click();
+  assert.equal(await page.locator('.pdrawer').getAttribute('aria-hidden'), 'false', 'normal mouse click still opens a case');
+  await page.screenshot({ path: '.local/carousel-drag-test.png' });
+});

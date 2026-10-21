@@ -160,9 +160,10 @@
      a second surface — and press only steps the alpha up. */
   --cursor-fill: oklch(0.2 0 0 / 0.2);
   --cursor-fill-pressed: oklch(0.2 0 0 / 0.3);
-  /* Strokes — the 2px I-beam and the ring around image buttons. At the
-     dot's alpha a 2px line vanishes into the glyphs, so it runs darker. */
+  /* The 2px I-beam stays darker for glyph contrast. Image rings use a
+     separate neutral 20% stroke (1px, dashed; see main.css). */
   --cursor-stroke: oklch(0.2 0 0 / 0.6);
+  --cursor-ring-stroke: oklch(0 0 0 / 0.2);
 }
 /* ---------------------------------------------------------------------------
    Dark mode — every component in main.css already reads color through these
@@ -306,4 +307,5 @@
   --cursor-fill: oklch(1 0 0 / 0.26);
   --cursor-fill-pressed: oklch(1 0 0 / 0.36);
   --cursor-stroke: oklch(1 0 0 / 0.7);
+  --cursor-ring-stroke: oklch(1 0 0 / 0.2);
 }

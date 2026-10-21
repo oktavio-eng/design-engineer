@@ -1,4 +1,4 @@
-@import url("tokens/colors.css");
+@import url("tokens/colors.css?v=cursor-ui-20261021-2");
 @import url("tokens/motion.css");
 @import url("tokens/spacing.css");
 @import url("tokens/typography.css");
@@ -3190,17 +3190,68 @@ html.cursor-on:not(.cursor-native):not(#\#):not(#\#):not(#\#) * {
 .ipad-cursor[data-mode="text"] {
   background: var(--cursor-stroke);
 }
-/* Ring: outline instead of fill, for image buttons (see cursor.mjs). The
-   stroke lives in a box-shadow so width/height/radius keep animating the
-   same way; the recipe stays literal, only the color is a token. */
+/* SVG preserves the exact 12px dash / 12px gap around rounded images. */
 .ipad-cursor[data-mode="ring"] {
   background: transparent;
-  box-shadow: inset 0 0 0 2px var(--cursor-stroke);
 }
+.ipad-cursor__ring {
+  display: none;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: var(--cursor-ring-stroke);
+  stroke-width: var(--border-w);
+  stroke-dasharray: var(--space-12) var(--space-12);
+  stroke-linecap: butt;
+}
+.ipad-cursor[data-mode="ring"] .ipad-cursor__ring { display: block; }
 /* Belt and braces with the module's own matchMedia gates (it never mounts
    under a coarse pointer or reduced motion): the overlay can't paint there. */
 @media (hover: none), (pointer: coarse), (prefers-reduced-motion: reduce) {
   .ipad-cursor {
     display: none;
   }
+}
+
+/* A separate label leaves the pointer's location visible over draggable rails. */
+.carousel-drag-hint {
+  position: fixed;
+  inset: 0 auto auto 0;
+  z-index: 101;
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  box-sizing: border-box;
+  height: var(--space-40);
+  padding: var(--space-12) var(--space-16);
+  border-radius: var(--radius-full);
+  background: oklch(0 0 0);
+  color: oklch(1 0 0);
+  font-size: var(--fs-16);
+  line-height: 1;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--duration-120) var(--ease);
+}
+.carousel-drag-hint__arrow {
+  display: block;
+  flex: none;
+  width: var(--space-16);
+  height: var(--space-16);
+  opacity: 0.4;
+}
+.carousel-drag-hint.is-visible { opacity: 1; }
+[data-drag-carousel] { cursor: grab; }
+[data-drag-carousel][data-dragging] {
+  scroll-snap-type: none;
+  scroll-behavior: auto;
+  user-select: none;
+}
+[data-drag-carousel][data-dragging],
+[data-drag-carousel][data-dragging] * { cursor: grabbing; }
+@media (hover: none), (pointer: coarse), (prefers-reduced-motion: reduce) {
+  .carousel-drag-hint { display: none; }
 }

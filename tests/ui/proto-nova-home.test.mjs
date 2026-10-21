@@ -45,13 +45,14 @@ test("/testes/prototipo-nova-home: carrossel, detalhe e galeria", { timeout: 60_
 
   await page.goto(`${server.origin}/testes/prototipo-nova-home.html`, { waitUntil: "load" });
   await page.waitForFunction(() => document.querySelectorAll("#projects .pcard").length > 0);
-  await page.evaluate(() => Promise.all(document.getAnimations().map((a) => a.finished)));
+  // Pointer/hover transitions may be interrupted as the drawer opens.
+    await page.evaluate(() => Promise.allSettled(document.getAnimations().map((a) => a.finished)));
 
   // --- o carrossel --------------------------------------------------------
   // 127.0.0.1 conta como localhost, então rascunhos aparecem — hoje são zero,
-  // e os sete projetos viram sete cards (a lista de rows tinha um "show more"
+  // e os oito projetos viram oito cards (a lista de rows tinha um "show more"
   // a partir do quarto; o carrossel não corta nenhum).
-  assert.equal(await page.locator("#projects .pcard").count(), 7, "um card por projeto");
+  assert.equal(await page.locator("#projects .pcard").count(), 8, "um card por projeto");
   assert.equal(
     await page.locator("#projects .pcard__desc").first().textContent(),
     "Founding design for website and multi-device platform",
@@ -102,7 +103,8 @@ test("/testes/prototipo-nova-home: carrossel, detalhe e galeria", { timeout: 60_
   // Wheel real: scrollTop programático (inclusive o auto-scroll do click)
   // não detecta quando o Lenis captura o gesto de um scroller aninhado.
   async function checkDetailScroll() {
-    await page.evaluate(() => Promise.all(document.getAnimations().map((a) => a.finished)));
+    // Pointer/hover transitions may be interrupted as the drawer opens.
+    await page.evaluate(() => Promise.allSettled(document.getAnimations().map((a) => a.finished)));
     // Focus restoration can still be scrolling the window smoothly; wait
     // for that native animation (not returned by getAnimations) to settle.
     await page.evaluate(() => new Promise(resolve => {
@@ -176,9 +178,8 @@ test("/testes/prototipo-nova-home: carrossel, detalhe e galeria", { timeout: 60_
   await page.waitForFunction(() => document.querySelector("[data-proto-sheet]").getAttribute("aria-hidden") === "false");
   assert.equal(await page.locator("[data-proto-grip]").isVisible(), false, "sem alça no modal");
   assert.equal(await page.locator("[data-proto-close]").isVisible(), true, "com botão de fechar");
-  // Sphera não tem `gallery` nem `subprojects`: o bloco não aparece, em vez
-  // de deixar uma moldura vazia (regra 4 do AGENTS.md).
-  assert.equal(await page.locator(".pgal").count(), 0, "sem fotos, sem grade");
+  // Supplied Sphera screenshots are shared by the homepage and prototype.
+  assert.equal(await page.locator(".pgal__item").count(), 14, "Sphera gallery is available in modal mode");
   await page.locator("[data-proto-close]").click();
   await page.waitForFunction(() => document.querySelector("[data-proto-sheet]").getAttribute("aria-hidden") === "true");
 

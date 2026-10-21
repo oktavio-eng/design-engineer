@@ -1,5 +1,5 @@
 import { expect } from "storybook/test";
-import { paintCursor } from "../cursor.mjs";
+import { paintCursor, createDragHint } from "../cursor.mjs";
 
 /**
  * iPadOS pointer — the states cursor.mjs paints on every page, laid out
@@ -101,12 +101,40 @@ export const States = {
 
     await expect(cursor("ring")).toHaveAttribute("data-mode", "ring");
     await expect(cs("ring").backgroundColor).toBe("rgba(0, 0, 0, 0)");
-    await expect(cs("ring").boxShadow).toMatch(/inset/);
+    const ringStroke = getComputedStyle(cursor("ring").querySelector("svg"));
+    await expect(ringStroke.strokeDasharray).toBe("12px, 12px");
+    await expect(ringStroke.stroke).toMatch(/0\.2/);
+    await expect(ringStroke.strokeWidth).toBe("1px");
 
     await expect(cursor("rect")).toHaveAttribute("data-mode", "rect");
     const link = canvasElement.querySelector('[data-stage="rect"] a').getBoundingClientRect();
     const rect = cursor("rect").getBoundingClientRect();
     await expect(rect.width).toBeGreaterThan(link.width);
     await expect(rect.height).toBeGreaterThan(link.height);
+  },
+};
+
+
+export const Drag = {
+  render: () => {
+    const stage = document.createElement("div");
+    stage.className = "sb-cursor-stage";
+    stage.style.cssText = "width:320px;height:160px;transform:translateZ(0)";
+    stage.innerHTML = '<span class="sb-cursor-stage__label">carousel · dot + Drag</span><div class="ipad-cursor" aria-hidden="true"></div>';
+    paintCursor(stage.querySelector(".ipad-cursor"), { x: 160, y: 64, w: 20, h: 20, r: 10, o: 1, mode: "dot" });
+    const hint = createDragHint();
+    hint.classList.add("is-visible");
+    hint.style.transform = "translate3d(170px,88px,0)";
+    stage.appendChild(hint);
+    return stage;
+  },
+  play: async ({ canvasElement }) => {
+    const hint = canvasElement.querySelector(".carousel-drag-hint");
+    await expect(hint).toHaveTextContent("Drag");
+    await expect(hint.querySelectorAll("svg")).toHaveLength(2);
+    await expect(getComputedStyle(hint).height).toBe("40px");
+    await expect(hint).toHaveAttribute("aria-hidden", "true");
+    await expect(getComputedStyle(hint).pointerEvents).toBe("none");
+    await expect(canvasElement.querySelector(".ipad-cursor")).toHaveAttribute("data-mode", "dot");
   },
 };

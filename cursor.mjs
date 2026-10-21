@@ -92,6 +92,33 @@ export function paintCursor(el, s) {
   el.style.opacity = s.o.toFixed(3);
   el.dataset.mode = s.mode;
   el.classList.toggle("is-pressed", !!s.pressed);
+  if (s.mode === "ring") {
+    let ring = el.querySelector(".ipad-cursor__ring rect");
+    if (!ring) {
+      const svg = el.ownerDocument.createElementNS("http://www.w3.org/2000/svg", "svg");
+      svg.classList.add("ipad-cursor__ring");
+      svg.setAttribute("aria-hidden", "true");
+      svg.setAttribute("fill", "none");
+      ring = el.ownerDocument.createElementNS(svg.namespaceURI, "rect");
+      ring.setAttribute("fill", "none");
+      svg.appendChild(ring);
+      el.appendChild(svg);
+    }
+    ring.setAttribute("x", "0.5");
+    ring.setAttribute("y", "0.5");
+    ring.setAttribute("width", Math.max(0, s.w - 1));
+    ring.setAttribute("height", Math.max(0, s.h - 1));
+    ring.setAttribute("rx", Math.max(0, s.r - 0.5));
+  }
+}
+
+export function createDragHint(doc = document) {
+  const hint = doc.createElement("div");
+  hint.className = "carousel-drag-hint";
+  hint.setAttribute("aria-hidden", "true");
+  const arrow = (path) => '<svg class="carousel-drag-hint__arrow" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="' + path + '"/></svg>';
+  hint.innerHTML = arrow("M10 3 5 8l5 5") + '<span>Drag</span>' + arrow("m6 3 5 5-5 5");
+  return hint;
 }
 
 export function mountCursor(options = {}) {
@@ -108,6 +135,18 @@ export function mountCursor(options = {}) {
   el.setAttribute("aria-hidden", "true");
   doc.body.appendChild(el);
 
+  const dragHint = createDragHint(doc);
+  doc.body.appendChild(dragHint);
+  let overCarousel = false;
+  const hint = { x: 0, y: 0, vx: 0, vy: 0, tx: 0, ty: 0, initialized: false };
+
+  function hideDragHint() {
+    overCarousel = false;
+    hint.initialized = false;
+    hint.vx = hint.vy = 0;
+    dragHint.classList.remove("is-visible");
+  }
+
   const SIZE = readToken("--cursor-size", 20);
   const PAD = readToken("--cursor-pad", 4);
   const PAD_INLINE = readToken("--cursor-pad-inline", 2);
@@ -120,6 +159,13 @@ export function mountCursor(options = {}) {
   const TAU_FADE = readToken("--cursor-tau-fade", 110);
   const RADIUS_MIN = readToken("--cursor-radius-min", 8);
   const RADIUS_INLINE = readToken("--cursor-radius-inline", 6);
+  // Reference cursor: spring stiffness 500, damping 60, mass 1. Keep it
+  // overdamped: the label follows with inertia while the dot stays precise.
+  const HINT_MASS = Math.max(0.01, readToken("--cursor-drag-mass", 1));
+  const HINT_STIFFNESS = Math.max(1, readToken("--cursor-drag-stiffness", 500));
+  const HINT_DAMPING = Math.max(2 * Math.sqrt(HINT_STIFFNESS * HINT_MASS), readToken("--cursor-drag-damping", 60));
+  const HINT_OFFSET_X = readToken("--cursor-drag-offset-x", 10);
+  const HINT_OFFSET_Y = readToken("--cursor-drag-offset-y", 24);
 
   const target = { x: -100, y: -100, w: SIZE, h: SIZE, r: SIZE / 2, o: 0, mode: "dot", pressed: false };
   const cur = { x: -100, y: -100, w: SIZE, h: SIZE, r: SIZE / 2, o: 0, mode: "dot", pressed: false };
@@ -141,6 +187,7 @@ export function mountCursor(options = {}) {
     if (!on) {
       html.classList.remove("cursor-native");
       target.o = 0;
+      hideDragHint();
       hoverEl = null;
       kick();
     }
@@ -217,6 +264,24 @@ export function mountCursor(options = {}) {
 
   function resolve(x, y) {
     const under = doc.elementFromPoint(x, y);
+    const rail = doc.querySelector("[data-drag-carousel][data-dragging]") || under?.closest("[data-drag-carousel]");
+    overCarousel = !!rail && rail.scrollWidth > rail.clientWidth + 1;
+    dragHint.classList.toggle("is-visible", overCarousel);
+    if (overCarousel) {
+      const width = dragHint.offsetWidth;
+      const height = dragHint.offsetHeight;
+      hint.tx = Math.max(8, Math.min(x + HINT_OFFSET_X, win.innerWidth - width - 8));
+      const top = y + HINT_OFFSET_Y + height <= win.innerHeight - 8 ? y + HINT_OFFSET_Y : y - height - HINT_OFFSET_Y;
+      hint.ty = Math.max(8, top);
+      if (!hint.initialized) {
+        hint.x = hint.tx;
+        hint.y = hint.ty;
+        hint.vx = hint.vy = 0;
+        hint.initialized = true;
+      }
+      return { mode: "dot", el: null };
+    }
+    hideDragHint();
     if (!under) return { mode: "hidden" };
 
     const tagged = under.closest("[data-cursor]");
@@ -338,6 +403,41 @@ export function mountCursor(options = {}) {
     return Math.abs(to - next) < 0.05 ? to : next;
   }
 
+  // Analytical spring solution: independent axes, velocity preserved on
+  // reversal, stable at any frame rate. No perpetual idle animation.
+  function advanceHint(dt) {
+    if (!overCarousel || !hint.initialized) return true;
+    const t = dt / 1000;
+    const decay = HINT_DAMPING / (2 * HINT_MASS);
+    const root = Math.sqrt(Math.max(0, decay * decay - HINT_STIFFNESS / HINT_MASS));
+    let settled = true;
+    for (const axis of ["x", "y"]) {
+      const velocity = "v" + axis;
+      const destination = "t" + axis;
+      const delta = hint[axis] - hint[destination];
+      if (root < 0.0001) {
+        const b = hint[velocity] + decay * delta;
+        const e = Math.exp(-decay * t);
+        hint[axis] = hint[destination] + (delta + b * t) * e;
+        hint[velocity] = (hint[velocity] - decay * b * t) * e;
+      } else {
+        const slow = -decay + root, fast = -decay - root;
+        const a = (hint[velocity] - fast * delta) / (slow - fast), b = delta - a;
+        const e1 = Math.exp(slow * t), e2 = Math.exp(fast * t);
+        hint[axis] = hint[destination] + a * e1 + b * e2;
+        hint[velocity] = a * slow * e1 + b * fast * e2;
+      }
+      if (Math.abs(hint[axis] - hint[destination]) < 0.05 && Math.abs(hint[velocity]) < 0.5) {
+        hint[axis] = hint[destination];
+        hint[velocity] = 0;
+      } else settled = false;
+    }
+    const x = Math.max(8, Math.min(hint.x, win.innerWidth - dragHint.offsetWidth - 8));
+    const y = Math.max(8, Math.min(hint.y, win.innerHeight - dragHint.offsetHeight - 8));
+    dragHint.style.transform = `translate3d(${x.toFixed(2)}px,${y.toFixed(2)}px,0)`;
+    return settled;
+  }
+
   function frame(now) {
     raf = 0;
     const dt = last ? Math.min(48, now - last) : 16;
@@ -359,11 +459,12 @@ export function mountCursor(options = {}) {
     }
 
     paintCursor(el, cur);
+    const hintSettled = advanceHint(dt);
 
     const settled =
       cur.w === target.w && cur.h === target.h && cur.r === target.r && cur.o === target.o &&
       cur.x === target.x && cur.y === target.y;
-    if (!settled) raf = win.requestAnimationFrame(frame);
+    if (!settled || !hintSettled) raf = win.requestAnimationFrame(frame);
   }
 
   /* --- events -------------------------------------------------------------- */
@@ -372,6 +473,7 @@ export function mountCursor(options = {}) {
     visible = true;
     win.clearTimeout(idleTimer);
     idleTimer = win.setTimeout(() => {
+      if (overCarousel) return;
       if (doc.body.classList.contains('admin-page') && hoverEl?.matches(TEXT_FIELDS)) return;
       target.o = 0;
       kick();
@@ -399,6 +501,7 @@ export function mountCursor(options = {}) {
   function onLeave(e) {
     if (e.relatedTarget === null || e.relatedTarget === undefined) {
       visible = false;
+      hideDragHint();
       target.o = 0;
       hoverEl = null;
       kick();
@@ -420,8 +523,10 @@ export function mountCursor(options = {}) {
   doc.addEventListener("pointerup", onUp, { passive: true });
   doc.addEventListener("pointercancel", onUp, { passive: true });
   doc.addEventListener("pointerout", onLeave, { passive: true });
-  win.addEventListener("blur", () => { visible = false; target.o = 0; kick(); });
-  doc.addEventListener("visibilitychange", () => { if (doc.hidden) { visible = false; target.o = 0; kick(); } });
+  const onBlur = () => { visible = false; hideDragHint(); target.o = 0; kick(); };
+  const onVisibility = () => { if (doc.hidden) onBlur(); };
+  win.addEventListener("blur", onBlur);
+  doc.addEventListener("visibilitychange", onVisibility);
   // Content moves under a still mouse (scroll, panels opening): re-aim.
   win.addEventListener("scroll", update, { passive: true, capture: true });
   win.addEventListener("resize", update, { passive: true });
@@ -447,6 +552,9 @@ export function mountCursor(options = {}) {
       win.removeEventListener("scroll", update, { capture: true });
       win.removeEventListener("resize", update);
       setActive(false);
+      win.removeEventListener("blur", onBlur);
+      doc.removeEventListener("visibilitychange", onVisibility);
+      dragHint.remove();
       el.remove();
     },
   };

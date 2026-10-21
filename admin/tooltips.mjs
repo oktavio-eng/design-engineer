@@ -35,8 +35,10 @@ export function setupTooltips(scope = document) {
     if (current === button) return;
     hide(); clearTimeout(closeTimer);
     current = button;
-    if (immediate || warm) show(button, true);
-    else timer = setTimeout(() => { if (current === button) show(button, false); }, ms('--tip-delay'));
+    // A native popover may still be restoring focus in this event. Open on
+    // the next task so its show/hide operation finishes before ours starts.
+    const instant = immediate || warm;
+    timer = setTimeout(() => { if (current === button) show(button, instant); }, instant ? 0 : ms('--tip-delay'));
   }
   scope.addEventListener('pointerover', e => { if (e.pointerType !== 'touch') { const button = target(e.target); if (button) enter(button); } });
   scope.addEventListener('pointerout', e => {

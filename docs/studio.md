@@ -171,3 +171,8 @@ Não remover o banco de origem antes de conferir o histórico e testar um novo e
 ### Ajustes da caixa de entrada — 06/09/2026
 
 A seleção muda imediatamente durante uma gravação. Só a última mensagem selecionada fica na fila para marcação como lida; voltar, buscar ou trocar o filtro cancela essa marcação pendente. Falhas da escrita anterior não bloqueiam a próxima leitura. A lista reutiliza as linhas por ID e atualiza somente o conteúdo alterado, preservando foco e elementos intactos. Nenhum cache de conteúdo ou relaxamento de autenticação foi introduzido.
+
+
+### Tooltips durante foco de popover — 21/10/2026
+
+A validação antes da publicação das galerias expôs `InvalidStateError` em `admin/tooltips.mjs`: o foco restaurado por um popover nativo tentava abrir o tooltip durante outra operação `showPopover`. A abertura imediata por foco ou travessia aquecida agora espera a próxima tarefa do navegador e confirma que o botão continua sendo o alvo. Uma microtask não foi suficiente, porque o navegador pode executá-la ainda dentro da operação nativa. O hover frio mantém o atraso anterior; nenhum erro é ignorado. O teste real do dashboard continua exigindo console sem erros e cobrindo a abertura/fechamento dos popovers pelo teclado.

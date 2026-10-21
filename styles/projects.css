@@ -215,10 +215,19 @@
   overflow: hidden;
 }
 .pcard__mark img {
+  display: block;
+  flex: none;
+  margin: 0;
   width: var(--space-32);
   height: var(--space-32);
   object-fit: contain;
   border-radius: var(--radius-6);
+}
+.pcard__mark--artwork img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: inherit;
 }
 .pcard__text {
   display: flex;
@@ -288,7 +297,7 @@
   display: flex;
   flex-direction: column;
   width: min(var(--pdrawer-w), calc(100vw - var(--space-48)));
-  padding: var(--space-20);
+  padding: var(--space-32);
   border-radius: var(--radius-24);
   background: var(--white);
   box-shadow: var(--shadow-modal);
@@ -408,8 +417,8 @@ body.pdrawer-open > .topbar {
 }
 
 /* --- conteúdo do detalhe -------------------------------------------------
-   Ritmo do frame: imagem principal colada no topo, depois 40 de respiro e 40
-   entre blocos. */
+   Ritmo refinado: 48 depois da capa e 56 entre blocos no desktop;
+   no celular, 32 e 40, respectivamente. */
 .pdrawer__shot {
   display: block;
   width: 100%;
@@ -420,13 +429,15 @@ body.pdrawer-open > .topbar {
 .pdrawer__body {
   display: flex;
   flex-direction: column;
-  gap: var(--space-40);
-  padding-top: var(--space-40);
+  gap: var(--space-56);
+  padding-top: var(--space-48);
 }
 .pdrawer__head {
+  width: 100%;
+  margin-inline: auto;
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
+  gap: var(--space-8);
 }
 .pdrawer__title {
   font-weight: var(--fw-medium);
@@ -442,15 +453,15 @@ body.pdrawer-open > .topbar {
 .pdrawer__bio {
   color: var(--muted);
   line-height: var(--lh-snug);
-  margin: var(--space-16) 0 0;
+  margin: var(--space-24) 0 0;
 }
 .pdrawer__bio + .pdrawer__bio {
-  margin-top: var(--space-12);
+  margin-top: var(--space-16);
 }
 .pdrawer__section {
   display: flex;
   flex-direction: column;
-  gap: var(--space-12);
+  gap: var(--space-16);
 }
 .pdrawer__landings {
   display: flex;
@@ -469,7 +480,7 @@ body.pdrawer-open > .topbar {
 .pdrawer__items {
   display: flex;
   flex-direction: column;
-  gap: var(--space-8);
+  gap: var(--space-12);
 }
 /* O frame pinta o primeiro item em --ink e os demais em --muted: o primeiro
    "Destaque" é a frase que resume o projeto, o resto é apoio. */
@@ -517,11 +528,13 @@ body.pdrawer-open > .topbar {
    O frame alterna duas meias e uma inteira, repetindo. Em grid de 2 colunas
    isso é só marcar as inteiras com `span 2`; quem decide quais é o JS, que
    também cobre o caso de número ímpar de fotos. As imagens mantêm suas
-   proporções naturais, a pedido: capturas de produto não podem ser cortadas. */
+   molduras uniformes: 16:10 para desktop e 9:19.5 para mobile.
+   A fonte completa permanece disponível na ampliação. */
 .pgal {
+  container-type: inline-size;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--space-16);
+  gap: var(--space-48) var(--space-32);
   align-items: start;
 }
 .pgal__item {
@@ -537,9 +550,16 @@ body.pdrawer-open > .topbar {
   grid-column: span 2;
 }
 .pgal__img {
+  border-radius: var(--radius-16);
   display: block;
   width: 100%;
   height: auto;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  object-position: left top;
+}
+.pgal__item--full .pgal__img {
+  aspect-ratio: auto;
 }
 .pgal__item:focus-visible {
   outline: var(--border-w) solid var(--ink);
@@ -551,7 +571,7 @@ body.pdrawer-open > .topbar {
 @media (max-width: 560px) {
   .pdrawer {
     width: 100vw;
-    padding: var(--space-12);
+    padding: var(--space-20);
     border-radius: var(--radius-24) var(--radius-24) 0 0;
   }
   [data-proto-surface="modal"] .pdrawer {
@@ -564,4 +584,120 @@ body.pdrawer-open > .topbar {
   .pgal__item--wide {
     grid-column: span 1;
   }
+}
+
+/* Project images retain their own rounded edge when enlarged. */
+.lightbox--project {
+  border-radius: calc(var(--radius-16) + var(--space-4));
+}
+.lightbox--project .lightbox__figure {
+  border: 0;
+  border-radius: var(--radius-16);
+}
+.lightbox--project .lightbox__img {
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  margin-inline: auto;
+  border-radius: var(--radius-16);
+}
+
+/* Phone captures stay compact; the full source remains available on click. */
+.pgal__mobile-row {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-32);
+  align-items: start;
+  width: 100%;
+  max-width: calc(var(--space-220) * 3 + var(--space-32) * 2);
+  margin-inline: auto;
+}
+.pgal__item--mobile,
+.pgal__item--captioned {
+  background: transparent;
+  overflow: visible;
+}
+.pgal__item--mobile {
+  min-width: 0;
+  width: 100%;
+}
+.pgal__item--mobile .pgal__img {
+  width: min(100%, var(--space-220));
+  height: auto;
+  aspect-ratio: 9 / 19.5;
+  object-fit: cover;
+  object-position: top;
+  margin-inline: auto;
+}
+.pgal__caption {
+  display: block;
+  margin-top: var(--space-24);
+  color: var(--muted);
+  font-size: var(--fs-14);
+  line-height: var(--lh-base);
+  text-align: start;
+  overflow-wrap: anywhere;
+  text-wrap: pretty;
+}
+/* The final wide-image caption shares the centered reading column with
+   the case footer. Between image rows, captions use the gallery width. */
+.pgal__item--wide > .pgal__caption {
+  width: 100%;
+  max-width: var(--space-640);
+  margin-inline: auto;
+}
+.pgal__item--wide:not(:last-child) > .pgal__caption {
+  max-width: none;
+  text-wrap: balance;
+}
+.pdrawer__decision .label {
+  margin: 0;
+  font-size: inherit;
+  font-weight: var(--fw-medium);
+}
+@container (max-width: 620px) {
+  .pgal__mobile-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-24);
+    max-width: calc(var(--space-420) * 9 / 19.5 * 2 + var(--space-24));
+  }
+  .pgal__item--mobile .pgal__img {
+    max-width: calc(var(--space-420) * 9 / 19.5);
+  }
+}
+
+.pgal__mobile-row:empty {
+  display: none;
+}
+
+/* Text has a reading column; images keep the full gallery width. */
+.pdrawer__head,
+.pdrawer__body > .pdrawer__section {
+  width: 100%;
+  margin-inline: auto;
+  max-width: var(--space-640);
+}
+@media (max-width: 560px) {
+  .pdrawer__body {
+    gap: var(--space-40);
+    padding-top: var(--space-32);
+  }
+  .pgal {
+    gap: var(--space-32) var(--space-20);
+  }
+  .pgal__caption {
+    margin-top: var(--space-16);
+  }
+}
+
+.pgal__mobile-captions {
+  grid-column: 1 / -1;
+  display: grid;
+  gap: var(--space-12);
+  margin-top: var(--space-n8);
+  text-align: start;
+}
+.pgal__mobile-captions .pgal__caption {
+  margin: 0;
 }

@@ -8,6 +8,15 @@ Notable changes to this site, in the order they landed on `main`. Newest first. 
 
 ## 2026-10-21
 
+- Studio: tooltip de foco aguarda o fim da operação nativa de popover, evitando reentrância (`admin/tooltips.mjs`); ver [regressão](docs/studio.md).
+
+
+- Imagens de Bullster, CloudFaster, FinQ e Sphera em WebP; case Bullster com capa e ícone locais, seis telas do sistema e LP integral ao final (`assets/projects/**`, `project-media.mjs`, seed). Ver [galerias](docs/nova-home-projetos.md).
+- Cases com contexto, decisões e legendas completas e revisadas a partir do material fornecido; pares com textos coesos e quebras equilibradas (`portfolio-content.js`, `project-media.mjs`). Ver [revisão editorial](docs/nova-home-projetos.md).
+- Drawer com mais respiro, imagens com raio 16 e alturas uniformes; mobile em linhas compactas de 3/2 telas com gaps 32/24; coluna de texto centralizada no topo/final e legendas intermediárias amplas (`projects.mjs`, `styles/projects.css`). Ver [decisões de layout](docs/nova-home-projetos.md).
+- Carrosséis com arraste por mouse e pill preta “Drag” seguindo por mola; bolinha acima à esquerda, clique e teclado preservados (`carousel.mjs`, `cursor.mjs`, tokens). Ver [padrão compartilhado](docs/patterns.md).
+- Hover de imagem com contorno tracejado 12/12px, espessura 1px e opacidade 20%; ícones dos cards centralizados e assets do cursor versionados para carregar CSS/JS juntos. Ver [diagnóstico e regressões](docs/patterns.md).
+
 - Conteúdo profissional alinhado às notas do Otavio: apresentação, SEO, Wiki, escopo dos cases, descrição do projeto de aprendizado e links do plano; changelog público atualizado. Decisões e fontes em [docs/content-alignment.md](docs/content-alignment.md).
 
 - Drawer: restaura a seção Landing pages com nomes, descrições e links originais de `subprojects`, além da galeria ampliável (`projects.mjs`, `styles/projects.css`); links continuam disponíveis se imagens falharem. Home e protótipo: subtítulo do perfil passa a “UI/UX & Visual Designer”.

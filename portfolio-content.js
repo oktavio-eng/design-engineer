@@ -27,7 +27,7 @@
    card diz o que o projeto é ("Founding design for a medical-education
    company"), o `role` diz a disciplina ("Interactive Product + Campaigns ·
    Medical Education"). Writing já usava o campo com o mesmo sentido.
-   `gallery` é um array de `{ src, alt, caption }` com as fotos do detalhe
+   `gallery` é um array de `{ src, alt, caption, width?, height?, layout? }` com as fotos do detalhe
    do projeto; sem ele o protótipo cai nas capas dos `subprojects`. Os dois
    são editáveis no Studio ("Resumo na home" e "Galeria do projeto").
 
@@ -82,25 +82,54 @@
         {
           src: "https://framerusercontent.com/images/4mVd8cIXTAWMJcjRNnR9amYNGAw.png",
           alt: "Caderno de Erros home screen with study streak, daily goal and mastery levels",
-          caption: "Home — streak, daily goal, and mastery levels",
+          caption: "The home brings streaks, daily goals and mastery levels into one view, giving study progress a clear place in the routine.",
         },
         {
           src: "https://framerusercontent.com/images/0Cd7SnzI0cVyId7kF0ZDBFvNI.png",
           alt: "The notebook screen, with the subject tree beside a rich-text editor",
-          caption: "The notebook — subject tree and editor",
+          caption: "The notebook places the subject tree beside the editor, keeping the structure of a mistake log visible while writing.",
         },
         {
           src: "https://framerusercontent.com/images/4V0XVkH2RkvjjDelHIfX0ZnK0.png",
           alt: "Progress dashboard with study time, answer rate and a focus calendar",
-          caption: "Progress — study time, accuracy, and focus",
+          caption: "Progress combines study time, accuracy and the focus calendar, connecting daily activity with a longer view of practice.",
         },
         {
           src: "https://framerusercontent.com/images/RIFaJsvpbtKaYUyn5BRWhZDo6E.png",
           alt: "Question card with answer options and a dropdown for tagging the cause of a mistake",
-          caption: "Logging a mistake by its cause",
+          caption: "Question cards link an answer to the cause of a mistake, supporting the review method at the centre of the product.",
         },
       ],
       links: [["Live site", "https://www.cadernodeerros.com.br/"]],
+      sections: [
+        {
+          "label": "The challenge",
+          "text": "An ongoing EdTech SaaS product needs consistent study flows across desktop, tablet and mobile, in both light and dark themes. Some product details remain confidential."
+        },
+        {
+          "label": "Design decisions",
+          "text": "I keep the interface quiet so the study method stays central, using reusable components and responsive patterns to maintain consistency over time. I collaborate with developers and stakeholders from product decisions and prototyping through handoff and design QA. The published website and subscription pages are implemented separately in Framer."
+        }
+      ],
+    },
+    bullster: {
+      name: "Bullster",
+      role: "UX/UI · Tracking & Analytics",
+      summary: "Clear interfaces for data-dense tracking and analytics",
+      preview: "/assets/projects/bullster/web-cover.webp",
+      bio: "Bullster was a tracking and analytics platform with a lot of data and connected dashboards. My role was to translate business rules into clear UI concepts in Figma and work closely with developers. One of the main challenges was balancing dense information with clarity, so I focused on hierarchy, large key metrics and a dark interface that was comfortable for long sessions. The goal was to make scanning faster and the overall experience easier to understand.",
+      links: [],
+      faviconFrom: "/assets/projects/bullster/favicon.webp",
+      sections: [
+        {
+          "label": "The challenge",
+          "text": "A tracking platform with dense data and connected dashboards needed a clear hierarchy without losing important information. I translated business rules into UX/UI concepts in Figma and worked with developers through handoff and implementation."
+        },
+        {
+          "label": "Design decisions",
+          "text": "I prioritised large key metrics, consistent components and deliberate spacing so primary information could stand out. A dark visual direction supported the intention of comfortable longer sessions, while guided experiences and the mascot brought the brand into the product. Faster scanning and lower cognitive load were design goals, not measured results."
+        }
+      ],
     },
     "sphera-academy": {
       name: "Sphera Academy",
@@ -115,6 +144,16 @@
         "Mentored a junior designer into ownership of the file."
       ],
       links: [["Live site", "https://www.spheraacademy.com/"]],
+      sections: [
+        {
+          "label": "The challenge",
+          "text": "The admissions platform needed a strong academic identity and a consistent experience across product flows, responsive screens, the website and marketing."
+        },
+        {
+          "label": "Design decisions",
+          "text": "I built the visual language and reusable component foundation together, so brand personality and usability could develop as one system. The core screens established patterns that developers could implement and expand; mentoring a junior designer helped transfer ownership of the file."
+        }
+      ],
     },
     "escola-da-bel": {
       name: "Escola da Bel",
@@ -168,14 +207,34 @@
         },
       ],
       links: [["Live site", "https://escoladabel.com/"]],
+      sections: [
+        {
+          "label": "The challenge",
+          "text": "Courses, mentorships, launches and events needed distinct campaign expressions while remaining part of the same education brand."
+        },
+        {
+          "label": "Design decisions",
+          "text": "I balanced visual impact with a clear hierarchy and conversion goals, working within the existing identity. The work connects Figma design, published Framer pages and interactive experiences, with developer collaboration on frontend and product implementation."
+        }
+      ],
     },
     "cloudfaster-academy": {
       name: "CloudFaster Academy",
-      role: "UX/UI + Identity + Website · Cloud/AWS training",
-      summary: "Identity and website for AWS certification training",
+      role: "UX/UI + Identity + Web & Mobile · Cloud/AWS training",
+      summary: "Identity and learning experiences across web and mobile",
       preview: "https://cloudfaster.academy/assets/og-image.png",
-      bio: "Visual identity and website for an AWS certification training brand serving individual learners and corporate teams — built on solid UI/UX fundamentals for a straightforward certification-prep flow. The brand has since expanded to a mobile app and B2B plans, a later business decision outside this project's scope.",
+      bio: "Visual identity, website and product interfaces for an AWS certification learning platform, serving individual learners and corporate teams. I worked on responsive layouts and reusable interface patterns across web and mobile, keeping the learning experience consistent between devices.",
       links: [["Live site", "https://cloudfaster.academy/"]],
+      sections: [
+        {
+          "label": "The challenge",
+          "text": "The learning platform needed to work across web and mobile, adapting to different contexts rather than simply shrinking a desktop interface."
+        },
+        {
+          "label": "Design decisions",
+          "text": "I used reusable interface patterns and responsive layouts to keep the experience consistent across devices. Learning and practice flows were adapted to smaller screens while retaining the platform’s visual identity."
+        }
+      ],
     },
     dascia: {
       name: "DascIA",
@@ -184,6 +243,16 @@
       bio: "Visual identity and website, via GOW Design, for an AI-education brand positioned against shallow 'AI in three clicks' courses — built to read as technical and credible.",
       items: ["Compressed, mixed-weight capital headline as the core brand device."],
       links: [["Live site", "https://dascia.com.br/"]],
+      sections: [
+        {
+          "label": "The challenge",
+          "text": "The education brand needed a structured web experience and a distinctive visual direction that communicated technical credibility."
+        },
+        {
+          "label": "Design decisions",
+          "text": "I focused on typography, information hierarchy and composition. The compressed, mixed-weight headline became a recognisable brand device, giving the landing page personality while keeping the educational content structured."
+        }
+      ],
     },
     "finq-edu": {
       name: "FinQ Edu",
@@ -199,6 +268,16 @@
       links: [
         ["App LP", "https://finqedu.webflow.io/"],
         ["Original site", "https://dev-finqedu.webflow.io/"],
+      ],
+      sections: [
+        {
+          "label": "The challenge",
+          "text": "The launch identity needed to give women a foothold in investment-banking and private-equity education, a visually conservative category."
+        },
+        {
+          "label": "Design decisions",
+          "text": "Gradients and vivid colour were a deliberate departure from the category’s conventions. I carried that identity into the initial website and reusable web and mobile interfaces; the published website has evolved since."
+        }
       ],
     },
     "jlcp-tecnologia": {
@@ -247,7 +326,17 @@
           "Open",
           "https://gow-pixel-office.vercel.app/"
         ]
-      ]
+      ],
+      sections: [
+        {
+          "label": "The challenge",
+          "text": "A collaborative workspace brings chat, boards, calendars, finance, profiles and focus tools into one connected web product."
+        },
+        {
+          "label": "Design decisions",
+          "text": "I work across product UI, interaction design and frontend implementation in React, Phaser and Supabase. Building and refining the product in the browser makes technical constraints visible and lets design QA continue beyond the Figma handoff."
+        }
+      ],
     },
     "gow-studio": {
       name: "GOW Design",

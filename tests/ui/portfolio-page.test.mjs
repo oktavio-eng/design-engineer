@@ -90,7 +90,7 @@ test("/ (portfolio home) renders its collections, opens rows and photos in modal
   assert.deepEqual(sections, ["positioning", "contributions", "writing", "projects", "personal", "life", "gallery:hidden"]);
   assert.equal(await page.locator(".profile__role").textContent(), "UI/UX & Visual Designer");
 
-  assert.equal(await page.locator("#projects .pcard").count(), 7, "all projects render as cards");
+  assert.equal(await page.locator("#projects .pcard").count(), 8, "all projects render as cards");
   assert.equal(await page.locator("[data-proto-panel]").count(), 0, "no prototype controls on the public homepage");
   assert.equal(await page.locator("html").getAttribute("data-proto-carousel"), "bleed");
   assert.equal(await page.locator("html").getAttribute("data-proto-surface"), "drawer");
@@ -240,6 +240,32 @@ test("/ (portfolio home) renders its collections, opens rows and photos in modal
     await page.keyboard.press("Escape");
   }
 
+  for (const [key, count] of [["bullster", 7], ["sphera-academy", 14], ["cloudfaster-academy", 15], ["finq-edu", 12]]) {
+    await page.locator(`[data-proto-open="${key}"]`).click();
+    await page.locator('.pdrawer[aria-hidden="false"]').waitFor();
+    assert.equal(await page.locator(".pgal__item").count(), count, `${key} has its supplied gallery`);
+    if (key === "bullster") {
+      assert.equal(await page.locator(".pdrawer__shot").getAttribute("src"), "/assets/projects/bullster/web-cover.webp");
+      assert.equal(await page.locator(".pgal__item").last().getAttribute("data-lightbox-src"), "/assets/projects/bullster/landing-page.webp");
+      assert.equal(await page.locator(".pgal__item").last().evaluate(el => el.classList.contains("pgal__item--wide")), true, "the landing page closes the gallery at full width");
+    }
+    assert.equal(await page.locator(".pdrawer__shot").evaluate(el => getComputedStyle(el).borderRadius), "16px");
+    const photo = page.locator(".pgal__item").first();
+    await photo.scrollIntoViewIfNeeded();
+    await page.waitForFunction(() => document.querySelector(".pgal__img")?.naturalWidth > 0);
+    assert.equal(await photo.evaluate(el => getComputedStyle(el).borderRadius), "16px");
+    await photo.click();
+    await page.locator('[data-lightbox][aria-hidden="false"]').waitFor();
+    await page.waitForFunction(() => document.querySelector("[data-lightbox-img]")?.complete);
+    assert.equal(await page.locator("[data-lightbox-img]").evaluate(el => {
+      const box = el.getBoundingClientRect();
+      return getComputedStyle(el).borderRadius === "16px" && el.naturalWidth > 0 &&
+        Math.abs(box.width / box.height - el.naturalWidth / el.naturalHeight) < 0.01;
+    }), true, "enlarged images retain their proportions and rounded corners");
+    await page.keyboard.press("Escape");
+    await page.keyboard.press("Escape");
+  }
+
   const pixelOffice = page.locator('[data-proto-collection="personal"][data-proto-open="prompts"]');
   await pixelOffice.click();
   assert.equal(await page.locator("[data-proto-sheet]").getAttribute("aria-label"), "Pixel Office");
@@ -267,9 +293,10 @@ test("/ (portfolio home) renders its collections, opens rows and photos in modal
     await page.waitForFunction(() => [...document.querySelectorAll(".pgal__img")].slice(0, 2).every(img => img.naturalWidth > 0));
     assert.equal(await page.locator(".pgal__img").first().evaluate(img => {
       const box = img.getBoundingClientRect();
-      return Math.abs(box.width / box.height - img.naturalWidth / img.naturalHeight) < 0.01;
-    }), true, "gallery preserves the full image proportions");
-    assert.equal(await page.locator(".pgal").evaluate(el => getComputedStyle(el).gap), "16px", "gallery retains spacing");
+      return Math.abs(box.width / box.height - 16 / 10) < 0.01 && getComputedStyle(img).objectFit === "cover";
+    }), true, "desktop thumbnails have a uniform crop");
+    assert.equal(await page.locator(".pgal").evaluate(el => getComputedStyle(el).rowGap), width > 560 ? "48px" : "32px", "gallery rows have breathing room");
+    assert.equal(await page.locator(".pgal").evaluate(el => getComputedStyle(el).columnGap), width > 560 ? "32px" : "20px", "gallery columns retain clear spacing");
   }
   await grip.focus();
   await page.keyboard.press("Enter");
@@ -298,7 +325,7 @@ test("portfolio drafts are hidden unless on localhost or ?draft", { timeout: 20_
     const upstream = await fetch(server.origin + url.pathname + url.search);
     let body = Buffer.from(await upstream.arrayBuffer());
     if (url.pathname === "/portfolio-content.js") {
-      const withSyntheticDraft = body.toString("utf8").replace("links: [],", 'links: [],\n      draft: true,');
+      const withSyntheticDraft = body.toString("utf8").replace('name: "Brazil, remote",', 'name: "Brazil, remote",\n      draft: true,');
       assert.notEqual(withSyntheticDraft, body.toString("utf8"), "the life.brazil anchor line must still exist to inject the synthetic draft");
       body = Buffer.from(withSyntheticDraft);
     }
@@ -335,7 +362,7 @@ test("a broken project preview image removes itself, no reserved gap", { timeout
     await server.close();
   });
   const page = await browser.newPage();
-  await page.route("https://framerusercontent.com/images/PgbsHlNgpSQclDuYYOPfMT6Zo.png", (route) =>
+  await page.route("**/assets/projects/sphera-academy/01-cover.webp", (route) =>
     route.fulfill({ status: 404, body: "" }),
   );
   await page.route(/^https?:\/\/(?!127\.0\.0\.1)/, (route) => route.fulfill({ status: 204, body: "" }));

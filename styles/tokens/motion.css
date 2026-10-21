@@ -84,4 +84,8 @@
   --cursor-tau-pos: 60ms;
   --cursor-tau-fade: 110ms;
   --cursor-idle: 2000ms;
+  /* Drag pill spring, studied from Lucas Assis's public cursor config. */
+  --cursor-drag-stiffness: 500;
+  --cursor-drag-damping: 60;
+  --cursor-drag-mass: 1;
 }
