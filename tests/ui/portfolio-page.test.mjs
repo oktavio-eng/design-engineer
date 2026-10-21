@@ -89,15 +89,11 @@ test("/ (portfolio home) renders its collections, opens rows and photos in modal
   // permanently hidden until that's restored.
   assert.deepEqual(sections, ["positioning", "contributions", "writing", "projects", "personal", "life", "gallery:hidden"]);
 
-  // Projects: favicon in the row (opt-in, unlike personal/life), and a
-  // show-more overflow past the 3-row threshold. Live for real since
-  // 22/08/2026 (no longer draft-gated) — see portfolio-content.js's header.
-  assert.equal(await page.locator('[data-list="projects"] .row--draft').count(), 0, "no draft-flagged rows left");
-  assert.equal(await page.locator('[data-list="projects"] .row-btn').count(), 7, "all seven project rows render");
-  assert.equal(await page.locator('[data-list="projects"] .row-btn .fav').count(), 7, "every project row carries a favicon");
-  assert.equal(await page.locator('[data-list="personal"] .row-btn .fav').count(), 0, "personal rows stay icon-free");
-  assert.equal(await page.locator("#projectsExtras .row.extra").count(), 4, "rows past the threshold sit in the overflow");
-  assert.equal(await page.locator("#projectsSeeMore").getAttribute("aria-expanded"), "false", "starts collapsed");
+  assert.equal(await page.locator("#projects .pcard").count(), 7, "all projects render as cards");
+  assert.equal(await page.locator("[data-proto-panel]").count(), 0, "no prototype controls on the public homepage");
+  assert.equal(await page.locator("html").getAttribute("data-proto-carousel"), "bleed");
+  assert.equal(await page.locator("html").getAttribute("data-proto-surface"), "drawer");
+  assert.equal(await page.locator("html").getAttribute("data-proto-hover"), "ring");
 
   // Contribution graph: real data file, one cell per day plus the Sunday pad,
   // and the total in the footer matches the file.
@@ -174,16 +170,12 @@ test("/ (portfolio home) renders its collections, opens rows and photos in modal
   assert.equal(await page.evaluate(() => document.activeElement?.getAttribute("data-open")), "personal:design-engineer");
   assert.equal(await page.locator("#cmd").getAttribute("aria-hidden"), "true", "Escape from a direct detail does not reopen the list");
 
-  // Project preview image (22/08/2026): the entry's own og:image, between
-  // .role and .bio. Every image request is already routed to a stub SVG
-  // above, so this is really asserting the element/attributes, not a real
-  // fetch — the broken-image removal path has its own dedicated test below.
-  await page.locator('[data-open="projects:sphera-academy"]').click();
-  await page.waitForFunction(() => document.body.classList.contains("cmd-detail-open"));
-  assert.equal(await page.locator("#cmdModal .cmd-modal__preview").count(), 1, "sphera-academy carries a preview image");
-  assert.equal(await page.locator("#cmdModal .cmd-modal__preview").getAttribute("loading"), "lazy");
+  await page.locator('[data-proto-open="sphera-academy"]').click();
+  await page.locator('.pdrawer[aria-hidden="false"]').waitFor();
+  assert.equal(await page.locator(".pdrawer__shot").count(), 1);
+  await scanAxe(page, "project drawer");
   await page.keyboard.press("Escape");
-  await page.waitForFunction(() => !document.body.classList.contains("cmd-detail-open"));
+  await page.locator('.pdrawer[aria-hidden="true"]').waitFor();
 
   // Avatar → lightbox: gallery is paused (0 .gallery__item today), but the
   // profile avatar wires the same trigger/controller (initLightbox() runs
@@ -216,105 +208,48 @@ test("/ (portfolio home) renders its collections, opens rows and photos in modal
   assert.equal(await page.locator(".cmd__item").count(), 1, "project rows are searchable");
   await page.keyboard.press("Escape");
 
-  // Projects show more: ported wireSeeMore(), same .expanded/aria-expanded/
-  // text-swap contract as wiki.html's people/courses/references. Exercised
-  // down here (after the contrib-graph hover assertions above) since
-  // clicking it scrolls the page, and an in-flight extras transition throws
-  // off Playwright's scroll-into-view for a hover target earlier on the page.
-  await page.locator("#projectsSeeMore").click();
-  await page.waitForFunction(() => document.getElementById("projects").classList.contains("expanded"));
-  assert.equal(await page.locator("#projectsSeeMore").textContent(), "show less");
-  assert.equal(await page.locator("#projectsSeeMore").getAttribute("aria-expanded"), "true");
-
-  // dascia has no og:image on the real site — no preview field, no image.
-  // (dascia sits past the show-more threshold, so this needs the expand
-  // above; can't run alongside sphera-academy earlier on the page.)
-  await page.locator('[data-open="projects:dascia"]').click();
-  await page.waitForFunction(() => document.body.classList.contains("cmd-detail-open"));
-  assert.equal(await page.locator("#cmdModal .cmd-modal__preview").count(), 0, "dascia has no preview to show");
+  await page.locator('[data-proto-open="escola-da-bel"]').click();
+  await page.locator('.pdrawer[aria-hidden="false"]').waitFor();
+  assert.equal(await page.locator(".pgal__item").count(), 5, "subproject covers populate the gallery");
+  await page.locator(".pgal__item").first().click();
+  await page.locator('[data-lightbox][aria-hidden="false"]').waitFor();
   await page.keyboard.press("Escape");
-  await page.waitForFunction(() => !document.body.classList.contains("cmd-detail-open"));
-
-  // Sub-projects (22/08/2026, escola-da-bel only): each is its own preview
-  // image + name + description, and since 28/08/2026 the whole card is the
-  // link (name-only from 22/08 read as a ghost click on the image and the
-  // description), same "no reserved gap on failure" contract as the
-  // top-level preview.
-  await page.locator('[data-open="projects:escola-da-bel"]').click();
-  await page.waitForFunction(() => document.body.classList.contains("cmd-detail-open"));
-  assert.equal(await page.locator("#cmdModal .cmd-modal__preview").count(), 1, "escola-da-bel also carries its own top-level preview");
-  assert.equal(await page.locator("#cmdModal .subproject").count(), 5, "five landing pages listed");
-  assert.equal(await page.locator("#cmdModal .subproject__preview").count(), 5, "every sub-project card carries a preview image");
-  assert.equal(await page.locator("#cmdModal a.subproject[href]").count(), 5, "every card is itself the link");
-  assert.deepEqual(
-    await page.locator("#cmdModal .subproject").evaluateAll((as) => as.map((a) => a.getAttribute("target"))),
-    Array(5).fill("_blank"),
-    "the card opens the live page in a new tab, not in the modal",
-  );
-  assert.equal(await page.locator("#cmdModal .subproject a, #cmdModal .subproject__name[href]").count(), 0, "no nested link inside the card — the name is a span, the image is an image");
-  // Let the modal's open transition (scale 0.96 → 1) settle before measuring:
-  // mid-transform the three boxes are read at different frames and a strict
-  // `===` failed on CI (28/08/2026); the <1 tolerance below then failed too
-  // (30/08/2026, PR #87, once locally and once on CI). Waits on the modal's
-  // own computed transform — `translate(-50%, -50%) scale(1)` resolves to a
-  // matrix whose a/d are exactly 1 — not on `document.getAnimations()`,
-  // whose `finished` promises reject with AbortError when any animation on
-  // the page is cancelled (hover ones are, constantly).
-  await page.waitForFunction(() => {
-    const matrix = getComputedStyle(document.getElementById("cmdModal")).transform.match(/^matrix\(([^,]+), [^,]+, [^,]+, ([^,]+),/);
-    return matrix !== null && Number(matrix[1]) === 1 && Number(matrix[2]) === 1;
-  });
-  const nameBox = await page.locator("#cmdModal .subproject__name").first().boundingBox();
-  const cardBox = await page.locator("#cmdModal .subproject").first().boundingBox();
-  const imageBox = await page.locator("#cmdModal .subproject__preview").first().boundingBox();
-  // Sub-pixel tolerance kept on purpose: two boxes with the same layout width
-  // can still come back as slightly different floats.
-  assert.ok(nameBox.width < cardBox.width && Math.abs(imageBox.width - cardBox.width) < 1, "the tap target is the full card, image included, not the name's own width");
-  await scanAxe(page, "portfolio, escola-da-bel sub-projects open");
+  assert.equal(await page.locator("[data-proto-sheet]").getAttribute("aria-hidden"), "false");
   await page.keyboard.press("Escape");
-  await page.waitForFunction(() => !document.body.classList.contains("cmd-detail-open"));
+  await page.locator('.pdrawer[aria-hidden="true"]').waitFor();
 
-  await page.locator("#projectsSeeMore").click();
-  await page.waitForFunction(() => !document.getElementById("projects").classList.contains("expanded"));
-  assert.equal(await page.locator("#projectsSeeMore").textContent(), "show more");
-  assert.equal(await page.locator("#projectsSeeMore").getAttribute("aria-expanded"), "false");
-
-  // Narrow viewport: no horizontal overflow. The two-column `.gallery` grid
-  // check that used to live here was dropped along with the gallery pause
-  // (22/08/2026): with the section `hidden` and empty, Chrome can't resolve
-  // `grid-template-columns` into pixel tracks and hands back the literal
-  // `repeat(2, minmax(0px, 1fr))` formula instead — a getComputedStyle
-  // artifact of an unrendered element, not a real regression. Restoring the
-  // gallery should bring a real rendered-layout assertion back with it.
   await page.setViewportSize({ width: 320, height: 800 });
-  assert.equal(
-    await page.evaluate(() => document.documentElement.scrollWidth === document.documentElement.clientWidth),
-    true,
-    "320px viewport has no horizontal overflow",
-  );
+  assert.equal(await page.evaluate(() => document.documentElement.scrollWidth === document.documentElement.clientWidth), true, "320px has no page overflow");
 
-  // Show more, at 320px (22/08/2026 regression): `.extras-inner`'s
-  // `overflow: hidden` -> `visible` swap (the transitionend listener above,
-  // for the last row's hover shadow) used to also cancel CSS Grid's
-  // automatic min-width: 0 on that item — once `visible`, the item's
-  // minimum floor became its nowrap children's min-content width instead,
-  // ballooning every row-btn's 100%-based width along with it and undoing
-  // `.row .what`'s ellipsis (nothing was left to shrink it against). The
-  // collapsed-then-narrow check above didn't catch this — it never expanded
-  // at 320px — so this expands specifically at the narrow width.
-  await page.locator("#projectsSeeMore").click();
-  await page.waitForFunction(() => document.getElementById("projects").classList.contains("expanded"));
-  await page.waitForTimeout(400); // let the transitionend overflow swap settle
-  assert.equal(
-    await page.evaluate(() => document.documentElement.scrollWidth === document.documentElement.clientWidth),
-    true,
-    "320px viewport has no horizontal overflow with Projects expanded",
-  );
-  const longestWhat = page.locator('[data-open="projects:finq-edu"] .what');
-  assert.ok(
-    await longestWhat.evaluate((el) => el.scrollWidth > el.clientWidth),
-    "the longest role line still truncates instead of forcing the row wider",
-  );
+  for (const key of ["cloudfaster-academy", "dascia", "finq-edu"]) {
+    await page.locator(`[data-proto-open="${key}"]`).click();
+    await page.locator('.pdrawer[aria-hidden="false"]').waitFor();
+    await page.waitForFunction(() => document.querySelector(".pdrawer__shot")?.naturalWidth > 0);
+    assert.match(await page.locator(".pdrawer__shot").getAttribute("src"), /^\/assets\/projects\//, "missing/outdated covers have verified local fallbacks");
+    await page.keyboard.press("Escape");
+  }
+
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.locator('[data-proto-open="caderno-de-erros"]').click();
+  const grip = page.locator("[data-proto-grip]");
+  await grip.focus();
+  await page.keyboard.press("Shift+Tab");
+  assert.equal(await page.evaluate(() => document.activeElement === [...document.querySelectorAll(".pdrawer__link")].at(-1)), true, "Tab stays inside the drawer");
+  await page.keyboard.press("Tab");
+  assert.equal(await grip.evaluate(el => el === document.activeElement), true);
+  for (const width of [1440, 390]) {
+    await page.setViewportSize({ width, height: 1000 });
+    await page.locator(".pgal__img").first().scrollIntoViewIfNeeded();
+    await page.waitForFunction(() => [...document.querySelectorAll(".pgal__img")].slice(0, 2).every(img => img.naturalWidth > 0));
+    assert.equal(await page.locator(".pgal__img").first().evaluate(img => {
+      const box = img.getBoundingClientRect();
+      return Math.abs(box.width / box.height - img.naturalWidth / img.naturalHeight) < 0.01;
+    }), true, "gallery preserves the full image proportions");
+    assert.equal(await page.locator(".pgal").evaluate(el => getComputedStyle(el).gap), "16px", "gallery retains spacing");
+  }
+  await grip.focus();
+  await page.keyboard.press("Enter");
+  await page.locator('.pdrawer[aria-hidden="true"]').waitFor();
 
   assert.deepEqual(pageErrors, []);
 });
@@ -383,9 +318,9 @@ test("a broken project preview image removes itself, no reserved gap", { timeout
   await page.addInitScript(() => sessionStorage.setItem("intro-shown-v1", "true"));
   await page.goto(`${server.origin}/`, { waitUntil: "load" });
   await page.waitForFunction(() => document.querySelectorAll(".row-btn").length > 0);
-  await page.locator('[data-open="projects:sphera-academy"]').click();
-  await page.waitForFunction(() => document.body.classList.contains("cmd-detail-open"));
-  await page.waitForFunction(() => document.querySelector("#cmdModal .cmd-modal__preview") === null);
-  assert.equal(await page.locator("#cmdModal .cmd-modal__preview").count(), 0, "the broken image removed itself, not just failed silently");
-  assert.equal(await page.locator("#cmdModal .bio").count(), 1, "the rest of the detail still renders");
+  await page.locator('[data-proto-open="sphera-academy"]').click();
+  await page.locator('.pdrawer[aria-hidden="false"]').waitFor();
+  await page.waitForFunction(() => document.querySelector(".pdrawer__shot") === null);
+  assert.equal(await page.locator(".pdrawer__shot").count(), 0, "the broken image removed itself, not just failed silently");
+  assert.equal(await page.locator(".pdrawer__bio").count(), 1, "the rest of the detail still renders");
 });

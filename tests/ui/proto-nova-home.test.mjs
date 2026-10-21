@@ -68,6 +68,15 @@ test("/testes/prototipo-nova-home: carrossel, detalhe e galeria", { timeout: 60_
   await next.click();
   await page.waitForFunction(() => document.querySelector(".pjt__track").scrollLeft > 0);
   assert.equal(await prev.isDisabled(), false, "avançar habilita o voltar");
+  await page.waitForFunction(() => {
+    const card = document.querySelector(".pcard").getBoundingClientRect();
+    return card.x < document.querySelector("main").getBoundingClientRect().x - 50;
+  });
+  assert.equal(await page.evaluate(() => {
+    const card = document.querySelector(".pcard");
+    const box = card.getBoundingClientRect();
+    return document.elementFromPoint(Math.max(1, box.x) + 10, box.y + 20)?.closest(".pcard") === card;
+  }), true, "o card continua visível e clicável à esquerda da coluna");
 
   // O fim da trilha desabilita o avançar. Chega lá pelo scroll direto, que é
   // o mesmo caminho de um arrasto de dedo.
@@ -89,6 +98,34 @@ test("/testes/prototipo-nova-home: carrossel, detalhe e galeria", { timeout: 60_
   );
   // A página atrás sai da ordem de foco enquanto a folha está de pé.
   assert.equal(await page.locator("main").evaluate((el) => el.inert), true, "main fica inert");
+
+  // Wheel real: scrollTop programático (inclusive o auto-scroll do click)
+  // não detecta quando o Lenis captura o gesto de um scroller aninhado.
+  async function checkDetailScroll() {
+    await page.evaluate(() => Promise.all(document.getAnimations().map((a) => a.finished)));
+    // Focus restoration can still be scrolling the window smoothly; wait
+    // for that native animation (not returned by getAnimations) to settle.
+    await page.evaluate(() => new Promise(resolve => {
+      let previous = window.scrollY;
+      let stable = 0;
+      function frame() {
+        stable = window.scrollY === previous ? stable + 1 : 0;
+        previous = window.scrollY;
+        if (stable >= 8) resolve();
+        else requestAnimationFrame(frame);
+      }
+      requestAnimationFrame(frame);
+    }));
+    const backgroundY = await page.evaluate(() => window.scrollY);
+    const box = await sheet.boundingBox();
+    await page.mouse.move(box.x + box.width / 2, box.y + 150);
+    await page.mouse.wheel(0, 500);
+    await page.waitForFunction(() => document.querySelector("[data-proto-sheet]").scrollTop > 100, null, { timeout: 3000 });
+    assert.equal(await page.evaluate(() => window.scrollY), backgroundY, "wheel rola o detalhe, sem mover a página");
+    await page.mouse.wheel(0, -500);
+    await page.waitForFunction(() => document.querySelector("[data-proto-sheet]").scrollTop === 0, null, { timeout: 3000 });
+  }
+  await checkDetailScroll();
 
   // A galeria: quatro fotos semeadas, no ritmo do frame — duas meias, uma
   // inteira, e a última (que ficaria órfã na linha) também inteira.
@@ -132,6 +169,9 @@ test("/testes/prototipo-nova-home: carrossel, detalhe e galeria", { timeout: 60_
   // --- o modo modal -------------------------------------------------------
   // A alça só existe onde arrasta; no modo centralizado quem fecha é o botão.
   await page.locator('[data-axis="surface"][data-value="modal"]').click();
+  await page.locator('[data-proto-open="caderno-de-erros"]').click();
+  await checkDetailScroll();
+  await page.keyboard.press("Escape");
   await page.locator('[data-proto-open="sphera-academy"]').click();
   await page.waitForFunction(() => document.querySelector("[data-proto-sheet]").getAttribute("aria-hidden") === "false");
   assert.equal(await page.locator("[data-proto-grip]").isVisible(), false, "sem alça no modal");
@@ -141,6 +181,29 @@ test("/testes/prototipo-nova-home: carrossel, detalhe e galeria", { timeout: 60_
   assert.equal(await page.locator(".pgal").count(), 0, "sem fotos, sem grade");
   await page.locator("[data-proto-close]").click();
   await page.waitForFunction(() => document.querySelector("[data-proto-sheet]").getAttribute("aria-hidden") === "true");
+
+  for (const width of [390, 1440]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.locator('[data-axis="carousel"][data-value="bleed"]').click();
+    await page.locator(".pjt__track").evaluate((el) => el.scrollTo({ left: 0, behavior: "instant" }));
+    const geometry = await page.evaluate(() => {
+      const track = document.querySelector(".pjt__track").getBoundingClientRect();
+      return {
+        left: track.left, right: track.right,
+        card: document.querySelector(".pcard").getBoundingClientRect().left,
+        column: document.querySelector("main").getBoundingClientRect().left,
+        pageWidth: document.documentElement.scrollWidth,
+        projectsGap: document.querySelector(".pjt__head").getBoundingClientRect().top - document.querySelector("#writing").getBoundingClientRect().bottom,
+        writingGap: document.querySelector("#writing h2").getBoundingClientRect().top - document.querySelector("#contributions").getBoundingClientRect().bottom,
+      };
+    });
+    assert.ok(Math.abs(geometry.left) < 1 && Math.abs(geometry.right - width) < 1, "trilha ocupa a viewport inteira");
+    assert.ok(Math.abs(geometry.card - geometry.column) < 1, "primeiro card alinhado à coluna");
+    assert.equal(geometry.pageWidth, width, "sem overflow horizontal na página");
+    assert.ok(Math.abs(geometry.projectsGap - geometry.writingGap) < 1, "Writing → Projects repete o espaço de Contributions → Writing");
+    await page.locator('[data-axis="carousel"][data-value="column"]').click();
+    assert.ok(Math.abs((await page.locator(".pjt__track").boundingBox()).x - geometry.column) < 1, "modo coluna preservado");
+  }
 
   assert.deepEqual(pageErrors, [], "nenhum erro de JS na página");
 });

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="intro-playing">
+<html lang="en" class="intro-playing" data-proto-carousel="bleed" data-proto-surface="drawer" data-proto-hover="ring">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -40,6 +40,7 @@
 
 <link rel="stylesheet" href="/styles/main.css">
 <link rel="stylesheet" href="/styles/experiments/flat-type.css">
+<link rel="stylesheet" href="/styles/projects.css">
 <!-- `.intro-playing` on <html> above is what makes the intro overlay paint on the
      first frame, and intro.js is what removes it again. With no JS there is
      nothing to remove it, so opt out of the whole thing here. -->
@@ -108,11 +109,7 @@
     <div class="doc-list" data-writing></div>
   </section>
 
-  <section class="stagger" id="projects" hidden>
-    <h2>Projects</h2>
-    <div data-list="projects"></div>
-    <button class="see-more" id="projectsSeeMore" type="button" aria-expanded="false" aria-controls="projectsExtras">show more</button>
-  </section>
+  <section class="stagger" id="projects" data-proto-projects hidden></section>
 
   <section class="stagger" id="personal" hidden>
     <h2>Personal projects</h2>
@@ -139,6 +136,17 @@
   </footer>
 </main>
 
+<div class="pdrawer-wash" data-proto-wash aria-hidden="true"></div>
+<div class="pdrawer" role="dialog" aria-modal="true" aria-label="Project" aria-hidden="true" inert tabindex="-1" data-proto-sheet data-lenis-prevent>
+  <button class="pdrawer__grip" type="button" aria-label="Close project details" data-proto-grip></button>
+  <button class="panel-close pdrawer__close" type="button" aria-label="Close" data-proto-close data-cuelume-toggle="droplet"><svg viewBox="0 0 256 256" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z"/></svg></button>
+  <div data-proto-sheet-body></div>
+</div>
+
+<!-- O lightbox de produção, reaproveitado: as fotos da galeria carregam
+     `data-lightbox-src` e portfolio.mjs já escuta isso no documento inteiro.
+     Ele fica em z-index 61, acima do detalhe (55), então uma foto abre por
+     cima e o Escape fecha a foto primeiro. -->
 <div class="cmd-wash lightbox-wash" data-lightbox-wash aria-hidden="true"></div>
 <div class="lightbox" role="dialog" aria-modal="true" aria-label="Photo" aria-hidden="true" inert data-lightbox>
   <button class="panel-close lightbox__close" type="button" aria-label="Close" data-lightbox-close data-cuelume-toggle="droplet"><svg viewBox="0 0 256 256" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z"/></svg></button>
@@ -157,6 +165,7 @@
 <script src="/portfolio-content.js" defer></script>
 <script src="/mail.js" defer></script>
 <script type="module" src="/portfolio.mjs"></script>
+<script type="module" src="/projects.mjs"></script>
 <script type="module" src="/cmd.mjs"></script><script type="module" src="/cursor.mjs"></script><script type="module" src="/sound.mjs"></script><script type="module" src="/scroll.mjs"></script>
 </body>
 </html>

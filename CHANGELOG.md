@@ -6,6 +6,12 @@ Notable changes to this site, in the order they landed on `main`. Newest first. 
 
 **Meses anteriores:** [agosto de 2026](docs/changelog/2026-08.md) (01/08–30/08 — recuperação do site, tokens, intro, ⌘K, `/prompts`, portfólio na home, Figma-first, Lenis, composer + Supabase).
 
+## 2026-10-21
+
+- Home: Projects passa a carrossel sangrando + drawer com galeria + hover em anel (`projects.mjs`, `styles/projects.css`), compartilhados com o protótipo. Fotos sem recorte, capas locais de fallback para CloudFaster/DascIA/FinQ, navegação por teclado e build do Studio atualizados. Detalhes em [docs/nova-home-projetos.md](docs/nova-home-projetos.md).
+
+- Protótipo `/testes/prototipo-nova-home`: scroll nativo no detalhe (drawer e modal), carrossel sangrando nas duas bordas da janela e espaço entre Writing e Projects igual às demais seções — `testes/prototipo-nova-home.html`, `testes/prototipo.css`, regressões em `tests/ui/proto-nova-home.test.mjs`. Motivo em [docs/nova-home-projetos.md](docs/nova-home-projetos.md).
+
 ## 2026-09-12
 
 - Protótipo da nova home em `/testes/prototipo-nova-home` (rota `noindex`, fora de produção): Projects vira carrossel de cards e o detalhe do projeto vira uma folha grande com galeria de fotos — `testes/prototipo-nova-home.html`, `testes/prototipo.css`, `testes/prototipo.mjs`, teste em `tests/ui/proto-nova-home.test.mjs`. Três decisões que o Figma não fecha (carrossel sangrando × na coluna, drawer × modal, hover em anel × fill) ficam num painel de troca na própria página. Medidas, deltas contra produção e o que ficou em aberto em `docs/nova-home-projetos.md`.

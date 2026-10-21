@@ -1,6 +1,6 @@
 # Nova home — Projects em cards e o detalhe do projeto
 
-O protótipo vive em **`/testes/prototipo-nova-home`** (rota `noindex`, fora de produção; a home publicada continua intocada em `/`). Ele existe pra decidir olhando, não descrevendo — três escolhas que o Figma não fecha estão num painel de troca na própria página.
+Desde 21/10/2026, o carrossel e o detalhe com galeria estão aprovados para a home **`/`**, com **sangra + drawer + anel** fixos e sem painel de ajustes público. O protótipo continua em **`/testes/prototipo-nova-home`** (rota `noindex`) para comparar variantes. As preferências salvas no protótipo não alteram a home. Ele existe pra decidir olhando, não descrevendo — três escolhas que o Figma não fecha estão num painel de troca na própria página.
 
 Fonte: arquivo `Oktavio` (`H0X3JmAFN32LWINqemEhXs`), frames **card `124:562`**, **seção `124:1280`** e **detalhe `133:248`** ("Project details Modal estilo Vault do Emil"). Contrato geral entre Figma e repositório: [figma-workflow.md](figma-workflow.md).
 
@@ -9,8 +9,10 @@ Fonte: arquivo `Oktavio` (`H0X3JmAFN32LWINqemEhXs`), frames **card `124:562`**, 
 | Arquivo | O que é |
 |---|---|
 | `testes/prototipo-nova-home.html` | a página; carrega `main.css` + `flat-type.css` + o CSS do protótipo, nessa ordem |
-| `testes/prototipo.css` | só classes com prefixo `p` (`.pcard`, `.pjt`, `.pdrawer`, `.pgal`); não sobrescreve nenhuma regra de produção |
-| `testes/prototipo.mjs` | o carrossel, a superfície de detalhe e a galeria |
+| `styles/projects.css` | estilos compartilhados do carrossel, detalhe e galeria |
+| `testes/prototipo.css` | importa os estilos compartilhados e acrescenta apenas o painel de ajustes |
+| `projects.mjs` | carrossel, detalhe e galeria compartilhados; variantes persistidas apenas quando o painel existe |
+| `testes/prototipo.mjs` | reexporta a implementação compartilhada |
 | `tests/ui/proto-nova-home.test.mjs` | roda no `npm run test:product-ui` |
 
 `portfolio.mjs` continua dono de tudo que não mudou (Writing, Personal, Life, contribuições, lightbox). A seção Projects do protótipo não tem `data-list="projects"`, então o renderer de produção não monta rows ali e o módulo novo assume a seção inteira.
@@ -23,7 +25,9 @@ Nada disso precisou de token novo: `--ls-tight` é exatamente o `-0.16px` a 16px
 
 **Seção** — cabeçalho com o título à esquerda e a pílula de setas à direita, 24 até a lista, cards com gap 16. A pílula tem fundo `--bg`, borda `--line` e raio total; o botão ativo é `--white` com a seta `--ink`, o desabilitado é transparente com a seta `--faint`.
 
-**Detalhe** — folha de 1000 com padding 20 e raio 24, alça de 48×4 em `--line`. Imagem principal 960×400 raio 16, depois 40 de respiro e 40 entre blocos. Galeria com gap 16 alternando duas meias (472×400) e uma inteira (960×400). "In practice" e "Links" em `--faint`, primeiro destaque em `--ink` e os demais em `--muted`.
+O cabeçalho inteiro recebe a margem superior de seção (72 no desktop, 64 até 560px), igual a Contributions → Writing. Zerar as margens do `h2` dentro do flex sem transferir a superior ao cabeçalho havia colado Projects à última linha de Writing; corrigido em 21/10/2026.
+
+**Detalhe** — folha de 1000 com padding 20 e raio 24, alça de 48×4 em `--line`. Imagem principal com raio 16, depois 40 de respiro e 40 entre blocos. Galeria com gap 16 alternando duas meias e uma inteira. Desde 21/10/2026, a pedido, capa e fotos mantêm suas proporções naturais: os recortes fixos do frame truncavam capturas de produto. "In practice" e "Links" em `--faint`, primeiro destaque em `--ink` e os demais em `--muted`.
 
 ## Decisões que a IA tomou (o frame não diz)
 
@@ -36,12 +40,13 @@ Nada disso precisou de token novo: `--ls-tight` é exatamente o `-0.16px` a 16px
 - **Foco atrás:** a página sai da ordem de foco (`inert` em `main`) enquanto a folha está aberta. O `.cmd-modal` do site não faz isso, mas ele é pequeno e esta folha cobre quase tudo.
 - **O topbar sai por opacidade, nunca por `transform`** — o estado escondido dele já é um `translate(-50%, …) scale()`, e sobrescrever a propriedade inteira joga a barra pra fora do centro. Foi o primeiro bug da implementação.
 - **O wash** é o `--wash-bg` + blur do `.cmd-wash`, igual às outras camadas do site. Sozinho ele quase não vela uma página quase branca; quem separa é o blur. Com a escala da página atrás, dá o par "scale-and-blur" que o próprio prompt de drawer deste repositório descreve (`prompts.mjs`).
+- **Scroll do detalhe (21/10/2026):** a folha leva `data-lenis-prevent`, para wheel/trackpad rolarem seu conteúdo nativamente nos dois modos. Sem o atributo, o Lenis interceptava o gesto e rolava a janela atrás. O teste usa wheel real, verifica subida/descida e a posição da página atrás; scroll programático não reproduzia o problema.
 
 ## Os três eixos em aberto
 
 Trocáveis no painel da página, persistidos em `localStorage`:
 
-1. **Carrossel — sangra × coluna.** No frame os quatro cards somam 1112 dentro de uma coluna de 640 e o corte só acontece na borda dos 1440. `sangra` leva a trilha até a borda da janela (`margin-right: calc(50% - 50vw)`, que `html { overflow-x: clip }` já protege); `coluna` respeita os 640. O resto da página inteira é coluna centrada, então sangrar é uma quebra deliberada de ritmo.
+1. **Carrossel — sangra × coluna.** No frame os quatro cards somam 1112 dentro de uma coluna de 640 e o corte só acontece na borda dos 1440. Desde 21/10/2026, a pedido, `sangra` leva a trilha às duas bordas da janela (`margin-inline: calc(50% - 50vw)`), com padding inicial e scroll-padding para manter o primeiro card e o snap alinhados ao título. Os cards anteriores continuam visíveis à esquerda da coluna ao avançar; antes, a trilha só sangrava à direita e os recortava na borda esquerda da coluna. `coluna` respeita os 640. O resto da página inteira é coluna centrada, então sangrar é uma quebra deliberada de ritmo.
 2. **Detalhe — drawer × modal.** Vaul é a biblioteca de drawer do Emil, e a alça do frame é a dela: o `drawer` sobe de baixo, arrasta pra fechar (distância **ou** velocidade) e escala a página atrás. O `modal` usa a geometria do `.cmd-modal` (`--ease-pop`, scale 0.96 → 1) pra que os dois modais do site continuem lendo como uma superfície só, e troca a alça por um botão de fechar — uma alça que não arrasta é uma promessa falsa.
 3. **Hover do card — anel × fill.** O Figma desenhou anel (`--line`, sem preenchimento). O site decidiu em 29/08/2026 que row é **só fill** em `--row-hover`, sem anel e sem transição, conferido no HTML do Emil e do Jakub ([figma-workflow.md](figma-workflow.md)). As duas superfícies convivem na mesma página, então dá pra comparar de perto.
 
@@ -67,3 +72,11 @@ Quedas graciosas, pra rota funcionar hoje com os dados que já estão no ar: sem
 - O card do Caderno de Erros trazia "plataform"; em código entrou "platform".
 - O frame mostra quatro projetos; o conteúdo tem sete, e o carrossel mostra todos (a lista de rows cortava no quarto com "show more").
 - O perfil do frame diz "Visual Designer · GOW Studio"; produção diz "Product & Visual Designer · GOW Design". O protótipo seguiu produção.
+
+## Promoção para a home (21/10/2026)
+
+A home importa `projects.mjs` e `styles/projects.css`; o protótipo reusa esses mesmos arquivos. `portfolio.mjs` continua montando Writing, Personal e Life; Projects não tem mais o host de rows nem show more. ⌘K mantém seu renderer de detalhe para resultados de busca. O build de assets do Studio inclui o módulo e `assets/` para continuar servindo a home no Worker/local.
+
+`assets/projects/` guarda fallbacks locais para três capas ausentes/quebradas no D1: CloudFaster (social cover atual de `https://cloudfaster.academy/img/og/home.png`), FinQ (social cover do site original `dev-finqedu.webflow.io`, imagem `https://cdn.prod.website-files.com/67fa3b5335fadc68fbc167da/680968a2ae29a174f542cbf8_img-finq-link.jpg`) e DascIA (wordmark original `https://dascia.com.br/assets/logo-navbar.webp`, centralizado sobre fundo escuro em SVG). Arquivos abertos e conferidos antes de entrar. Novas capas válidas do Studio prevalecem; a URL legada conhecida do CloudFaster cai no fallback. Nenhum registro remoto foi sobrescrito. Imagem de galeria que falha remove também seu botão.
+
+O detalhe mantém Tab dentro da folha, Enter/Space na alça fecha para quem usa teclado, e abrir o composer ou ⌘K fecha a folha. A suíte da home cobre capas, proporções e gap da galeria em desktop/mobile, teclado e lightbox; a do protótipo cobre wheel real nos dois modos, sangria e espaçamento de seção.
