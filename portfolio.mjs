@@ -25,8 +25,10 @@
    from data instead — see wireSeeMore).
 --------------------------------------------------------------------------- */
 import { renderContributions } from "/contrib.mjs";
+import { applyProjectMedia } from "/project-media.mjs";
 
 const content = window.PORTFOLIO_CONTENT || {};
+applyProjectMedia(content);
 
 export const showDrafts =
   /^(localhost|127\.0\.0\.1)$/.test(location.hostname) || new URLSearchParams(location.search).has("draft");
@@ -66,9 +68,12 @@ function rowMarkup(group, key, entry, opts) {
   const icon = opts.favicon && entry.links && entry.links[0]
     ? favicon(entry.faviconFrom || entry.links[0][1])
     : "";
+  const trigger = group === "personal" && entry.gallery?.length
+    ? 'data-proto-collection="personal" data-proto-open="' + esc(key) + '"'
+    : 'data-open="' + group + ":" + key + '"';
   return (
     '<button class="row row-btn' + (entry.draft ? " row--draft" : "") + (opts.extra ? " extra" : "") +
-    '" type="button" data-cuelume-hover="tick" data-cuelume-toggle="bloom" data-open="' + group + ":" + key + '" aria-haspopup="dialog">' +
+    '" type="button" data-cuelume-hover="tick" data-cuelume-toggle="bloom" ' + trigger + ' aria-haspopup="dialog">' +
     '<span class="who">' + icon + esc(entry.name) + "</span>" +
     (entry.role ? '<span class="what">' + esc(entry.role) + "</span>" : "") +
     "</button>"

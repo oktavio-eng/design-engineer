@@ -235,14 +235,19 @@
       ],
     },
     prompts: {
-      name: "Prompts",
-      role: "Collection · 2026",
-      bio: "Prompts used in real design, engineering and AI work, kept with the context that made them useful — searchable, copyable, and indexed by the same ⌘K palette as everything else on the site.",
-      items: [
-        "Each prompt opens in the same modal surface as the palette detail, so the two never drift apart.",
-        "Copy is exact: raw multiline text, no smart-quote or whitespace surprises.",
+      "name": "Pixel Office",
+      "role": "Product · 2026",
+      "bio": "A multiplayer virtual workspace I designed and built to explore how product design, interaction and engineering can come together in one system.",
+      "items": [
+        "Built as a real product: realtime presence, chat, calls, tasks, calendar, focus tools and multiplayer interactions",
+        "Designed and implemented end to end, from interaction patterns and UI systems to React, Phaser and Supabase."
       ],
-      links: [["Open", "https://oktavio.vercel.app/prompts"]],
+      "links": [
+        [
+          "Open",
+          "https://gow-pixel-office.vercel.app/"
+        ]
+      ]
     },
     "gow-studio": {
       name: "GOW Design",

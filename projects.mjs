@@ -367,8 +367,8 @@ export function initDetail(doc = document) {
   // ali levaria a própria folha junto.
   const behind = [doc.querySelector("main"), doc.querySelector(".topbar")].filter(Boolean);
 
-  function show(key) {
-    const entry = (content.projects || {})[key];
+  function show(key, collection = "projects") {
+    const entry = (content[collection] || {})[key];
     if (!entry) return;
     body.innerHTML = detailMarkup(entry, key);
     sheet.setAttribute("aria-label", entry.name);
@@ -403,7 +403,7 @@ export function initDetail(doc = document) {
     const trigger = event.target.closest("[data-proto-open]");
     if (!trigger) return;
     opener = trigger;
-    show(trigger.dataset.protoOpen);
+    show(trigger.dataset.protoOpen, trigger.dataset.protoCollection || "projects");
   });
   wash.addEventListener("click", hide);
   if (close) close.addEventListener("click", hide);

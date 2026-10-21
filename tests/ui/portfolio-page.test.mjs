@@ -229,6 +229,19 @@ test("/ (portfolio home) renders its collections, opens rows and photos in modal
     await page.keyboard.press("Escape");
   }
 
+  const pixelOffice = page.locator('[data-proto-collection="personal"][data-proto-open="prompts"]');
+  await pixelOffice.click();
+  assert.equal(await page.locator("[data-proto-sheet]").getAttribute("aria-label"), "Pixel Office");
+  assert.equal(await page.locator(".pgal__item").count(), 12, "Pixel Office shows all twelve supplied screenshots");
+  assert.equal(await page.locator(".pdrawer__shot").getAttribute("src"), "/assets/projects/pixel-office/01-office.png");
+  await page.locator(".pgal__item").last().click();
+  await page.locator('[data-lightbox][aria-hidden="false"]').waitFor();
+  assert.match(await page.locator("[data-lightbox-img]").getAttribute("src"), /12-usage\.png$/);
+  await page.keyboard.press("Escape");
+  assert.equal(await page.locator("[data-proto-sheet]").getAttribute("aria-hidden"), "false", "closing a screenshot keeps Pixel Office open");
+  await page.keyboard.press("Escape");
+  assert.equal(await pixelOffice.evaluate(el => el === document.activeElement), true, "focus returns to Pixel Office");
+
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.locator('[data-proto-open="caderno-de-erros"]').click();
   const grip = page.locator("[data-proto-grip]");
