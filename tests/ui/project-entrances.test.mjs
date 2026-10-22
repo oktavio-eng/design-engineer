@@ -29,6 +29,15 @@ test('drawer content enters once on scroll, stays accessible and cancels on clos
   await page.waitForFunction(() => window.entrances.length > 0);
   const item = page.locator('.pgal__item').last();
   assert.equal(await item.evaluate(el => window.entrances.filter(a => a.element === el).length), 0);
+  assert.equal(await item.evaluate(el => getComputedStyle(el).opacity), '0', 'offscreen images wait for their own entrance');
+  const paragraphs = page.locator('.pdrawer__decision .pdrawer__item');
+  await paragraphs.first().scrollIntoViewIfNeeded();
+  await page.waitForFunction(el => window.entrances.some(a => a.element === el), await paragraphs.first().elementHandle());
+  assert.equal(await page.locator('.pdrawer__decision').first().evaluate(el => window.entrances.some(a => a.element === el)), false, 'paragraphs enter individually instead of animating whole sections');
+  const banner = page.locator('[data-ticker-track] > button').first();
+  await banner.scrollIntoViewIfNeeded();
+  await page.waitForFunction(el => window.entrances.some(a => a.element === el), await banner.elementHandle());
+  assert.equal(await page.locator('[data-campaign-ticker]').evaluate(el => window.entrances.some(a => a.element === el)), false, 'banners enter individually without animating the whole ticker');
   await item.scrollIntoViewIfNeeded();
   await page.waitForFunction(el => window.entrances.some(a => a.element === el), await item.elementHandle());
   const timing = await item.evaluate(el => {
@@ -44,6 +53,7 @@ test('drawer content enters once on scroll, stays accessible and cancels on clos
   assert.equal(await item.evaluate(el => window.entrances.filter(a => a.element === el).length), 1);
   await page.keyboard.press('Escape');
   assert.equal(await page.evaluate(() => window.entrances.filter(a => a.animation.playState === 'running').length), 0);
+  assert.equal(await page.locator('.pdrawer__reveal-pending').count(), 0, 'close releases every pending image and text block');
 
   await page.evaluate(() => { window.entrances = []; });
   await trigger.focus(); await page.keyboard.press('Enter');

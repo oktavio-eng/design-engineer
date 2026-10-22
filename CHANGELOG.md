@@ -8,6 +8,8 @@ Notable changes to this site, in the order they landed on `main`. Newest first. 
 
 ## 2026-10-22
 
+- Drawer: entrada individual de imagens, textos, links e componentes conforme a área visível; banners entram uma vez, sem repetir no loop. Ver [motion do detalhe](docs/nova-home-projetos.md).
+
 - Drawer: entradas leves de conteúdo ao rolar; campanhas a 18px/s. Ver [motion do detalhe](docs/nova-home-projetos.md) e [ticker](docs/patterns.md).
 
 - CloudFaster: seis telas mobile nos mockups de iPhone existentes; artes de App Store e componentes preservados. Ver [galeria](docs/nova-home-projetos.md).

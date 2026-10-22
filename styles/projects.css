@@ -414,6 +414,12 @@ body.pdrawer-open > .topbar {
 /* --- conteúdo do detalhe -------------------------------------------------
    Ritmo refinado: 48 depois da capa e 56 entre blocos no desktop;
    no celular, 32 e 40, respectivamente. */
+.pdrawer__reveal-pending {
+  opacity: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .pdrawer__reveal-pending { opacity: 1; }
+}
 .pdrawer__shot,
 .pgal__img {
   border: var(--border-w) solid var(--project-image-border);

@@ -578,16 +578,23 @@ export function bindDetailEntrances(body, sheet = null) {
   const duration = parseFloat(style.getPropertyValue('--duration-250'));
   const step = parseFloat(style.getPropertyValue('--duration-40'));
   const lift = style.getPropertyValue('--space-8').trim();
+  const inset = style.getPropertyValue('--space-32').trim();
   const easing = style.getPropertyValue('--ease-out').trim();
   const animations = new Map();
+  const pending = new Set();
+  const reveal = element => {
+    observer.unobserve(element);
+    pending.delete(element);
+    element.classList.remove('pdrawer__reveal-pending');
+  };
   let active = true;
   const observer = new win.IntersectionObserver(entries => {
     if (!active) return;
     let index = 0;
     for (const entry of entries) {
-      if (!entry.isIntersecting) continue;
+      if (!entry.isIntersecting || !pending.has(entry.target)) continue;
       const element = entry.target;
-      observer.unobserve(element);
+      reveal(element);
       if (element.contains(body.ownerDocument.activeElement)) continue;
       const animation = element.animate([
         { opacity: 0, transform: `translateY(${lift})` },
@@ -596,10 +603,19 @@ export function bindDetailEntrances(body, sheet = null) {
       animations.set(element, animation);
       animation.onfinish = () => animations.delete(element);
     }
-  }, { root: sheet, threshold: 0 });
-  const targets = body.querySelectorAll('.pdrawer__shot, .pdrawer__head > *, .pdrawer__section, .pgal > .pgal__item, .pgal__mobile-row > .pgal__item, .pgal__mobile-captions, .pgal__masonry > .pgal__item, .pgal__banners > *, .pgal__ticker');
-  targets.forEach(element => observer.observe(element));
+  }, { root: sheet, rootMargin: `0px 0px -${inset} 0px`, threshold: 0 });
+  // Animate leaves rather than their section/grid containers. Each image and
+  // text block gets its own arrival, including banners on their first pass.
+  const targets = body.querySelectorAll('.pdrawer__shot, .pdrawer__head > :not(.pdrawer__links), .pdrawer__link, .pdrawer__section > .label, .pdrawer__item, .subproject, .pgal__item, .pgal__mobile-captions > .pgal__caption, .pgal__banner-intro, .pgal__ticker-toggle');
+  targets.forEach(element => {
+    pending.add(element);
+    element.classList.add('pdrawer__reveal-pending');
+    observer.observe(element);
+  });
   const onFocus = event => {
+    for (const element of pending) {
+      if (element.contains(event.target)) reveal(element);
+    }
     for (const [element, animation] of animations) {
       if (element.contains(event.target)) { animation.cancel(); animations.delete(element); }
     }
@@ -607,6 +623,8 @@ export function bindDetailEntrances(body, sheet = null) {
   function cleanup() {
     active = false;
     observer.disconnect();
+    for (const element of pending) element.classList.remove('pdrawer__reveal-pending');
+    pending.clear();
     for (const animation of animations.values()) animation.cancel();
     animations.clear();
     body.removeEventListener('focusin', onFocus);

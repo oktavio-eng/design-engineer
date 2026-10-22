@@ -561,7 +561,7 @@ export const CampaignProjectImages = {
     root.querySelector('h1').textContent = 'AI campaign images';
     root.querySelector('.sb-inventory__header p').textContent = 'Campaign banners move slowly on their own, including on hover. Dragging, keyboard navigation and the pause button stop the motion. Reduced motion keeps the row still.';
     root.querySelector('[data-gallery]').outerHTML = '<div data-project-gallery></div>';
-    import('../projects.mjs').then(({ galleryMarkup, bindCampaignTickers }) => {
+    import('../projects.mjs').then(({ galleryMarkup, bindCampaignTickers, bindDetailEntrances }) => {
       root.querySelector('[data-project-gallery]').innerHTML = galleryMarkup({ gallery: [
         { src: '/assets/projects/meta-suplementos/banner-ironhair.jpg', alt: 'IronHair campaign', layout: 'ticker', groupCaption: 'I used AI in a professional image production workflow to create realistic model and product imagery.' },
         { src: '/assets/projects/meta-suplementos/banner-ironfit.jpg', alt: 'IronFit campaign', layout: 'ticker' },
@@ -570,6 +570,7 @@ export const CampaignProjectImages = {
         { src: '/assets/projects/meta-suplementos/banner-magnesium.jpg', alt: 'Magnesium campaign', layout: 'ticker' },
       ] });
       bindCampaignTickers(root);
+      bindDetailEntrances(root);
     });
     return root;
   },
