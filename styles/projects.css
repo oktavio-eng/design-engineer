@@ -585,6 +585,18 @@ body.pdrawer-open > .topbar {
 .pgal__masonry .pgal__img {
   aspect-ratio: auto;
 }
+.pgal__banners {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-16);
+  align-items: start;
+}
+.pgal__banners .pgal__img { aspect-ratio: auto; }
+.pgal__banners .pgal__banner-intro {
+  grid-column: 1 / -1;
+  margin: 0 0 var(--space-8);
+}
 /* These PNGs already contain their device; keep the transparent perimeter. */
 .pgal__item--framed {
   background: transparent;
@@ -603,6 +615,7 @@ body.pdrawer-open > .topbar {
 }
 @container (max-width: 480px) {
   .pgal__masonry { columns: 1; }
+  .pgal__banners { grid-template-columns: minmax(0, 1fr); }
 }
 .pgal__img--cover {
   object-position: center;

@@ -552,3 +552,29 @@ export const MasonryProjectImages = {
     canvasElement.querySelector('[data-project-gallery]').dataset.playDone = 'true';
   },
 };
+
+export const CampaignProjectImages = {
+  render: () => {
+    const root = Gallery.render();
+    root.insertAdjacentHTML('afterbegin', '<link rel="stylesheet" href="/styles/projects.css">');
+    root.querySelector('h1').textContent = 'AI campaign images';
+    root.querySelector('[data-gallery]').outerHTML = '<div data-project-gallery></div>';
+    import('../projects.mjs').then(({ galleryMarkup }) => {
+      root.querySelector('[data-project-gallery]').innerHTML = galleryMarkup({ gallery: [
+        { src: '/assets/projects/meta-suplementos/banner-ironhair.jpg', alt: 'IronHair campaign', layout: 'banners', groupCaption: 'I used AI in a professional image production workflow to create realistic model and product imagery.' },
+        { src: '/assets/projects/meta-suplementos/banner-ironfit.jpg', alt: 'IronFit campaign', layout: 'banners' },
+      ] });
+    });
+    return root;
+  },
+  play: async ({ canvasElement }) => {
+    await waitFor(() => expect(canvasElement.querySelectorAll('.pgal__banners > button')).toHaveLength(2));
+    await expect(canvasElement.querySelector('.pgal__banner-intro')).toHaveTextContent('professional image production');
+    for (const image of canvasElement.querySelectorAll('.pgal__banners img')) {
+      await waitFor(() => expect(image.naturalWidth).toBe(1372));
+      await expect(getComputedStyle(image).aspectRatio).toBe('auto');
+      await expect(getComputedStyle(image).borderTopWidth).toBe('1px');
+    }
+    canvasElement.querySelector('[data-project-gallery]').dataset.playDone = 'true';
+  },
+};

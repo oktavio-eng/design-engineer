@@ -317,12 +317,15 @@ export function galleryMarkup(entry) {
   }
   let html = '<div class="pgal">';
   for (let index = 0; index < photos.length;) {
-    const group = photo => photo.layout === "mobile" ? "mobile" : photo.layout === "masonry" ? "masonry" : "standard";
+    const group = photo => ["mobile", "masonry", "banners"].includes(photo.layout) ? photo.layout : "standard";
     const kind = group(photos[index]);
     const run = [];
     while (index < photos.length && group(photos[index]) === kind) run.push(photos[index++]);
     if (kind === "mobile") html += '<div class="pgal__mobile-row">' + run.map(photo => imageButton(photo)).join("") + '</div>';
     else if (kind === "masonry") html += '<div class="pgal__masonry">' + run.map(photo => imageButton(photo)).join("") + '</div>';
+    else if (kind === "banners") html += '<div class="pgal__banners">' +
+      (run[0].groupCaption ? '<p class="pgal__caption pgal__banner-intro">' + esc(run[0].groupCaption) + '</p>' : '') +
+      run.map(photo => imageButton(photo)).join("") + '</div>';
     else html += run.map((photo, i) => imageButton(photo, photo.layout === "wide" || photo.layout === "full" || isWide(i, run.length))).join("");
   }
   return html + '</div>';

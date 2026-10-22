@@ -435,41 +435,98 @@
           "src": "/assets/projects/meta-suplementos/home-macbook.png",
           "alt": "Storefront redesign shown in the existing MacBook frame",
           "layout": "full",
-          "framed": true,
           "width": 1330,
-          "height": 843
+          "height": 843,
+          "framed": true
+        },
+        {
+          "src": "/assets/projects/meta-suplementos/categories-science-macbook.png",
+          "alt": "Product categories and formulation principles on the Meta storefront",
+          "layout": "full",
+          "width": 1330,
+          "height": 843,
+          "framed": true
+        },
+        {
+          "src": "/assets/projects/meta-suplementos/favourites-ironhair-macbook.png",
+          "alt": "Featured supplement products and the IronHair campaign banner",
+          "layout": "full",
+          "width": 1330,
+          "height": 843,
+          "framed": true
+        },
+        {
+          "src": "/assets/projects/meta-suplementos/ironhair-feature-macbook.png",
+          "alt": "IronHair product feature with ingredients, benefits and purchase options",
+          "layout": "full",
+          "width": 1330,
+          "height": 843,
+          "framed": true
+        },
+        {
+          "src": "/assets/projects/meta-suplementos/reviews-footer-macbook.png",
+          "alt": "Supplement products, customer reviews and footer navigation",
+          "layout": "full",
+          "width": 1330,
+          "height": 843,
+          "framed": true
         },
         {
           "src": "/assets/projects/meta-suplementos/catalogue-macbook.png",
           "alt": "Supplement catalogue opening shown in the existing MacBook frame",
           "layout": "full",
-          "framed": true,
           "width": 1330,
-          "height": 843
+          "height": 843,
+          "framed": true
+        },
+        {
+          "src": "/assets/projects/meta-suplementos/catalogue-grid-macbook.png",
+          "alt": "Complete supplement collection with product cards, sorting and filters",
+          "layout": "full",
+          "width": 1330,
+          "height": 843,
+          "framed": true
+        },
+        {
+          "src": "/assets/projects/meta-suplementos/catalogue-ironfit-macbook.png",
+          "alt": "Supplement product cards followed by the IronFit campaign banner",
+          "layout": "full",
+          "width": 1330,
+          "height": 843,
+          "framed": true
         },
         {
           "src": "/assets/projects/meta-suplementos/product-macbook.png",
           "alt": "Creatine product page and purchase options shown in the existing MacBook frame",
           "layout": "full",
-          "framed": true,
           "width": 1330,
-          "height": 843
+          "height": 843,
+          "framed": true
+        },
+        {
+          "src": "/assets/projects/meta-suplementos/pre-checkout-macbook.png",
+          "alt": "Pre-checkout cart panel open over the creatine product page",
+          "layout": "full",
+          "width": 1330,
+          "height": 843,
+          "framed": true,
+          "caption": "Opening the cart reveals a pre-checkout panel with product quantities, shipping progress, discounts and the order total before checkout."
         },
         {
           "src": "/assets/projects/meta-suplementos/mobile-products-iphone.png",
           "alt": "Mobile navigation by product shown in the existing iPhone frame",
           "layout": "mobile",
-          "framed": true,
           "width": 352,
-          "height": 726
+          "height": 726,
+          "framed": true
         },
         {
           "src": "/assets/projects/meta-suplementos/mobile-goals-iphone.png",
           "alt": "Mobile navigation by wellness goal shown in the existing iPhone frame",
           "layout": "mobile",
-          "framed": true,
           "width": 352,
-          "height": 726
+          "height": 726,
+          "framed": true
         },
         {
           "src": "/assets/projects/meta-suplementos/navigation-products.png",
@@ -514,13 +571,6 @@
           "height": 579
         },
         {
-          "src": "/assets/projects/meta-suplementos/campaign-ironhair.png",
-          "alt": "IronHair campaign banner featuring an AI-generated model and product",
-          "layout": "masonry",
-          "width": 1372,
-          "height": 670
-        },
-        {
           "src": "/assets/projects/meta-suplementos/catalogue-products.png",
           "alt": "Supplement catalogue with product cards, sorting and filters",
           "layout": "masonry",
@@ -528,18 +578,47 @@
           "height": 1040
         },
         {
-          "src": "/assets/projects/meta-suplementos/campaign-ironfit.png",
-          "alt": "IronFit campaign banner with an AI-generated product composition",
-          "layout": "masonry",
-          "width": 1372,
-          "height": 670
-        },
-        {
           "src": "/assets/projects/meta-suplementos/sticky-purchase.png",
           "alt": "Persistent purchase bar with product, price and add-to-cart action",
           "layout": "masonry",
           "width": 1440,
           "height": 96
+        },
+        {
+          "src": "/assets/projects/meta-suplementos/banner-ironhair.jpg",
+          "alt": "IronHair campaign with a model holding the supplement",
+          "layout": "banners",
+          "width": 1372,
+          "height": 670,
+          "groupCaption": "I used AI as part of a professional image production workflow to create realistic scenes featuring models and products, directing lighting, colour and composition across the campaign banners."
+        },
+        {
+          "src": "/assets/projects/meta-suplementos/banner-ironfit.jpg",
+          "alt": "IronFit product composition with capsules and dried orange",
+          "layout": "banners",
+          "width": 1372,
+          "height": 670
+        },
+        {
+          "src": "/assets/projects/meta-suplementos/banner-metapower.jpg",
+          "alt": "MetaPower campaign with a model in a blue studio scene",
+          "layout": "banners",
+          "width": 1372,
+          "height": 670
+        },
+        {
+          "src": "/assets/projects/meta-suplementos/banner-orapro-nobis.jpg",
+          "alt": "OraPro Nobis product composition with leaves and lime",
+          "layout": "banners",
+          "width": 1372,
+          "height": 670
+        },
+        {
+          "src": "/assets/projects/meta-suplementos/banner-magnesium.jpg",
+          "alt": "Magnesium campaign with a couple holding the supplement",
+          "layout": "banners",
+          "width": 1372,
+          "height": 670
         }
       ],
       "sections": [
@@ -553,7 +632,7 @@
         },
         {
           "label": "Image direction",
-          "text": "I used AI to create imagery featuring models and products, coordinating lighting, colour and composition across campaign banners, category cards and product pages. Each supplement has its own visual setting within a shared brand direction."
+          "text": "I used AI as part of a professional image production workflow to create realistic scenes featuring models and products, directing lighting, colour and composition across the campaign banners. Each supplement has its own visual setting within a shared brand direction."
         }
       ],
       "links": []

@@ -17,8 +17,11 @@ test('Meta preserves framed images and keyboard access in responsive masonry', a
   await page.goto(server.origin, { waitUntil: 'load' });
   await page.locator('[data-proto-open="meta-suplementos"]').click();
   await page.locator('.pgal__masonry').waitFor();
-  assert.equal(await page.locator('.pgal__img').count(), 15);
-  assert.equal(await page.locator('.pgal__item--framed').count(), 5);
+  assert.equal(await page.locator('.pgal__img').count(), 25);
+  assert.equal(await page.locator('.pgal__item--framed').count(), 12);
+  assert.equal(await page.locator('.pgal__banners > button').count(), 5);
+  assert.match(await page.locator('.pgal__banner-intro').textContent(), /professional image production.*realistic scenes/);
+  assert.match(await page.locator('.pgal__item--captioned .pgal__caption').textContent(), /pre-checkout/);
   for (const [width, columns] of [[1440, '3'], [768, '2'], [390, '1']]) {
     await page.setViewportSize({ width, height: 1000 });
     const metrics = await page.locator('.pgal__masonry').evaluate(grid => ({
@@ -30,7 +33,7 @@ test('Meta preserves framed images and keyboard access in responsive masonry', a
       })),
     }));
     assert.equal(metrics.columns, columns);
-    assert.equal(metrics.images.length, 10);
+    assert.equal(metrics.images.length, 8);
     for (const image of metrics.images) assert.deepEqual(image, { aspect: 'auto', border: '1px', shadow: 'none' });
     for (const image of await page.locator('.pgal__item--framed img').all()) {
       assert.deepEqual(await image.evaluate(img => ({ aspect: getComputedStyle(img).aspectRatio, border: getComputedStyle(img).borderTopWidth })), { aspect: 'auto', border: '0px' });
@@ -44,5 +47,5 @@ test('Meta preserves framed images and keyboard access in responsive masonry', a
   await page.keyboard.press('Escape');
   assert.equal(await cart.evaluate(button => document.activeElement === button), true);
   await cart.locator('img').evaluate(image => image.dispatchEvent(new Event('error')));
-  assert.equal(await page.locator('.pgal__masonry > button').count(), 9);
+  assert.equal(await page.locator('.pgal__masonry > button').count(), 7);
 });
