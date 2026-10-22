@@ -358,7 +358,7 @@ export function bindCampaignTickers(root) {
     function tick(time) {
       frame = 0;
       if (!canRun()) { stop(); return; }
-      const speed = parseFloat(getComputedStyle(ticker).getPropertyValue('--campaign-ticker-speed')) || 12;
+      const speed = parseFloat(getComputedStyle(ticker).getPropertyValue('--campaign-ticker-speed')) || 18;
       position += Math.min(time - (previous || time), 50) * speed / 1000;
       previous = time;
       const first = track.firstElementChild;
@@ -568,6 +568,55 @@ function keepFinalWordsTogether(body) {
   }
 }
 
+// The panel's fade/lift vocabulary, applied once as each content block enters
+// the sheet. Content stays visible without the observer or during cleanup.
+export function bindDetailEntrances(body, sheet = null) {
+  const win = body.ownerDocument.defaultView;
+  const motion = win.matchMedia('(prefers-reduced-motion: reduce)');
+  if (motion.matches || !win.IntersectionObserver || !body.animate) return () => {};
+  const style = win.getComputedStyle(body);
+  const duration = parseFloat(style.getPropertyValue('--duration-250'));
+  const step = parseFloat(style.getPropertyValue('--duration-40'));
+  const lift = style.getPropertyValue('--space-8').trim();
+  const easing = style.getPropertyValue('--ease-out').trim();
+  const animations = new Map();
+  let active = true;
+  const observer = new win.IntersectionObserver(entries => {
+    if (!active) return;
+    let index = 0;
+    for (const entry of entries) {
+      if (!entry.isIntersecting) continue;
+      const element = entry.target;
+      observer.unobserve(element);
+      if (element.contains(body.ownerDocument.activeElement)) continue;
+      const animation = element.animate([
+        { opacity: 0, transform: `translateY(${lift})` },
+        { opacity: 1, transform: 'translateY(0)' },
+      ], { duration, delay: Math.min(index++, 3) * step, easing, fill: 'backwards' });
+      animations.set(element, animation);
+      animation.onfinish = () => animations.delete(element);
+    }
+  }, { root: sheet, threshold: 0 });
+  const targets = body.querySelectorAll('.pdrawer__shot, .pdrawer__head > *, .pdrawer__section, .pgal > .pgal__item, .pgal__mobile-row > .pgal__item, .pgal__mobile-captions, .pgal__masonry > .pgal__item, .pgal__banners > *, .pgal__ticker');
+  targets.forEach(element => observer.observe(element));
+  const onFocus = event => {
+    for (const [element, animation] of animations) {
+      if (element.contains(event.target)) { animation.cancel(); animations.delete(element); }
+    }
+  };
+  function cleanup() {
+    active = false;
+    observer.disconnect();
+    for (const animation of animations.values()) animation.cancel();
+    animations.clear();
+    body.removeEventListener('focusin', onFocus);
+    motion.removeEventListener('change', cleanup);
+  }
+  body.addEventListener('focusin', onFocus);
+  motion.addEventListener('change', cleanup);
+  return cleanup;
+}
+
 export function initDetail(doc = document) {
   const wash = doc.querySelector("[data-proto-wash]");
   const sheet = doc.querySelector("[data-proto-sheet]");
@@ -588,7 +637,7 @@ export function initDetail(doc = document) {
   // ali levaria a própria folha junto.
   const behind = [doc.querySelector("main"), doc.querySelector(".topbar")].filter(Boolean);
 
-  function show(key, collection = "projects") {
+  function show(key, collection = "projects", animate = true) {
     const entry = (content[collection] || {})[key];
     if (!entry) return;
     clearGallery();
@@ -596,7 +645,6 @@ export function initDetail(doc = document) {
     keepFinalWordsTogether(body);
     const clearCaptions = arrangeMobileCaptions(body);
     const clearTickers = bindCampaignTickers(body);
-    clearGallery = () => { clearCaptions(); clearTickers(); };
     sheet.setAttribute("aria-label", entry.name);
     sheet.scrollTop = 0;
     open = true;
@@ -608,6 +656,8 @@ export function initDetail(doc = document) {
     // No modo drawer quem recebe o foco é a alça (é o controle de fechar);
     // no modo modal, o botão. `offsetParent` é null pro que o CSS escondeu.
     (close && close.offsetParent !== null ? close : grip || sheet).focus();
+    const clearEntrances = animate ? bindDetailEntrances(body, sheet) : () => {};
+    clearGallery = () => { clearCaptions(); clearTickers(); clearEntrances(); };
   }
 
   function hide() {
@@ -630,7 +680,7 @@ export function initDetail(doc = document) {
     const trigger = event.target.closest("[data-proto-open]");
     if (!trigger) return;
     opener = trigger;
-    show(trigger.dataset.protoOpen, trigger.dataset.protoCollection || "projects");
+    show(trigger.dataset.protoOpen, trigger.dataset.protoCollection || "projects", event.detail !== 0);
   });
   wash.addEventListener("click", hide);
   if (close) close.addEventListener("click", hide);

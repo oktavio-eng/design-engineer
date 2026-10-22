@@ -480,13 +480,14 @@ export const DeviceProjectImages = {
     root.insertAdjacentHTML('afterbegin', '<link rel="stylesheet" href="/styles/projects.css">');
     root.querySelector('h1').textContent = 'Project device mockups';
     root.querySelector('[data-gallery]').outerHTML = '<div data-project-gallery></div>';
-    import('../projects.mjs').then(({ galleryMarkup, arrangeMobileCaptions }) => {
+    import('../projects.mjs').then(({ galleryMarkup, arrangeMobileCaptions, bindDetailEntrances }) => {
       root.querySelector('[data-project-gallery]').innerHTML = galleryMarkup({ gallery: [
         { src: '/assets/projects/bullster/landing-page.webp', alt: 'Web interface in a MacBook', device: 'macbook', caption: 'Open the original capture to see the complete page.' },
         { src: '/assets/projects/finq-edu/3-1-home.webp', alt: 'FinQ home in an iPhone', device: 'iphone', layout: 'mobile' },
         { src: '/assets/projects/caderno-de-erros/mobile-digital-notebook.jpg', alt: 'Caderno de Erros mobile presentation', layout: 'mobile' },
       ] });
       arrangeMobileCaptions(root);
+      bindDetailEntrances(root);
     });
     return root;
   },

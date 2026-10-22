@@ -8,6 +8,8 @@ Notable changes to this site, in the order they landed on `main`. Newest first. 
 
 ## 2026-10-22
 
+- Drawer: entradas leves de conteúdo ao rolar; campanhas a 18px/s. Ver [motion do detalhe](docs/nova-home-projetos.md) e [ticker](docs/patterns.md).
+
 - CloudFaster: seis telas mobile nos mockups de iPhone existentes; artes de App Store e componentes preservados. Ver [galeria](docs/nova-home-projetos.md).
 
 - Campanhas: autoplay mais lento (12px/s), contínuo no hover e após foco por clique; arraste, teclado e pausa explícita continuam interrompendo. Ver [padrão](docs/patterns.md).
