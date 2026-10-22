@@ -8,6 +8,10 @@ Notable changes to this site, in the order they landed on `main`. Newest first. 
 
 ## 2026-10-22
 
+- CloudFaster: seis telas mobile nos mockups de iPhone existentes; artes de App Store e componentes preservados. Ver [galeria](docs/nova-home-projetos.md).
+
+- Campanhas: autoplay mais lento (12px/s), contínuo no hover e após foco por clique; arraste, teclado e pausa explícita continuam interrompendo. Ver [padrão](docs/patterns.md).
+
 - Meta e Assopra: campanhas em ticker arrastável no meio dos cases, com pausa e reduced motion; texto ampliado da Assopra aprovado. Ver [padrão](docs/patterns.md) e [conteúdo](docs/nova-home-projetos.md).
 
 - Meta Suplementos: removidos da galeria a abertura duplicada e o mockup isolado do IronHair, mantendo a capa; ver [seleção](docs/nova-home-projetos.md).

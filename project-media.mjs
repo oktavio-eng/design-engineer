@@ -621,6 +621,7 @@ export const suppliedProjectMedia = {
         "alt": "CloudFaster Academy — login",
         "width": 900,
         "height": 2523,
+        "device": "iphone",
         "layout": "mobile"
       },
       {
@@ -628,6 +629,7 @@ export const suppliedProjectMedia = {
         "alt": "CloudFaster Academy — cursos - aula",
         "width": 900,
         "height": 3000,
+        "device": "iphone",
         "layout": "mobile",
         "caption": "Learning flows were adapted for smaller screens while keeping reusable patterns consistent across web and mobile."
       },
@@ -636,6 +638,7 @@ export const suppliedProjectMedia = {
         "alt": "CloudFaster Academy — simulados - inicio",
         "width": 900,
         "height": 1957,
+        "device": "iphone",
         "layout": "mobile"
       },
       {
@@ -643,6 +646,7 @@ export const suppliedProjectMedia = {
         "alt": "CloudFaster Academy — simulados - quiz",
         "width": 900,
         "height": 1957,
+        "device": "iphone",
         "layout": "mobile",
         "caption": "Practice on mobile uses the same visual language as the wider learning platform, adapted to the context of a phone."
       },
@@ -651,6 +655,7 @@ export const suppliedProjectMedia = {
         "alt": "CloudFaster Academy — simulados - quiz - result",
         "width": 900,
         "height": 2195,
+        "device": "iphone",
         "layout": "mobile"
       },
       {
@@ -658,6 +663,7 @@ export const suppliedProjectMedia = {
         "alt": "CloudFaster Academy — simulados - quiz - review",
         "width": 900,
         "height": 2808,
+        "device": "iphone",
         "layout": "mobile"
       },
       {

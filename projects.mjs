@@ -337,7 +337,7 @@ export function galleryMarkup(entry) {
 }
 
 // Recycle the original buttons after they leave the viewport. No duplicate
-// focus stops or lightbox entries; hover and keyboard focus stop recycling.
+// focus stops or lightbox entries; dragging and keyboard focus stop recycling.
 export function bindCampaignTickers(root) {
   const cleanups = [];
   for (const ticker of root.querySelectorAll('[data-campaign-ticker]')) {
@@ -350,15 +350,15 @@ export function bindCampaignTickers(root) {
     const on = (target, type, fn, options = {}) => target.addEventListener(type, fn, { ...options, signal: controller.signal });
     const clearDrag = bindDragCarousel(track);
     let frame = 0, previous = 0, position = 0, timer = 0, resizeFrame = 0;
-    let active = true, ready = false, visible = false, hovered = false, pressed = false, paused = false, holding = false;
-    const canRun = () => active && ready && ticker.isConnected && visible && !motion.matches && !doc.hidden && !hovered && !pressed && !paused && !holding &&
-      !ticker.contains(doc.activeElement) && !doc.querySelector('[data-lightbox][aria-hidden="false"]') &&
+    let active = true, ready = false, visible = false, pressed = false, paused = false, holding = false;
+    const canRun = () => active && ready && ticker.isConnected && visible && !motion.matches && !doc.hidden && !pressed && !paused && !holding &&
+      !(track.contains(doc.activeElement) && doc.activeElement.matches(':focus-visible')) && !doc.querySelector('[data-lightbox][aria-hidden="false"]') &&
       track.children.length > 2 && track.scrollWidth > track.clientWidth;
     const stop = () => { win.cancelAnimationFrame(frame); frame = 0; previous = 0; ticker.dataset.running = 'false'; };
     function tick(time) {
       frame = 0;
       if (!canRun()) { stop(); return; }
-      const speed = parseFloat(getComputedStyle(ticker).getPropertyValue('--campaign-ticker-speed')) || 24;
+      const speed = parseFloat(getComputedStyle(ticker).getPropertyValue('--campaign-ticker-speed')) || 12;
       position += Math.min(time - (previous || time), 50) * speed / 1000;
       previous = time;
       const first = track.firstElementChild;
@@ -385,8 +385,6 @@ export function bindCampaignTickers(root) {
       timer = win.setTimeout(() => { holding = false; sync(); }, 1200);
       sync();
     }
-    on(ticker, 'pointerenter', event => { if (event.pointerType === 'mouse') { hovered = true; sync(); } });
-    on(ticker, 'pointerleave', () => { hovered = false; sync(); });
     on(ticker, 'focusin', sync);
     on(ticker, 'focusout', () => queueMicrotask(sync));
     on(track, 'pointerdown', () => { pressed = true; sync(); });

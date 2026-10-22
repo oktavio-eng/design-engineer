@@ -33,7 +33,7 @@ test('device mockups preserve original sources, exclude composed artwork and rem
   });
 
   for (const [key, laptops, phones, count] of [
-    ['caderno-de-erros', 4, 0, 10], ['dascia', 2, 0, 10], ['finq-edu', 0, 9, 12],
+    ['caderno-de-erros', 4, 0, 10], ['dascia', 2, 0, 10], ['finq-edu', 0, 9, 12], ['cloudfaster-academy', 0, 6, 15],
   ]) {
     await page.locator(`[data-proto-open="${key}"]`).click();
     assert.equal(await page.locator('.pgal__item').count(), count);
@@ -45,6 +45,12 @@ test('device mockups preserve original sources, exclude composed artwork and rem
     }
     if (key === 'finq-edu') {
       for (let i = 0; i < 3; i++) assert.equal(await page.locator('.pgal__item').nth(i).locator('.pgal__device').count(), 0);
+    }
+    if (key === 'cloudfaster-academy') {
+      for (const item of await page.locator('.pgal__item').all()) {
+        const source = await item.getAttribute('data-lightbox-src');
+        if (/app-store-screen|card-/.test(source)) assert.equal(await item.locator('.pgal__device').count(), 0);
+      }
     }
     for (const width of [1440, 768, 390, 320]) {
       await page.setViewportSize({ width, height: 1000 });

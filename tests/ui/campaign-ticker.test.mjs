@@ -42,11 +42,11 @@ test('campaign tickers span the drawer, pause, drag, loop without clones and pre
     await page.waitForFunction(x => document.querySelector('[data-ticker-track]').scrollLeft > x + 8, start);
     const box = await track.boundingBox();
     await page.mouse.move(box.x + 240, box.y + box.height / 2);
+    const hovered = await track.evaluate(el => el.scrollLeft);
+    await page.waitForFunction(x => document.querySelector('[data-ticker-track]').scrollLeft > x + 4, hovered);
+    await page.mouse.down();
     await page.waitForFunction(() => document.querySelector('[data-campaign-ticker]').dataset.running === 'false');
     const paused = await track.evaluate(el => el.scrollLeft);
-    await page.waitForTimeout(200);
-    assert.equal(await track.evaluate(el => el.scrollLeft), paused, 'hover pauses in place');
-    await page.mouse.down();
     await page.mouse.move(box.x + 80, box.y + box.height / 2, {steps: 10});
     await page.mouse.up();
     assert.ok(await track.evaluate(el => el.scrollLeft) > paused + 100, 'mouse drag is direct');
@@ -55,7 +55,6 @@ test('campaign tickers span the drawer, pause, drag, loop without clones and pre
     await toggle.click();
     assert.equal(await toggle.textContent(), 'Play');
     await toggle.click();
-    await toggle.evaluate(el => el.blur());
     await ticker.evaluate(el => el.style.setProperty('--campaign-ticker-speed', '1200'));
     const first = await track.locator('button').first().getAttribute('data-lightbox-src');
     await page.mouse.move(10, 10);

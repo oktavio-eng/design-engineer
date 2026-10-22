@@ -558,7 +558,7 @@ export const CampaignProjectImages = {
     const root = Gallery.render();
     root.insertAdjacentHTML('afterbegin', '<link rel="stylesheet" href="/styles/projects.css">');
     root.querySelector('h1').textContent = 'AI campaign images';
-    root.querySelector('.sb-inventory__header p').textContent = 'Campaign banners move slowly across the row, pause on hover or focus, and open in the lightbox. Reduced motion keeps the row still.';
+    root.querySelector('.sb-inventory__header p').textContent = 'Campaign banners move slowly on their own, including on hover. Dragging, keyboard navigation and the pause button stop the motion. Reduced motion keeps the row still.';
     root.querySelector('[data-gallery]').outerHTML = '<div data-project-gallery></div>';
     import('../projects.mjs').then(({ galleryMarkup, bindCampaignTickers }) => {
       root.querySelector('[data-project-gallery]').innerHTML = galleryMarkup({ gallery: [
