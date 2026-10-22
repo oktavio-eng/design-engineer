@@ -8,9 +8,9 @@ Notable changes to this site, in the order they landed on `main`. Newest first. 
 
 ## 2026-10-22
 
-- Drawer: pill “Close” com X no fundo clicável, reutilizando a mola da pill “Drag” (`cursor.mjs`, `projects.mjs`); ver [padrão](docs/patterns.md).
+- Drawer: pill “Close” com X no fundo clicável, reutilizando a mola da pill “Drag” (`cursor.mjs`, `projects.mjs`); ver [padrão](docs/patterns.md). (#101)
 
-- Projects: proteção das palavras finais nos drawers, favicons ocupando a moldura inteira e novos ícones da DascIA e do Caderno de Erros; seed e Studio/D1 com DascIA antes de CloudFaster (`projects.mjs`, CSS, mídia e conteúdo). Ver [revisão e publicação](docs/nova-home-projetos.md).
+- Projects: proteção das palavras finais nos drawers, favicons ocupando a moldura inteira e novos ícones da DascIA e do Caderno de Erros; seed e Studio/D1 com DascIA antes de CloudFaster (`projects.mjs`, CSS, mídia e conteúdo). Ver [revisão e publicação](docs/nova-home-projetos.md). (#101)
 
 - FinQ: três peças da App Store passam ao início da galeria, com legenda e crédito do mascote a Mateus Gabriel, no Studio/D1 e em `project-media.mjs`; ver [ordenação](docs/nova-home-projetos.md). (#100)
 
