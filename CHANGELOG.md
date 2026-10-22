@@ -8,6 +8,8 @@ Notable changes to this site, in the order they landed on `main`. Newest first. 
 
 ## 2026-10-22
 
+- FinQ: três peças da App Store passam ao início da galeria, com legenda e crédito do mascote a Mateus Gabriel, no Studio/D1 e em `project-media.mjs`; ver [ordenação](docs/nova-home-projetos.md). (#100)
+
 - DascIA: galeria com home institucional clara, página da plataforma escura e oito pranchas de identidade, com legendas (`assets/projects/dascia/`, `project-media.mjs`, seed); ver [galeria](docs/nova-home-projetos.md). (#99)
 
 - DascIA: capa clara enviada pelo Otavio em `assets/projects/dascia/cover.jpg`, substituindo a capa preta no drawer; ver [capa](docs/nova-home-projetos.md). (#99)
