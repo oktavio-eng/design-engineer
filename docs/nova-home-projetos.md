@@ -166,3 +166,9 @@ Os links do projeto (incluindo “Live site”) passam para o cabeçalho, logo a
 A imagem JPEG 1920×1080 enviada pelo Otavio substitui a capa preta anterior: `assets/projects/dascia/cover.jpg`, preservada sem conversão ou recorte. O fallback em `projects.mjs` e a seed usam o novo caminho; o registro no Studio/D1 recebe a mesma capa após a publicação do asset.
 
 **Galeria da DascIA (22/10/2026):** o ZIP fornecido pelo Otavio acrescenta dez JPGs nas dimensões originais: home institucional clara, página da plataforma escura e oito pranchas de identidade. As páginas abrem a galeria em largura inteira com prévia do topo; as pranchas seguem o recorte centralizado. A ampliação mostra cada arquivo completo. `project-media.mjs` complementa galerias ausentes e a seed espelha as mesmas imagens e legendas; após o deploy dos assets, capa e galeria são sincronizadas no Studio/D1.
+
+### Ordem da galeria FinQ — 22/10/2026
+
+As três peças da App Store (`01`, `02`, `06`), indicadas pelo Otavio, abrem a galeria nessa ordem: boas-vindas, conceitos de IB e exercício. As nove capturas restantes seguem na ordem anterior. D1 atualizado com backup e trava de revisão; o fallback de `project-media.mjs` espelha a sequência.
+
+O grupo de abertura recebe uma legenda que identifica as peças para a App Store, sua apresentação das principais funcionalidades e o crédito do mascote ilustrado à mão por Mateus Gabriel. A legenda acompanha a primeira imagem e usa o bloco compartilhado da linha mobile.

@@ -264,6 +264,28 @@ export const suppliedProjectMedia = {
   "finq-edu": {
     "gallery": [
       {
+        "src": "/assets/projects/finq-edu/app-store-screens-01.webp",
+        "alt": "FinQ Edu — App Store Screens 01",
+        "width": 1320,
+        "height": 2868,
+        "layout": "mobile",
+        "caption": "App Store visuals showcase the app’s main features alongside the mascot, hand-drawn by Mateus Gabriel."
+      },
+      {
+        "src": "/assets/projects/finq-edu/app-store-screens-02.webp",
+        "alt": "FinQ Edu — App Store Screens 02",
+        "width": 1320,
+        "height": 2868,
+        "layout": "mobile"
+      },
+      {
+        "src": "/assets/projects/finq-edu/app-store-screens-06.webp",
+        "alt": "FinQ Edu — App Store Screens 06",
+        "width": 1320,
+        "height": 2868,
+        "layout": "mobile"
+      },
+      {
         "src": "/assets/projects/finq-edu/0-2-onboarding.webp",
         "alt": "FinQ Edu — onboarding",
         "width": 900,
@@ -326,27 +348,6 @@ export const suppliedProjectMedia = {
         "alt": "FinQ Edu — Profile",
         "width": 900,
         "height": 1949,
-        "layout": "mobile"
-      },
-      {
-        "src": "/assets/projects/finq-edu/app-store-screens-01.webp",
-        "alt": "FinQ Edu — App Store Screens 01",
-        "width": 1320,
-        "height": 2868,
-        "layout": "mobile"
-      },
-      {
-        "src": "/assets/projects/finq-edu/app-store-screens-02.webp",
-        "alt": "FinQ Edu — App Store Screens 02",
-        "width": 1320,
-        "height": 2868,
-        "layout": "mobile"
-      },
-      {
-        "src": "/assets/projects/finq-edu/app-store-screens-06.webp",
-        "alt": "FinQ Edu — App Store Screens 06",
-        "width": 1320,
-        "height": 2868,
         "layout": "mobile"
       }
     ]
