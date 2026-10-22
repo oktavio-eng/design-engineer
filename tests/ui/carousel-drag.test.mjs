@@ -6,6 +6,58 @@ import { launchChromium } from './helpers/browser.mjs';
 import { serveDirectory } from './helpers/static-server.mjs';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 
+test('drawer backdrop offers the spring-following Close hint without intercepting clicks or lightbox layers', { timeout: 40_000 }, async context => {
+  const server = await serveDirectory(root);
+  const browser = await launchChromium();
+  context.after(async () => { await browser.close(); await server.close(); });
+  const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
+  await page.route(/^https?:\/\/(?!127\.0\.0\.1)/, route => route.abort());
+  await page.addInitScript(() => sessionStorage.setItem('intro-shown-v1', '1'));
+  await page.goto(server.origin, { waitUntil: 'networkidle' });
+  const card = page.locator('[data-proto-open="bullster"]');
+  await card.click();
+  const hint = page.locator('.carousel-drag-hint');
+  await page.mouse.move(30, 300);
+  await page.waitForFunction(() => document.querySelector('.carousel-drag-hint.is-visible')?.textContent === 'Close');
+  assert.equal(await hint.locator('svg').count(), 1);
+  assert.equal(await hint.getAttribute('aria-hidden'), 'true');
+  assert.equal(await hint.evaluate(el => getComputedStyle(el).pointerEvents), 'none');
+  await page.waitForTimeout(300);
+  await page.mouse.move(150, 300);
+  const moving = await hint.evaluate(el => new Promise(resolve => requestAnimationFrame(() => resolve(el.getBoundingClientRect().x))));
+  assert.ok(moving < 150, 'Close follows with the same inertia as Drag');
+  await page.waitForTimeout(180);
+  assert.ok((await hint.boundingBox()).x > moving + 10);
+  await page.waitForTimeout(2200);
+  assert.ok(Math.abs((await hint.boundingBox()).x - 160) < 1);
+  assert.equal(await page.evaluate(() => window.__ipadCursor.target.o), 1);
+  await page.mouse.move(30, 985);
+  await page.waitForTimeout(500);
+  const edge = await hint.boundingBox();
+  assert.ok(edge.y + edge.height < 985, 'hint flips above the pointer near the viewport bottom');
+  await page.screenshot({ path: '.local/drawer-close-hover.png' });
+
+  await page.mouse.move(720, 500);
+  await page.waitForFunction(() => !document.querySelector('.carousel-drag-hint.is-visible'));
+  await page.locator('.pgal__item').first().click();
+  await page.mouse.move(30, 300);
+  assert.equal(await page.locator('.carousel-drag-hint.is-visible').count(), 0, 'lightbox takes precedence over the drawer backdrop');
+  await page.keyboard.press('Escape');
+  await page.waitForFunction(() => document.querySelector('.carousel-drag-hint.is-visible')?.textContent === 'Close');
+  await page.mouse.click(30, 300);
+  await page.waitForFunction(() => document.querySelector('.pdrawer').getAttribute('aria-hidden') === 'true');
+  await page.waitForFunction(() => !document.querySelector('.carousel-drag-hint.is-visible'));
+  assert.equal(await card.evaluate(el => el === document.activeElement), true);
+
+  await page.keyboard.press('Enter');
+  await page.waitForFunction(() => document.querySelector('.carousel-drag-hint.is-visible')?.textContent === 'Close');
+  await page.keyboard.press('Escape');
+  await page.waitForFunction(() => !document.querySelector('.carousel-drag-hint.is-visible'));
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.reload();
+  assert.equal(await page.locator('.carousel-drag-hint').count(), 0);
+});
+
 test('draggable project rail keeps a dot and Drag pill, separates drag from opening a case', { timeout: 40_000 }, async context => {
   const server = await serveDirectory(root);
   const browser = await launchChromium();

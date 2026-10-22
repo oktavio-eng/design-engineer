@@ -60,6 +60,7 @@
   const projects = {
     "caderno-de-erros": {
       name: "Caderno de Erros",
+      faviconFrom: "/assets/projects/caderno-de-erros/favicon.jpg",
       role: "UX/UI + Design Systems · EdTech SaaS",
       summary: "Founding design for website and multi-device platform",
       preview: "https://framerusercontent.com/images/3hNIyBkZHnghlMhz2wT4u2MiDw.jpg",
@@ -72,9 +73,10 @@
       // `gallery` (12/09/2026): as fotos do detalhe do projeto, no ritmo do
       // frame 133:248 — duas meias, depois inteiras. Mesmo contrato de
       // imagem externa do `preview` acima: hotlink, `onerror` remove, e só
-      // entra URL conferida. Estas quatro são telas reais do produto,
+      // entra URL conferida. As quatro primeiras são telas reais do produto,
       // baixadas da própria home do Caderno de Erros e abertas uma a uma
       // antes de entrar aqui (regra 7 do AGENTS.md, aplicada a imagem).
+      // As seis peças mobile seguintes vieram do CDE.zip, sem conversão.
       // O campo é editável no Studio ("Galeria do projeto"); um projeto sem
       // ele cai nas capas dos `subprojects`, e sem nenhum dos dois o bloco
       // não aparece.
@@ -98,6 +100,49 @@
           src: "https://framerusercontent.com/images/RIFaJsvpbtKaYUyn5BRWhZDo6E.png",
           alt: "Question card with answer options and a dropdown for tagging the cause of a mistake",
           caption: "Question cards link an answer to the cause of a mistake, supporting the review method at the centre of the product.",
+        },
+        {
+          "src": "/assets/projects/caderno-de-erros/mobile-digital-notebook.jpg",
+          "alt": "Caderno de Erros mobile presentation with study streak and mastery levels",
+          "width": 1320,
+          "height": 2868,
+          "layout": "mobile",
+          "caption": "Mobile presentation pieces bring the notebook, mastery levels, community, question editor, search and study progress into the Caderno de Erros visual identity."
+        },
+        {
+          "src": "/assets/projects/caderno-de-erros/mobile-mastery-flashcards.jpg",
+          "alt": "Caderno de Erros mobile presentation of mastery levels and flashcards",
+          "width": 1320,
+          "height": 2868,
+          "layout": "mobile"
+        },
+        {
+          "src": "/assets/projects/caderno-de-erros/mobile-community.jpg",
+          "alt": "Caderno de Erros mobile community presentation with study challenges and channels",
+          "width": 1320,
+          "height": 2868,
+          "layout": "mobile"
+        },
+        {
+          "src": "/assets/projects/caderno-de-erros/mobile-smart-notebook.jpg",
+          "alt": "Caderno de Erros mobile notebook presentation with a question and rich-text editor",
+          "width": 1320,
+          "height": 2868,
+          "layout": "mobile"
+        },
+        {
+          "src": "/assets/projects/caderno-de-erros/mobile-question-search.jpg",
+          "alt": "Caderno de Erros mobile question search presentation",
+          "width": 1320,
+          "height": 2868,
+          "layout": "mobile"
+        },
+        {
+          "src": "/assets/projects/caderno-de-erros/mobile-study-progress.jpg",
+          "alt": "Caderno de Erros mobile study progress presentation with time and focus chart",
+          "width": 1320,
+          "height": 2868,
+          "layout": "mobile"
         },
       ],
       links: [["Live site", "https://www.cadernodeerros.com.br/"]],
@@ -218,26 +263,9 @@
         }
       ],
     },
-    "cloudfaster-academy": {
-      name: "CloudFaster Academy",
-      role: "UX/UI + Identity + Web & Mobile · Cloud/AWS training",
-      summary: "Identity and learning experiences across web and mobile",
-      preview: "https://cloudfaster.academy/assets/og-image.png",
-      bio: "Visual identity, website and product interfaces for an AWS certification learning platform, serving individual learners and corporate teams. I worked on responsive layouts and reusable interface patterns across web and mobile, keeping the learning experience consistent between devices.",
-      links: [["Live site", "https://cloudfaster.academy/"]],
-      sections: [
-        {
-          "label": "The challenge",
-          "text": "The learning platform needed to work across web and mobile, adapting to different contexts rather than simply shrinking a desktop interface."
-        },
-        {
-          "label": "Design decisions",
-          "text": "I used reusable interface patterns and responsive layouts to keep the experience consistent across devices. Learning and practice flows were adapted to smaller screens while retaining the platform’s visual identity."
-        }
-      ],
-    },
     dascia: {
       name: "DascIA",
+      faviconFrom: "/assets/projects/dascia/favicon.png",
       preview: "/assets/projects/dascia/cover.jpg",
       gallery: [
         {
@@ -334,6 +362,24 @@
         {
           "label": "Design decisions",
           "text": "I focused on typography, information hierarchy and composition. The compressed, mixed-weight headline became a recognisable brand device, giving the landing page personality while keeping the educational content structured."
+        }
+      ],
+    },
+    "cloudfaster-academy": {
+      name: "CloudFaster Academy",
+      role: "UX/UI + Identity + Web & Mobile · Cloud/AWS training",
+      summary: "Identity and learning experiences across web and mobile",
+      preview: "https://cloudfaster.academy/assets/og-image.png",
+      bio: "Visual identity, website and product interfaces for an AWS certification learning platform, serving individual learners and corporate teams. I worked on responsive layouts and reusable interface patterns across web and mobile, keeping the learning experience consistent between devices.",
+      links: [["Live site", "https://cloudfaster.academy/"]],
+      sections: [
+        {
+          "label": "The challenge",
+          "text": "The learning platform needed to work across web and mobile, adapting to different contexts rather than simply shrinking a desktop interface."
+        },
+        {
+          "label": "Design decisions",
+          "text": "I used reusable interface patterns and responsive layouts to keep the experience consistent across devices. Learning and practice flows were adapted to smaller screens while retaining the platform’s visual identity."
         }
       ],
     },

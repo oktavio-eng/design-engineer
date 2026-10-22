@@ -8,6 +8,11 @@ const config = {
   },
   staticDirs: [
     {
+      // Device stories use the same vector frames and captures as production.
+      from: "../assets/projects",
+      to: "/assets/projects",
+    },
+    {
       from: "../styles",
       to: "/styles",
     },

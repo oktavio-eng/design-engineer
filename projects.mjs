@@ -16,7 +16,7 @@
                 ("Resumo na home", hoje só preenchido em Writing). Sem ele o
                 card cai pro `role`, que todo projeto tem.
      preview  → a imagem principal do detalhe ("Imagem de capa" no Studio).
-     gallery  → [{src, alt, caption, width?, height?, layout?}]. Sem ele, a galeria é
+     gallery  → [{src, alt, caption, width?, height?, layout?, device?}]. Sem ele, a galeria é
                 montada a partir das capas dos `subprojects`, que é o que a
                 Escola da Bel já tem hoje; sem nenhum dos dois, o bloco
                 simplesmente não aparece (regra 4 do AGENTS.md: nada de
@@ -281,7 +281,7 @@ function galleryPhotos(entry) {
 }
 
 const suppliedPhotos = new Map(Object.values(suppliedProjectMedia)
-  .flatMap(media => media.gallery.map(photo => [photo.src, photo])));
+  .flatMap(media => [...(media.gallery || []), ...(media.appendGallery || [])].map(photo => [photo.src, photo])));
 
 let galleryRenderCount = 0;
 
@@ -294,9 +294,15 @@ export function galleryMarkup(entry) {
     const captionID = galleryID + "-caption-" + imageCount++;
     const alt = photo.alt || photo.caption || "";
     const mobile = photo.layout === "mobile";
+    const device = ["macbook", "iphone"].includes(photo.device) ? photo.device : "";
+    if (device === "macbook") wide = true;
     const dimensions = Number.isInteger(photo.width) && photo.width > 0 && Number.isInteger(photo.height) && photo.height > 0
       ? ' width="' + photo.width + '" height="' + photo.height + '"' : "";
+    const image = '<img class="pgal__img' + (photo.layout === "cover" ? ' pgal__img--cover' : '') + '"' +
+      (device ? '' : ' data-cursor="ring"') + ' src="' + esc(photo.src) + '" alt=""' + dimensions +
+      ' loading="lazy" decoding="async" onerror="this.closest(\'.pgal__item\').remove()">';
     return '<button class="pgal__item' + (mobile ? " pgal__item--mobile" : wide ? " pgal__item--wide" : "") +
+      (device ? " pgal__item--device" : "") +
       (photo.layout === "full" ? " pgal__item--full" : "") +
       (photo.caption ? " pgal__item--captioned" : "") + '" type="button"' +
       ' data-cursor="ring" aria-label="' + esc(alt || "Enlarge image") + '"' +
@@ -304,8 +310,7 @@ export function galleryMarkup(entry) {
       ' data-lightbox-src="' + esc(photo.src) + '"' +
       ' data-lightbox-alt="' + esc(alt) + '"' +
       ' data-lightbox-caption="' + esc(photo.caption || "") + '">' +
-      '<img class="pgal__img' + (photo.layout === "cover" ? ' pgal__img--cover' : '') + '" data-cursor="ring" src="' + esc(photo.src) + '" alt=""' + dimensions +
-      ' loading="lazy" decoding="async" onerror="this.parentElement.remove()">' +
+      (device ? '<span class="pgal__device pgal__device--' + device + '" data-cursor="ring"><span class="pgal__screen">' + image + '</span></span>' : image) +
       (photo.caption ? '<span class="pgal__caption" id="' + captionID + '">' + esc(photo.caption) + '</span>' : "") +
       '</button>';
   }
@@ -438,6 +443,27 @@ function detailMarkup(entry, key) {
    Drawer e modal compartilham marcação e estado; o que muda é CSS. O gesto
    de arrastar só é armado no modo drawer.
 --------------------------------------------------------------------------- */
+// `pretty` is advisory and can still leave a one-word final line. Keep the
+// final pair together without changing source copy or rebuilding inline HTML.
+function keepFinalWordsTogether(body) {
+  const doc = body.ownerDocument;
+  for (const block of body.querySelectorAll('h2, h3, p, .pgal__caption, .subproject__name')) {
+    const walker = doc.createTreeWalker(block, NodeFilter.SHOW_TEXT);
+    let tail = null;
+    while (walker.nextNode()) {
+      if (walker.currentNode.textContent.trim()) tail = walker.currentNode;
+    }
+    const match = tail?.textContent.match(/\S+\s+\S+\s*$/u);
+    if (!match) continue;
+    const pair = doc.createElement('span');
+    pair.className = 'pdrawer__final-words';
+    const range = doc.createRange();
+    range.setStart(tail, match.index);
+    range.setEnd(tail, tail.length);
+    range.surroundContents(pair);
+  }
+}
+
 export function initDetail(doc = document) {
   const wash = doc.querySelector("[data-proto-wash]");
   const sheet = doc.querySelector("[data-proto-sheet]");
@@ -445,6 +471,7 @@ export function initDetail(doc = document) {
   const grip = doc.querySelector("[data-proto-grip]");
   const close = doc.querySelector("[data-proto-close]");
   if (!wash || !sheet || !body) return null;
+  wash.dataset.cursorHint = 'close';
 
   let opener = null;
   let open = false;
@@ -462,6 +489,7 @@ export function initDetail(doc = document) {
     if (!entry) return;
     clearGallery();
     body.innerHTML = detailMarkup(entry, key);
+    keepFinalWordsTogether(body);
     clearGallery = arrangeMobileCaptions(body);
     sheet.setAttribute("aria-label", entry.name);
     sheet.scrollTop = 0;

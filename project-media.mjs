@@ -62,12 +62,92 @@ export const pixelOfficeGallery = [
   }
 ];
 
-// Screenshots supplied in Portfolio.zip (21 October 2026).
+// Supplied project artwork and per-image presentation metadata.
 export const suppliedProjectMedia = {
+  "caderno-de-erros": {
+    "faviconFrom": "/assets/projects/caderno-de-erros/favicon.jpg",
+    "gallery": [
+      {
+        "src": "https://framerusercontent.com/images/4mVd8cIXTAWMJcjRNnR9amYNGAw.png",
+        "alt": "Caderno de Erros home screen with study streak, daily goal and mastery levels",
+        "caption": "The home brings streaks, daily goals and mastery levels into one view, giving study progress a clear place in the routine.",
+        "device": "macbook",
+        "layout": "wide"
+      },
+      {
+        "src": "https://framerusercontent.com/images/0Cd7SnzI0cVyId7kF0ZDBFvNI.png",
+        "alt": "The notebook screen, with the subject tree beside a rich-text editor",
+        "caption": "The notebook places the subject tree beside the editor, keeping the structure of a mistake log visible while writing.",
+        "device": "macbook",
+        "layout": "wide"
+      },
+      {
+        "src": "https://framerusercontent.com/images/4V0XVkH2RkvjjDelHIfX0ZnK0.png",
+        "alt": "Progress dashboard with study time, answer rate and a focus calendar",
+        "caption": "Progress combines study time, accuracy and the focus calendar, connecting daily activity with a longer view of practice.",
+        "device": "macbook",
+        "layout": "wide"
+      },
+      {
+        "src": "https://framerusercontent.com/images/RIFaJsvpbtKaYUyn5BRWhZDo6E.png",
+        "alt": "Question card with answer options and a dropdown for tagging the cause of a mistake",
+        "caption": "Question cards link an answer to the cause of a mistake, supporting the review method at the centre of the product.",
+        "device": "macbook",
+        "layout": "wide"
+      }
+    ],
+    "appendGallery": [
+      {
+        "src": "/assets/projects/caderno-de-erros/mobile-digital-notebook.jpg",
+        "alt": "Caderno de Erros mobile presentation with study streak and mastery levels",
+        "width": 1320,
+        "height": 2868,
+        "layout": "mobile",
+        "caption": "Mobile presentation pieces bring the notebook, mastery levels, community, question editor, search and study progress into the Caderno de Erros visual identity."
+      },
+      {
+        "src": "/assets/projects/caderno-de-erros/mobile-mastery-flashcards.jpg",
+        "alt": "Caderno de Erros mobile presentation of mastery levels and flashcards",
+        "width": 1320,
+        "height": 2868,
+        "layout": "mobile"
+      },
+      {
+        "src": "/assets/projects/caderno-de-erros/mobile-community.jpg",
+        "alt": "Caderno de Erros mobile community presentation with study challenges and channels",
+        "width": 1320,
+        "height": 2868,
+        "layout": "mobile"
+      },
+      {
+        "src": "/assets/projects/caderno-de-erros/mobile-smart-notebook.jpg",
+        "alt": "Caderno de Erros mobile notebook presentation with a question and rich-text editor",
+        "width": 1320,
+        "height": 2868,
+        "layout": "mobile"
+      },
+      {
+        "src": "/assets/projects/caderno-de-erros/mobile-question-search.jpg",
+        "alt": "Caderno de Erros mobile question search presentation",
+        "width": 1320,
+        "height": 2868,
+        "layout": "mobile"
+      },
+      {
+        "src": "/assets/projects/caderno-de-erros/mobile-study-progress.jpg",
+        "alt": "Caderno de Erros mobile study progress presentation with time and focus chart",
+        "width": 1320,
+        "height": 2868,
+        "layout": "mobile"
+      }
+    ],
+  },
   "dascia": {
+    "faviconFrom": "/assets/projects/dascia/favicon.png",
     "gallery": [
       {
         "src": "/assets/projects/dascia/institutional-home.jpg",
+        "device": "macbook",
         "alt": "DascIA institutional homepage in a light appearance",
         "caption": "The institutional home presents the company’s AI services through use cases, its technical approach and a contact section.",
         "layout": "wide",
@@ -76,6 +156,7 @@ export const suppliedProjectMedia = {
       },
       {
         "src": "/assets/projects/dascia/platform-home.jpg",
+        "device": "macbook",
         "alt": "DascIA academy platform page in a dark appearance",
         "caption": "The dark platform page brings together the academy, learning tools, study paths and course catalogue.",
         "layout": "wide",
@@ -287,6 +368,7 @@ export const suppliedProjectMedia = {
       },
       {
         "src": "/assets/projects/finq-edu/0-2-onboarding.webp",
+        "device": "iphone",
         "alt": "FinQ Edu — onboarding",
         "width": 900,
         "height": 1949,
@@ -294,6 +376,7 @@ export const suppliedProjectMedia = {
       },
       {
         "src": "/assets/projects/finq-edu/0-4-onboarding.webp",
+        "device": "iphone",
         "alt": "FinQ Edu — onboarding",
         "width": 900,
         "height": 1949,
@@ -301,6 +384,7 @@ export const suppliedProjectMedia = {
       },
       {
         "src": "/assets/projects/finq-edu/3-1-home.webp",
+        "device": "iphone",
         "alt": "FinQ Edu — Home",
         "width": 900,
         "height": 1949,
@@ -309,6 +393,7 @@ export const suppliedProjectMedia = {
       },
       {
         "src": "/assets/projects/finq-edu/4-1-quizz.webp",
+        "device": "iphone",
         "alt": "FinQ Edu — Quiz",
         "width": 900,
         "height": 1949,
@@ -317,6 +402,7 @@ export const suppliedProjectMedia = {
       },
       {
         "src": "/assets/projects/finq-edu/4-3-2-quizz.webp",
+        "device": "iphone",
         "alt": "FinQ Edu — Quiz",
         "width": 900,
         "height": 1949,
@@ -324,6 +410,7 @@ export const suppliedProjectMedia = {
       },
       {
         "src": "/assets/projects/finq-edu/4-5-quizz.webp",
+        "device": "iphone",
         "alt": "FinQ Edu — Quiz",
         "width": 900,
         "height": 1949,
@@ -331,6 +418,7 @@ export const suppliedProjectMedia = {
       },
       {
         "src": "/assets/projects/finq-edu/4-6-quizz.webp",
+        "device": "iphone",
         "alt": "FinQ Edu — Quiz",
         "width": 900,
         "height": 1949,
@@ -338,6 +426,7 @@ export const suppliedProjectMedia = {
       },
       {
         "src": "/assets/projects/finq-edu/5-1-ranking.webp",
+        "device": "iphone",
         "alt": "FinQ Edu — Ranking",
         "width": 900,
         "height": 1949,
@@ -345,6 +434,7 @@ export const suppliedProjectMedia = {
       },
       {
         "src": "/assets/projects/finq-edu/6-1-profile.webp",
+        "device": "iphone",
         "alt": "FinQ Edu — Profile",
         "width": 900,
         "height": 1949,
@@ -519,6 +609,10 @@ export function applyProjectMedia(content) {
     const entry = content.projects?.[key];
     if (!entry) continue;
     if (!entry.gallery?.length) entry.gallery = media.gallery;
+    if (media.appendGallery?.length) {
+      const existing = new Set((entry.gallery || []).map(photo => photo.src));
+      entry.gallery = [...(entry.gallery || []), ...media.appendGallery.filter(photo => !existing.has(photo.src))];
+    }
     if (!entry.faviconFrom && media.faviconFrom) entry.faviconFrom = media.faviconFrom;
     const legacySpheraCover = key === "sphera-academy" &&
       entry.preview === "https://framerusercontent.com/images/PgbsHlNgpSQclDuYYOPfMT6Zo.png";

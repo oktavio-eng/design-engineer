@@ -129,13 +129,13 @@ test("/testes/prototipo-nova-home: carrossel, detalhe e galeria", { timeout: 60_
   }
   await checkDetailScroll();
 
-  // A galeria: quatro fotos semeadas, no ritmo do frame — duas meias, uma
-  // inteira, e a última (que ficaria órfã na linha) também inteira.
-  assert.equal(await page.locator(".pgal__item").count(), 4, "quatro fotos");
+  // Four web captures use full-width MacBooks; the six supplied mobile
+  // compositions keep their existing artwork in the compact group.
+  assert.equal(await page.locator(".pgal__item").count(), 10, "quatro telas web e seis peças mobile");
   const wide = await page.locator(".pgal__item").evaluateAll((items) =>
     items.map((item) => item.classList.contains("pgal__item--wide")),
   );
-  assert.deepEqual(wide, [false, false, true, true], "meia, meia, inteira, inteira (a última é órfã)");
+  assert.deepEqual(wide, [true, true, true, true, false, false, false, false, false, false]);
 
   await page.addScriptTag({ path: axeScriptPath });
   const violations = await page.evaluate(async () => {
