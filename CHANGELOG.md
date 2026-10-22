@@ -8,6 +8,14 @@ Notable changes to this site, in the order they landed on `main`. Newest first. 
 
 ## 2026-10-22
 
+- DascIA: galeria com home institucional clara, página da plataforma escura e oito pranchas de identidade, com legendas (`assets/projects/dascia/`, `project-media.mjs`, seed); ver [galeria](docs/nova-home-projetos.md).
+
+- DascIA: capa clara enviada pelo Otavio em `assets/projects/dascia/cover.jpg`, substituindo a capa preta no drawer; ver [capa](docs/nova-home-projetos.md).
+
+- Writing: artigo “Learning through Pixel Office” sobre craft, código, IA e os aprendizados da Fatec Rubens Lara; conteúdo do Studio/D1 e seed `portfolio-content.js`. Ver [texto](docs/content-alignment.md).
+
+- Personal: Pixel Office passa ao primeiro lugar no conteúdo do Studio/D1 e na seed `portfolio-content.js`; ver [ordenação](docs/content-alignment.md).
+
 - Escola da Bel: recorte das capas de landing pages centralizado na galeria (`projects.mjs`, `styles/projects.css`); ver [capas](docs/nova-home-projetos.md). (#98)
 - Pixel Office: favicon declarado pelo site fixado em `favicons.js`, substituindo o globo do serviço externo; ver [fallback](docs/patterns.md). (#98)
 - Drawer: links do projeto movidos para abaixo da função e antes da descrição, sem o bloco “Links” no final (`projects.mjs`); ver [cabeçalho](docs/nova-home-projetos.md). (#98)

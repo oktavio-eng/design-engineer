@@ -238,6 +238,89 @@
     },
     dascia: {
       name: "DascIA",
+      preview: "/assets/projects/dascia/cover.jpg",
+      gallery: [
+        {
+          "src": "/assets/projects/dascia/institutional-home.jpg",
+          "alt": "DascIA institutional homepage in a light appearance",
+          "caption": "The institutional home presents the company’s AI services through use cases, its technical approach and a contact section.",
+          "layout": "wide",
+          "width": 1920,
+          "height": 5652
+        },
+        {
+          "src": "/assets/projects/dascia/platform-home.jpg",
+          "alt": "DascIA academy platform page in a dark appearance",
+          "caption": "The dark platform page brings together the academy, learning tools, study paths and course catalogue.",
+          "layout": "wide",
+          "width": 1920,
+          "height": 7583
+        },
+        {
+          "src": "/assets/projects/dascia/brand-overview.jpg",
+          "alt": "DascIA visual identity overview with typography, symbol and colours",
+          "caption": "The identity overview brings typography, the circular symbol, gradients and the core colour palette into one system.",
+          "layout": "cover",
+          "width": 1920,
+          "height": 1089
+        },
+        {
+          "src": "/assets/projects/dascia/brand-typography.jpg",
+          "alt": "IBM Plex Sans typography presentation for DascIA",
+          "caption": "IBM Plex Sans establishes the typographic foundation, shown through letterforms, numerals and the blue-to-green gradient.",
+          "layout": "cover",
+          "width": 1920,
+          "height": 1089
+        },
+        {
+          "src": "/assets/projects/dascia/brand-symbol.jpg",
+          "alt": "Geometric construction of the circular DascIA symbol",
+          "caption": "Repeated curves around a circular centre show the geometry behind the symbol and its sense of movement.",
+          "layout": "cover",
+          "width": 1920,
+          "height": 1089
+        },
+        {
+          "src": "/assets/projects/dascia/brand-palette.jpg",
+          "alt": "DascIA palette of off-white, green, blue, yellow, purple and dark blue",
+          "caption": "Off-white and dark blue establish the base, supported by green, blue, yellow and purple for different expressions of the brand.",
+          "layout": "cover",
+          "width": 1920,
+          "height": 1089
+        },
+        {
+          "src": "/assets/projects/dascia/brand-social.jpg",
+          "alt": "Three DascIA social-media layouts combining imagery and typography",
+          "caption": "The social layouts combine the symbol, gradients, photography and typography across different messages.",
+          "layout": "cover",
+          "width": 1920,
+          "height": 1089
+        },
+        {
+          "src": "/assets/projects/dascia/brand-tablet.jpg",
+          "alt": "DascIA campaign composition presented on a tablet mockup",
+          "caption": "A tablet mockup brings the visual language into a campaign composition, combining a portrait, typography and enlarged curves from the symbol.",
+          "layout": "cover",
+          "width": 1920,
+          "height": 1089
+        },
+        {
+          "src": "/assets/projects/dascia/brand-stationery.jpg",
+          "alt": "DascIA identity applied to business cards, letterhead and a document folder",
+          "caption": "The stationery mockup extends the identity to business cards, letterhead and a document folder, connecting the mark with physical applications.",
+          "layout": "cover",
+          "width": 1920,
+          "height": 1080
+        },
+        {
+          "src": "/assets/projects/dascia/brand-banner.jpg",
+          "alt": "DascIA profile banner with wordmark and enlarged symbol",
+          "caption": "The profile banner combines the wordmark, a concise message and enlarged curves from the symbol in a compact horizontal composition.",
+          "layout": "cover",
+          "width": 1920,
+          "height": 1089
+        }
+      ],
       role: "UX/UI + Identity + Website · AI Education",
       summary: "Identity and website for an AI-education brand",
       bio: "Visual identity and website, via GOW Design, for an AI-education brand positioned against shallow 'AI in three clicks' courses — built to read as technical and credible.",
@@ -297,22 +380,6 @@
   };
 
   const personal = {
-    "design-engineer": {
-      name: "Design Engineer",
-      role: "This site · 2026",
-      bio: "A public learning and building project: a static HTML/CSS/JS portfolio with a Wiki, Changelog, shared design tokens, command search, glossary tooltips and a Storybook + visual-regression harness. I study React, modern CSS, interaction design, motion and component systems, and apply the learning directly to real interfaces. Design decisions, accessibility work, frontend architecture and technical experiments are documented as they ship.",
-      items: [
-        "Type and spacing measured against emilkowal.ski in a real browser — one size, two weights and a shared spacing scale.",
-        "Shared OKLCH color tokens plus motion, spacing, typography and radius tokens keep the interface consistent.",
-        "Motion stays interruptible; keyboard interactions preserve focus and support reduced motion.",
-        "Storybook renders the production CSS; accessibility checks, browser interaction tests and visual regression checks help catch changes before release."
-      ],
-      links: [
-        ["Site", "https://oktavio.vercel.app"],
-        ["Repo", "https://github.com/oktavio-eng/design-engineer"],
-        ["Changelog", "https://oktavio.vercel.app/changelog"],
-      ],
-    },
     prompts: {
       "name": "Pixel Office",
       "role": "Product · 2026",
@@ -336,6 +403,22 @@
           "label": "Design decisions",
           "text": "I work across product UI, interaction design and frontend implementation in React, Phaser and Supabase. Building and refining the product in the browser makes technical constraints visible and lets design QA continue beyond the Figma handoff."
         }
+      ],
+    },
+    "design-engineer": {
+      name: "Design Engineer",
+      role: "This site · 2026",
+      bio: "A public learning and building project: a static HTML/CSS/JS portfolio with a Wiki, Changelog, shared design tokens, command search, glossary tooltips and a Storybook + visual-regression harness. I study React, modern CSS, interaction design, motion and component systems, and apply the learning directly to real interfaces. Design decisions, accessibility work, frontend architecture and technical experiments are documented as they ship.",
+      items: [
+        "Type and spacing measured against emilkowal.ski in a real browser — one size, two weights and a shared spacing scale.",
+        "Shared OKLCH color tokens plus motion, spacing, typography and radius tokens keep the interface consistent.",
+        "Motion stays interruptible; keyboard interactions preserve focus and support reduced motion.",
+        "Storybook renders the production CSS; accessibility checks, browser interaction tests and visual regression checks help catch changes before release."
+      ],
+      links: [
+        ["Site", "https://oktavio.vercel.app"],
+        ["Repo", "https://github.com/oktavio-eng/design-engineer"],
+        ["Changelog", "https://oktavio.vercel.app/changelog"],
       ],
     },
     "gow-studio": {
@@ -380,6 +463,25 @@
   // Home). `bio` is the modal's paragraph only, `links` where the piece
   // lives.
   const writing = {
+    "learning-through-pixel-office": {
+      "name": "Learning through Pixel Office",
+      "role": "Writing · 2026",
+      "summary": "Learning design craft and code with AI.",
+      "bio": [
+        "Pixel Office started as a design project, but slowly became one of the best ways I found to understand how software is actually built.",
+        "I design the product while also working closer to the code, using AI as part of the process to help me understand and write React, CSS and other parts of the stack. Instead of stopping at Figma, I now spend time thinking about how components behave, what happens in edge cases, how an interaction should feel and what needs to change when the design reaches the browser.",
+        "The project has grown through constant small iterations. I have worked on things like the Board, Calendar, time tracking, finances, chat, collaborative tools, AI agents, responsive behavior, motion and dozens of smaller interface details. Many of the changes are not new features at all, but refinements to loading, spacing, hover states, feedback, consistency and everyday usability.",
+        "A lot of concepts I studied during my degree at Fatec Rubens Lara started making more sense again when I could apply them to something real.",
+        "AI helps me move faster and work beyond what I could code alone today, but the most valuable part has been learning through every decision, bug and iteration.",
+        "Pixel Office became both a product and a learning environment for me — a place where design craft, code and AI started to connect."
+      ],
+      "links": [
+        [
+          "Explore Pixel Office",
+          "https://gow-pixel-office.vercel.app/"
+        ]
+      ]
+    },
     plan: {
       name: "Design Engineer — a transition plan",
       role: "Writing · 2026",
