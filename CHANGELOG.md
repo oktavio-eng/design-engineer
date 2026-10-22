@@ -8,6 +8,10 @@ Notable changes to this site, in the order they landed on `main`. Newest first. 
 
 ## 2026-10-22
 
+- Escola da Bel: recorte das capas de landing pages centralizado na galeria (`projects.mjs`, `styles/projects.css`); ver [capas](docs/nova-home-projetos.md). (#98)
+- Pixel Office: favicon declarado pelo site fixado em `favicons.js`, substituindo o globo do serviço externo; ver [fallback](docs/patterns.md). (#98)
+- Drawer: links do projeto movidos para abaixo da função e antes da descrição, sem o bloco “Links” no final (`projects.mjs`); ver [cabeçalho](docs/nova-home-projetos.md). (#98)
+
 - Rodapés da home, Wiki e changelog: “Prompts” substituído por “GitHub”, com link para `github.com/oktavio-eng` em nova aba. (#97)
 - Drawer: borda sólida de 1px em preto a 8% nas imagens e gap horizontal de 16px entre telas mobile (`styles/projects.css`, token de cor); ver [galerias](docs/nova-home-projetos.md). (#97)
 - Caderno de Erros: descrição explicita design do site institucional e das páginas de assinatura, com implementação no Framer (`portfolio-content.js`); ver [conteúdo](docs/content-alignment.md). (#97)

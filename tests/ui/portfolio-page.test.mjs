@@ -221,6 +221,8 @@ test("/ (portfolio home) renders its collections, opens rows and photos in modal
     name: sub.name, description: sub.description, href: sub.url, target: "_blank", rel: "noopener",
   })));
   assert.deepEqual(landings, expectedLandings, "all original landing-page links and descriptions survive the drawer migration");
+  assert.deepEqual(await page.locator('.pgal__img').evaluateAll(images => images.map(img => getComputedStyle(img).objectPosition)),
+    expectedLandings.map(() => '50% 50%'), 'landing-page covers use a centered crop');
   await scanAxe(page, "project landing-page links");
   await page.locator(".pgal__item").first().click();
   await page.locator('[data-lightbox][aria-hidden="false"]').waitFor();
@@ -269,6 +271,8 @@ test("/ (portfolio home) renders its collections, opens rows and photos in modal
   const pixelOffice = page.locator('[data-proto-collection="personal"][data-proto-open="prompts"]');
   await pixelOffice.click();
   assert.equal(await page.locator("[data-proto-sheet]").getAttribute("aria-label"), "Pixel Office");
+  assert.equal(await page.locator('.pdrawer__head .pdrawer__link .fav').getAttribute('src'),
+    'https://gow-pixel-office.vercel.app/favicon-32.png', 'Pixel Office uses its declared favicon instead of a service placeholder');
   assert.equal(await page.locator(".pgal__item").count(), 12, "Pixel Office shows all twelve supplied screenshots");
   assert.equal(await page.locator(".pdrawer__shot").getAttribute("src"), "/assets/projects/pixel-office/cover.png");
   await page.locator(".pgal__item").last().click();
@@ -284,7 +288,7 @@ test("/ (portfolio home) renders its collections, opens rows and photos in modal
   const grip = page.locator("[data-proto-grip]");
   await grip.focus();
   await page.keyboard.press("Shift+Tab");
-  assert.equal(await page.evaluate(() => document.activeElement === [...document.querySelectorAll(".pdrawer__link")].at(-1)), true, "Tab stays inside the drawer");
+  assert.equal(await page.locator('.pgal__item').last().evaluate(el => el === document.activeElement), true, "Tab stays inside the drawer");
   await page.keyboard.press("Tab");
   assert.equal(await grip.evaluate(el => el === document.activeElement), true);
   for (const width of [1440, 390]) {

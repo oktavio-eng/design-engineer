@@ -25,6 +25,12 @@ test('mobile project galleries remain compact, preserve source order and support
   for (const key of ['cloudfaster-academy', 'finq-edu']) {
     await page.locator(`[data-proto-open="${key}"]`).click();
     await page.locator('.pdrawer[aria-hidden="false"]').waitFor();
+    assert.equal(await page.locator('.pdrawer__head > .pdrawer__role + .pdrawer__links + .pdrawer__bio').count(), 1,
+      'project links appear after the role and before the description');
+    assert.equal(await page.locator('.pdrawer__body > .pdrawer__section > .pdrawer__links').count(), 0,
+      'project links are no longer placed at the bottom');
+    assert.deepEqual(await page.locator('.pdrawer__head .pdrawer__link').evaluateAll(links => links.map(link => [link.textContent.trim(), link.getAttribute('href')])),
+      await page.evaluate(key => window.PORTFOLIO_CONTENT.projects[key].links, key));
     assert.equal(await page.locator('.pdrawer__decision').count(), 2);
     assert.equal(await page.locator('.pdrawer__decision h3').last().textContent(), 'Design decisions');
     assert.equal(await page.locator('.pgal__item').evaluateAll(items => items.map(el => el.dataset.lightboxSrc).join('|')),
@@ -110,7 +116,10 @@ test('mobile project galleries remain compact, preserve source order and support
 
   await landing.focus();
   await page.keyboard.press('Enter');
-  await page.waitForFunction(() => document.querySelector('[data-lightbox-img]')?.naturalWidth > 0);
+  await page.waitForFunction(() => {
+    const img = document.querySelector('[data-lightbox-img]');
+    return img?.complete && img.naturalWidth > 0 && img.currentSrc === img.src;
+  });
   assert.equal(await page.locator('[data-lightbox-img]').evaluate(img => {
     const box = img.getBoundingClientRect();
     return Math.abs(box.width / box.height - img.naturalWidth / img.naturalHeight) < .01 && getComputedStyle(img).borderRadius === '16px';

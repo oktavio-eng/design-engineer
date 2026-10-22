@@ -154,3 +154,9 @@ As legendas usam `text-wrap: pretty`, como as descrições do site já faziam, p
 ### Borda das imagens e telas mobile mais próximas — 22/10/2026
 
 A pedido do Otavio, capa e capturas da galeria no drawer recebem borda sólida de 1px em preto puro a 8% (`--project-image-border`), inclusive no tema escuro. O gap horizontal entre telas mobile passa de 32 para 16 no grupo de três e de 24 para 16 no grupo de duas. A largura máxima dos grupos acompanha os novos gaps para manter a distância real entre imagens em 16, sem espaço extra nas colunas. O espaçamento vertical permanece em 32/24.
+
+### Links no cabeçalho do drawer — 22/10/2026
+
+Os links do projeto (incluindo “Live site”) passam para o cabeçalho, logo após a função e antes da descrição, sem o rótulo “Links”. O bloco final foi removido; nomes, destinos e abertura em nova aba são preservados. Assim o acesso ao produto fica disponível antes da leitura do case e da galeria.
+
+**Capas de landing pages (22/10/2026):** a galeria derivada de `subprojects`, como a Escola da Bel, usa recorte centralizado (`object-position: center`) na moldura 16:10. O alinhamento superior esquerdo das capturas de produto não serve para essas composições de campanha. O renderer marca as capas derivadas com `layout: "cover"`; a ampliação continua exibindo o arquivo completo.
