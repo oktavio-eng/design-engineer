@@ -7,6 +7,64 @@ import { serveDirectory } from './helpers/static-server.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 
+test('project cards fill their marks and drawer text keeps its final words together', { timeout: 60_000 }, async context => {
+  const server = await serveDirectory(root);
+  const browser = await launchChromium();
+  context.after(async () => { await browser.close(); await server.close(); });
+  const page = await browser.newPage({ viewport: { width: 1440, height: 1000 }, reducedMotion: 'reduce' });
+  await page.route(/^https?:\/\/(?!127\.0\.0\.1)/, route => route.fulfill({ status: 204, body: '' }));
+  await page.addInitScript(() => sessionStorage.setItem('intro-shown-v1', 'true'));
+  await page.goto(server.origin, { waitUntil: 'load' });
+  const keys = await page.locator('.pcard').evaluateAll(cards => cards.map(card => card.dataset.protoOpen));
+  assert.equal(keys.indexOf('dascia') + 1, keys.indexOf('cloudfaster-academy'));
+  const dascia = page.locator('[data-proto-open="dascia"] .fav');
+  await dascia.scrollIntoViewIfNeeded();
+  await page.waitForFunction(() => document.querySelector('[data-proto-open="dascia"] .fav')?.naturalWidth === 600);
+  assert.equal(await dascia.getAttribute('src'), '/assets/projects/dascia/favicon.png');
+  // Exercise the external-icon branch even with external requests disabled.
+  await page.locator('.pcard__mark:not(.pcard__mark--artwork)').first().evaluate(mark => {
+    const image = document.createElement('img');
+    image.src = '/assets/projects/dascia/favicon.png';
+    mark.append(image);
+  });
+  for (const size of await page.locator('.pcard__mark img').evaluateAll(images => images.map(img => ({
+    image: img.getBoundingClientRect().width, frame: img.parentElement.clientWidth,
+    height: img.getBoundingClientRect().height, frameHeight: img.parentElement.clientHeight,
+  })))) {
+    assert.ok(Math.abs(size.image - size.frame) < 1);
+    assert.ok(Math.abs(size.height - size.frameHeight) < 1);
+  }
+
+  for (const key of keys) {
+    await page.setViewportSize({ width: 1440, height: 1000 });
+    await page.locator(`[data-proto-open="${key}"]`).first().click();
+    assert.equal(await page.locator('.pdrawer__head h2').textContent(), await page.evaluate(key => window.PORTFOLIO_CONTENT.projects[key].name, key));
+    for (const width of [320, 375, 390, 430, 560, 768, 1024, 1440]) {
+      await page.setViewportSize({ width, height: 1000 });
+      const failures = await page.locator('.pdrawer').evaluate(drawer => {
+        const failures = [];
+        for (const pair of drawer.querySelectorAll('.pdrawer__final-words')) {
+          const range = document.createRange();
+          range.selectNodeContents(pair);
+          const lines = [...range.getClientRects()].map(rect => Math.round(rect.top));
+          if (new Set(lines).size > 1 || pair.scrollWidth > pair.clientWidth + 1) failures.push(pair.textContent);
+        }
+        return failures;
+      });
+      assert.deepEqual(failures, [], `${key} at ${width}px`);
+    }
+    await page.keyboard.press('Escape');
+  }
+
+  await page.evaluate(() => {
+    window.PORTFOLIO_CONTENT.projects.dascia.bio = 'A description with <strong>inline emphasis</strong> and an <a href="https://example.com/">existing link</a>.';
+  });
+  await page.locator('[data-proto-open="dascia"]').first().click();
+  assert.equal(await page.locator('.pdrawer__bio').textContent(), 'A description with inline emphasis and an existing link.');
+  assert.equal(await page.locator('.pdrawer__bio strong').textContent(), 'inline emphasis');
+  assert.equal(await page.locator('.pdrawer__bio a').getAttribute('href'), 'https://example.com/');
+});
+
 test('mobile project galleries remain compact, preserve source order and support keyboard enlargement', { timeout: 60_000 }, async context => {
   const server = await serveDirectory(root);
   const browser = await launchChromium();

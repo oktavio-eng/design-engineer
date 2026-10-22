@@ -281,7 +281,7 @@ function galleryPhotos(entry) {
 }
 
 const suppliedPhotos = new Map(Object.values(suppliedProjectMedia)
-  .flatMap(media => media.gallery.map(photo => [photo.src, photo])));
+  .flatMap(media => (media.gallery || []).map(photo => [photo.src, photo])));
 
 let galleryRenderCount = 0;
 
@@ -438,6 +438,27 @@ function detailMarkup(entry, key) {
    Drawer e modal compartilham marcação e estado; o que muda é CSS. O gesto
    de arrastar só é armado no modo drawer.
 --------------------------------------------------------------------------- */
+// `pretty` is advisory and can still leave a one-word final line. Keep the
+// final pair together without changing source copy or rebuilding inline HTML.
+function keepFinalWordsTogether(body) {
+  const doc = body.ownerDocument;
+  for (const block of body.querySelectorAll('h2, h3, p, .pgal__caption, .subproject__name')) {
+    const walker = doc.createTreeWalker(block, NodeFilter.SHOW_TEXT);
+    let tail = null;
+    while (walker.nextNode()) {
+      if (walker.currentNode.textContent.trim()) tail = walker.currentNode;
+    }
+    const match = tail?.textContent.match(/\S+\s+\S+\s*$/u);
+    if (!match) continue;
+    const pair = doc.createElement('span');
+    pair.className = 'pdrawer__final-words';
+    const range = doc.createRange();
+    range.setStart(tail, match.index);
+    range.setEnd(tail, tail.length);
+    range.surroundContents(pair);
+  }
+}
+
 export function initDetail(doc = document) {
   const wash = doc.querySelector("[data-proto-wash]");
   const sheet = doc.querySelector("[data-proto-sheet]");
@@ -445,6 +466,7 @@ export function initDetail(doc = document) {
   const grip = doc.querySelector("[data-proto-grip]");
   const close = doc.querySelector("[data-proto-close]");
   if (!wash || !sheet || !body) return null;
+  wash.dataset.cursorHint = 'close';
 
   let opener = null;
   let open = false;
@@ -462,6 +484,7 @@ export function initDetail(doc = document) {
     if (!entry) return;
     clearGallery();
     body.innerHTML = detailMarkup(entry, key);
+    keepFinalWordsTogether(body);
     clearGallery = arrangeMobileCaptions(body);
     sheet.setAttribute("aria-label", entry.name);
     sheet.scrollTop = 0;

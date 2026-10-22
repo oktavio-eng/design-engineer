@@ -1,5 +1,5 @@
 import { expect } from "storybook/test";
-import { paintCursor, createDragHint } from "../cursor.mjs";
+import { paintCursor, createDragHint, createPointerHint } from "../cursor.mjs";
 
 /**
  * iPadOS pointer — the states cursor.mjs paints on every page, laid out
@@ -136,5 +136,28 @@ export const Drag = {
     await expect(hint).toHaveAttribute("aria-hidden", "true");
     await expect(getComputedStyle(hint).pointerEvents).toBe("none");
     await expect(canvasElement.querySelector(".ipad-cursor")).toHaveAttribute("data-mode", "dot");
+  },
+};
+
+export const Close = {
+  render: () => {
+    const stage = document.createElement('div');
+    stage.className = 'sb-cursor-stage';
+    stage.style.cssText = 'width:320px;height:160px;transform:translateZ(0)';
+    stage.innerHTML = '<span class="sb-cursor-stage__label">drawer backdrop · dot + Close</span><div class="ipad-cursor" aria-hidden="true"></div>';
+    paintCursor(stage.querySelector('.ipad-cursor'), { x: 160, y: 64, w: 20, h: 20, r: 10, o: 1, mode: 'dot' });
+    const hint = createPointerHint(document, 'close');
+    hint.classList.add('is-visible');
+    hint.style.transform = 'translate3d(170px,88px,0)';
+    stage.appendChild(hint);
+    return stage;
+  },
+  play: async ({ canvasElement }) => {
+    const hint = canvasElement.querySelector('.carousel-drag-hint');
+    await expect(hint).toHaveTextContent('Close');
+    await expect(hint.querySelectorAll('svg')).toHaveLength(1);
+    await expect(hint).toHaveAttribute('aria-hidden', 'true');
+    await expect(getComputedStyle(hint).height).toBe('40px');
+    await expect(getComputedStyle(hint).pointerEvents).toBe('none');
   },
 };

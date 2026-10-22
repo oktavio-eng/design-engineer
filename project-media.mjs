@@ -64,7 +64,11 @@ export const pixelOfficeGallery = [
 
 // Screenshots supplied in Portfolio.zip (21 October 2026).
 export const suppliedProjectMedia = {
+  "caderno-de-erros": {
+    "faviconFrom": "/assets/projects/caderno-de-erros/favicon.jpg",
+  },
   "dascia": {
+    "faviconFrom": "/assets/projects/dascia/favicon.png",
     "gallery": [
       {
         "src": "/assets/projects/dascia/institutional-home.jpg",

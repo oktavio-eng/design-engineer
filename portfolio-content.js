@@ -60,6 +60,7 @@
   const projects = {
     "caderno-de-erros": {
       name: "Caderno de Erros",
+      faviconFrom: "/assets/projects/caderno-de-erros/favicon.jpg",
       role: "UX/UI + Design Systems · EdTech SaaS",
       summary: "Founding design for website and multi-device platform",
       preview: "https://framerusercontent.com/images/3hNIyBkZHnghlMhz2wT4u2MiDw.jpg",
@@ -218,26 +219,9 @@
         }
       ],
     },
-    "cloudfaster-academy": {
-      name: "CloudFaster Academy",
-      role: "UX/UI + Identity + Web & Mobile · Cloud/AWS training",
-      summary: "Identity and learning experiences across web and mobile",
-      preview: "https://cloudfaster.academy/assets/og-image.png",
-      bio: "Visual identity, website and product interfaces for an AWS certification learning platform, serving individual learners and corporate teams. I worked on responsive layouts and reusable interface patterns across web and mobile, keeping the learning experience consistent between devices.",
-      links: [["Live site", "https://cloudfaster.academy/"]],
-      sections: [
-        {
-          "label": "The challenge",
-          "text": "The learning platform needed to work across web and mobile, adapting to different contexts rather than simply shrinking a desktop interface."
-        },
-        {
-          "label": "Design decisions",
-          "text": "I used reusable interface patterns and responsive layouts to keep the experience consistent across devices. Learning and practice flows were adapted to smaller screens while retaining the platform’s visual identity."
-        }
-      ],
-    },
     dascia: {
       name: "DascIA",
+      faviconFrom: "/assets/projects/dascia/favicon.png",
       preview: "/assets/projects/dascia/cover.jpg",
       gallery: [
         {
@@ -334,6 +318,24 @@
         {
           "label": "Design decisions",
           "text": "I focused on typography, information hierarchy and composition. The compressed, mixed-weight headline became a recognisable brand device, giving the landing page personality while keeping the educational content structured."
+        }
+      ],
+    },
+    "cloudfaster-academy": {
+      name: "CloudFaster Academy",
+      role: "UX/UI + Identity + Web & Mobile · Cloud/AWS training",
+      summary: "Identity and learning experiences across web and mobile",
+      preview: "https://cloudfaster.academy/assets/og-image.png",
+      bio: "Visual identity, website and product interfaces for an AWS certification learning platform, serving individual learners and corporate teams. I worked on responsive layouts and reusable interface patterns across web and mobile, keeping the learning experience consistent between devices.",
+      links: [["Live site", "https://cloudfaster.academy/"]],
+      sections: [
+        {
+          "label": "The challenge",
+          "text": "The learning platform needed to work across web and mobile, adapting to different contexts rather than simply shrinking a desktop interface."
+        },
+        {
+          "label": "Design decisions",
+          "text": "I used reusable interface patterns and responsive layouts to keep the experience consistent across devices. Learning and practice flows were adapted to smaller screens while retaining the platform’s visual identity."
         }
       ],
     },

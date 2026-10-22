@@ -112,13 +112,25 @@ export function paintCursor(el, s) {
   }
 }
 
-export function createDragHint(doc = document) {
+function paintPointerHint(hint, action) {
+  if (hint.dataset.action === action) return;
+  hint.dataset.action = action;
+  const icon = (path) => '<svg class="carousel-drag-hint__arrow" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="' + path + '"/></svg>';
+  hint.innerHTML = action === 'close'
+    ? icon('m4 4 8 8m0-8-8 8') + '<span>Close</span>'
+    : icon('M10 3 5 8l5 5') + '<span>Drag</span>' + icon('m6 3 5 5-5 5');
+}
+
+export function createPointerHint(doc = document, action = 'drag') {
   const hint = doc.createElement("div");
   hint.className = "carousel-drag-hint";
   hint.setAttribute("aria-hidden", "true");
-  const arrow = (path) => '<svg class="carousel-drag-hint__arrow" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="' + path + '"/></svg>';
-  hint.innerHTML = arrow("M10 3 5 8l5 5") + '<span>Drag</span>' + arrow("m6 3 5 5-5 5");
+  paintPointerHint(hint, action);
   return hint;
+}
+
+export function createDragHint(doc = document) {
+  return createPointerHint(doc);
 }
 
 export function mountCursor(options = {}) {
@@ -135,16 +147,16 @@ export function mountCursor(options = {}) {
   el.setAttribute("aria-hidden", "true");
   doc.body.appendChild(el);
 
-  const dragHint = createDragHint(doc);
-  doc.body.appendChild(dragHint);
-  let overCarousel = false;
+  const pointerHint = createPointerHint(doc);
+  doc.body.appendChild(pointerHint);
+  let showingHint = false;
   const hint = { x: 0, y: 0, vx: 0, vy: 0, tx: 0, ty: 0, initialized: false };
 
-  function hideDragHint() {
-    overCarousel = false;
+  function hidePointerHint() {
+    showingHint = false;
     hint.initialized = false;
     hint.vx = hint.vy = 0;
-    dragHint.classList.remove("is-visible");
+    pointerHint.classList.remove("is-visible");
   }
 
   const SIZE = readToken("--cursor-size", 20);
@@ -187,7 +199,7 @@ export function mountCursor(options = {}) {
     if (!on) {
       html.classList.remove("cursor-native");
       target.o = 0;
-      hideDragHint();
+      hidePointerHint();
       hoverEl = null;
       kick();
     }
@@ -264,12 +276,14 @@ export function mountCursor(options = {}) {
 
   function resolve(x, y) {
     const under = doc.elementFromPoint(x, y);
+    const closing = under?.closest('[data-cursor-hint="close"][aria-hidden="false"]');
     const rail = doc.querySelector("[data-drag-carousel][data-dragging]") || under?.closest("[data-drag-carousel]");
-    overCarousel = !!rail && rail.scrollWidth > rail.clientWidth + 1;
-    dragHint.classList.toggle("is-visible", overCarousel);
-    if (overCarousel) {
-      const width = dragHint.offsetWidth;
-      const height = dragHint.offsetHeight;
+    showingHint = !!closing || (!!rail && rail.scrollWidth > rail.clientWidth + 1);
+    if (showingHint) paintPointerHint(pointerHint, closing ? 'close' : 'drag');
+    pointerHint.classList.toggle("is-visible", showingHint);
+    if (showingHint) {
+      const width = pointerHint.offsetWidth;
+      const height = pointerHint.offsetHeight;
       hint.tx = Math.max(8, Math.min(x + HINT_OFFSET_X, win.innerWidth - width - 8));
       const top = y + HINT_OFFSET_Y + height <= win.innerHeight - 8 ? y + HINT_OFFSET_Y : y - height - HINT_OFFSET_Y;
       hint.ty = Math.max(8, top);
@@ -281,7 +295,7 @@ export function mountCursor(options = {}) {
       }
       return { mode: "dot", el: null };
     }
-    hideDragHint();
+    hidePointerHint();
     if (!under) return { mode: "hidden" };
 
     const tagged = under.closest("[data-cursor]");
@@ -406,7 +420,7 @@ export function mountCursor(options = {}) {
   // Analytical spring solution: independent axes, velocity preserved on
   // reversal, stable at any frame rate. No perpetual idle animation.
   function advanceHint(dt) {
-    if (!overCarousel || !hint.initialized) return true;
+    if (!showingHint || !hint.initialized) return true;
     const t = dt / 1000;
     const decay = HINT_DAMPING / (2 * HINT_MASS);
     const root = Math.sqrt(Math.max(0, decay * decay - HINT_STIFFNESS / HINT_MASS));
@@ -432,9 +446,9 @@ export function mountCursor(options = {}) {
         hint[velocity] = 0;
       } else settled = false;
     }
-    const x = Math.max(8, Math.min(hint.x, win.innerWidth - dragHint.offsetWidth - 8));
-    const y = Math.max(8, Math.min(hint.y, win.innerHeight - dragHint.offsetHeight - 8));
-    dragHint.style.transform = `translate3d(${x.toFixed(2)}px,${y.toFixed(2)}px,0)`;
+    const x = Math.max(8, Math.min(hint.x, win.innerWidth - pointerHint.offsetWidth - 8));
+    const y = Math.max(8, Math.min(hint.y, win.innerHeight - pointerHint.offsetHeight - 8));
+    pointerHint.style.transform = `translate3d(${x.toFixed(2)}px,${y.toFixed(2)}px,0)`;
     return settled;
   }
 
@@ -473,7 +487,7 @@ export function mountCursor(options = {}) {
     visible = true;
     win.clearTimeout(idleTimer);
     idleTimer = win.setTimeout(() => {
-      if (overCarousel) return;
+      if (showingHint) return;
       if (doc.body.classList.contains('admin-page') && hoverEl?.matches(TEXT_FIELDS)) return;
       target.o = 0;
       kick();
@@ -501,7 +515,7 @@ export function mountCursor(options = {}) {
   function onLeave(e) {
     if (e.relatedTarget === null || e.relatedTarget === undefined) {
       visible = false;
-      hideDragHint();
+      hidePointerHint();
       target.o = 0;
       hoverEl = null;
       kick();
@@ -523,13 +537,16 @@ export function mountCursor(options = {}) {
   doc.addEventListener("pointerup", onUp, { passive: true });
   doc.addEventListener("pointercancel", onUp, { passive: true });
   doc.addEventListener("pointerout", onLeave, { passive: true });
-  const onBlur = () => { visible = false; hideDragHint(); target.o = 0; kick(); };
+  const onBlur = () => { visible = false; hidePointerHint(); target.o = 0; kick(); };
   const onVisibility = () => { if (doc.hidden) onBlur(); };
   win.addEventListener("blur", onBlur);
   doc.addEventListener("visibilitychange", onVisibility);
   // Content moves under a still mouse (scroll, panels opening): re-aim.
   win.addEventListener("scroll", update, { passive: true, capture: true });
   win.addEventListener("resize", update, { passive: true });
+  // Opening or dismissing an overlay also changes the target under a still mouse.
+  const surfaces = new win.MutationObserver(update);
+  surfaces.observe(doc.body, { subtree: true, attributes: true, attributeFilter: ['aria-hidden', 'inert'] });
 
   const onGate = () => { if (!fine.matches || reduced.matches) setActive(false); };
   fine.addEventListener && fine.addEventListener("change", onGate);
@@ -542,6 +559,7 @@ export function mountCursor(options = {}) {
     get hoverElement() { return hoverEl; },
     refresh: update,
     destroy() {
+      surfaces.disconnect();
       win.cancelAnimationFrame(raf);
       win.clearTimeout(idleTimer);
       doc.removeEventListener("pointermove", onMove);
@@ -554,7 +572,7 @@ export function mountCursor(options = {}) {
       setActive(false);
       win.removeEventListener("blur", onBlur);
       doc.removeEventListener("visibilitychange", onVisibility);
-      dragHint.remove();
+      pointerHint.remove();
       el.remove();
     },
   };
