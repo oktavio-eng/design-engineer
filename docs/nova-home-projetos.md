@@ -160,3 +160,9 @@ A pedido do Otavio, capa e capturas da galeria no drawer recebem borda sólida d
 Os links do projeto (incluindo “Live site”) passam para o cabeçalho, logo após a função e antes da descrição, sem o rótulo “Links”. O bloco final foi removido; nomes, destinos e abertura em nova aba são preservados. Assim o acesso ao produto fica disponível antes da leitura do case e da galeria.
 
 **Capas de landing pages (22/10/2026):** a galeria derivada de `subprojects`, como a Escola da Bel, usa recorte centralizado (`object-position: center`) na moldura 16:10. O alinhamento superior esquerdo das capturas de produto não serve para essas composições de campanha. O renderer marca as capas derivadas com `layout: "cover"`; a ampliação continua exibindo o arquivo completo.
+
+### Capa da DascIA — 22/10/2026
+
+A imagem JPEG 1920×1080 enviada pelo Otavio substitui a capa preta anterior: `assets/projects/dascia/cover.jpg`, preservada sem conversão ou recorte. O fallback em `projects.mjs` e a seed usam o novo caminho; o registro no Studio/D1 recebe a mesma capa após a publicação do asset.
+
+**Galeria da DascIA (22/10/2026):** o ZIP fornecido pelo Otavio acrescenta dez JPGs nas dimensões originais: home institucional clara, página da plataforma escura e oito pranchas de identidade. As páginas abrem a galeria em largura inteira com prévia do topo; as pranchas seguem o recorte centralizado. A ampliação mostra cada arquivo completo. `project-media.mjs` complementa galerias ausentes e a seed espelha as mesmas imagens e legendas; após o deploy dos assets, capa e galeria são sincronizadas no Studio/D1.

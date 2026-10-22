@@ -23,3 +23,11 @@ Textos estruturados são editados no Studio/D1 e espelhados nas seeds `content.j
 ## Caderno de Erros — 22/10/2026
 
 A descrição explicita autoria no design do site institucional e das páginas de assinatura, além da implementação no Framer. O trecho aprovado preserva o sistema de cupons com atualização de preço e a integração ASAAS. Atualizado no Studio/D1 pelo terminal com backup prévio, alteração restrita à bio e trava de revisão (15 → 16); descrição confirmada no módulo público de produção. Seed local sincronizada.
+
+## Ordem de Personal — 22/10/2026
+
+Pixel Office passa a ser o primeiro item de `personal`, seguido por Design Engineer e GOW Design. A ordem das chaves da coleção define a apresentação; o identificador `prompts` é preservado. Reordenação aplicada ao D1 com backup e trava de revisão, e espelhada na seed local.
+
+## Writing: Learning through Pixel Office — 22/10/2026
+
+Artigo publicado em primeiro na coleção Writing, preservando os seis parágrafos enviados pelo Otavio sobre craft, React, CSS, IA e a aplicação dos conceitos da graduação na Fatec Rubens Lara. Título “Learning through Pixel Office”, resumo “Learning design craft and code with AI.” e link para o produto. Conteúdo adicionado ao D1 com backup e trava de revisão, e espelhado na seed.

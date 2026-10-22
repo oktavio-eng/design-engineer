@@ -64,6 +64,91 @@ export const pixelOfficeGallery = [
 
 // Screenshots supplied in Portfolio.zip (21 October 2026).
 export const suppliedProjectMedia = {
+  "dascia": {
+    "gallery": [
+      {
+        "src": "/assets/projects/dascia/institutional-home.jpg",
+        "alt": "DascIA institutional homepage in a light appearance",
+        "caption": "The institutional home presents the company’s AI services through use cases, its technical approach and a contact section.",
+        "layout": "wide",
+        "width": 1920,
+        "height": 5652
+      },
+      {
+        "src": "/assets/projects/dascia/platform-home.jpg",
+        "alt": "DascIA academy platform page in a dark appearance",
+        "caption": "The dark platform page brings together the academy, learning tools, study paths and course catalogue.",
+        "layout": "wide",
+        "width": 1920,
+        "height": 7583
+      },
+      {
+        "src": "/assets/projects/dascia/brand-overview.jpg",
+        "alt": "DascIA visual identity overview with typography, symbol and colours",
+        "caption": "The identity overview brings typography, the circular symbol, gradients and the core colour palette into one system.",
+        "layout": "cover",
+        "width": 1920,
+        "height": 1089
+      },
+      {
+        "src": "/assets/projects/dascia/brand-typography.jpg",
+        "alt": "IBM Plex Sans typography presentation for DascIA",
+        "caption": "IBM Plex Sans establishes the typographic foundation, shown through letterforms, numerals and the blue-to-green gradient.",
+        "layout": "cover",
+        "width": 1920,
+        "height": 1089
+      },
+      {
+        "src": "/assets/projects/dascia/brand-symbol.jpg",
+        "alt": "Geometric construction of the circular DascIA symbol",
+        "caption": "Repeated curves around a circular centre show the geometry behind the symbol and its sense of movement.",
+        "layout": "cover",
+        "width": 1920,
+        "height": 1089
+      },
+      {
+        "src": "/assets/projects/dascia/brand-palette.jpg",
+        "alt": "DascIA palette of off-white, green, blue, yellow, purple and dark blue",
+        "caption": "Off-white and dark blue establish the base, supported by green, blue, yellow and purple for different expressions of the brand.",
+        "layout": "cover",
+        "width": 1920,
+        "height": 1089
+      },
+      {
+        "src": "/assets/projects/dascia/brand-social.jpg",
+        "alt": "Three DascIA social-media layouts combining imagery and typography",
+        "caption": "The social layouts combine the symbol, gradients, photography and typography across different messages.",
+        "layout": "cover",
+        "width": 1920,
+        "height": 1089
+      },
+      {
+        "src": "/assets/projects/dascia/brand-tablet.jpg",
+        "alt": "DascIA campaign composition presented on a tablet mockup",
+        "caption": "A tablet mockup brings the visual language into a campaign composition, combining a portrait, typography and enlarged curves from the symbol.",
+        "layout": "cover",
+        "width": 1920,
+        "height": 1089
+      },
+      {
+        "src": "/assets/projects/dascia/brand-stationery.jpg",
+        "alt": "DascIA identity applied to business cards, letterhead and a document folder",
+        "caption": "The stationery mockup extends the identity to business cards, letterhead and a document folder, connecting the mark with physical applications.",
+        "layout": "cover",
+        "width": 1920,
+        "height": 1080
+      },
+      {
+        "src": "/assets/projects/dascia/brand-banner.jpg",
+        "alt": "DascIA profile banner with wordmark and enlarged symbol",
+        "caption": "The profile banner combines the wordmark, a concise message and enlarged curves from the symbol in a compact horizontal composition.",
+        "layout": "cover",
+        "width": 1920,
+        "height": 1089
+      }
+    ],
+    "preview": "/assets/projects/dascia/cover.jpg"
+  },
   "cloudfaster-academy": {
     "gallery": [
       {
