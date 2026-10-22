@@ -12,6 +12,12 @@ test('drawer content enters once on scroll, stays accessible and cancels on clos
   context.after(async () => { await browser.close(); await server.close(); });
   const page = await browser.newPage({ viewport: { width: 1440, height: 1000 }, reducedMotion: 'no-preference' });
   await page.route(/^https?:\/\/(?!127\.0\.0\.1)/, route => route.fulfill({ status: 204, body: '' }));
+  let releaseImage;
+  const imageReady = new Promise(resolve => { releaseImage = resolve; });
+  await page.route('**/assets/projects/assopra-store/home-opening-macbook.png', async route => {
+    await imageReady;
+    await route.continue();
+  });
   await page.addInitScript(() => {
     sessionStorage.setItem('intro-shown-v1', 'true');
     window.entrances = [];
@@ -27,6 +33,11 @@ test('drawer content enters once on scroll, stays accessible and cancels on clos
   const trigger = page.locator('[data-proto-open="assopra-store"]');
   await trigger.click();
   await page.waitForFunction(() => window.entrances.length > 0);
+  const cover = page.locator('.pdrawer__shot');
+  assert.ok((await cover.boundingBox()).height > 100, 'known cover dimensions reserve space before loading, avoiding a jump in the text');
+  assert.equal(await cover.evaluate(el => window.entrances.some(a => a.element === el)), false, 'a loading capture must not fade before its pixels arrive');
+  releaseImage();
+  await page.waitForFunction(el => window.entrances.some(a => a.element === el), await cover.elementHandle());
   const item = page.locator('.pgal__item').last();
   assert.equal(await item.evaluate(el => window.entrances.filter(a => a.element === el).length), 0);
   assert.equal(await item.evaluate(el => getComputedStyle(el).opacity), '0', 'offscreen images wait for their own entrance');
@@ -44,8 +55,15 @@ test('drawer content enters once on scroll, stays accessible and cancels on clos
     const { animation } = window.entrances.find(a => a.element === el);
     return { duration: animation.effect.getTiming().duration, frames: animation.effect.getKeyframes() };
   });
-  assert.equal(timing.duration, 250);
+  assert.equal(timing.duration, 560);
   assert.equal(timing.frames[0].transform, 'translateY(8px)');
+  const earlyOpacity = await item.evaluate(el => {
+    const { animation } = window.entrances.find(a => a.element === el);
+    animation.pause();
+    animation.currentTime = animation.effect.getTiming().delay + 100;
+    return Number(getComputedStyle(el).opacity);
+  });
+  assert.ok(earlyOpacity > .2 && earlyOpacity < .65, 'the first 100ms should be a gradual fade, not an almost-complete entrance');
   await item.focus();
   assert.equal(await item.evaluate(el => el.getAnimations().length), 0, 'focused content is immediately visible');
   await page.locator('.pdrawer').evaluate(el => { el.scrollTop = 0; });

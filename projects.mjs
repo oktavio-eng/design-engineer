@@ -493,9 +493,12 @@ function detailMarkup(entry, key) {
   const preview = entry.preview === "https://cloudfaster.academy/assets/og-image.png"
     ? coverFallbacks[key] : entry.preview || coverFallbacks[key];
   if (preview) {
+    const photo = { ...suppliedPhotos.get(preview), ...galleryPhotos(entry).find(photo => photo.src === preview) };
+    const dimensions = Number.isInteger(photo.width) && photo.width > 0 && Number.isInteger(photo.height) && photo.height > 0
+      ? ' width="' + photo.width + '" height="' + photo.height + '" style="aspect-ratio: auto ' + photo.width + ' / ' + photo.height + '"' : '';
     const framed = galleryPhotos(entry).some(photo => photo.src === preview && photo.framed) ||
       (suppliedProjectMedia[key]?.previewFramed && suppliedProjectMedia[key].preview === preview);
-    html += '<img class="pdrawer__shot' + (framed ? ' pdrawer__shot--framed' : '') + '" src="' + esc(preview) + '" alt="" loading="lazy" onerror="this.remove()">';
+    html += '<img class="pdrawer__shot' + (framed ? ' pdrawer__shot--framed' : '') + '" src="' + esc(preview) + '" alt=""' + dimensions + ' loading="lazy" onerror="this.remove()">';
   }
   html += '<div class="pdrawer__body">';
   html +=
@@ -575,33 +578,52 @@ export function bindDetailEntrances(body, sheet = null) {
   const motion = win.matchMedia('(prefers-reduced-motion: reduce)');
   if (motion.matches || !win.IntersectionObserver || !body.animate) return () => {};
   const style = win.getComputedStyle(body);
-  const duration = parseFloat(style.getPropertyValue('--duration-250'));
+  const duration = parseFloat(style.getPropertyValue('--duration-560'));
   const step = parseFloat(style.getPropertyValue('--duration-40'));
   const lift = style.getPropertyValue('--space-8').trim();
-  const inset = style.getPropertyValue('--space-32').trim();
-  const easing = style.getPropertyValue('--ease-out').trim();
+  const inset = style.getPropertyValue('--space-8').trim();
+  const easing = style.getPropertyValue('--ease-reveal').trim();
   const animations = new Map();
   const pending = new Set();
+  const visible = new Set();
+  const decoding = new Set();
   const reveal = element => {
     observer.unobserve(element);
     pending.delete(element);
     element.classList.remove('pdrawer__reveal-pending');
   };
   let active = true;
+  function enter(element, delay = 0) {
+    if (!active || !pending.has(element) || !visible.has(element) || !element.isConnected) return;
+    reveal(element);
+    if (element.contains(body.ownerDocument.activeElement)) return;
+    const animation = element.animate([
+      { opacity: 0, transform: `translateY(${lift})` },
+      { opacity: 1, transform: 'translateY(0)' },
+    ], { duration, delay, easing, fill: 'backwards' });
+    animations.set(element, animation);
+    animation.onfinish = () => animations.delete(element);
+  }
   const observer = new win.IntersectionObserver(entries => {
     if (!active) return;
     let index = 0;
     for (const entry of entries) {
-      if (!entry.isIntersecting || !pending.has(entry.target)) continue;
       const element = entry.target;
-      reveal(element);
-      if (element.contains(body.ownerDocument.activeElement)) continue;
-      const animation = element.animate([
-        { opacity: 0, transform: `translateY(${lift})` },
-        { opacity: 1, transform: 'translateY(0)' },
-      ], { duration, delay: Math.min(index++, 3) * step, easing, fill: 'backwards' });
-      animations.set(element, animation);
-      animation.onfinish = () => animations.delete(element);
+      if (!entry.isIntersecting) { visible.delete(element); continue; }
+      visible.add(element);
+      if (!pending.has(element) || decoding.has(element)) continue;
+      const delay = Math.min(index++, 3) * step;
+      const images = element.matches('img') ? [element]
+        : element.matches('.pgal__item') ? [...element.querySelectorAll('img')] : [];
+      if (images.length) {
+        // Decode before fading: an image arriving after its entrance would pop
+        // straight into view. Keep observing if the reader scrolls past it.
+        decoding.add(element);
+        Promise.allSettled(images.map(image => image.decode())).then(() => {
+          decoding.delete(element);
+          enter(element, delay);
+        });
+      } else enter(element, delay);
     }
   }, { root: sheet, rootMargin: `0px 0px -${inset} 0px`, threshold: 0 });
   // Animate leaves rather than their section/grid containers. Each image and
@@ -625,6 +647,8 @@ export function bindDetailEntrances(body, sheet = null) {
     observer.disconnect();
     for (const element of pending) element.classList.remove('pdrawer__reveal-pending');
     pending.clear();
+    visible.clear();
+    decoding.clear();
     for (const animation of animations.values()) animation.cancel();
     animations.clear();
     body.removeEventListener('focusin', onFocus);
