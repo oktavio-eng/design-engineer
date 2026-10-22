@@ -565,6 +565,9 @@ body.pdrawer-open > .topbar {
 .pgal__item--full .pgal__img {
   aspect-ratio: auto;
 }
+.pgal__img--cover {
+  object-position: center;
+}
 .pgal__item:focus-visible {
   outline: var(--border-w) solid var(--ink);
   outline-offset: var(--space-2);

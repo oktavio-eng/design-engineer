@@ -8,6 +8,7 @@ Notable changes to this site, in the order they landed on `main`. Newest first. 
 
 ## 2026-10-22
 
+- Escola da Bel: recorte das capas de landing pages centralizado na galeria (`projects.mjs`, `styles/projects.css`); ver [capas](docs/nova-home-projetos.md). (#98)
 - Pixel Office: favicon declarado pelo site fixado em `favicons.js`, substituindo o globo do serviço externo; ver [fallback](docs/patterns.md). (#98)
 - Drawer: links do projeto movidos para abaixo da função e antes da descrição, sem o bloco “Links” no final (`projects.mjs`); ver [cabeçalho](docs/nova-home-projetos.md). (#98)
 

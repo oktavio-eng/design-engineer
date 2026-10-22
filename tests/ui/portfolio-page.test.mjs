@@ -221,6 +221,8 @@ test("/ (portfolio home) renders its collections, opens rows and photos in modal
     name: sub.name, description: sub.description, href: sub.url, target: "_blank", rel: "noopener",
   })));
   assert.deepEqual(landings, expectedLandings, "all original landing-page links and descriptions survive the drawer migration");
+  assert.deepEqual(await page.locator('.pgal__img').evaluateAll(images => images.map(img => getComputedStyle(img).objectPosition)),
+    expectedLandings.map(() => '50% 50%'), 'landing-page covers use a centered crop');
   await scanAxe(page, "project landing-page links");
   await page.locator(".pgal__item").first().click();
   await page.locator('[data-lightbox][aria-hidden="false"]').waitFor();

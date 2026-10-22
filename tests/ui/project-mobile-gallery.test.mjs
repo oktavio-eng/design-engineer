@@ -116,7 +116,10 @@ test('mobile project galleries remain compact, preserve source order and support
 
   await landing.focus();
   await page.keyboard.press('Enter');
-  await page.waitForFunction(() => document.querySelector('[data-lightbox-img]')?.naturalWidth > 0);
+  await page.waitForFunction(() => {
+    const img = document.querySelector('[data-lightbox-img]');
+    return img?.complete && img.naturalWidth > 0 && img.currentSrc === img.src;
+  });
   assert.equal(await page.locator('[data-lightbox-img]').evaluate(img => {
     const box = img.getBoundingClientRect();
     return Math.abs(box.width / box.height - img.naturalWidth / img.naturalHeight) < .01 && getComputedStyle(img).borderRadius === '16px';

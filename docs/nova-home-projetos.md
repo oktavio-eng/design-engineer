@@ -158,3 +158,5 @@ A pedido do Otavio, capa e capturas da galeria no drawer recebem borda sólida d
 ### Links no cabeçalho do drawer — 22/10/2026
 
 Os links do projeto (incluindo “Live site”) passam para o cabeçalho, logo após a função e antes da descrição, sem o rótulo “Links”. O bloco final foi removido; nomes, destinos e abertura em nova aba são preservados. Assim o acesso ao produto fica disponível antes da leitura do case e da galeria.
+
+**Capas de landing pages (22/10/2026):** a galeria derivada de `subprojects`, como a Escola da Bel, usa recorte centralizado (`object-position: center`) na moldura 16:10. O alinhamento superior esquerdo das capturas de produto não serve para essas composições de campanha. O renderer marca as capas derivadas com `layout: "cover"`; a ampliação continua exibindo o arquivo completo.

@@ -275,7 +275,7 @@ function galleryPhotos(entry) {
   if (Array.isArray(entry.subprojects)) {
     return entry.subprojects
       .filter((sub) => sub && sub.preview)
-      .map((sub) => ({ src: sub.preview, alt: sub.name, caption: sub.name }));
+      .map((sub) => ({ src: sub.preview, alt: sub.name, caption: sub.name, layout: "cover" }));
   }
   return [];
 }
@@ -304,7 +304,7 @@ export function galleryMarkup(entry) {
       ' data-lightbox-src="' + esc(photo.src) + '"' +
       ' data-lightbox-alt="' + esc(alt) + '"' +
       ' data-lightbox-caption="' + esc(photo.caption || "") + '">' +
-      '<img class="pgal__img" data-cursor="ring" src="' + esc(photo.src) + '" alt=""' + dimensions +
+      '<img class="pgal__img' + (photo.layout === "cover" ? ' pgal__img--cover' : '') + '" data-cursor="ring" src="' + esc(photo.src) + '" alt=""' + dimensions +
       ' loading="lazy" decoding="async" onerror="this.parentElement.remove()">' +
       (photo.caption ? '<span class="pgal__caption" id="' + captionID + '">' + esc(photo.caption) + '</span>' : "") +
       '</button>';
