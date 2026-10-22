@@ -8,6 +8,8 @@ Case de redesign aprovado pelo Otavio: UX/UI de todas as telas da loja, informad
 
 A seed e o suplemento estático espelham o novo registro `projects/meta-suplementos`; o Studio/D1 recebe a entrada após a publicação dos assets, com backup e trava de revisão, preservando as demais coleções. Os estudos e o pacote para continuar a Assopra permanecem em `output/meta-suplementos/`, fora do deploy estático.
 
+Publicado no projeto Vercel existente e no Studio/D1 em 22/10/2026: revisão 22 → 23, somente a nova entrada e seu registro de atividade. Os 28 arquivos de imagem da pasta (incluindo o favicon e dois recortes de campanha reservados) foram conferidos por hash no domínio público. Na página publicada, as 25 imagens carregaram em 1440, 768 e 390px, sem overflow ou erros de página; o lightbox preservou a navegação por teclado e o retorno de foco. Validação local: 31 testes Storybook/axe, 26 testes de página, matriz visual completa, quatro documentos HTML balanceados e sintaxe dos 17 scripts públicos.
+
 Desde 21/10/2026, o carrossel e o detalhe com galeria estão aprovados para a home **`/`**, com **sangra + drawer + anel** fixos e sem painel de ajustes público. O protótipo continua em **`/testes/prototipo-nova-home`** (rota `noindex`) para comparar variantes. As preferências salvas no protótipo não alteram a home. Ele existe pra decidir olhando, não descrevendo — três escolhas que o Figma não fecha estão num painel de troca na própria página.
 
 Fonte: arquivo `Oktavio` (`H0X3JmAFN32LWINqemEhXs`), frames **card `124:562`**, **seção `124:1280`** e **detalhe `133:248`** ("Project details Modal estilo Vault do Emil"). Contrato geral entre Figma e repositório: [figma-workflow.md](figma-workflow.md).
