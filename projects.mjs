@@ -281,7 +281,7 @@ function galleryPhotos(entry) {
 }
 
 const suppliedPhotos = new Map(Object.values(suppliedProjectMedia)
-  .flatMap(media => [...(media.gallery || []), ...(media.appendGallery || [])].map(photo => [photo.src, photo])));
+  .flatMap(media => [...(media.gallery || []), ...(media.prependGallery || []), ...(media.appendGallery || [])].map(photo => [photo.src, photo])));
 
 let galleryRenderCount = 0;
 

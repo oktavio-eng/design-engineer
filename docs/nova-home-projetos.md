@@ -1,5 +1,11 @@
 # Nova home — Projects em cards e o detalhe do projeto
 
+## CloudFaster — telas desktop de 22/10/2026
+
+As quatro imagens de `CloudFaster/new.zip` entram em `assets/projects/cloudfaster-academy/` como JPEGs originais, preservados byte a byte. `00-desktop-home.jpg` substitui a capa legada e não se repete na galeria. Ranking (01), visão geral dos cursos (02) e conteúdo do curso (03) abrem a galeria, antes das 15 peças existentes. A seed aponta para a nova capa; `prependGallery` no suplemento estático aplica a mesma ordem ao conteúdo do Studio, preservando as imagens e legendas remotas e sem duplicar entradas ao reaplicar. Uma futura capa definida no Studio continua tendo prioridade sobre o fallback legado.
+
+Publicado em `oktavio.vercel.app` no projeto Vercel existente em 22/10/2026, sem alterar o D1. Conferência no domínio público em 1440 e 390px: capa nova, ordem 01 → 02 → 03, 18 imagens na galeria, sem overflow ou erros de página. Os quatro JPEGs públicos têm SHA-256 idêntico ao ZIP. Validação local: 31 testes Storybook/axe e 28 testes da página real, incluindo a galeria em quatro larguras, HTML balanceado e sintaxe dos 17 scripts públicos.
+
 ## Assopra Store — 22/10/2026
 
 Revisão após a publicação: o Otavio aprovou uma versão ampliada em inglês, com dois parágrafos de Overview e explicações mais concretas sobre descoberta, busca, filtros, seleção de tamanho, frete, combinados e adaptação mobile. O texto mantém o escopo confirmado e não acrescenta resultados ou métodos de pesquisa. Os três banners passaram para um ticker após o catálogo e antes do produto/carrinho, como na Meta. Contrato de movimento e interação em [patterns.md](patterns.md), “Campanhas em ticker”.

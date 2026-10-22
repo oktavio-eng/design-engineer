@@ -242,7 +242,7 @@ test("/ (portfolio home) renders its collections, opens rows and photos in modal
     await page.keyboard.press("Escape");
   }
 
-  for (const [key, count] of [["bullster", 7], ["sphera-academy", 14], ["cloudfaster-academy", 15], ["finq-edu", 12], ["dascia", 10]]) {
+  for (const [key, count] of [["bullster", 7], ["sphera-academy", 14], ["cloudfaster-academy", 18], ["finq-edu", 12], ["dascia", 10]]) {
     await page.locator(`[data-proto-open="${key}"]`).click();
     await page.locator('.pdrawer[aria-hidden="false"]').waitFor();
     assert.equal(await page.locator(".pgal__item").count(), count, `${key} has its supplied gallery`);

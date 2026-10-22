@@ -29,11 +29,15 @@ test('device mockups preserve original sources, exclude composed artwork and rem
     content.projects['caderno-de-erros'].gallery = content.projects['caderno-de-erros'].gallery.slice(0, 4);
     content.projects['caderno-de-erros'].gallery[0].caption = 'Studio caption';
     const { applyProjectMedia } = await import('/project-media.mjs');
+    const cloud = content.projects['cloudfaster-academy'];
+    cloud.gallery = cloud.gallery.filter(photo => !photo.src.endsWith('.jpg'));
+    cloud.gallery[0].caption = 'Preserved mobile caption';
+    cloud.preview = 'https://cloudfaster.academy/assets/og-image.png';
     applyProjectMedia(content); applyProjectMedia(content);
   });
 
   for (const [key, laptops, phones, count] of [
-    ['caderno-de-erros', 4, 0, 10], ['dascia', 2, 0, 10], ['finq-edu', 0, 9, 12], ['cloudfaster-academy', 0, 6, 15],
+    ['caderno-de-erros', 4, 0, 10], ['dascia', 2, 0, 10], ['finq-edu', 0, 9, 12], ['cloudfaster-academy', 0, 6, 18],
   ]) {
     await page.locator(`[data-proto-open="${key}"]`).click();
     assert.equal(await page.locator('.pgal__item').count(), count);
@@ -47,6 +51,13 @@ test('device mockups preserve original sources, exclude composed artwork and rem
       for (let i = 0; i < 3; i++) assert.equal(await page.locator('.pgal__item').nth(i).locator('.pgal__device').count(), 0);
     }
     if (key === 'cloudfaster-academy') {
+      assert.equal(await page.locator('.pdrawer__shot').getAttribute('src'), '/assets/projects/cloudfaster-academy/00-desktop-home.jpg');
+      assert.deepEqual(await page.locator('.pgal__item').evaluateAll(items => items.slice(0, 3).map(item => item.dataset.lightboxSrc)), [
+        '/assets/projects/cloudfaster-academy/01-desktop-ranking.jpg',
+        '/assets/projects/cloudfaster-academy/02-desktop-cursos-geral.jpg',
+        '/assets/projects/cloudfaster-academy/03-desktop-cursos-conteudos.jpg',
+      ]);
+      assert.equal(await page.locator('.pgal__caption').first().textContent(), 'Preserved mobile caption');
       for (const item of await page.locator('.pgal__item').all()) {
         const source = await item.getAttribute('data-lightbox-src');
         if (/app-store-screen|card-/.test(source)) assert.equal(await item.locator('.pgal__device').count(), 0);

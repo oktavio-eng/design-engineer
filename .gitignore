@@ -17,3 +17,4 @@
 
 # Log operacional local (IDs de conta, passo a passo de sessões); não publicar
 /HANDOFF.md
+/.vercel/

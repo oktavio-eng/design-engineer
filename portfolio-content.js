@@ -775,7 +775,7 @@
       name: "CloudFaster Academy",
       role: "UX/UI + Identity + Web & Mobile · Cloud/AWS training",
       summary: "Identity and learning experiences across web and mobile",
-      preview: "https://cloudfaster.academy/assets/og-image.png",
+      preview: "/assets/projects/cloudfaster-academy/00-desktop-home.jpg",
       bio: "Visual identity, website and product interfaces for an AWS certification learning platform, serving individual learners and corporate teams. I worked on responsive layouts and reusable interface patterns across web and mobile, keeping the learning experience consistent between devices.",
       links: [["Live site", "https://cloudfaster.academy/"]],
       sections: [

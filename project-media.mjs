@@ -593,6 +593,27 @@ export const suppliedProjectMedia = {
     "preview": "/assets/projects/dascia/cover.jpg"
   },
   "cloudfaster-academy": {
+    "preview": "/assets/projects/cloudfaster-academy/00-desktop-home.jpg",
+    "prependGallery": [
+      {
+        "src": "/assets/projects/cloudfaster-academy/01-desktop-ranking.jpg",
+        "alt": "CloudFaster Academy — Desktop ranking",
+        "width": 1440,
+        "height": 877
+      },
+      {
+        "src": "/assets/projects/cloudfaster-academy/02-desktop-cursos-geral.jpg",
+        "alt": "CloudFaster Academy — Desktop course overview",
+        "width": 1440,
+        "height": 2092
+      },
+      {
+        "src": "/assets/projects/cloudfaster-academy/03-desktop-cursos-conteudos.jpg",
+        "alt": "CloudFaster Academy — Desktop course content",
+        "width": 1440,
+        "height": 2092
+      }
+    ],
     "gallery": [
       {
         "src": "/assets/projects/cloudfaster-academy/app-store-screen-1.webp",
@@ -977,6 +998,12 @@ export function applyProjectMedia(content) {
     const entry = content.projects?.[key];
     if (!entry) continue;
     if (!entry.gallery?.length) entry.gallery = media.gallery;
+    if (media.prependGallery?.length) {
+      const supplied = new Set(media.prependGallery.map(photo => photo.src));
+      const existing = new Map((entry.gallery || []).map(photo => [photo.src, photo]));
+      entry.gallery = [...media.prependGallery.map(photo => existing.get(photo.src) || photo),
+        ...(entry.gallery || []).filter(photo => !supplied.has(photo.src))];
+    }
     if (media.appendGallery?.length) {
       const existing = new Set((entry.gallery || []).map(photo => photo.src));
       entry.gallery = [...(entry.gallery || []), ...media.appendGallery.filter(photo => !existing.has(photo.src))];
@@ -984,7 +1011,9 @@ export function applyProjectMedia(content) {
     if (!entry.faviconFrom && media.faviconFrom) entry.faviconFrom = media.faviconFrom;
     const legacySpheraCover = key === "sphera-academy" &&
       entry.preview === "https://framerusercontent.com/images/PgbsHlNgpSQclDuYYOPfMT6Zo.png";
-    if (media.preview && (!entry.preview || legacySpheraCover)) entry.preview = media.preview;
+    const legacyCloudFasterCover = key === "cloudfaster-academy" &&
+      ["https://cloudfaster.academy/assets/og-image.png", "/assets/projects/cloudfaster-academy.png"].includes(entry.preview);
+    if (media.preview && (!entry.preview || legacySpheraCover || legacyCloudFasterCover)) entry.preview = media.preview;
   }
   for (const entry of Object.values(content.personal || {})) {
     if (!entry.links?.some(([, url]) => /^https:\/\/gow-pixel-office\.vercel\.app(?:\/|$)/.test(url))) continue;
