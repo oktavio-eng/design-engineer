@@ -64,6 +64,188 @@ export const pixelOfficeGallery = [
 
 // Supplied project artwork and per-image presentation metadata.
 export const suppliedProjectMedia = {
+  "assopra-store": {
+    "preview": "/assets/projects/assopra-store/home-opening-macbook.png",
+    "faviconFrom": "/assets/projects/assopra-store/favicon.png",
+    "gallery": [
+      {
+        "src": "/assets/projects/assopra-store/home-opening-macbook.png",
+        "alt": "The Assopra storefront, campaign opening and clothing categories",
+        "layout": "full",
+        "width": 1440,
+        "height": 912,
+        "framed": true
+      },
+      {
+        "src": "/assets/projects/assopra-store/home-products-macbook.png",
+        "alt": "Clothing categories and the first product collection",
+        "layout": "full",
+        "width": 1440,
+        "height": 912,
+        "framed": true
+      },
+      {
+        "src": "/assets/projects/assopra-store/home-collections-macbook.png",
+        "alt": "Coordinated collection cards for boys and girls",
+        "layout": "full",
+        "width": 1440,
+        "height": 912,
+        "framed": true
+      },
+      {
+        "src": "/assets/projects/assopra-store/home-story-macbook.png",
+        "alt": "The brand story and family campaign in the middle of the home page",
+        "layout": "full",
+        "width": 1440,
+        "height": 912,
+        "framed": true
+      },
+      {
+        "src": "/assets/projects/assopra-store/catalogue-opening-macbook.png",
+        "alt": "Catalogue opening with a campaign banner, filters and clothing products",
+        "layout": "full",
+        "width": 1440,
+        "height": 912,
+        "framed": true
+      },
+      {
+        "src": "/assets/projects/assopra-store/catalogue-discovery-macbook.png",
+        "alt": "Campaign imagery interspersed with the clothing catalogue",
+        "layout": "full",
+        "width": 1440,
+        "height": 912,
+        "framed": true
+      },
+      {
+        "src": "/assets/projects/assopra-store/product-opening-macbook.png",
+        "alt": "Product gallery, size selection, quantity, purchase action and shipping estimate",
+        "layout": "full",
+        "width": 1440,
+        "height": 912,
+        "framed": true
+      },
+      {
+        "src": "/assets/projects/assopra-store/product-family-macbook.png",
+        "alt": "Coordinated looks for cousins, siblings and children further down the product page",
+        "layout": "full",
+        "width": 1440,
+        "height": 912,
+        "framed": true
+      },
+      {
+        "src": "/assets/projects/assopra-store/cart-context-macbook.png",
+        "alt": "Cart panel open over the product page, including quantities, matching pieces and subtotal",
+        "layout": "full",
+        "width": 1440,
+        "height": 912,
+        "framed": true,
+        "caption": "The cart opens over the product page with quantities, matching pieces, free-shipping progress and a subtotal."
+      },
+      {
+        "src": "/assets/projects/assopra-store/home-mobile-opening-iphone.png",
+        "alt": "Original mobile storefront with navigation, family campaign and clothing categories",
+        "layout": "mobile",
+        "width": 520,
+        "height": 1071,
+        "framed": true
+      },
+      {
+        "src": "/assets/projects/assopra-store/product-mobile-selection-iphone.png",
+        "alt": "Original mobile product details with size and quantity selection, add-to-cart action and shipping estimate",
+        "layout": "mobile",
+        "width": 520,
+        "height": 1072,
+        "framed": true
+      },
+      {
+        "src": "/assets/projects/assopra-store/quick-add-iphone.png",
+        "alt": "Mobile quick-add panel with product imagery and size availability, including a sold-out size",
+        "layout": "mobile",
+        "width": 520,
+        "height": 1071,
+        "framed": true
+      },
+      {
+        "src": "/assets/projects/assopra-store/cart-phone-iphone.png",
+        "alt": "Original mobile cart with quantities, matching pieces, free-shipping progress and subtotal",
+        "layout": "mobile",
+        "width": 520,
+        "height": 1072,
+        "framed": true
+      },
+      {
+        "src": "/assets/projects/assopra-store/navigation.png",
+        "alt": "Desktop navigation expanded into clothing categories and featured products",
+        "layout": "masonry",
+        "width": 1440,
+        "height": 560
+      },
+      {
+        "src": "/assets/projects/assopra-store/search-results.png",
+        "alt": "Search query with product, collection and coordinated-outfit result categories",
+        "layout": "masonry",
+        "width": 1004,
+        "height": 580
+      },
+      {
+        "src": "/assets/projects/assopra-store/filters.png",
+        "alt": "Clothing filters by garment type, price range and age, with an apply action",
+        "layout": "masonry",
+        "width": 292,
+        "height": 655
+      },
+      {
+        "src": "/assets/projects/assopra-store/cart.png",
+        "alt": "Cart details with quantity controls, matching products and subtotal",
+        "layout": "masonry",
+        "width": 362,
+        "height": 842
+      },
+      {
+        "src": "/assets/projects/assopra-store/product-options.png",
+        "alt": "Product options, shipping calculator, care information and coordinated pieces",
+        "layout": "masonry",
+        "width": 384,
+        "height": 1364
+      },
+      {
+        "src": "/assets/projects/assopra-store/collection-boys.png",
+        "alt": "Boys collection card with campaign photography and its discovery action",
+        "layout": "masonry",
+        "width": 486,
+        "height": 651
+      },
+      {
+        "src": "/assets/projects/assopra-store/collection-girls.png",
+        "alt": "Girls collection card with campaign photography and its discovery action",
+        "layout": "masonry",
+        "width": 486,
+        "height": 651
+      },
+      {
+        "src": "/assets/projects/assopra-store/campaign-siblings.png",
+        "alt": "Sibling campaign with coordinated clothing in an everyday family setting",
+        "layout": "banners",
+        "width": 1408,
+        "height": 640,
+        "groupCaption": "I used AI as part of a professional image production workflow to create scenes featuring children, families and clothing. The imagery moves between product-focused studio compositions and everyday family settings, keeping the store's visual language consistent across campaign banners and collection cards."
+      },
+      {
+        "src": "/assets/projects/assopra-store/campaign-home.png",
+        "alt": "Clothing campaign presented in a warm domestic setting",
+        "layout": "banners",
+        "width": 1408,
+        "height": 436
+      },
+      {
+        "src": "/assets/projects/assopra-store/campaign-family.png",
+        "alt": "Family campaign featuring children in coordinated blue clothing",
+        "layout": "banners",
+        "width": 1408,
+        "height": 556
+      }
+    ]
+  },
   "meta-suplementos": {
     "preview": "/assets/projects/meta-suplementos/home-macbook.png",
     "faviconFrom": "/assets/projects/meta-suplementos/favicon.png",

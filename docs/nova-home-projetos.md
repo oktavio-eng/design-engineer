@@ -1,5 +1,13 @@
 # Nova home — Projects em cards e o detalhe do projeto
 
+## Assopra Store — 22/10/2026
+
+Case de redesign aprovado pelo Otavio, com o mesmo escopo confirmado da Meta: UX/UI das telas, pesquisa de mercado e persona e criação de imagens com IA. Textos em inglês aprovados em Role, Summary, Overview, The challenge, Design decisions e Image direction, sem resultados ou implementação presumidos.
+
+`assets/projects/assopra-store/` preserva as 23 imagens da apresentação local aprovada: nove MacBooks e quatro iPhones já compostos em PNG transparente, sete componentes individuais e três campanhas recortadas da home fornecida no Figma. Os nove recortes desktop têm proporção 1,6:1, exatamente a área útil do MacBook, preenchendo a tela sem deformação. Os iPhones usam telas mobile reais, com espaço para a ilha dinâmica não encobrir os títulos. Os dispositivos usam `framed: true`, os componentes usam `layout: "masonry"` e as campanhas usam `layout: "banners"`, com o texto aprovado sobre autoria e IA. Reutilizam gap 16, raio 16, borda preta a 8%, sem sombras ou fundo cinza externo. O favicon é o coelho da marca, recortado da navegação original; a fonte e as coordenadas ficam no estudo local.
+
+O Otavio pediu Meta Suplementos e Assopra Store, nessa ordem, imediatamente antes de CloudFaster. A seed `portfolio-content.js` e a atualização do Studio preservam os demais projetos e coleções. `project-media.mjs` contém o mesmo inventário como suplemento estático. Os estudos, fontes, recortes, textos aprovados, apresentação e ZIP continuam em `output/assopra-store/`, fora do deploy. Publicação autorizada em 22/10/2026; a atualização do Studio usa backup e trava da revisão corrente, após os assets estarem públicos.
+
 ## Meta Suplementos — 22/10/2026
 
 Case de redesign aprovado pelo Otavio: UX/UI de todas as telas da loja, informado por pesquisa de mercado e persona, e direção de imagens profissionais com modelos e produtos usando IA. Textos em inglês aprovados em Role, Summary, Overview, The challenge, Design decisions e Image direction; sem métricas de resultado ou URL da loja inferidas. O favicon PNG 600×600 foi enviado pelo Otavio e preservado byte a byte.

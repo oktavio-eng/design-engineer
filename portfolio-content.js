@@ -365,64 +365,6 @@
         }
       ],
     },
-    "cloudfaster-academy": {
-      name: "CloudFaster Academy",
-      role: "UX/UI + Identity + Web & Mobile · Cloud/AWS training",
-      summary: "Identity and learning experiences across web and mobile",
-      preview: "https://cloudfaster.academy/assets/og-image.png",
-      bio: "Visual identity, website and product interfaces for an AWS certification learning platform, serving individual learners and corporate teams. I worked on responsive layouts and reusable interface patterns across web and mobile, keeping the learning experience consistent between devices.",
-      links: [["Live site", "https://cloudfaster.academy/"]],
-      sections: [
-        {
-          "label": "The challenge",
-          "text": "The learning platform needed to work across web and mobile, adapting to different contexts rather than simply shrinking a desktop interface."
-        },
-        {
-          "label": "Design decisions",
-          "text": "I used reusable interface patterns and responsive layouts to keep the experience consistent across devices. Learning and practice flows were adapted to smaller screens while retaining the platform’s visual identity."
-        }
-      ],
-    },
-    "finq-edu": {
-      name: "FinQ Edu",
-      role: "UX/UI + Brand + Web & Mobile · IB/PE Education",
-      summary: "Launch identity for an investment-banking prep brand",
-      bio: "Visual identity, product interfaces and the initial website, at company launch, for an investment-banking/private-equity prep brand founded by people with real Wall Street backgrounds — built to give women a foothold in an IB/PE space that's highly competitive and visually closed off. Bet on gradients and vivid color, a deliberate break from every competitor's visual convention in the category. Designed the first website version, core flows, responsive interfaces and reusable components for the web platform and mobile app; the live site has evolved since.",
-      items: [
-        "Identity built to stand out for women in IB/PE — a category where competitor branding is uniformly conservative.",
-        "Gradients and vivid color as a deliberate break from category convention.",
-        "Designed the first website version and interfaces for the web platform and mobile app — the live site has evolved since."
-      ],
-      faviconFrom: "https://www.finqedu.com.br/",
-      links: [
-        ["App LP", "https://finqedu.webflow.io/"],
-        ["Original site", "https://dev-finqedu.webflow.io/"],
-      ],
-      sections: [
-        {
-          "label": "The challenge",
-          "text": "The launch identity needed to give women a foothold in investment-banking and private-equity education, a visually conservative category."
-        },
-        {
-          "label": "Design decisions",
-          "text": "Gradients and vivid colour were a deliberate departure from the category’s conventions. I carried that identity into the initial website and reusable web and mobile interfaces; the published website has evolved since."
-        }
-      ],
-    },
-    "jlcp-tecnologia": {
-      name: "JLCP Tecnologia",
-      role: "Brand Identity + Positioning · IT Observability",
-      summary: "Brand redesign for the #1 Zabbix partner in Brazil",
-      preview: "https://www.jlcp.com.br/images/favicon.svg",
-      bio: "Brand and logomark redesign for the #1 Zabbix partner in Brazil, an IT observability consultancy serving enterprise clients like Globo, Riachuelo, and EcoRodovias. Replaced a dated isometric-cube mark with a modular grid of squares — data points, monitored environments — resolving into a minimalist star, repositioning the brand as AI-first. Defended the direction against a competing AI-generated concept the founder had produced himself, then wrote the presentation rationale that won the room.",
-      items: [
-        "New logomark: modular grid of squares resolving into a star — monitored environments coalescing into AI-driven insight.",
-        "Repositioned the brand as AI-first, replacing a dated isometric 3D cube mark.",
-        "Defended the direction in front of the founder against his own AI-generated alternative, and wrote the rationale that shipped it.",
-        "Extended into event naming and a Portuguese-language copy pass on the live monitoring dashboard UI.",
-      ],
-      links: [["Live site", "https://www.jlcp.com.br/"]],
-    },
     "meta-suplementos": {
       "name": "Meta Suplementos",
       "role": "UX/UI + AI Art Direction · E-commerce",
@@ -637,6 +579,266 @@
       ],
       "links": []
     },
+    "assopra-store": {
+      "name": "Assopra Store",
+      "role": "UX/UI + AI Art Direction · E-commerce",
+      "summary": "A children's clothing store redesign, from shopping flows to family imagery.",
+      "bio": "UX/UI redesign of the Assopra online store, informed by market and persona research. I redesigned every screen across desktop and mobile, from product discovery and catalogue browsing to product details and cart. I also created AI-generated imagery featuring children, families and clothing, giving the storefront a shared visual direction.",
+      "faviconFrom": "/assets/projects/assopra-store/favicon.png",
+      "preview": "/assets/projects/assopra-store/home-opening-macbook.png",
+      "gallery": [
+        {
+          "src": "/assets/projects/assopra-store/home-opening-macbook.png",
+          "alt": "The Assopra storefront, campaign opening and clothing categories",
+          "layout": "full",
+          "width": 1440,
+          "height": 912,
+          "framed": true
+        },
+        {
+          "src": "/assets/projects/assopra-store/home-products-macbook.png",
+          "alt": "Clothing categories and the first product collection",
+          "layout": "full",
+          "width": 1440,
+          "height": 912,
+          "framed": true
+        },
+        {
+          "src": "/assets/projects/assopra-store/home-collections-macbook.png",
+          "alt": "Coordinated collection cards for boys and girls",
+          "layout": "full",
+          "width": 1440,
+          "height": 912,
+          "framed": true
+        },
+        {
+          "src": "/assets/projects/assopra-store/home-story-macbook.png",
+          "alt": "The brand story and family campaign in the middle of the home page",
+          "layout": "full",
+          "width": 1440,
+          "height": 912,
+          "framed": true
+        },
+        {
+          "src": "/assets/projects/assopra-store/catalogue-opening-macbook.png",
+          "alt": "Catalogue opening with a campaign banner, filters and clothing products",
+          "layout": "full",
+          "width": 1440,
+          "height": 912,
+          "framed": true
+        },
+        {
+          "src": "/assets/projects/assopra-store/catalogue-discovery-macbook.png",
+          "alt": "Campaign imagery interspersed with the clothing catalogue",
+          "layout": "full",
+          "width": 1440,
+          "height": 912,
+          "framed": true
+        },
+        {
+          "src": "/assets/projects/assopra-store/product-opening-macbook.png",
+          "alt": "Product gallery, size selection, quantity, purchase action and shipping estimate",
+          "layout": "full",
+          "width": 1440,
+          "height": 912,
+          "framed": true
+        },
+        {
+          "src": "/assets/projects/assopra-store/product-family-macbook.png",
+          "alt": "Coordinated looks for cousins, siblings and children further down the product page",
+          "layout": "full",
+          "width": 1440,
+          "height": 912,
+          "framed": true
+        },
+        {
+          "src": "/assets/projects/assopra-store/cart-context-macbook.png",
+          "alt": "Cart panel open over the product page, including quantities, matching pieces and subtotal",
+          "layout": "full",
+          "width": 1440,
+          "height": 912,
+          "framed": true,
+          "caption": "The cart opens over the product page with quantities, matching pieces, free-shipping progress and a subtotal."
+        },
+        {
+          "src": "/assets/projects/assopra-store/home-mobile-opening-iphone.png",
+          "alt": "Original mobile storefront with navigation, family campaign and clothing categories",
+          "layout": "mobile",
+          "width": 520,
+          "height": 1071,
+          "framed": true
+        },
+        {
+          "src": "/assets/projects/assopra-store/product-mobile-selection-iphone.png",
+          "alt": "Original mobile product details with size and quantity selection, add-to-cart action and shipping estimate",
+          "layout": "mobile",
+          "width": 520,
+          "height": 1072,
+          "framed": true
+        },
+        {
+          "src": "/assets/projects/assopra-store/quick-add-iphone.png",
+          "alt": "Mobile quick-add panel with product imagery and size availability, including a sold-out size",
+          "layout": "mobile",
+          "width": 520,
+          "height": 1071,
+          "framed": true
+        },
+        {
+          "src": "/assets/projects/assopra-store/cart-phone-iphone.png",
+          "alt": "Original mobile cart with quantities, matching pieces, free-shipping progress and subtotal",
+          "layout": "mobile",
+          "width": 520,
+          "height": 1072,
+          "framed": true
+        },
+        {
+          "src": "/assets/projects/assopra-store/navigation.png",
+          "alt": "Desktop navigation expanded into clothing categories and featured products",
+          "layout": "masonry",
+          "width": 1440,
+          "height": 560
+        },
+        {
+          "src": "/assets/projects/assopra-store/search-results.png",
+          "alt": "Search query with product, collection and coordinated-outfit result categories",
+          "layout": "masonry",
+          "width": 1004,
+          "height": 580
+        },
+        {
+          "src": "/assets/projects/assopra-store/filters.png",
+          "alt": "Clothing filters by garment type, price range and age, with an apply action",
+          "layout": "masonry",
+          "width": 292,
+          "height": 655
+        },
+        {
+          "src": "/assets/projects/assopra-store/cart.png",
+          "alt": "Cart details with quantity controls, matching products and subtotal",
+          "layout": "masonry",
+          "width": 362,
+          "height": 842
+        },
+        {
+          "src": "/assets/projects/assopra-store/product-options.png",
+          "alt": "Product options, shipping calculator, care information and coordinated pieces",
+          "layout": "masonry",
+          "width": 384,
+          "height": 1364
+        },
+        {
+          "src": "/assets/projects/assopra-store/collection-boys.png",
+          "alt": "Boys collection card with campaign photography and its discovery action",
+          "layout": "masonry",
+          "width": 486,
+          "height": 651
+        },
+        {
+          "src": "/assets/projects/assopra-store/collection-girls.png",
+          "alt": "Girls collection card with campaign photography and its discovery action",
+          "layout": "masonry",
+          "width": 486,
+          "height": 651
+        },
+        {
+          "src": "/assets/projects/assopra-store/campaign-siblings.png",
+          "alt": "Sibling campaign with coordinated clothing in an everyday family setting",
+          "layout": "banners",
+          "width": 1408,
+          "height": 640,
+          "groupCaption": "I used AI as part of a professional image production workflow to create scenes featuring children, families and clothing. The imagery moves between product-focused studio compositions and everyday family settings, keeping the store's visual language consistent across campaign banners and collection cards."
+        },
+        {
+          "src": "/assets/projects/assopra-store/campaign-home.png",
+          "alt": "Clothing campaign presented in a warm domestic setting",
+          "layout": "banners",
+          "width": 1408,
+          "height": 436
+        },
+        {
+          "src": "/assets/projects/assopra-store/campaign-family.png",
+          "alt": "Family campaign featuring children in coordinated blue clothing",
+          "layout": "banners",
+          "width": 1408,
+          "height": 556
+        }
+      ],
+      "sections": [
+        {
+          "label": "The challenge",
+          "text": "Rethink an existing children's clothing store, bringing the brand's family-centred character into a shopping experience that makes collections, sizes and coordinated outfits easy to explore."
+        },
+        {
+          "label": "Design decisions",
+          "text": "I paired warm neutral backgrounds and muted olive and blush accents with handwritten headings and rounded sans-serif text. Collection imagery sits alongside product grids, while navigation and filters offer routes through clothing categories, prices and age ranges. Product pages bring size selection, shipping estimates, care information and matching pieces together. Shared components carry the same visual language across desktop and mobile."
+        },
+        {
+          "label": "Image direction",
+          "text": "I used AI as part of a professional image production workflow to create scenes featuring children, families and clothing. The imagery moves between product-focused studio compositions and everyday family settings, keeping the store's visual language consistent across campaign banners and collection cards."
+        }
+      ],
+      "links": []
+    },
+    "cloudfaster-academy": {
+      name: "CloudFaster Academy",
+      role: "UX/UI + Identity + Web & Mobile · Cloud/AWS training",
+      summary: "Identity and learning experiences across web and mobile",
+      preview: "https://cloudfaster.academy/assets/og-image.png",
+      bio: "Visual identity, website and product interfaces for an AWS certification learning platform, serving individual learners and corporate teams. I worked on responsive layouts and reusable interface patterns across web and mobile, keeping the learning experience consistent between devices.",
+      links: [["Live site", "https://cloudfaster.academy/"]],
+      sections: [
+        {
+          "label": "The challenge",
+          "text": "The learning platform needed to work across web and mobile, adapting to different contexts rather than simply shrinking a desktop interface."
+        },
+        {
+          "label": "Design decisions",
+          "text": "I used reusable interface patterns and responsive layouts to keep the experience consistent across devices. Learning and practice flows were adapted to smaller screens while retaining the platform’s visual identity."
+        }
+      ],
+    },
+    "finq-edu": {
+      name: "FinQ Edu",
+      role: "UX/UI + Brand + Web & Mobile · IB/PE Education",
+      summary: "Launch identity for an investment-banking prep brand",
+      bio: "Visual identity, product interfaces and the initial website, at company launch, for an investment-banking/private-equity prep brand founded by people with real Wall Street backgrounds — built to give women a foothold in an IB/PE space that's highly competitive and visually closed off. Bet on gradients and vivid color, a deliberate break from every competitor's visual convention in the category. Designed the first website version, core flows, responsive interfaces and reusable components for the web platform and mobile app; the live site has evolved since.",
+      items: [
+        "Identity built to stand out for women in IB/PE — a category where competitor branding is uniformly conservative.",
+        "Gradients and vivid color as a deliberate break from category convention.",
+        "Designed the first website version and interfaces for the web platform and mobile app — the live site has evolved since."
+      ],
+      faviconFrom: "https://www.finqedu.com.br/",
+      links: [
+        ["App LP", "https://finqedu.webflow.io/"],
+        ["Original site", "https://dev-finqedu.webflow.io/"],
+      ],
+      sections: [
+        {
+          "label": "The challenge",
+          "text": "The launch identity needed to give women a foothold in investment-banking and private-equity education, a visually conservative category."
+        },
+        {
+          "label": "Design decisions",
+          "text": "Gradients and vivid colour were a deliberate departure from the category’s conventions. I carried that identity into the initial website and reusable web and mobile interfaces; the published website has evolved since."
+        }
+      ],
+    },
+    "jlcp-tecnologia": {
+      name: "JLCP Tecnologia",
+      role: "Brand Identity + Positioning · IT Observability",
+      summary: "Brand redesign for the #1 Zabbix partner in Brazil",
+      preview: "https://www.jlcp.com.br/images/favicon.svg",
+      bio: "Brand and logomark redesign for the #1 Zabbix partner in Brazil, an IT observability consultancy serving enterprise clients like Globo, Riachuelo, and EcoRodovias. Replaced a dated isometric-cube mark with a modular grid of squares — data points, monitored environments — resolving into a minimalist star, repositioning the brand as AI-first. Defended the direction against a competing AI-generated concept the founder had produced himself, then wrote the presentation rationale that won the room.",
+      items: [
+        "New logomark: modular grid of squares resolving into a star — monitored environments coalescing into AI-driven insight.",
+        "Repositioned the brand as AI-first, replacing a dated isometric 3D cube mark.",
+        "Defended the direction in front of the founder against his own AI-generated alternative, and wrote the rationale that shipped it.",
+        "Extended into event naming and a Portuguese-language copy pass on the live monitoring dashboard UI.",
+      ],
+      links: [["Live site", "https://www.jlcp.com.br/"]],
+    },
+
   };
 
   const personal = {

@@ -50,9 +50,9 @@ test("/testes/prototipo-nova-home: carrossel, detalhe e galeria", { timeout: 60_
 
   // --- o carrossel --------------------------------------------------------
   // 127.0.0.1 conta como localhost, então rascunhos aparecem — hoje são zero,
-  // e os nove projetos viram nove cards (a lista de rows tinha um "show more"
+  // e os dez projetos viram dez cards (a lista de rows tinha um "show more"
   // a partir do quarto; o carrossel não corta nenhum).
-  assert.equal(await page.locator("#projects .pcard").count(), 9, "um card por projeto");
+  assert.equal(await page.locator("#projects .pcard").count(), 10, "um card por projeto");
   assert.equal(
     await page.locator("#projects .pcard__desc").first().textContent(),
     "Founding design for website and multi-device platform",

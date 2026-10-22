@@ -90,7 +90,7 @@ test("/ (portfolio home) renders its collections, opens rows and photos in modal
   assert.deepEqual(sections, ["positioning", "contributions", "writing", "projects", "personal", "life", "gallery:hidden"]);
   assert.equal(await page.locator(".profile__role").textContent(), "UI/UX & Visual Designer");
 
-  assert.equal(await page.locator("#projects .pcard").count(), 9, "all projects render as cards");
+  assert.equal(await page.locator("#projects .pcard").count(), 10, "all projects render as cards");
   assert.equal(await page.locator("[data-proto-panel]").count(), 0, "no prototype controls on the public homepage");
   assert.equal(await page.locator("html").getAttribute("data-proto-carousel"), "bleed");
   assert.equal(await page.locator("html").getAttribute("data-proto-surface"), "drawer");

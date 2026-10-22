@@ -8,6 +8,8 @@ Notable changes to this site, in the order they landed on `main`. Newest first. 
 
 ## 2026-10-22
 
+- Assopra Store: case aprovado com 23 imagens, mockups preenchendo a tela, componentes em masonry e campanhas de IA; Meta e Assopra antes da CloudFaster na seed e no Studio. Ver [apresentação](docs/nova-home-projetos.md).
+
 - Meta Suplementos: novo case de redesign com textos aprovados, favicon enviado, doze imagens em mockups, oito recortes em masonry e cinco banners de IA; ver [apresentação](docs/nova-home-projetos.md).
 
 - Galerias: mockups vetoriais de MacBook nas telas web do Caderno e nas duas páginas da DascIA, iPhone nas capturas do FinQ e seis peças mobile adicionais do Caderno; originais completos preservados no lightbox. Ver [experimento](docs/nova-home-projetos.md) (#101).
