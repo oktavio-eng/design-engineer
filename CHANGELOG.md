@@ -8,6 +8,10 @@ Notable changes to this site, in the order they landed on `main`. Newest first. 
 
 ## 2026-10-22
 
+- Meta e Assopra: campanhas em ticker arrastável no meio dos cases, com pausa e reduced motion; texto ampliado da Assopra aprovado. Ver [padrão](docs/patterns.md) e [conteúdo](docs/nova-home-projetos.md).
+
+- Meta Suplementos: removidos da galeria a abertura duplicada e o mockup isolado do IronHair, mantendo a capa; ver [seleção](docs/nova-home-projetos.md).
+
 - Assopra Store: case aprovado com 23 imagens, mockups preenchendo a tela, componentes em masonry e campanhas de IA; Meta e Assopra antes da CloudFaster na seed e no Studio. Ver [apresentação](docs/nova-home-projetos.md).
 
 - Meta Suplementos: novo case de redesign com textos aprovados, favicon enviado, doze imagens em mockups, oito recortes em masonry e cinco banners de IA; ver [apresentação](docs/nova-home-projetos.md).

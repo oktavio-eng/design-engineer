@@ -286,6 +286,7 @@
   pointer-events: auto;
 }
 .pdrawer {
+  --pgal-bleed: var(--space-32);
   position: fixed;
   z-index: 55;
   display: flex;
@@ -593,6 +594,58 @@ body.pdrawer-open > .topbar {
   align-items: start;
 }
 .pgal__banners .pgal__img { aspect-ratio: auto; }
+.pgal__ticker {
+  grid-column: 1 / -1;
+  min-width: 0;
+  width: calc(100% + var(--pgal-bleed, 0px) * 2);
+  margin-inline: calc(-1 * var(--pgal-bleed, 0px));
+}
+.pgal__ticker-header {
+  display: flex;
+  align-items: start;
+  gap: var(--space-24);
+  padding-inline: var(--pgal-bleed, 0px);
+  margin-bottom: var(--space-24);
+}
+.pgal__ticker-header .pgal__caption { margin: 0; flex: 1; }
+.pgal__ticker-toggle {
+  min-height: var(--space-44);
+  padding: var(--space-8) var(--space-16);
+  border: 0;
+  border-radius: var(--radius-full);
+  background: var(--bg);
+  color: var(--ink);
+  font: inherit;
+  cursor: pointer;
+}
+.pgal__ticker-track {
+  display: flex;
+  gap: var(--space-16);
+  overflow-x: auto;
+  scrollbar-width: none;
+  scroll-behavior: auto;
+  overscroll-behavior-x: contain;
+  touch-action: pan-x pan-y;
+  cursor: grab;
+  user-select: none;
+}
+.pgal__ticker-track::-webkit-scrollbar { display: none; }
+.pgal__ticker-track[data-dragging] { cursor: grabbing; }
+.pgal__ticker-track > .pgal__item {
+  min-width: 0;
+  flex: 0 0 auto;
+  height: clamp(var(--space-150), 25vw, var(--space-240));
+  background: transparent;
+  cursor: inherit;
+}
+.pgal__ticker-track .pgal__img {
+  aspect-ratio: auto;
+  width: auto;
+  max-width: none;
+  height: 100%;
+  object-fit: contain;
+}
+.pgal__ticker-track .pgal__item:focus-visible { outline-offset: calc(-1 * var(--space-4)); }
 .pgal__banners .pgal__banner-intro {
   grid-column: 1 / -1;
   margin: 0 0 var(--space-8);
@@ -629,6 +682,7 @@ body.pdrawer-open > .topbar {
    modo drawer isso já é o comportamento nativo do Vaul. */
 @media (max-width: 560px) {
   .pdrawer {
+    --pgal-bleed: var(--space-20);
     width: 100vw;
     padding: var(--space-20);
     border-radius: var(--radius-24) var(--radius-24) 0 0;

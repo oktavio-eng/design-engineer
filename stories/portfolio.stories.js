@@ -558,23 +558,41 @@ export const CampaignProjectImages = {
     const root = Gallery.render();
     root.insertAdjacentHTML('afterbegin', '<link rel="stylesheet" href="/styles/projects.css">');
     root.querySelector('h1').textContent = 'AI campaign images';
+    root.querySelector('.sb-inventory__header p').textContent = 'Campaign banners move slowly across the row, pause on hover or focus, and open in the lightbox. Reduced motion keeps the row still.';
     root.querySelector('[data-gallery]').outerHTML = '<div data-project-gallery></div>';
-    import('../projects.mjs').then(({ galleryMarkup }) => {
+    import('../projects.mjs').then(({ galleryMarkup, bindCampaignTickers }) => {
       root.querySelector('[data-project-gallery]').innerHTML = galleryMarkup({ gallery: [
-        { src: '/assets/projects/meta-suplementos/banner-ironhair.jpg', alt: 'IronHair campaign', layout: 'banners', groupCaption: 'I used AI in a professional image production workflow to create realistic model and product imagery.' },
-        { src: '/assets/projects/meta-suplementos/banner-ironfit.jpg', alt: 'IronFit campaign', layout: 'banners' },
+        { src: '/assets/projects/meta-suplementos/banner-ironhair.jpg', alt: 'IronHair campaign', layout: 'ticker', groupCaption: 'I used AI in a professional image production workflow to create realistic model and product imagery.' },
+        { src: '/assets/projects/meta-suplementos/banner-ironfit.jpg', alt: 'IronFit campaign', layout: 'ticker' },
+        { src: '/assets/projects/meta-suplementos/banner-metapower.jpg', alt: 'MetaPower campaign', layout: 'ticker' },
+        { src: '/assets/projects/meta-suplementos/banner-orapro-nobis.jpg', alt: 'OraPro Nobis campaign', layout: 'ticker' },
+        { src: '/assets/projects/meta-suplementos/banner-magnesium.jpg', alt: 'Magnesium campaign', layout: 'ticker' },
       ] });
+      bindCampaignTickers(root);
     });
     return root;
   },
-  play: async ({ canvasElement }) => {
-    await waitFor(() => expect(canvasElement.querySelectorAll('.pgal__banners > button')).toHaveLength(2));
+  play: async ({ canvasElement, userEvent }) => {
+    await waitFor(() => expect(canvasElement.querySelectorAll('[data-ticker-track] > button')).toHaveLength(5));
     await expect(canvasElement.querySelector('.pgal__banner-intro')).toHaveTextContent('professional image production');
-    for (const image of canvasElement.querySelectorAll('.pgal__banners img')) {
+    for (const image of canvasElement.querySelectorAll('.pgal__ticker img')) {
+      image.loading = 'eager';
       await waitFor(() => expect(image.naturalWidth).toBe(1372));
       await expect(getComputedStyle(image).aspectRatio).toBe('auto');
       await expect(getComputedStyle(image).borderTopWidth).toBe('1px');
     }
+    const buttons = canvasElement.querySelectorAll('[data-ticker-track] > button');
+    buttons[0].focus();
+    await userEvent.keyboard('{ArrowRight}');
+    await expect(buttons[1]).toHaveFocus();
+    await expect(canvasElement.querySelector('[data-campaign-ticker]').dataset.running).toBe('false');
+    await userEvent.keyboard('{Enter}');
+    await expect(canvasElement.querySelector('[data-lightbox]')).toHaveAttribute('aria-hidden', 'false');
+    await userEvent.keyboard('{Escape}');
+    await expect(buttons[1]).toHaveFocus();
+    await userEvent.keyboard('{Home}');
+    buttons[0].blur();
+    canvasElement.querySelector('[data-ticker-track]').scrollLeft = 0;
     canvasElement.querySelector('[data-project-gallery]').dataset.playDone = 'true';
   },
 };

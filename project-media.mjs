@@ -117,6 +117,28 @@ export const suppliedProjectMedia = {
         "framed": true
       },
       {
+        "src": "/assets/projects/assopra-store/campaign-siblings.png",
+        "alt": "Sibling campaign with coordinated clothing in an everyday family setting",
+        "layout": "ticker",
+        "width": 1408,
+        "height": 640,
+        "groupCaption": "I used AI as part of a professional image production workflow to create scenes featuring children, families and clothing. The imagery moves between product-focused studio compositions and everyday family settings, keeping the store's visual language consistent across campaign banners and collection cards."
+      },
+      {
+        "src": "/assets/projects/assopra-store/campaign-home.png",
+        "alt": "Clothing campaign presented in a warm domestic setting",
+        "layout": "ticker",
+        "width": 1408,
+        "height": 436
+      },
+      {
+        "src": "/assets/projects/assopra-store/campaign-family.png",
+        "alt": "Family campaign featuring children in coordinated blue clothing",
+        "layout": "ticker",
+        "width": 1408,
+        "height": 556
+      },
+      {
         "src": "/assets/projects/assopra-store/product-opening-macbook.png",
         "alt": "Product gallery, size selection, quantity, purchase action and shipping estimate",
         "layout": "full",
@@ -221,43 +243,14 @@ export const suppliedProjectMedia = {
         "layout": "masonry",
         "width": 486,
         "height": 651
-      },
-      {
-        "src": "/assets/projects/assopra-store/campaign-siblings.png",
-        "alt": "Sibling campaign with coordinated clothing in an everyday family setting",
-        "layout": "banners",
-        "width": 1408,
-        "height": 640,
-        "groupCaption": "I used AI as part of a professional image production workflow to create scenes featuring children, families and clothing. The imagery moves between product-focused studio compositions and everyday family settings, keeping the store's visual language consistent across campaign banners and collection cards."
-      },
-      {
-        "src": "/assets/projects/assopra-store/campaign-home.png",
-        "alt": "Clothing campaign presented in a warm domestic setting",
-        "layout": "banners",
-        "width": 1408,
-        "height": 436
-      },
-      {
-        "src": "/assets/projects/assopra-store/campaign-family.png",
-        "alt": "Family campaign featuring children in coordinated blue clothing",
-        "layout": "banners",
-        "width": 1408,
-        "height": 556
       }
     ]
   },
   "meta-suplementos": {
+    "previewFramed": true,
     "preview": "/assets/projects/meta-suplementos/home-macbook.png",
     "faviconFrom": "/assets/projects/meta-suplementos/favicon.png",
     "gallery": [
-      {
-        "src": "/assets/projects/meta-suplementos/home-macbook.png",
-        "alt": "Storefront redesign shown in the existing MacBook frame",
-        "layout": "full",
-        "width": 1330,
-        "height": 843,
-        "framed": true
-      },
       {
         "src": "/assets/projects/meta-suplementos/categories-science-macbook.png",
         "alt": "Product categories and formulation principles on the Meta storefront",
@@ -269,14 +262,6 @@ export const suppliedProjectMedia = {
       {
         "src": "/assets/projects/meta-suplementos/favourites-ironhair-macbook.png",
         "alt": "Featured supplement products and the IronHair campaign banner",
-        "layout": "full",
-        "width": 1330,
-        "height": 843,
-        "framed": true
-      },
-      {
-        "src": "/assets/projects/meta-suplementos/ironhair-feature-macbook.png",
-        "alt": "IronHair product feature with ingredients, benefits and purchase options",
         "layout": "full",
         "width": 1330,
         "height": 843,
@@ -313,6 +298,42 @@ export const suppliedProjectMedia = {
         "width": 1330,
         "height": 843,
         "framed": true
+      },
+      {
+        "src": "/assets/projects/meta-suplementos/banner-ironhair.jpg",
+        "alt": "IronHair campaign with a model holding the supplement",
+        "layout": "ticker",
+        "width": 1372,
+        "height": 670,
+        "groupCaption": "I used AI as part of a professional image production workflow to create realistic scenes featuring models and products, directing lighting, colour and composition across the campaign banners."
+      },
+      {
+        "src": "/assets/projects/meta-suplementos/banner-ironfit.jpg",
+        "alt": "IronFit product composition with capsules and dried orange",
+        "layout": "ticker",
+        "width": 1372,
+        "height": 670
+      },
+      {
+        "src": "/assets/projects/meta-suplementos/banner-metapower.jpg",
+        "alt": "MetaPower campaign with a model in a blue studio scene",
+        "layout": "ticker",
+        "width": 1372,
+        "height": 670
+      },
+      {
+        "src": "/assets/projects/meta-suplementos/banner-orapro-nobis.jpg",
+        "alt": "OraPro Nobis product composition with leaves and lime",
+        "layout": "ticker",
+        "width": 1372,
+        "height": 670
+      },
+      {
+        "src": "/assets/projects/meta-suplementos/banner-magnesium.jpg",
+        "alt": "Magnesium campaign with a couple holding the supplement",
+        "layout": "ticker",
+        "width": 1372,
+        "height": 670
       },
       {
         "src": "/assets/projects/meta-suplementos/product-macbook.png",
@@ -402,42 +423,6 @@ export const suppliedProjectMedia = {
         "layout": "masonry",
         "width": 1440,
         "height": 96
-      },
-      {
-        "src": "/assets/projects/meta-suplementos/banner-ironhair.jpg",
-        "alt": "IronHair campaign with a model holding the supplement",
-        "layout": "banners",
-        "width": 1372,
-        "height": 670,
-        "groupCaption": "I used AI as part of a professional image production workflow to create realistic scenes featuring models and products, directing lighting, colour and composition across the campaign banners."
-      },
-      {
-        "src": "/assets/projects/meta-suplementos/banner-ironfit.jpg",
-        "alt": "IronFit product composition with capsules and dried orange",
-        "layout": "banners",
-        "width": 1372,
-        "height": 670
-      },
-      {
-        "src": "/assets/projects/meta-suplementos/banner-metapower.jpg",
-        "alt": "MetaPower campaign with a model in a blue studio scene",
-        "layout": "banners",
-        "width": 1372,
-        "height": 670
-      },
-      {
-        "src": "/assets/projects/meta-suplementos/banner-orapro-nobis.jpg",
-        "alt": "OraPro Nobis product composition with leaves and lime",
-        "layout": "banners",
-        "width": 1372,
-        "height": 670
-      },
-      {
-        "src": "/assets/projects/meta-suplementos/banner-magnesium.jpg",
-        "alt": "Magnesium campaign with a couple holding the supplement",
-        "layout": "banners",
-        "width": 1372,
-        "height": 670
       }
     ]
   },

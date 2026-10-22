@@ -374,14 +374,6 @@
       "preview": "/assets/projects/meta-suplementos/home-macbook.png",
       "gallery": [
         {
-          "src": "/assets/projects/meta-suplementos/home-macbook.png",
-          "alt": "Storefront redesign shown in the existing MacBook frame",
-          "layout": "full",
-          "width": 1330,
-          "height": 843,
-          "framed": true
-        },
-        {
           "src": "/assets/projects/meta-suplementos/categories-science-macbook.png",
           "alt": "Product categories and formulation principles on the Meta storefront",
           "layout": "full",
@@ -392,14 +384,6 @@
         {
           "src": "/assets/projects/meta-suplementos/favourites-ironhair-macbook.png",
           "alt": "Featured supplement products and the IronHair campaign banner",
-          "layout": "full",
-          "width": 1330,
-          "height": 843,
-          "framed": true
-        },
-        {
-          "src": "/assets/projects/meta-suplementos/ironhair-feature-macbook.png",
-          "alt": "IronHair product feature with ingredients, benefits and purchase options",
           "layout": "full",
           "width": 1330,
           "height": 843,
@@ -436,6 +420,42 @@
           "width": 1330,
           "height": 843,
           "framed": true
+        },
+        {
+          "src": "/assets/projects/meta-suplementos/banner-ironhair.jpg",
+          "alt": "IronHair campaign with a model holding the supplement",
+          "layout": "ticker",
+          "width": 1372,
+          "height": 670,
+          "groupCaption": "I used AI as part of a professional image production workflow to create realistic scenes featuring models and products, directing lighting, colour and composition across the campaign banners."
+        },
+        {
+          "src": "/assets/projects/meta-suplementos/banner-ironfit.jpg",
+          "alt": "IronFit product composition with capsules and dried orange",
+          "layout": "ticker",
+          "width": 1372,
+          "height": 670
+        },
+        {
+          "src": "/assets/projects/meta-suplementos/banner-metapower.jpg",
+          "alt": "MetaPower campaign with a model in a blue studio scene",
+          "layout": "ticker",
+          "width": 1372,
+          "height": 670
+        },
+        {
+          "src": "/assets/projects/meta-suplementos/banner-orapro-nobis.jpg",
+          "alt": "OraPro Nobis product composition with leaves and lime",
+          "layout": "ticker",
+          "width": 1372,
+          "height": 670
+        },
+        {
+          "src": "/assets/projects/meta-suplementos/banner-magnesium.jpg",
+          "alt": "Magnesium campaign with a couple holding the supplement",
+          "layout": "ticker",
+          "width": 1372,
+          "height": 670
         },
         {
           "src": "/assets/projects/meta-suplementos/product-macbook.png",
@@ -525,42 +545,6 @@
           "layout": "masonry",
           "width": 1440,
           "height": 96
-        },
-        {
-          "src": "/assets/projects/meta-suplementos/banner-ironhair.jpg",
-          "alt": "IronHair campaign with a model holding the supplement",
-          "layout": "banners",
-          "width": 1372,
-          "height": 670,
-          "groupCaption": "I used AI as part of a professional image production workflow to create realistic scenes featuring models and products, directing lighting, colour and composition across the campaign banners."
-        },
-        {
-          "src": "/assets/projects/meta-suplementos/banner-ironfit.jpg",
-          "alt": "IronFit product composition with capsules and dried orange",
-          "layout": "banners",
-          "width": 1372,
-          "height": 670
-        },
-        {
-          "src": "/assets/projects/meta-suplementos/banner-metapower.jpg",
-          "alt": "MetaPower campaign with a model in a blue studio scene",
-          "layout": "banners",
-          "width": 1372,
-          "height": 670
-        },
-        {
-          "src": "/assets/projects/meta-suplementos/banner-orapro-nobis.jpg",
-          "alt": "OraPro Nobis product composition with leaves and lime",
-          "layout": "banners",
-          "width": 1372,
-          "height": 670
-        },
-        {
-          "src": "/assets/projects/meta-suplementos/banner-magnesium.jpg",
-          "alt": "Magnesium campaign with a couple holding the supplement",
-          "layout": "banners",
-          "width": 1372,
-          "height": 670
         }
       ],
       "sections": [
@@ -583,7 +567,10 @@
       "name": "Assopra Store",
       "role": "UX/UI + AI Art Direction · E-commerce",
       "summary": "A children's clothing store redesign, from shopping flows to family imagery.",
-      "bio": "UX/UI redesign of the Assopra online store, informed by market and persona research. I redesigned every screen across desktop and mobile, from product discovery and catalogue browsing to product details and cart. I also created AI-generated imagery featuring children, families and clothing, giving the storefront a shared visual direction.",
+      "bio": [
+        "UX/UI redesign of the Assopra online store, informed by market and persona research. I redesigned every screen across desktop and mobile, covering the home page, navigation, search, catalogue, filters, product details and cart. I also created AI-generated imagery featuring children, families and clothing, carrying a shared visual direction across the storefront and campaign banners.",
+        "The design brings two ways of shopping together: exploring collections and coordinated family looks, or looking for a specific garment and size. I worked on the screens and their supporting states, including expanded navigation, search results, catalogue filters, quick size selection and the open cart."
+      ],
       "faviconFrom": "/assets/projects/assopra-store/favicon.png",
       "preview": "/assets/projects/assopra-store/home-opening-macbook.png",
       "gallery": [
@@ -634,6 +621,28 @@
           "width": 1440,
           "height": 912,
           "framed": true
+        },
+        {
+          "src": "/assets/projects/assopra-store/campaign-siblings.png",
+          "alt": "Sibling campaign with coordinated clothing in an everyday family setting",
+          "layout": "ticker",
+          "width": 1408,
+          "height": 640,
+          "groupCaption": "I used AI as part of a professional image production workflow to create scenes featuring children, families and clothing. The imagery moves between product-focused studio compositions and everyday family settings, keeping the store's visual language consistent across campaign banners and collection cards."
+        },
+        {
+          "src": "/assets/projects/assopra-store/campaign-home.png",
+          "alt": "Clothing campaign presented in a warm domestic setting",
+          "layout": "ticker",
+          "width": 1408,
+          "height": 436
+        },
+        {
+          "src": "/assets/projects/assopra-store/campaign-family.png",
+          "alt": "Family campaign featuring children in coordinated blue clothing",
+          "layout": "ticker",
+          "width": 1408,
+          "height": 556
         },
         {
           "src": "/assets/projects/assopra-store/product-opening-macbook.png",
@@ -740,42 +749,24 @@
           "layout": "masonry",
           "width": 486,
           "height": 651
-        },
-        {
-          "src": "/assets/projects/assopra-store/campaign-siblings.png",
-          "alt": "Sibling campaign with coordinated clothing in an everyday family setting",
-          "layout": "banners",
-          "width": 1408,
-          "height": 640,
-          "groupCaption": "I used AI as part of a professional image production workflow to create scenes featuring children, families and clothing. The imagery moves between product-focused studio compositions and everyday family settings, keeping the store's visual language consistent across campaign banners and collection cards."
-        },
-        {
-          "src": "/assets/projects/assopra-store/campaign-home.png",
-          "alt": "Clothing campaign presented in a warm domestic setting",
-          "layout": "banners",
-          "width": 1408,
-          "height": 436
-        },
-        {
-          "src": "/assets/projects/assopra-store/campaign-family.png",
-          "alt": "Family campaign featuring children in coordinated blue clothing",
-          "layout": "banners",
-          "width": 1408,
-          "height": 556
         }
       ],
       "sections": [
         {
           "label": "The challenge",
-          "text": "Rethink an existing children's clothing store, bringing the brand's family-centred character into a shopping experience that makes collections, sizes and coordinated outfits easy to explore."
+          "text": "Rethink an existing children's clothing store while keeping its family-centred character visible throughout the shopping experience. Campaign imagery needed room to express the brand, alongside practical information about clothing, sizes, care and delivery. The challenge was to give both a clear place across desktop and mobile, from the first collection a customer sees to the details they review before adding a piece to the cart."
         },
         {
           "label": "Design decisions",
-          "text": "I paired warm neutral backgrounds and muted olive and blush accents with handwritten headings and rounded sans-serif text. Collection imagery sits alongside product grids, while navigation and filters offer routes through clothing categories, prices and age ranges. Product pages bring size selection, shipping estimates, care information and matching pieces together. Shared components carry the same visual language across desktop and mobile."
+          "text": "I paired warm neutral backgrounds and muted olive and blush accents with handwritten headings and rounded sans-serif text. The headings bring personality to collections and product names, while the supporting type keeps prices, descriptions and controls easy to scan. Reusable product cards, buttons and selection controls carry the same visual language across the store.",
+          "list": [
+            "Navigation groups clothing, accessories and coordinated looks, while catalogue filters narrow the range by garment type, price and age. Campaign banners sit between product rows, keeping collection imagery close to the garments being explored. Search has its own open and populated states, with results grouped into products, collections and coordinated outfits.",
+            "On product pages, I brought the image gallery, size and quantity selection, shipping estimate and purchase action into one sequence. Care information and delivery details sit in expandable sections. Matching pieces appear alongside the product and again in the cart, extending the coordinated-outfit idea into the purchase flow. The mobile layouts reorganise these elements into a vertical sequence, with separate menu, filter, quick-add and cart states."
+          ]
         },
         {
           "label": "Image direction",
-          "text": "I used AI as part of a professional image production workflow to create scenes featuring children, families and clothing. The imagery moves between product-focused studio compositions and everyday family settings, keeping the store's visual language consistent across campaign banners and collection cards."
+          "text": "I used AI as part of a professional image production workflow to create scenes featuring children, families and clothing. The imagery moves between product-focused studio compositions and everyday family settings, including coordinated looks for siblings and cousins. I carried the same warm, understated direction across campaign banners and collection cards so the imagery could work together throughout the store."
         }
       ],
       "links": []

@@ -17,9 +17,9 @@ test('Meta preserves framed images and keyboard access in responsive masonry', a
   await page.goto(server.origin, { waitUntil: 'load' });
   await page.locator('[data-proto-open="meta-suplementos"]').click();
   await page.locator('.pgal__masonry').waitFor();
-  assert.equal(await page.locator('.pgal__img').count(), 25);
-  assert.equal(await page.locator('.pgal__item--framed').count(), 12);
-  assert.equal(await page.locator('.pgal__banners > button').count(), 5);
+  assert.equal(await page.locator('.pgal__img').count(), 23);
+  assert.equal(await page.locator('.pgal__item--framed').count(), 10);
+  assert.equal(await page.locator('[data-ticker-track] > button').count(), 5);
   assert.match(await page.locator('.pgal__banner-intro').textContent(), /professional image production.*realistic scenes/);
   assert.match(await page.locator('.pgal__item--captioned .pgal__caption').textContent(), /pre-checkout/);
   for (const [width, columns] of [[1440, '3'], [768, '2'], [390, '1']]) {

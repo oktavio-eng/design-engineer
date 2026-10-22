@@ -317,7 +317,7 @@ export function galleryMarkup(entry) {
   }
   let html = '<div class="pgal">';
   for (let index = 0; index < photos.length;) {
-    const group = photo => ["mobile", "masonry", "banners"].includes(photo.layout) ? photo.layout : "standard";
+    const group = photo => ["mobile", "masonry", "banners", "ticker"].includes(photo.layout) ? photo.layout : "standard";
     const kind = group(photos[index]);
     const run = [];
     while (index < photos.length && group(photos[index]) === kind) run.push(photos[index++]);
@@ -326,9 +326,103 @@ export function galleryMarkup(entry) {
     else if (kind === "banners") html += '<div class="pgal__banners">' +
       (run[0].groupCaption ? '<p class="pgal__caption pgal__banner-intro">' + esc(run[0].groupCaption) + '</p>' : '') +
       run.map(photo => imageButton(photo)).join("") + '</div>';
+    else if (kind === "ticker") html += '<section class="pgal__ticker" data-campaign-ticker aria-label="Campaign images">' +
+      '<div class="pgal__ticker-header">' +
+      (run[0].groupCaption ? '<p class="pgal__caption pgal__banner-intro">' + esc(run[0].groupCaption) + '</p>' : '') +
+      '<button class="pgal__ticker-toggle" type="button" data-ticker-toggle aria-label="Pause campaign carousel">Pause</button></div>' +
+      '<div class="pgal__ticker-track" data-ticker-track>' + run.map(photo => imageButton(photo)).join('') + '</div></section>';
     else html += run.map((photo, i) => imageButton(photo, photo.layout === "wide" || photo.layout === "full" || isWide(i, run.length))).join("");
   }
   return html + '</div>';
+}
+
+// Recycle the original buttons after they leave the viewport. No duplicate
+// focus stops or lightbox entries; hover and keyboard focus stop recycling.
+export function bindCampaignTickers(root) {
+  const cleanups = [];
+  for (const ticker of root.querySelectorAll('[data-campaign-ticker]')) {
+    const track = ticker.querySelector('[data-ticker-track]');
+    const toggle = ticker.querySelector('[data-ticker-toggle]');
+    const win = track.ownerDocument.defaultView;
+    const doc = track.ownerDocument;
+    const motion = win.matchMedia('(prefers-reduced-motion: reduce)');
+    const controller = new AbortController();
+    const on = (target, type, fn, options = {}) => target.addEventListener(type, fn, { ...options, signal: controller.signal });
+    const clearDrag = bindDragCarousel(track);
+    let frame = 0, previous = 0, position = 0, timer = 0, resizeFrame = 0;
+    let active = true, ready = false, visible = false, hovered = false, pressed = false, paused = false, holding = false;
+    const canRun = () => active && ready && ticker.isConnected && visible && !motion.matches && !doc.hidden && !hovered && !pressed && !paused && !holding &&
+      !ticker.contains(doc.activeElement) && !doc.querySelector('[data-lightbox][aria-hidden="false"]') &&
+      track.children.length > 2 && track.scrollWidth > track.clientWidth;
+    const stop = () => { win.cancelAnimationFrame(frame); frame = 0; previous = 0; ticker.dataset.running = 'false'; };
+    function tick(time) {
+      frame = 0;
+      if (!canRun()) { stop(); return; }
+      const speed = parseFloat(getComputedStyle(ticker).getPropertyValue('--campaign-ticker-speed')) || 24;
+      position += Math.min(time - (previous || time), 50) * speed / 1000;
+      previous = time;
+      const first = track.firstElementChild;
+      const step = first.getBoundingClientRect().width + parseFloat(getComputedStyle(track).columnGap);
+      if (position >= step) { track.append(first); position -= step; }
+      track.scrollLeft = position;
+      ticker.dataset.running = 'true';
+      frame = win.requestAnimationFrame(tick);
+    }
+    function sync() {
+      if (toggle.hidden !== motion.matches) toggle.hidden = motion.matches;
+      const label = paused ? 'Play' : 'Pause';
+      if (toggle.textContent !== label) {
+        toggle.textContent = label;
+        toggle.setAttribute('aria-label', label + ' campaign carousel');
+      }
+      if (!canRun()) { stop(); return; }
+      if (!frame) { position = track.scrollLeft; previous = 0; frame = win.requestAnimationFrame(tick); }
+    }
+    function release() {
+      pressed = false;
+      holding = true;
+      win.clearTimeout(timer);
+      timer = win.setTimeout(() => { holding = false; sync(); }, 1200);
+      sync();
+    }
+    on(ticker, 'pointerenter', event => { if (event.pointerType === 'mouse') { hovered = true; sync(); } });
+    on(ticker, 'pointerleave', () => { hovered = false; sync(); });
+    on(ticker, 'focusin', sync);
+    on(ticker, 'focusout', () => queueMicrotask(sync));
+    on(track, 'pointerdown', () => { pressed = true; sync(); });
+    on(win, 'pointerup', () => { if (pressed) release(); });
+    on(win, 'pointercancel', () => { if (pressed) release(); });
+    on(track, 'wheel', release, { passive: true });
+    on(toggle, 'click', () => { paused = !paused; sync(); });
+    on(doc, 'visibilitychange', sync);
+    on(motion, 'change', sync);
+    on(track, 'keydown', event => {
+      if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+      const buttons = [...track.querySelectorAll('.pgal__item')];
+      const index = buttons.indexOf(doc.activeElement);
+      if (index < 0) return;
+      event.preventDefault();
+      const next = event.key === 'Home' ? 0 : event.key === 'End' ? buttons.length - 1 :
+        Math.max(0, Math.min(buttons.length - 1, index + (event.key === 'ArrowRight' ? 1 : -1)));
+      buttons[next].focus({ preventScroll: true });
+      buttons[next].scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'instant' });
+    });
+    const observer = new IntersectionObserver(entries => { visible = entries[0].isIntersecting; sync(); });
+    observer.observe(track);
+    const resize = new ResizeObserver(() => {
+      if (!resizeFrame) resizeFrame = win.requestAnimationFrame(() => { resizeFrame = 0; sync(); });
+    });
+    resize.observe(track);
+    const layers = new MutationObserver(sync);
+    const lightbox = doc.querySelector('[data-lightbox]');
+    if (lightbox) layers.observe(lightbox, { attributes: true, attributeFilter: ['aria-hidden'] });
+    const images = [...track.querySelectorAll('img')];
+    images.forEach(image => { image.loading = 'eager'; });
+    Promise.allSettled(images.map(image => image.decode())).then(() => { ready = true; sync(); });
+    sync();
+    cleanups.push(() => { active = false; stop(); win.cancelAnimationFrame(resizeFrame); win.clearTimeout(timer); controller.abort(); observer.disconnect(); resize.disconnect(); layers.disconnect(); clearDrag(); });
+  }
+  return () => cleanups.forEach(cleanup => cleanup());
 }
 
 // Keep captions below the visual row, including when three columns become two.
@@ -339,6 +433,7 @@ export function arrangeMobileCaptions(root) {
     const captions = new Map(cards.map(card => [card, card.querySelector(".pgal__caption")]));
     let columns = 0;
     let active = true;
+    let resizeFrame = 0;
     const sync = () => {
       if (!active) return;
       const next = getComputedStyle(grid).gridTemplateColumns.split(" ").length;
@@ -371,10 +466,13 @@ export function arrangeMobileCaptions(root) {
     sync();
     const observer = new ResizeObserver(() => {
       if (!grid.isConnected) { observer.disconnect(); return; }
-      sync();
+      if (!resizeFrame) resizeFrame = requestAnimationFrame(() => {
+        resizeFrame = 0;
+        if (grid.isConnected) sync();
+      });
     });
     observer.observe(grid);
-    cleanups.push(() => { active = false; observer.disconnect(); grid.removeEventListener("error", onError, true); });
+    cleanups.push(() => { active = false; cancelAnimationFrame(resizeFrame); observer.disconnect(); grid.removeEventListener("error", onError, true); });
   }
   return () => cleanups.forEach(cleanup => cleanup());
 }
@@ -397,7 +495,8 @@ function detailMarkup(entry, key) {
   const preview = entry.preview === "https://cloudfaster.academy/assets/og-image.png"
     ? coverFallbacks[key] : entry.preview || coverFallbacks[key];
   if (preview) {
-    const framed = galleryPhotos(entry).some(photo => photo.src === preview && photo.framed);
+    const framed = galleryPhotos(entry).some(photo => photo.src === preview && photo.framed) ||
+      (suppliedProjectMedia[key]?.previewFramed && suppliedProjectMedia[key].preview === preview);
     html += '<img class="pdrawer__shot' + (framed ? ' pdrawer__shot--framed' : '') + '" src="' + esc(preview) + '" alt="" loading="lazy" onerror="this.remove()">';
   }
   html += '<div class="pdrawer__body">';
@@ -497,7 +596,9 @@ export function initDetail(doc = document) {
     clearGallery();
     body.innerHTML = detailMarkup(entry, key);
     keepFinalWordsTogether(body);
-    clearGallery = arrangeMobileCaptions(body);
+    const clearCaptions = arrangeMobileCaptions(body);
+    const clearTickers = bindCampaignTickers(body);
+    clearGallery = () => { clearCaptions(); clearTickers(); };
     sheet.setAttribute("aria-label", entry.name);
     sheet.scrollTop = 0;
     open = true;

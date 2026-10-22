@@ -2,6 +2,8 @@
 
 ## Assopra Store — 22/10/2026
 
+Revisão após a publicação: o Otavio aprovou uma versão ampliada em inglês, com dois parágrafos de Overview e explicações mais concretas sobre descoberta, busca, filtros, seleção de tamanho, frete, combinados e adaptação mobile. O texto mantém o escopo confirmado e não acrescenta resultados ou métodos de pesquisa. Os três banners passaram para um ticker após o catálogo e antes do produto/carrinho, como na Meta. Contrato de movimento e interação em [patterns.md](patterns.md), “Campanhas em ticker”.
+
 Case de redesign aprovado pelo Otavio, com o mesmo escopo confirmado da Meta: UX/UI das telas, pesquisa de mercado e persona e criação de imagens com IA. Textos em inglês aprovados em Role, Summary, Overview, The challenge, Design decisions e Image direction, sem resultados ou implementação presumidos.
 
 `assets/projects/assopra-store/` preserva as 23 imagens da apresentação local aprovada: nove MacBooks e quatro iPhones já compostos em PNG transparente, sete componentes individuais e três campanhas recortadas da home fornecida no Figma. Os nove recortes desktop têm proporção 1,6:1, exatamente a área útil do MacBook, preenchendo a tela sem deformação. Os iPhones usam telas mobile reais, com espaço para a ilha dinâmica não encobrir os títulos. Os dispositivos usam `framed: true`, os componentes usam `layout: "masonry"` e as campanhas usam `layout: "banners"`, com o texto aprovado sobre autoria e IA. Reutilizam gap 16, raio 16, borda preta a 8%, sem sombras ou fundo cinza externo. O favicon é o coelho da marca, recortado da navegação original; a fonte e as coordenadas ficam no estudo local.
@@ -11,6 +13,12 @@ O Otavio pediu Meta Suplementos e Assopra Store, nessa ordem, imediatamente ante
 Publicado no projeto Vercel existente e no Studio/D1 em 22/10/2026: revisão 23 → 24, com o novo case, a ordem pedida e duas entradas de atividade. Auditoria confirmou todos os conteúdos anteriores e a lixeira preservados. Os 24 assets (23 imagens e o coelho da marca) foram conferidos por SHA-256 no domínio público. A galeria publicada carregou as 23 imagens em 1440, 768 e 390px, com sete componentes em masonry e treze mockups, sem overflow ou erros de página; lightbox por teclado e retorno de foco passaram. Validação local: 31 testes Storybook/axe, 26 testes de página, quatro documentos HTML balanceados e sintaxe dos 17 scripts públicos. Os 28 casos da matriz visual passaram em dois lotes via `VISUAL_CASES`, para respeitar o timeout de 60 segundos da execução completa, sem alterar baselines ou tolerâncias.
 
 ## Meta Suplementos — 22/10/2026
+
+Revisão da seleção após a publicação: a pedido do Otavio, `home-macbook.png` permanece como capa e sai da galeria para não repetir a abertura. O mockup `ironhair-feature-macbook.png` também sai da galeria. Seed, suplemento estático e Studio passam a ter 23 imagens na galeria; os arquivos e os estudos originais são preservados.
+
+Os cinco banners passam a `layout: "ticker"` depois dos recortes de catálogo e antes da página de produto, ocupando toda a largura do drawer, conforme [padrão compartilhado](patterns.md). `previewFramed` no suplemento estático preserva a apresentação transparente da capa, mesmo depois de ela sair da galeria.
+
+Esta revisão passou em 31 testes Storybook/axe, 27 testes da página e nos 28 casos visuais (somente as três baselines de campanhas mudaram intencionalmente). As capturas reais dos dois cases em 1440, 768 e 390px confirmam o ticker entre catálogo e compra, sem overflow. A atualização do Studio preserva a ordem Meta → Assopra → CloudFaster e usa backup e trava da revisão corrente.
 
 Case de redesign aprovado pelo Otavio: UX/UI de todas as telas da loja, informado por pesquisa de mercado e persona, e direção de imagens profissionais com modelos e produtos usando IA. Textos em inglês aprovados em Role, Summary, Overview, The challenge, Design decisions e Image direction; sem métricas de resultado ou URL da loja inferidas. O favicon PNG 600×600 foi enviado pelo Otavio e preservado byte a byte.
 
