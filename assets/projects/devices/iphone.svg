@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 535.333" fill="none">
+  <defs>
+    <linearGradient id="metal" x1="3" y1="0" x2="257" y2="535" gradientUnits="userSpaceOnUse"><stop stop-color="#777a80"/><stop offset=".15" stop-color="#35373c"/><stop offset=".35" stop-color="#9a9da2"/><stop offset=".5" stop-color="#292b30"/><stop offset=".8" stop-color="#777a80"/><stop offset="1" stop-color="#25272b"/></linearGradient>
+    <linearGradient id="button"><stop stop-color="#65686f"/><stop offset="1" stop-color="#191b20"/></linearGradient>
+    <mask id="screen"><rect width="260" height="535.333" fill="white"/><rect x="12" y="12" width="236" height="511.333" rx="34" fill="black"/></mask>
+  </defs>
+  <g mask="url(#screen)">
+    <rect x="0" y="90" width="4" height="18" rx="1.5" fill="url(#button)"/>
+    <rect x="0" y="125" width="4" height="34" rx="1.5" fill="url(#button)"/>
+    <rect x="0" y="169" width="4" height="34" rx="1.5" fill="url(#button)"/>
+    <rect x="256" y="139" width="4" height="53" rx="1.5" fill="url(#button)"/>
+    <rect x="3" y="1" width="254" height="533.333" rx="44" fill="url(#metal)"/>
+    <rect x="5" y="3" width="250" height="529.333" rx="42" fill="#08090b" stroke="#a8aab0" stroke-opacity=".35" stroke-width=".6"/>
+    <rect x="8" y="8" width="244" height="519.333" rx="38" fill="#050506"/>
+    <path d="M4 65H7M253 65H256M4 470H7M253 470H256" stroke="#adb0b6" stroke-opacity=".5" stroke-width="2"/>
+  </g>
+  <rect x="99" y="20" width="62" height="17" rx="8.5" fill="#070709"/>
+  <circle cx="150" cy="28.5" r="3.5" fill="#11141d"/><circle cx="150" cy="28.5" r="1.6" fill="#1d2843"/>
+</svg>

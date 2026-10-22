@@ -117,7 +117,7 @@ test('mobile project galleries remain compact, preserve source order and support
       for (const size of sizes) { assert.ok(Math.abs(size[0] - sizes[0][0]) < 1); assert.ok(Math.abs(size[1] - sizes[0][1]) < 1); }
       const visibleGap = await row.locator('.pgal__img').evaluateAll(images => images[1].getBoundingClientRect().left - images[0].getBoundingClientRect().right);
       assert.ok(Math.abs(visibleGap - 16) < 1, 'the visible image gap must match the grid gap');
-      const borders = await page.locator('.pdrawer__shot, .pgal__img').evaluateAll(images => images.map(img => {
+      const borders = await page.locator('.pdrawer__shot, .pgal__item:not(.pgal__item--device) .pgal__img').evaluateAll(images => images.map(img => {
         const style = getComputedStyle(img);
         return [style.borderTopWidth, style.borderTopStyle, style.borderTopColor];
       }));

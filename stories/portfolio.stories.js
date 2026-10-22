@@ -471,3 +471,45 @@ export const ProjectsList = {
     await expectOnlyA11yDebt(canvasElement, ["color-contrast:see-more-projects"]);
   },
 };
+
+// Uses the production renderer and lightbox: device chrome is decorative,
+// and enlargement must always show the untouched capture.
+export const DeviceProjectImages = {
+  render: () => {
+    const root = Gallery.render();
+    root.insertAdjacentHTML('afterbegin', '<link rel="stylesheet" href="/styles/projects.css">');
+    root.querySelector('h1').textContent = 'Project device mockups';
+    root.querySelector('[data-gallery]').outerHTML = '<div data-project-gallery></div>';
+    import('../projects.mjs').then(({ galleryMarkup, arrangeMobileCaptions }) => {
+      root.querySelector('[data-project-gallery]').innerHTML = galleryMarkup({ gallery: [
+        { src: '/assets/projects/bullster/landing-page.webp', alt: 'Web interface in a MacBook', device: 'macbook', caption: 'Open the original capture to see the complete page.' },
+        { src: '/assets/projects/finq-edu/3-1-home.webp', alt: 'FinQ home in an iPhone', device: 'iphone', layout: 'mobile' },
+        { src: '/assets/projects/caderno-de-erros/mobile-digital-notebook.jpg', alt: 'Caderno de Erros mobile presentation', layout: 'mobile' },
+      ] });
+      arrangeMobileCaptions(root);
+    });
+    return root;
+  },
+  play: async ({ canvasElement, userEvent }) => {
+    await waitFor(() => expect(canvasElement.querySelectorAll('.pgal__device')).toHaveLength(2));
+    await expect(canvasElement.querySelectorAll('.pgal__mobile-row .pgal__device')).toHaveLength(1);
+    const laptop = canvasElement.querySelector('.pgal__device--macbook');
+    await expect(laptop.closest('button')).toHaveClass('pgal__item--wide');
+    for (const device of canvasElement.querySelectorAll('.pgal__device')) {
+      const capture = device.querySelector('img');
+      await waitFor(() => expect(capture.naturalWidth).toBeGreaterThan(0));
+      await expect(getComputedStyle(device, '::after').backgroundImage).toMatch(/devices\/(macbook|iphone)\.svg/);
+      await expect(getComputedStyle(capture).objectFit).toBe('cover');
+      const trigger = device.closest('button');
+      trigger.focus();
+      await userEvent.keyboard('{Enter}');
+      await waitFor(() => expect(canvasElement.querySelector('[data-lightbox]')).toHaveAttribute('aria-hidden', 'false'));
+      const enlarged = canvasElement.querySelector('[data-lightbox-img]');
+      await expect(enlarged).toHaveAttribute('src', capture.getAttribute('src'));
+      await expect(enlarged.closest('.pgal__device')).toBeNull();
+      await userEvent.keyboard('{Escape}');
+      await expect(trigger).toHaveFocus();
+    }
+    canvasElement.querySelector('[data-project-gallery]').dataset.playDone = 'true';
+  },
+};

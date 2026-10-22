@@ -640,6 +640,69 @@ body.pdrawer-open > .topbar {
   object-position: top;
   margin-inline: auto;
 }
+/* Device artwork is vector; the original capture stays separate. These
+   percentages map to the SVG viewBoxes, rather than the spacing scale. */
+.pgal__item--device {
+  background: transparent;
+  overflow: visible;
+}
+.pgal__device {
+  position: relative;
+  display: block;
+  width: 100%;
+  isolation: isolate;
+}
+.pgal__device::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: center / 100% 100% no-repeat;
+  pointer-events: none;
+}
+.pgal__screen {
+  display: block;
+  position: absolute;
+  overflow: hidden;
+}
+.pgal__device .pgal__img {
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  aspect-ratio: auto;
+  border: 0;
+  border-radius: 0;
+  object-fit: cover;
+  object-position: left top;
+}
+.pgal__device--macbook {
+  aspect-ratio: 1200 / 760;
+  border-radius: var(--radius-16);
+}
+.pgal__device--macbook::after {
+  background-image: url('/assets/projects/devices/macbook.svg');
+}
+.pgal__device--macbook .pgal__screen {
+  left: 5.833333%;
+  top: 3.947368%;
+  width: 88.333333%;
+  height: 87.171053%;
+  border-radius: .754717% / 1.207547%;
+}
+.pgal__device--iphone {
+  aspect-ratio: 9 / 19.5;
+  border-radius: 16.923077% / 8.219178%;
+}
+.pgal__device--iphone::after {
+  background-image: url('/assets/projects/devices/iphone.svg');
+  background-size: 100% auto;
+}
+.pgal__device--iphone .pgal__screen {
+  left: 4.615385%;
+  top: 4.615385%;
+  width: 90.769231%;
+  height: 90.769231%;
+  border-radius: 14.40678% / 6.649283%;
+}
 .pgal__caption {
   display: block;
   margin-top: var(--space-24);

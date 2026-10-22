@@ -17,6 +17,9 @@ const updateBaselines = process.env.UPDATE_VISUAL_BASELINES === "1";
 const requestedCases = process.env.VISUAL_CASES?.split(',');
 
 const cases = [
+  { name: 'project-devices-light', story: 'patterns-portfolio--device-project-images', theme: 'light', flatType: 'on', width: 1024, height: 1200, state: 'project-devices' },
+  { name: 'project-devices-dark', story: 'patterns-portfolio--device-project-images', theme: 'dark', flatType: 'on', width: 1024, height: 1200, state: 'project-devices' },
+  { name: 'project-devices-narrow', story: 'patterns-portfolio--device-project-images', theme: 'light', flatType: 'on', width: 390, height: 1200, state: 'project-devices' },
   { name: "colors-light", story: "foundations--colors", theme: "light", flatType: "off", width: 1024, height: 768 },
   { name: "colors-dark", story: "foundations--colors", theme: "dark", flatType: "off", width: 1024, height: 768 },
   { name: "typography-scale", story: "foundations--typography", theme: "light", flatType: "off", width: 1024, height: 900 },
@@ -82,6 +85,11 @@ async function captureStable(page, fullPage = true) {
 }
 
 async function applyState(page, visualCase) {
+  if (visualCase.state === 'project-devices') {
+    await page.locator('[data-project-gallery][data-play-done="true"]').waitFor();
+    await page.evaluate(() => document.activeElement?.blur());
+    await page.mouse.move(0, 0);
+  }
   if (visualCase.state === 'inbox-reading') {
     await page.getByRole('heading', { name: 'ana@example.com' }).waitFor();
     await page.evaluate(() => document.activeElement?.blur());
