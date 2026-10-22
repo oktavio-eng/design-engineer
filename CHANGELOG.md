@@ -8,6 +8,8 @@ Notable changes to this site, in the order they landed on `main`. Newest first. 
 
 ## 2026-10-22
 
+- Meta e Assopra: arquivo completo de fontes, recortes, imagens, textos, apresentações e ZIPs em `output/`, com manifesto SHA-256. Ver [índice](output/README.md).
+
 - Drawer: entradas mais graduais (560ms, `--ease-reveal`), com imagens decodificadas antes do fade. Ver [motion do detalhe](docs/nova-home-projetos.md).
 
 - Drawer: entrada individual de imagens, textos, links e componentes conforme a área visível; banners entram uma vez, sem repetir no loop. Ver [motion do detalhe](docs/nova-home-projetos.md).

@@ -1,0 +1,230 @@
+{
+  "project": "Assopra Store",
+  "imageBorder": "1px solid rgb(0 0 0 / 8%)",
+  "radius": 16,
+  "gap": 16,
+  "shadow": "none",
+  "media": [
+    {
+      "src": "images/home-opening-macbook.png",
+      "alt": "The Assopra storefront, campaign opening and clothing categories",
+      "presentation": "device",
+      "device": "macbook",
+      "sourceNode": "1:1556",
+      "crop": "home-opening",
+      "width": 1440,
+      "height": 912
+    },
+    {
+      "src": "images/home-products-macbook.png",
+      "alt": "Clothing categories and the first product collection",
+      "presentation": "device",
+      "device": "macbook",
+      "sourceNode": "1:1556",
+      "crop": "home-products",
+      "width": 1440,
+      "height": 912
+    },
+    {
+      "src": "images/home-collections-macbook.png",
+      "alt": "Coordinated collection cards for boys and girls",
+      "presentation": "device",
+      "device": "macbook",
+      "sourceNode": "1:1556",
+      "crop": "home-collections",
+      "width": 1440,
+      "height": 912
+    },
+    {
+      "src": "images/home-story-macbook.png",
+      "alt": "The brand story and family campaign in the middle of the home page",
+      "presentation": "device",
+      "device": "macbook",
+      "sourceNode": "1:1556",
+      "crop": "home-story",
+      "width": 1440,
+      "height": 912
+    },
+    {
+      "src": "images/catalogue-opening-macbook.png",
+      "alt": "Catalogue opening with a campaign banner, filters and clothing products",
+      "presentation": "device",
+      "device": "macbook",
+      "sourceNode": "1:2414",
+      "crop": "catalogue-opening",
+      "width": 1440,
+      "height": 912
+    },
+    {
+      "src": "images/catalogue-discovery-macbook.png",
+      "alt": "Campaign imagery interspersed with the clothing catalogue",
+      "presentation": "device",
+      "device": "macbook",
+      "sourceNode": "1:2414",
+      "crop": "catalogue-discovery",
+      "width": 1440,
+      "height": 912
+    },
+    {
+      "src": "images/product-opening-macbook.png",
+      "alt": "Product gallery, size selection, quantity, purchase action and shipping estimate",
+      "presentation": "device",
+      "device": "macbook",
+      "sourceNode": "1:2547",
+      "crop": "product-opening",
+      "width": 1440,
+      "height": 912
+    },
+    {
+      "src": "images/product-family-macbook.png",
+      "alt": "Coordinated looks for cousins, siblings and children further down the product page",
+      "presentation": "device",
+      "device": "macbook",
+      "sourceNode": "1:2547",
+      "crop": "product-family",
+      "width": 1440,
+      "height": 912
+    },
+    {
+      "src": "images/cart-context-macbook.png",
+      "alt": "Cart panel open over the product page, including quantities, matching pieces and subtotal",
+      "presentation": "device",
+      "device": "macbook",
+      "sourceNode": "1:2786",
+      "crop": "cart-context",
+      "caption": "The cart opens over the product page with quantities, matching pieces, free-shipping progress and a subtotal.",
+      "width": 1440,
+      "height": 912
+    },
+    {
+      "src": "images/home-mobile-opening-iphone.png",
+      "alt": "Original mobile storefront with navigation, family campaign and clothing categories",
+      "presentation": "device",
+      "device": "iphone",
+      "sourceNode": "1:3136",
+      "crop": "home-mobile-opening",
+      "width": 520,
+      "height": 1071
+    },
+    {
+      "src": "images/product-mobile-selection-iphone.png",
+      "alt": "Original mobile product details with size and quantity selection, add-to-cart action and shipping estimate",
+      "presentation": "device",
+      "device": "iphone",
+      "sourceNode": "1:4166",
+      "crop": "product-mobile-selection",
+      "width": 520,
+      "height": 1072
+    },
+    {
+      "src": "images/quick-add-iphone.png",
+      "alt": "Mobile quick-add panel with product imagery and size availability, including a sold-out size",
+      "presentation": "device",
+      "device": "iphone",
+      "sourceNode": "1:4770",
+      "crop": "quick-add",
+      "width": 520,
+      "height": 1071
+    },
+    {
+      "src": "images/cart-phone-iphone.png",
+      "alt": "Original mobile cart with quantities, matching pieces, free-shipping progress and subtotal",
+      "presentation": "device",
+      "device": "iphone",
+      "sourceNode": "1:4503",
+      "crop": "cart-phone",
+      "width": 520,
+      "height": 1072
+    },
+    {
+      "src": "images/navigation.png",
+      "alt": "Desktop navigation expanded into clothing categories and featured products",
+      "presentation": "masonry",
+      "sourceNode": "1:1971",
+      "crop": "navigation",
+      "width": 1440,
+      "height": 560
+    },
+    {
+      "src": "images/search-results.png",
+      "alt": "Search query with product, collection and coordinated-outfit result categories",
+      "presentation": "masonry",
+      "sourceNode": "1:2413",
+      "crop": "search-results",
+      "width": 1004,
+      "height": 580
+    },
+    {
+      "src": "images/filters.png",
+      "alt": "Clothing filters by garment type, price range and age, with an apply action",
+      "presentation": "masonry",
+      "sourceNode": "1:2494",
+      "crop": "filters",
+      "width": 292,
+      "height": 655
+    },
+    {
+      "src": "images/cart.png",
+      "alt": "Cart details with quantity controls, matching products and subtotal",
+      "presentation": "masonry",
+      "sourceNode": "1:4503",
+      "crop": "cart",
+      "width": 362,
+      "height": 842
+    },
+    {
+      "src": "images/product-options.png",
+      "alt": "Product options, shipping calculator, care information and coordinated pieces",
+      "presentation": "masonry",
+      "sourceNode": "1:2547",
+      "crop": "product-options",
+      "width": 384,
+      "height": 1364
+    },
+    {
+      "src": "images/collection-boys.png",
+      "alt": "Boys collection card with campaign photography and its discovery action",
+      "presentation": "masonry",
+      "sourceNode": "1:1556",
+      "crop": "collection-boys",
+      "width": 486,
+      "height": 651
+    },
+    {
+      "src": "images/collection-girls.png",
+      "alt": "Girls collection card with campaign photography and its discovery action",
+      "presentation": "masonry",
+      "sourceNode": "1:1556",
+      "crop": "collection-girls",
+      "width": 486,
+      "height": 651
+    },
+    {
+      "src": "images/campaign-siblings.png",
+      "alt": "Sibling campaign with coordinated clothing in an everyday family setting",
+      "presentation": "banners",
+      "sourceNode": "1:1556",
+      "crop": "campaign-siblings",
+      "width": 1408,
+      "height": 640
+    },
+    {
+      "src": "images/campaign-home.png",
+      "alt": "Clothing campaign presented in a warm domestic setting",
+      "presentation": "banners",
+      "sourceNode": "1:1556",
+      "crop": "campaign-home",
+      "width": 1408,
+      "height": 436
+    },
+    {
+      "src": "images/campaign-family.png",
+      "alt": "Family campaign featuring children in coordinated blue clothing",
+      "presentation": "banners",
+      "sourceNode": "1:1556",
+      "crop": "campaign-family",
+      "width": 1408,
+      "height": 556
+    }
+  ]
+}

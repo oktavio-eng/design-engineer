@@ -1,0 +1,875 @@
+{
+  "description": "Preserved Meta Suplementos and Assopra Store working deliverables; review snapshots are distinct from the live portfolio.",
+  "files": [
+    {
+      "path": "assopra-store/README.md",
+      "bytes": 3058,
+      "sha256": "3d0a82b5a63dfa02e45e85d355c665146262221c016cd853230067fed187b34e"
+    },
+    {
+      "path": "assopra-store/assopra-store-final.zip",
+      "bytes": 15595241,
+      "sha256": "f64148faf84d7e010bbf63576bf55f16456b24721c5d7715d88a43a440a73f9c"
+    },
+    {
+      "path": "assopra-store/build.mjs",
+      "bytes": 10924,
+      "sha256": "43d16be69a80ae41eef40334b6573a4be47cad83aa24bc6f3d471f73e518b342"
+    },
+    {
+      "path": "assopra-store/copy-expanded.md",
+      "bytes": 3027,
+      "sha256": "a214e519344bf75026b5bdee8e9284ae3d8dbd21c4f8d94a0abdda819132634f"
+    },
+    {
+      "path": "assopra-store/copy.md",
+      "bytes": 1613,
+      "sha256": "f657d35d113c4940862b3daf432023c0eb473b0f0ee69644eae3aaf280a8ba41"
+    },
+    {
+      "path": "assopra-store/crop-manifest.json",
+      "bytes": 6829,
+      "sha256": "cfe2a89964e944a1756a2e4f509748c31a9c78a92daf17012c4c39a1130b74e4"
+    },
+    {
+      "path": "assopra-store/crops/campaign-family.png",
+      "bytes": 1461299,
+      "sha256": "f4ad8063911a30d04aec7656ed56dcd7f1136ad28388cb0e5bc9c3108bcb31fe"
+    },
+    {
+      "path": "assopra-store/crops/campaign-home.png",
+      "bytes": 917230,
+      "sha256": "0f36000ebdb1305bb22f2a4d654576ee19be30457e80e17b324c0abba5c7e046"
+    },
+    {
+      "path": "assopra-store/crops/campaign-siblings.png",
+      "bytes": 1403824,
+      "sha256": "6f1f9fb1eecf78adbb6bb552c057078e3dccf5f3145ac4b5c8a7fb846dfa2b6b"
+    },
+    {
+      "path": "assopra-store/crops/cart-context.png",
+      "bytes": 1092301,
+      "sha256": "a116c6e1d3ff3ab3b32ee7dce5cd6741227db2b00e8e90029f5be90d22cd02df"
+    },
+    {
+      "path": "assopra-store/crops/cart-phone.png",
+      "bytes": 93114,
+      "sha256": "6520b797a93fdf5e2a1a85d08d6b275b01d8776b6b3c090c8be90d68912a092a"
+    },
+    {
+      "path": "assopra-store/crops/cart.png",
+      "bytes": 93114,
+      "sha256": "6520b797a93fdf5e2a1a85d08d6b275b01d8776b6b3c090c8be90d68912a092a"
+    },
+    {
+      "path": "assopra-store/crops/catalogue-discovery.png",
+      "bytes": 1132430,
+      "sha256": "c7a8212a19ea533d73c382585acb3a9db79080b0fb2a6fe6c1ca309f1136d789"
+    },
+    {
+      "path": "assopra-store/crops/catalogue-opening.png",
+      "bytes": 1194447,
+      "sha256": "dbb27105831958888e0cb1abf02535d0571306006ba09c0620ec6527975f5ca8"
+    },
+    {
+      "path": "assopra-store/crops/collection-boys.png",
+      "bytes": 540552,
+      "sha256": "ab4ae2d83bd27503c268d1602ca74f8282c728a0abda07bc3b895ec02d9e0c69"
+    },
+    {
+      "path": "assopra-store/crops/collection-girls.png",
+      "bytes": 632925,
+      "sha256": "925df060af9a3627a184c63f5afc2e5e2d04e9dd9380a5472cda4c29dd38e191"
+    },
+    {
+      "path": "assopra-store/crops/filters.png",
+      "bytes": 29121,
+      "sha256": "824a009fd2d01cca341c17263c6e4e07c03e1527cf0392da80f565a0afbeee36"
+    },
+    {
+      "path": "assopra-store/crops/home-collections.png",
+      "bytes": 1210490,
+      "sha256": "b8e77acd9404ea3ae1782449f62fa1e559032362bb34995937be1abdfb18b97a"
+    },
+    {
+      "path": "assopra-store/crops/home-mobile-opening.png",
+      "bytes": 410051,
+      "sha256": "e577df364b489d1bff70447a1e58fd7658136330dfa978258044ba6ba9eb2fdb"
+    },
+    {
+      "path": "assopra-store/crops/home-opening.png",
+      "bytes": 1513046,
+      "sha256": "45cd54d8bb305baf41d025fd1de1384f94ee4866a8d823301a87e36f941aa6a4"
+    },
+    {
+      "path": "assopra-store/crops/home-products.png",
+      "bytes": 534592,
+      "sha256": "576ea3f9ef0b3c5fb390cd093c034358147b5915ea7a61cb93416dc3d9eea6a1"
+    },
+    {
+      "path": "assopra-store/crops/home-story.png",
+      "bytes": 877737,
+      "sha256": "6ceb991f6273907689ca5703d1e1d863bff46ba637da561d18f5de88e5792e19"
+    },
+    {
+      "path": "assopra-store/crops/navigation.png",
+      "bytes": 357174,
+      "sha256": "f5cd6a9d2be50c2bd4b426fc49e9ddc0d52ef04912c48d9cc69d2c51072d8cf4"
+    },
+    {
+      "path": "assopra-store/crops/product-family.png",
+      "bytes": 1519394,
+      "sha256": "8633f464646cb78b43f7ca7af2c12d392a9becdbde2bcef51047e1a87b64489b"
+    },
+    {
+      "path": "assopra-store/crops/product-mobile-selection.png",
+      "bytes": 81707,
+      "sha256": "2be589191690aea6a17917f81e6b461cea29a529ce60e949cbd80df00f6accc3"
+    },
+    {
+      "path": "assopra-store/crops/product-opening.png",
+      "bytes": 1223352,
+      "sha256": "dff0ab7c55aeaabe0d3dbb13e28025548210fce3a36f9501c61e93d9504fa15c"
+    },
+    {
+      "path": "assopra-store/crops/product-options.png",
+      "bytes": 195099,
+      "sha256": "73ebeb8c68962bb5f7123ce2bb8033d36b50a0468e4ca6f624c8326a0584b8ef"
+    },
+    {
+      "path": "assopra-store/crops/quick-add.png",
+      "bytes": 176469,
+      "sha256": "336f53e539f5085236e59d1bffa2672448a7f9d06d3170a4276d02069fe0e7eb"
+    },
+    {
+      "path": "assopra-store/crops/search-results.png",
+      "bytes": 411828,
+      "sha256": "027ad2846b6c89b4c704009c42f9cd39ec7fc1159cd19c98ef6c68efdeff80ca"
+    },
+    {
+      "path": "assopra-store/device-render.html",
+      "bytes": 14779469,
+      "sha256": "2e4a74cc954467d43bb1ce77bdeb0696ed9462c244d9ecbec8f9e0732ca24905"
+    },
+    {
+      "path": "assopra-store/favicon-source.json",
+      "bytes": 193,
+      "sha256": "4e9f6c213aa67cdbc27f11fc25b7582d56cc156ceef3e063097a7c7722f883a8"
+    },
+    {
+      "path": "assopra-store/final/README.md",
+      "bytes": 1115,
+      "sha256": "72a7b16203f387b38e09388fc7d48d87bf520d66506da7383aa12c5276f985b0"
+    },
+    {
+      "path": "assopra-store/final/copy.md",
+      "bytes": 1613,
+      "sha256": "f657d35d113c4940862b3daf432023c0eb473b0f0ee69644eae3aaf280a8ba41"
+    },
+    {
+      "path": "assopra-store/final/crop-manifest.json",
+      "bytes": 6829,
+      "sha256": "cfe2a89964e944a1756a2e4f509748c31a9c78a92daf17012c4c39a1130b74e4"
+    },
+    {
+      "path": "assopra-store/final/images/campaign-family.png",
+      "bytes": 1461299,
+      "sha256": "f4ad8063911a30d04aec7656ed56dcd7f1136ad28388cb0e5bc9c3108bcb31fe"
+    },
+    {
+      "path": "assopra-store/final/images/campaign-home.png",
+      "bytes": 917230,
+      "sha256": "0f36000ebdb1305bb22f2a4d654576ee19be30457e80e17b324c0abba5c7e046"
+    },
+    {
+      "path": "assopra-store/final/images/campaign-siblings.png",
+      "bytes": 1403824,
+      "sha256": "6f1f9fb1eecf78adbb6bb552c057078e3dccf5f3145ac4b5c8a7fb846dfa2b6b"
+    },
+    {
+      "path": "assopra-store/final/images/cart-context-macbook.png",
+      "bytes": 822605,
+      "sha256": "a26b49f4b38fc2a178882c2558b38c1673ad0273cccf1c2d9611edb2e5003265"
+    },
+    {
+      "path": "assopra-store/final/images/cart-phone-iphone.png",
+      "bytes": 145564,
+      "sha256": "d68bef9e7a5d1a9c6b815c48a69d95cfd10ed515efa83d10bafafd627200cac8"
+    },
+    {
+      "path": "assopra-store/final/images/cart.png",
+      "bytes": 93114,
+      "sha256": "6520b797a93fdf5e2a1a85d08d6b275b01d8776b6b3c090c8be90d68912a092a"
+    },
+    {
+      "path": "assopra-store/final/images/catalogue-discovery-macbook.png",
+      "bytes": 892560,
+      "sha256": "5b962fdf3a2dda0cad579467a65637cc4820c034e19ec381122cd3c18639fba5"
+    },
+    {
+      "path": "assopra-store/final/images/catalogue-opening-macbook.png",
+      "bytes": 960357,
+      "sha256": "19cd477ca1cbc9abb4b3be4eebe197a4f87ae3faa1f29c349a83122dc601da15"
+    },
+    {
+      "path": "assopra-store/final/images/collection-boys.png",
+      "bytes": 540552,
+      "sha256": "ab4ae2d83bd27503c268d1602ca74f8282c728a0abda07bc3b895ec02d9e0c69"
+    },
+    {
+      "path": "assopra-store/final/images/collection-girls.png",
+      "bytes": 632925,
+      "sha256": "925df060af9a3627a184c63f5afc2e5e2d04e9dd9380a5472cda4c29dd38e191"
+    },
+    {
+      "path": "assopra-store/final/images/filters.png",
+      "bytes": 29121,
+      "sha256": "824a009fd2d01cca341c17263c6e4e07c03e1527cf0392da80f565a0afbeee36"
+    },
+    {
+      "path": "assopra-store/final/images/home-collections-macbook.png",
+      "bytes": 1076962,
+      "sha256": "7cf66ff847aac420c3ffaa007426f5e1099cb203ba2ccc3c2833a32956567dde"
+    },
+    {
+      "path": "assopra-store/final/images/home-mobile-opening-iphone.png",
+      "bytes": 472731,
+      "sha256": "4b7be26beef8d36cfdac9a62171e777096e45bd851de9457fc6e915d6241ff95"
+    },
+    {
+      "path": "assopra-store/final/images/home-opening-macbook.png",
+      "bytes": 1160415,
+      "sha256": "be2cf0a913bb8c50e28074d5eed45c27613a6158b9464ce779e1c29614210dc3"
+    },
+    {
+      "path": "assopra-store/final/images/home-products-macbook.png",
+      "bytes": 593010,
+      "sha256": "0d5153173522339d8883b2ab34f36a50c46da11b06f0b7f77858be93b730a57f"
+    },
+    {
+      "path": "assopra-store/final/images/home-story-macbook.png",
+      "bytes": 887432,
+      "sha256": "20ab84eda22f140b64d6e99ce438e4183b127bbf509778b2a9cf22845896e2aa"
+    },
+    {
+      "path": "assopra-store/final/images/navigation.png",
+      "bytes": 357174,
+      "sha256": "f5cd6a9d2be50c2bd4b426fc49e9ddc0d52ef04912c48d9cc69d2c51072d8cf4"
+    },
+    {
+      "path": "assopra-store/final/images/product-family-macbook.png",
+      "bytes": 1351615,
+      "sha256": "79d1dc4deb02435ed6b63447568c3ba0b67a0f3e99eec595504eb191fb6bc6eb"
+    },
+    {
+      "path": "assopra-store/final/images/product-mobile-selection-iphone.png",
+      "bytes": 137837,
+      "sha256": "dd01982c0da0bbfa90957ee1eb65ab2b29727297643272edf1ee43bdcc380eed"
+    },
+    {
+      "path": "assopra-store/final/images/product-opening-macbook.png",
+      "bytes": 927825,
+      "sha256": "7cade5900f461e1bcbabcf700967496f245e0254f305f6b452e531b34c22f422"
+    },
+    {
+      "path": "assopra-store/final/images/product-options.png",
+      "bytes": 195099,
+      "sha256": "73ebeb8c68962bb5f7123ce2bb8033d36b50a0468e4ca6f624c8326a0584b8ef"
+    },
+    {
+      "path": "assopra-store/final/images/quick-add-iphone.png",
+      "bytes": 254877,
+      "sha256": "4ac25032855ec497379f50c8b212fe19d927c7ccd2cf31c8435b44faa3eda7d1"
+    },
+    {
+      "path": "assopra-store/final/images/search-results.png",
+      "bytes": 411828,
+      "sha256": "027ad2846b6c89b4c704009c42f9cd39ec7fc1159cd19c98ef6c68efdeff80ca"
+    },
+    {
+      "path": "assopra-store/final/index.html",
+      "bytes": 8792,
+      "sha256": "69e1dc84ae0ca5ac1b55109dcc3443f52b7b538748f606c6c5ddedf524c0c0fe"
+    },
+    {
+      "path": "assopra-store/final/media.json",
+      "bytes": 7159,
+      "sha256": "1191c8ab7f253d6a5e6d52a58335311fe3634a303ab34a3db45fbfd51537ca7b"
+    },
+    {
+      "path": "assopra-store/publication-ticker.json",
+      "bytes": 360,
+      "sha256": "bbbcfa4aa053c87a99f445baaf0a3b9793f3adac981f37ed5996ef9a756b8969"
+    },
+    {
+      "path": "assopra-store/qa/contact-sheet.jpg",
+      "bytes": 782968,
+      "sha256": "9f1b1c3a34f6f7906d25b5ac5f03e1351b25a9f2c9a63df1bbd75a5b50a2a85b"
+    },
+    {
+      "path": "assopra-store/qa/presentation-1440.png",
+      "bytes": 7707118,
+      "sha256": "7bb605a9906b40088dec48cb20b1732a6ed6fa6f2807c83dd6cd46193a36f481"
+    },
+    {
+      "path": "assopra-store/qa/presentation-390.png",
+      "bytes": 2109177,
+      "sha256": "533c9a9b911a312ed571a8e182950869f9a22c88c039a04974ec29245834de6e"
+    },
+    {
+      "path": "assopra-store/qa/presentation-768.png",
+      "bytes": 3893190,
+      "sha256": "aeba0c297813e5055a81b00817821ca7a18cf2ca5e2d2bf018811e654511fc8c"
+    },
+    {
+      "path": "assopra-store/qa/verification.json",
+      "bytes": 910,
+      "sha256": "228a71fd982d32760ae12cf0b298fdafc378fcb36c996fa41ee2b17df203db37"
+    },
+    {
+      "path": "assopra-store/sources/cart-desktop.png",
+      "bytes": 1494095,
+      "sha256": "45f179b031cf2c67a75942bed2edf5d89823c55ec9dbdd630a0bb85d28a09f81"
+    },
+    {
+      "path": "assopra-store/sources/cart-mobile.png",
+      "bytes": 81957,
+      "sha256": "9682e83def7a7455ec5de803928b232f72dd54d1093a8dd7a684fb9c2cfa1875"
+    },
+    {
+      "path": "assopra-store/sources/catalogue.png",
+      "bytes": 3056098,
+      "sha256": "281bda0bbeb8a3555df167ed21784b0fda675dbd6551de1dbc6c100dce7f87da"
+    },
+    {
+      "path": "assopra-store/sources/checksums.json",
+      "bytes": 1897,
+      "sha256": "93b16ba1cf62e279868a39e6d738ff70cca1040785e913164137f1101059f65f"
+    },
+    {
+      "path": "assopra-store/sources/desktop-metadata.xml",
+      "bytes": 113981,
+      "sha256": "0981221265a420057cae9d111def3175423f222874fcca1e91531e1f8782e930"
+    },
+    {
+      "path": "assopra-store/sources/filters.png",
+      "bytes": 70382,
+      "sha256": "03785cc3e35b4db224036928227d37cdda658ad15b3ffa424078a4c7642895e7"
+    },
+    {
+      "path": "assopra-store/sources/home-mobile.png",
+      "bytes": 2320751,
+      "sha256": "673a031bf727aba64cdf53234dac0adea23571f604a8c6ca3b46140aa2bcf2c0"
+    },
+    {
+      "path": "assopra-store/sources/home.png",
+      "bytes": 8014550,
+      "sha256": "8e43bf0fd28ba968940b8d1da8fbd67d9ae969f17c0b2fb0e8f3f1737dfedec2"
+    },
+    {
+      "path": "assopra-store/sources/manifest.json",
+      "bytes": 1233,
+      "sha256": "04dacba99f408ac8dc55c82a74cabe4d9e631abfce5206fbb009fbb8e894f6de"
+    },
+    {
+      "path": "assopra-store/sources/menu-mobile.png",
+      "bytes": 22425,
+      "sha256": "962de810d95c7721e0e601b51910841d0fa9e347bc3b47374e07c17336c6e277"
+    },
+    {
+      "path": "assopra-store/sources/mobile-metadata.xml",
+      "bytes": 128518,
+      "sha256": "f3af63e6057ad7ae83e0b3fee2dbb91a77b3944d321111b76311c3677d36ae9d"
+    },
+    {
+      "path": "assopra-store/sources/navigation.png",
+      "bytes": 205163,
+      "sha256": "cca3bc4a832af6caf105377f9d261b1d67aafefee745c070f83cd1f301530244"
+    },
+    {
+      "path": "assopra-store/sources/product-mobile.png",
+      "bytes": 1175216,
+      "sha256": "11ec04a1828daac10519ee43e7cdbf204e24226fe3b0b1d15eebb124f35bc268"
+    },
+    {
+      "path": "assopra-store/sources/product.png",
+      "bytes": 4277544,
+      "sha256": "31d5ce5f12cf5611110d20f586ac184676f426b586b000e558a0cb22c5e0bba3"
+    },
+    {
+      "path": "assopra-store/sources/quick-add-mobile.png",
+      "bytes": 206043,
+      "sha256": "ee8651f09e720f9f0d239e5e873b7253842c9b44f70b9fd2226deb677c2a8f88"
+    },
+    {
+      "path": "assopra-store/sources/search.png",
+      "bytes": 498791,
+      "sha256": "d44f4e7fecbd7b60f0cac376ef8632e84181fc745c8ea79f60ec0fd18fe77c78"
+    },
+    {
+      "path": "assopra-store/study.md",
+      "bytes": 8083,
+      "sha256": "7a6a9bd23976c3a72057f0019dfe2da81f904253fc01a3ea5f27f3a7ceb27284"
+    },
+    {
+      "path": "assopra-store/verify.mjs",
+      "bytes": 3645,
+      "sha256": "73b5cbc12a13d111a463e16b6aabc5afc391570910c4869094b86358f4cf7bf0"
+    },
+    {
+      "path": "meta-suplementos/README.md",
+      "bytes": 787,
+      "sha256": "79d0b022c58100a598eaa367483c8c63b3218b301dc715e3b63056b8eb73a901"
+    },
+    {
+      "path": "meta-suplementos/assopra-next-chat.md",
+      "bytes": 4090,
+      "sha256": "9021b6ccc1157a00eab42737eefb480dbcbb1dc99b0c262c1fb799af0c7a1c50"
+    },
+    {
+      "path": "meta-suplementos/banners/Group 10.jpg",
+      "bytes": 942958,
+      "sha256": "84578dfdf5c4e944ee5bea2dd57e07574053c8576373ad1e4ad66c757aa56a16"
+    },
+    {
+      "path": "meta-suplementos/banners/Group 11.jpg",
+      "bytes": 951827,
+      "sha256": "b7037bdd6e76d6e4150b980eb43ed0ab181acbbbca85fc11c93a2c45b01ce3ba"
+    },
+    {
+      "path": "meta-suplementos/banners/Group 12.jpg",
+      "bytes": 979879,
+      "sha256": "ce9fc930bcc9aeef062d786f34d1efcf7b48e1d5d8bbfcd049d2a77dda630c89"
+    },
+    {
+      "path": "meta-suplementos/banners/Group 8.jpg",
+      "bytes": 899105,
+      "sha256": "6c72aa790cca8a4a4c1b6f9233cfba3a3349f40393a9db295d85b6c70ac8091f"
+    },
+    {
+      "path": "meta-suplementos/banners/Group 9.jpg",
+      "bytes": 944640,
+      "sha256": "34f3345f3e7a1f31fa8612d7c21acb56998742bf66532d36d8a14cf26e51d0b4"
+    },
+    {
+      "path": "meta-suplementos/build.mjs",
+      "bytes": 19707,
+      "sha256": "bc71d978deeefa9e7afdf31253c5ae83d5501934dc77f3b6da180417aee093ab"
+    },
+    {
+      "path": "meta-suplementos/components-masonry.png",
+      "bytes": 555849,
+      "sha256": "682476c37c971214feb247426ac79e48e782d61d3170819ceb0b8af6ae937219"
+    },
+    {
+      "path": "meta-suplementos/components.html",
+      "bytes": 4644819,
+      "sha256": "32b5396bb9f82b15ada325db4551f7783d69c65a98f3a7febfc48df69205610a"
+    },
+    {
+      "path": "meta-suplementos/compositions/01-home.png",
+      "bytes": 1050193,
+      "sha256": "4ddffc8f936c01df2fd6948b5b1680d3c836ded0cecabb5788b66e95a2a160fd"
+    },
+    {
+      "path": "meta-suplementos/compositions/02-discovery.png",
+      "bytes": 634416,
+      "sha256": "59745863a8602416590adfa17ef545da242b6546b11d8f65dc33c16cb5cad689"
+    },
+    {
+      "path": "meta-suplementos/compositions/03-catalogue.png",
+      "bytes": 790883,
+      "sha256": "2acdb708a4053ad71ffdac6921226be28cc097e681079b91a2a25edc63067afe"
+    },
+    {
+      "path": "meta-suplementos/compositions/04-product.png",
+      "bytes": 748900,
+      "sha256": "69b113f5690083071d21ef3ea10c9ed53a3e72c03e0e96c0aeb7d1a7552e53b6"
+    },
+    {
+      "path": "meta-suplementos/compositions/05-information.png",
+      "bytes": 416310,
+      "sha256": "497633991b7c90ca4f6711404df8f8a818101d9ae2fdb1426db2f9408c08654c"
+    },
+    {
+      "path": "meta-suplementos/compositions/06-mobile.png",
+      "bytes": 283187,
+      "sha256": "3cc0990047b856a1e0fe675b0a657c9239b58102d7f48e624869bf5c1eba3580"
+    },
+    {
+      "path": "meta-suplementos/compositions/07-components.png",
+      "bytes": 154401,
+      "sha256": "dd02c8168e006a9a7b4fe83632ed4462d2aea2ff2cb7308bbdfe092e52042238"
+    },
+    {
+      "path": "meta-suplementos/compositions/08-imagery.png",
+      "bytes": 878346,
+      "sha256": "9dc641ee833bbeee8e42b6d3d23c9eb23b710e7cd5817362e25e78c9ac9c7875"
+    },
+    {
+      "path": "meta-suplementos/compositions/09-categories-science.png",
+      "bytes": 426789,
+      "sha256": "20adb6084963662f996a210f2fa0d44a4dbd435fb7d3f768f5499e4c8e9b844a"
+    },
+    {
+      "path": "meta-suplementos/compositions/10-favourites-ironhair.png",
+      "bytes": 522540,
+      "sha256": "9d274ffb2b5caf6e04b6b52adf190eacd6f0eac8edf89c31f439e22dc67d75fc"
+    },
+    {
+      "path": "meta-suplementos/compositions/11-ironhair-feature.png",
+      "bytes": 419441,
+      "sha256": "0dd184cc8cbb53161d7c10a00b8e7ae33167f989dc0b8322d931f71d2be6a055"
+    },
+    {
+      "path": "meta-suplementos/compositions/12-reviews-footer.png",
+      "bytes": 184247,
+      "sha256": "18703068b0f9880c17c1681e45077b24e8123deadc244d097e6b14151aa6d7bf"
+    },
+    {
+      "path": "meta-suplementos/compositions/13-catalogue-grid.png",
+      "bytes": 300596,
+      "sha256": "c457d6e753f1322216d5d7b04c17e2c103b7793c53830f38d68109f7a57cadd5"
+    },
+    {
+      "path": "meta-suplementos/compositions/14-catalogue-ironfit.png",
+      "bytes": 724727,
+      "sha256": "d3439331e90afea6090fd83a8ff138aef346c7e5c1d5afee391e14382f54aeef"
+    },
+    {
+      "path": "meta-suplementos/compositions/15-pre-checkout.png",
+      "bytes": 635511,
+      "sha256": "7fa29e280cfc9ed2f4af0e9c8feb9f160c0450433480636e36e8ffbaced4a3a6"
+    },
+    {
+      "path": "meta-suplementos/contact-sheet.jpg",
+      "bytes": 784673,
+      "sha256": "846d2436a892a7ccc409c640a08c515985eaccf52cd0c7610f4e5d16a3afc357"
+    },
+    {
+      "path": "meta-suplementos/copy.md",
+      "bytes": 1424,
+      "sha256": "1917e9038d632ed29e15f12fc52468a92ceb9fd9b75452ae2c870f8dbab244da"
+    },
+    {
+      "path": "meta-suplementos/crop-manifest.json",
+      "bytes": 2546,
+      "sha256": "94bec91d31a7bc0ea9ca97a55f6673114fc5f3dfed0a09d931797625bf4a3d01"
+    },
+    {
+      "path": "meta-suplementos/crops/campaign-ironfit.png",
+      "bytes": 1144033,
+      "sha256": "90f12e74aeb2001f3919988ecaa75c94fc0a4979a5bf5e1c72b9ef0858725ce5"
+    },
+    {
+      "path": "meta-suplementos/crops/campaign-ironhair.png",
+      "bytes": 1298208,
+      "sha256": "038107f4a5f3fdde4bad659dfe73498a081129df591363270590530929360f05"
+    },
+    {
+      "path": "meta-suplementos/crops/cart-panel.png",
+      "bytes": 110132,
+      "sha256": "227b7727bd0411fed5d8fe8feeea1d4246013ab9ca78e30508a3c75b62145625"
+    },
+    {
+      "path": "meta-suplementos/crops/catalogue-grid.png",
+      "bytes": 843403,
+      "sha256": "30d6d59bd0a9bd460b6978c07e3b8bfd322448f3451372c5d7e78d62358de38e"
+    },
+    {
+      "path": "meta-suplementos/crops/catalogue-ironfit.png",
+      "bytes": 1513981,
+      "sha256": "e4389ddc1bf8d324d5fbe7894a68c5537c5eb99de1d1daa651e2820abd0d9671"
+    },
+    {
+      "path": "meta-suplementos/crops/catalogue-opening.png",
+      "bytes": 2128522,
+      "sha256": "3a006887c4afd5d27e558bfb277e47297cb6cd27f12e7c2f8f5e203556886b0f"
+    },
+    {
+      "path": "meta-suplementos/crops/catalogue-products.png",
+      "bytes": 831682,
+      "sha256": "3cb655d7639e6968aef66c34d6dc0316a621928093cf167bfa7f5d719edd7f60"
+    },
+    {
+      "path": "meta-suplementos/crops/filter-panel.png",
+      "bytes": 87162,
+      "sha256": "c8312094dffcc815a568f19923ceca2b0da04ddc8059fb37bc301f8e8fe0cf44"
+    },
+    {
+      "path": "meta-suplementos/crops/home-categories-science.png",
+      "bytes": 1421469,
+      "sha256": "c9c51a78bb9411f9b11225aa696641063409c0e94658d68670a55439b3ce9eae"
+    },
+    {
+      "path": "meta-suplementos/crops/home-categories.png",
+      "bytes": 1037342,
+      "sha256": "f2c0c7eadad06d676a39ad841900b24eeb82864a11b120835744028856a3ffc5"
+    },
+    {
+      "path": "meta-suplementos/crops/home-favourites-ironhair.png",
+      "bytes": 1760986,
+      "sha256": "65c05731ebe103eae7081098d1227b5af3a93bbc4b48fa8a942176634a06d721"
+    },
+    {
+      "path": "meta-suplementos/crops/home-ironhair-feature.png",
+      "bytes": 656950,
+      "sha256": "52c5c1697274c70bd5ef243822cd181b29198391b1d160cb256869d53bf71740"
+    },
+    {
+      "path": "meta-suplementos/crops/home-opening.png",
+      "bytes": 2953811,
+      "sha256": "c7ac096a5a338aa4bf934af853b67f71719b5202ecfd1e61755075a405398830"
+    },
+    {
+      "path": "meta-suplementos/crops/home-reviews-footer.png",
+      "bytes": 624703,
+      "sha256": "e6c3f1aaec7510b2bb224b7ac929660b293e1aa573178d656851f103be04ba6a"
+    },
+    {
+      "path": "meta-suplementos/crops/home-science.png",
+      "bytes": 376716,
+      "sha256": "9a32688942030471d3046ed67002d7e68ecadc367c99c5123b2c5c24af8f32ed"
+    },
+    {
+      "path": "meta-suplementos/crops/pre-checkout.png",
+      "bytes": 1545845,
+      "sha256": "7d1b886287d3d6075f17f57d9c69755ff64997da5868b5ad616ba9b179135c83"
+    },
+    {
+      "path": "meta-suplementos/crops/product-benefits.png",
+      "bytes": 106750,
+      "sha256": "f3eb882dadc2eacc18693ac36dea8923e2b9fc979928693c4d550e5f8415578e"
+    },
+    {
+      "path": "meta-suplementos/crops/product-information.png",
+      "bytes": 1129160,
+      "sha256": "8665070f8afd5566a7b0c0b66101eb418b14ecb5059be5f762c79ef28c9142e2"
+    },
+    {
+      "path": "meta-suplementos/crops/product-opening.png",
+      "bytes": 2135927,
+      "sha256": "047ab538efa09a6dfa2ba1cec20b295b04ef1b1247a149bb323fbc33357f0274"
+    },
+    {
+      "path": "meta-suplementos/final/README.md",
+      "bytes": 1115,
+      "sha256": "8f8b23a51c5cdd8d982ffcdada04c0194c0e0dc20aee9dff5487227ceb7a85a1"
+    },
+    {
+      "path": "meta-suplementos/final/assopra-next-chat.md",
+      "bytes": 4090,
+      "sha256": "9021b6ccc1157a00eab42737eefb480dbcbb1dc99b0c262c1fb799af0c7a1c50"
+    },
+    {
+      "path": "meta-suplementos/final/copy.md",
+      "bytes": 1424,
+      "sha256": "1917e9038d632ed29e15f12fc52468a92ceb9fd9b75452ae2c870f8dbab244da"
+    },
+    {
+      "path": "meta-suplementos/final/images/banner-ironfit.jpg",
+      "bytes": 942958,
+      "sha256": "84578dfdf5c4e944ee5bea2dd57e07574053c8576373ad1e4ad66c757aa56a16"
+    },
+    {
+      "path": "meta-suplementos/final/images/banner-ironhair.jpg",
+      "bytes": 951827,
+      "sha256": "b7037bdd6e76d6e4150b980eb43ed0ab181acbbbca85fc11c93a2c45b01ce3ba"
+    },
+    {
+      "path": "meta-suplementos/final/images/banner-magnesium.jpg",
+      "bytes": 979879,
+      "sha256": "ce9fc930bcc9aeef062d786f34d1efcf7b48e1d5d8bbfcd049d2a77dda630c89"
+    },
+    {
+      "path": "meta-suplementos/final/images/banner-metapower.jpg",
+      "bytes": 944640,
+      "sha256": "34f3345f3e7a1f31fa8612d7c21acb56998742bf66532d36d8a14cf26e51d0b4"
+    },
+    {
+      "path": "meta-suplementos/final/images/banner-orapro-nobis.jpg",
+      "bytes": 899105,
+      "sha256": "6c72aa790cca8a4a4c1b6f9233cfba3a3349f40393a9db295d85b6c70ac8091f"
+    },
+    {
+      "path": "meta-suplementos/final/images/cart.png",
+      "bytes": 110132,
+      "sha256": "227b7727bd0411fed5d8fe8feeea1d4246013ab9ca78e30508a3c75b62145625"
+    },
+    {
+      "path": "meta-suplementos/final/images/catalogue-grid-macbook.png",
+      "bytes": 300680,
+      "sha256": "000cbbbf658bccfcd9bafee19ec6f31c173d86294a1cda77deb8cd75a3059efe"
+    },
+    {
+      "path": "meta-suplementos/final/images/catalogue-ironfit-macbook.png",
+      "bytes": 773479,
+      "sha256": "8beb4d2d001869350ca4d05fe4b6748080cf22f734cda2d923661861998b05b9"
+    },
+    {
+      "path": "meta-suplementos/final/images/catalogue-macbook.png",
+      "bytes": 853093,
+      "sha256": "a50cfa6a3a9766155c24a52905de90a533d92fbc9e6101a35eaa9cd578cd64bc"
+    },
+    {
+      "path": "meta-suplementos/final/images/catalogue-products.png",
+      "bytes": 831682,
+      "sha256": "3cb655d7639e6968aef66c34d6dc0316a621928093cf167bfa7f5d719edd7f60"
+    },
+    {
+      "path": "meta-suplementos/final/images/categories-science-macbook.png",
+      "bytes": 443025,
+      "sha256": "c9d25109a4f7fa0861992d29224f16ccabc48ad342153e10fe51c1a2e193fdd8"
+    },
+    {
+      "path": "meta-suplementos/final/images/favourites-ironhair-macbook.png",
+      "bytes": 557119,
+      "sha256": "8ad7940e25c03b0e90581e1307424819dc2b0e5da76bcf175e17ae4400676131"
+    },
+    {
+      "path": "meta-suplementos/final/images/filters.png",
+      "bytes": 87162,
+      "sha256": "c8312094dffcc815a568f19923ceca2b0da04ddc8059fb37bc301f8e8fe0cf44"
+    },
+    {
+      "path": "meta-suplementos/final/images/home-macbook.png",
+      "bytes": 1133528,
+      "sha256": "1cd33a4d18fd8194356009ecb9b42741ccb554408481e18198e00155fdb54be3"
+    },
+    {
+      "path": "meta-suplementos/final/images/ironhair-feature-macbook.png",
+      "bytes": 437554,
+      "sha256": "aab3efd9822002c2757f6d3f51c0d144e32ea37c3aab4023866fb99852effc0c"
+    },
+    {
+      "path": "meta-suplementos/final/images/mobile-goals-iphone.png",
+      "bytes": 187820,
+      "sha256": "ea27f47c0631038bbe92fe459409baa93c0e6ce3522b81c0ec66e204a8d7da0f"
+    },
+    {
+      "path": "meta-suplementos/final/images/mobile-products-iphone.png",
+      "bytes": 88578,
+      "sha256": "2f1ab013d0e2390fee08ff9a73f586a1a1fd92a327f96ba6a4541e810903c8de"
+    },
+    {
+      "path": "meta-suplementos/final/images/navigation-goals.png",
+      "bytes": 961901,
+      "sha256": "64dcb00a21543fae16d4a79e1b8c8b9c33ffd23a2bbbcc61c5d383130bc52d20"
+    },
+    {
+      "path": "meta-suplementos/final/images/navigation-products.png",
+      "bytes": 228310,
+      "sha256": "d5082d2ca190195cc00e4c976f6046d2cc2f0b64bc0314eb9017ea318de6077a"
+    },
+    {
+      "path": "meta-suplementos/final/images/pre-checkout-macbook.png",
+      "bytes": 673577,
+      "sha256": "fd7342b9aca27ac05164f2b3bceac3c8d150fc222e721a7a07d0525221f07607"
+    },
+    {
+      "path": "meta-suplementos/final/images/product-benefits.png",
+      "bytes": 106750,
+      "sha256": "f3eb882dadc2eacc18693ac36dea8923e2b9fc979928693c4d550e5f8415578e"
+    },
+    {
+      "path": "meta-suplementos/final/images/product-information.png",
+      "bytes": 1129160,
+      "sha256": "8665070f8afd5566a7b0c0b66101eb418b14ecb5059be5f762c79ef28c9142e2"
+    },
+    {
+      "path": "meta-suplementos/final/images/product-macbook.png",
+      "bytes": 804475,
+      "sha256": "b837300ef2e668737a83a30b2a20b32c1df30e27ef48239795c52807f8e7bd87"
+    },
+    {
+      "path": "meta-suplementos/final/images/reviews-footer-macbook.png",
+      "bytes": 168400,
+      "sha256": "d88d1c307ea6646eec64d2f315bd20921a7bdf1865c3b9cd23e69c65665edf9f"
+    },
+    {
+      "path": "meta-suplementos/final/images/sticky-purchase.png",
+      "bytes": 26911,
+      "sha256": "62492453a7f32d6c99e7d909604df83b88c6374675b96d4f5b176b88b9d9b449"
+    },
+    {
+      "path": "meta-suplementos/final/index.html",
+      "bytes": 6689,
+      "sha256": "b9b13a38d727c10e082ec8f37b0216d87cededad1dbefca9d8776806ef016a9f"
+    },
+    {
+      "path": "meta-suplementos/final/media.json",
+      "bytes": 4754,
+      "sha256": "700a8c8a3d6bcc78f0ae5237d801e96b1b83f10a55576119ba6149844ac842c8"
+    },
+    {
+      "path": "meta-suplementos/meta-suplementos-final.zip",
+      "bytes": 14284476,
+      "sha256": "27f8f7d96f51ad0a8e02673e0b1673c034b9b04ba66bb0821b04fae2988b01bb"
+    },
+    {
+      "path": "meta-suplementos/production-entry.json",
+      "bytes": 8115,
+      "sha256": "c8253a90dcd4edc34139a430366e10b8c2b4b9a3d6b95c92e962d65a3149931e"
+    },
+    {
+      "path": "meta-suplementos/review.html",
+      "bytes": 28147615,
+      "sha256": "c4d1007455eeb0c178d577b3faccf225af3b866236b1981c132cb1a346c01bb4"
+    },
+    {
+      "path": "meta-suplementos/sources/3236.png",
+      "bytes": 111340,
+      "sha256": "1f62080e0432c9df7fc69e007442185d9cd2132d99de22447ea20b2eeaa5aca9"
+    },
+    {
+      "path": "meta-suplementos/sources/3328.png",
+      "bytes": 134264,
+      "sha256": "2b938354cf24cac166ea9afb1674183c7a65331ee4234e60ac4af333da6be306"
+    },
+    {
+      "path": "meta-suplementos/sources/3450.png",
+      "bytes": 26911,
+      "sha256": "62492453a7f32d6c99e7d909604df83b88c6374675b96d4f5b176b88b9d9b449"
+    },
+    {
+      "path": "meta-suplementos/sources/5764.png",
+      "bytes": 228310,
+      "sha256": "d5082d2ca190195cc00e4c976f6046d2cc2f0b64bc0314eb9017ea318de6077a"
+    },
+    {
+      "path": "meta-suplementos/sources/5840.png",
+      "bytes": 113444,
+      "sha256": "721cced44007a5ea1e6b8a0d956346183d10386f871fa9853c7044bb326ca285"
+    },
+    {
+      "path": "meta-suplementos/sources/5945.png",
+      "bytes": 316196,
+      "sha256": "b743ab46253a4ccb8c646662c8e7767631a7b697c45307fc669f56d73878da08"
+    },
+    {
+      "path": "meta-suplementos/sources/6061.png",
+      "bytes": 961901,
+      "sha256": "64dcb00a21543fae16d4a79e1b8c8b9c33ffd23a2bbbcc61c5d383130bc52d20"
+    },
+    {
+      "path": "meta-suplementos/sources/catalogue.png",
+      "bytes": 4086911,
+      "sha256": "a6b0c136897e5ff1a958c88f882385ba53f257c6c6f4ce906e0395d0af67443a"
+    },
+    {
+      "path": "meta-suplementos/sources/home.png",
+      "bytes": 12449107,
+      "sha256": "3393be9783355b704b03b3b9c6ba879f19cd7c744215c3dbb84c4c37510cb11b"
+    },
+    {
+      "path": "meta-suplementos/sources/pre-checkout.png",
+      "bytes": 1800010,
+      "sha256": "b016f16fe8f48e162009ff6f892a54e5b8f0dc7d46cf5ef06f916b92cfdb96d5"
+    },
+    {
+      "path": "meta-suplementos/sources/product.png",
+      "bytes": 4588950,
+      "sha256": "348b224c242c5a25dc12c9f9e57f279a862f7446c1e2c4f9db4f5602f3f57780"
+    }
+  ]
+}

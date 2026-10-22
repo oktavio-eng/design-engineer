@@ -1,0 +1,14 @@
+{
+  "site": "https://oktavio.vercel.app/",
+  "commit": "34f6ed38df7480afd5b246eac61037141906d9b9",
+  "studioRevision": 25,
+  "metaGalleryImages": 23,
+  "assopraGalleryImages": 23,
+  "approvedCopy": "copy-expanded.md",
+  "campaignPosition": "After catalogue, before product and cart",
+  "tests": {
+    "storybook": 31,
+    "product": 27,
+    "visual": 28
+  }
+}
