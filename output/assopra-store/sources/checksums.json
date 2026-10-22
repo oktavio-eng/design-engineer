@@ -1,0 +1,74 @@
+[
+  {
+    "file": "cart-desktop.png",
+    "width": 1440,
+    "height": 1784,
+    "sha256": "45f179b031cf2c67a75942bed2edf5d89823c55ec9dbdd630a0bb85d28a09f81"
+  },
+  {
+    "file": "cart-mobile.png",
+    "width": 362,
+    "height": 842,
+    "sha256": "9682e83def7a7455ec5de803928b232f72dd54d1093a8dd7a684fb9c2cfa1875"
+  },
+  {
+    "file": "catalogue.png",
+    "width": 1440,
+    "height": 2555,
+    "sha256": "281bda0bbeb8a3555df167ed21784b0fda675dbd6551de1dbc6c100dce7f87da"
+  },
+  {
+    "file": "filters.png",
+    "width": 340,
+    "height": 703,
+    "sha256": "03785cc3e35b4db224036928227d37cdda658ad15b3ffa424078a4c7642895e7"
+  },
+  {
+    "file": "home-mobile.png",
+    "width": 402,
+    "height": 6305,
+    "sha256": "673a031bf727aba64cdf53234dac0adea23571f604a8c6ca3b46140aa2bcf2c0"
+  },
+  {
+    "file": "home.png",
+    "width": 1440,
+    "height": 6598,
+    "sha256": "8e43bf0fd28ba968940b8d1da8fbd67d9ae969f17c0b2fb0e8f3f1737dfedec2"
+  },
+  {
+    "file": "menu-mobile.png",
+    "width": 402,
+    "height": 616,
+    "sha256": "962de810d95c7721e0e601b51910841d0fa9e347bc3b47374e07c17336c6e277"
+  },
+  {
+    "file": "navigation.png",
+    "width": 1440,
+    "height": 560,
+    "sha256": "cca3bc4a832af6caf105377f9d261b1d67aafefee745c070f83cd1f301530244"
+  },
+  {
+    "file": "product-mobile.png",
+    "width": 402,
+    "height": 4987,
+    "sha256": "11ec04a1828daac10519ee43e7cdbf204e24226fe3b0b1d15eebb124f35bc268"
+  },
+  {
+    "file": "product.png",
+    "width": 1440,
+    "height": 5114,
+    "sha256": "31d5ce5f12cf5611110d20f586ac184676f426b586b000e558a0cb22c5e0bba3"
+  },
+  {
+    "file": "quick-add-mobile.png",
+    "width": 402,
+    "height": 846,
+    "sha256": "ee8651f09e720f9f0d239e5e873b7253842c9b44f70b9fd2226deb677c2a8f88"
+  },
+  {
+    "file": "search.png",
+    "width": 1104,
+    "height": 680,
+    "sha256": "d44f4e7fecbd7b60f0cac376ef8632e84181fc745c8ea79f60ec0fd18fe77c78"
+  }
+]

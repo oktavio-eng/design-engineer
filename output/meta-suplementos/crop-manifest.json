@@ -1,0 +1,154 @@
+[
+  {
+    "name": "home-opening",
+    "source": "home.png",
+    "x": 0,
+    "y": 0,
+    "width": 1920,
+    "height": 1120
+  },
+  {
+    "name": "home-categories",
+    "source": "home.png",
+    "x": 260,
+    "y": 1140,
+    "width": 1400,
+    "height": 660
+  },
+  {
+    "name": "home-science",
+    "source": "home.png",
+    "x": 20,
+    "y": 1838,
+    "width": 1880,
+    "height": 650
+  },
+  {
+    "name": "campaign-ironhair",
+    "source": "home.png",
+    "x": 274,
+    "y": 3217,
+    "width": 1372,
+    "height": 670
+  },
+  {
+    "name": "campaign-ironfit",
+    "source": "home.png",
+    "x": 274,
+    "y": 3911,
+    "width": 1372,
+    "height": 670
+  },
+  {
+    "name": "catalogue-opening",
+    "source": "catalogue.png",
+    "x": 0,
+    "y": 0,
+    "width": 1898,
+    "height": 1186
+  },
+  {
+    "name": "catalogue-products",
+    "source": "catalogue.png",
+    "x": 265,
+    "y": 920,
+    "width": 1370,
+    "height": 1040
+  },
+  {
+    "name": "product-opening",
+    "source": "product.png",
+    "x": 0,
+    "y": 0,
+    "width": 1940,
+    "height": 1290
+  },
+  {
+    "name": "product-information",
+    "source": "product.png",
+    "x": 284,
+    "y": 1383,
+    "width": 1372,
+    "height": 1229
+  },
+  {
+    "name": "product-benefits",
+    "source": "product.png",
+    "x": 250,
+    "y": 3654,
+    "width": 1440,
+    "height": 579
+  },
+  {
+    "name": "filter-panel",
+    "source": "3236.png",
+    "x": 24,
+    "y": 12,
+    "width": 337,
+    "height": 1203
+  },
+  {
+    "name": "cart-panel",
+    "source": "3328.png",
+    "x": 24,
+    "y": 12,
+    "width": 440,
+    "height": 1156
+  },
+  {
+    "name": "home-categories-science",
+    "source": "home.png",
+    "x": 0,
+    "y": 1150,
+    "width": 1920,
+    "height": 1400
+  },
+  {
+    "name": "home-favourites-ironhair",
+    "source": "home.png",
+    "x": 0,
+    "y": 2525,
+    "width": 1920,
+    "height": 1375
+  },
+  {
+    "name": "home-ironhair-feature",
+    "source": "home.png",
+    "x": 200,
+    "y": 6680,
+    "width": 1520,
+    "height": 650
+  },
+  {
+    "name": "home-reviews-footer",
+    "source": "home.png",
+    "x": 0,
+    "y": 7300,
+    "width": 1920,
+    "height": 1692
+  },
+  {
+    "name": "catalogue-grid",
+    "source": "catalogue.png",
+    "x": 0,
+    "y": 910,
+    "width": 1898,
+    "height": 1050
+  },
+  {
+    "name": "catalogue-ironfit",
+    "source": "catalogue.png",
+    "x": 245,
+    "y": 1480,
+    "width": 1410,
+    "height": 1058
+  },
+  {
+    "name": "pre-checkout",
+    "source": "pre-checkout.png",
+    "x": 0,
+    "y": 0,
+    "width": 1922,
+    "height": 1171
+  }
+]

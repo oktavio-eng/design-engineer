@@ -1,0 +1,65 @@
+{
+  "fileKey": "7tev7yK6sT3P0rnR1e2Ez6",
+  "sources": [
+    {
+      "name": "home",
+      "nodeId": "1:1556",
+      "file": "home.png"
+    },
+    {
+      "name": "catalogue",
+      "nodeId": "1:2414",
+      "file": "catalogue.png"
+    },
+    {
+      "name": "product",
+      "nodeId": "1:2547",
+      "file": "product.png"
+    },
+    {
+      "name": "cart-desktop",
+      "nodeId": "1:2786",
+      "file": "cart-desktop.png"
+    },
+    {
+      "name": "navigation",
+      "nodeId": "1:1971",
+      "file": "navigation.png"
+    },
+    {
+      "name": "search",
+      "nodeId": "1:2413",
+      "file": "search.png"
+    },
+    {
+      "name": "filters",
+      "nodeId": "1:2494",
+      "file": "filters.png"
+    },
+    {
+      "name": "home-mobile",
+      "nodeId": "1:3136",
+      "file": "home-mobile.png"
+    },
+    {
+      "name": "product-mobile",
+      "nodeId": "1:4166",
+      "file": "product-mobile.png"
+    },
+    {
+      "name": "menu-mobile",
+      "nodeId": "1:3575",
+      "file": "menu-mobile.png"
+    },
+    {
+      "name": "quick-add-mobile",
+      "nodeId": "1:4770",
+      "file": "quick-add-mobile.png"
+    },
+    {
+      "name": "cart-mobile",
+      "nodeId": "1:4503",
+      "file": "cart-mobile.png"
+    }
+  ]
+}

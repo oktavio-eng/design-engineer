@@ -1,0 +1,1484 @@
+<section id="1:1555" name="Telas Desktop" x="2008" y="9273" width="14528" height="6798">
+  <frame id="1:1556" name="Home" x="100" y="100" width="1440" height="6598">
+    <frame id="1:1557" name="Main Content" x="16" y="828" width="1408" height="5769.0458984375">
+      <frame id="1:1558" name="Frame 64" x="96" y="0" width="1216" height="78">
+        <frame id="1:1559" name="Category Card Guris" x="0" y="0" width="292" height="78">
+          <text id="1:1560" name="Winter Fashion Text" x="16" y="37" width="51" height="25" />
+          <vector id="1:1561" name="Vector" x="250" y="12" width="30" height="37" />
+          <rounded-rectangle id="1:1562" name="Foto 24" x="86" y="-19" width="121" height="110" />
+        </frame>
+        <frame id="1:1563" name="Category Card Gurias" x="308" y="0" width="292" height="78">
+          <text id="1:1564" name="Siblings Text" x="16" y="37" width="53" height="25" />
+          <vector id="1:1565" name="Vector" x="250" y="12" width="29.928653717041016" height="37" />
+          <rounded-rectangle id="1:1566" name="Foto 10" x="78" y="-44" width="137" height="172" />
+        </frame>
+        <frame id="1:1567" name="Category Card Lacos" x="616" y="0" width="292" height="78">
+          <text id="1:1568" name="Matching Sets Text" x="16" y="37" width="62" height="25" />
+          <rounded-rectangle id="1:1569" name="magnific__preservando-o-estilo-de-fotografia-e-ensaio-profis__15946 1" x="47" y="-89" width="198" height="167" hidden="true" />
+          <frame id="1:1570" name="Group 1" x="248.53515625" y="12" width="31.214656829833984" height="29" />
+          <rounded-rectangle id="1:1587" name="image 4" x="86" y="-36" width="120" height="150" />
+        </frame>
+        <frame id="1:1588" name="Category Card Guris" x="924" y="0" width="292" height="78">
+          <text id="1:1589" name="Winter Fashion Text" x="16" y="37" width="77" height="25" />
+          <frame id="1:1590" name="Group 2" x="235.5" y="6" width="42" height="42" />
+          <rounded-rectangle id="1:1603" name="Foto 19" x="81" y="-35" width="121" height="152" />
+          <rounded-rectangle id="1:1604" name="Foto 20" x="142" y="-27" width="109" height="136" />
+        </frame>
+      </frame>
+      <frame id="1:1605" name="Winter Collection Section" x="96" y="150" width="1216" height="505.0000305175781">
+        <frame id="1:1606" name="Section Header" x="0" y="0" width="1216" height="45">
+          <text id="1:1607" name="Winter Collection Text" x="0" y="3" width="217" height="39" />
+          <instance id="1:1608" name="View All Button" x="1097" y="0" width="119" height="45" />
+        </frame>
+        <frame id="1:1609" name="Product List" x="0" y="69" width="1216" height="436.0000305175781">
+          <instance id="1:1610" name="Product Card" x="0" y="0" width="292" height="436.0000305175781" />
+          <instance id="1:1611" name="Product Card" x="308" y="0" width="292" height="436.0000305175781" />
+          <instance id="1:1612" name="Product Card" x="616" y="0" width="292" height="436.0000305175781" />
+          <instance id="1:1613" name="Product Card" x="924" y="0" width="292" height="436.0000305175781" />
+        </frame>
+      </frame>
+      <frame id="1:1614" name="Home Compositions Section" x="0" y="727" width="1408" height="436" />
+      <frame id="1:1625" name="Collections Section" x="206" y="1235" width="996" height="741">
+        <frame id="1:1626" name="Collections Container" x="0" y="0" width="996" height="741">
+          <frame id="1:1627" name="Collections Card" x="0" y="0" width="486" height="651" />
+          <frame id="1:1637" name="Collections Card" x="510" y="90" width="486" height="651" />
+        </frame>
+      </frame>
+      <frame id="1:1647" name="About Section" x="206" y="2048" width="996" height="728.0460205078125">
+        <frame id="1:1648" name="About Content" x="127" y="0" width="742" height="250.0460205078125">
+          <rounded-rectangle id="1:1649" name="Assopra - OK 03 6" x="349.8235168457031" y="0" width="42.35293960571289" height="88.0460205078125" />
+          <text id="1:1650" name="About Title" x="168" y="104.0460205078125" width="406" height="64" />
+          <text id="1:1651" name="About Description" x="0" y="184.0460205078125" width="742" height="66" />
+        </frame>
+        <frame id="1:1652" name="Group 3" x="0" y="274.0460205078125" width="996" height="454">
+          <rounded-rectangle id="1:1653" name="About Image" x="0" y="274.0460205078125" width="996" height="454" />
+          <text id="1:1654" name="Celebrando a Infância" x="362" y="628.0001220703125" width="272" height="35" />
+        </frame>
+      </frame>
+      <frame id="1:1655" name="Winter Collection Section" x="96" y="2848.0458984375" width="1216" height="505.0000305175781">
+        <frame id="1:1656" name="Section Header" x="0" y="0" width="1216" height="45">
+          <text id="1:1657" name="Winter Collection Text" x="0" y="5.5" width="178" height="34" />
+          <instance id="1:1658" name="View All Button" x="1097" y="0" width="119" height="45" />
+        </frame>
+        <frame id="1:1659" name="Product List" x="0" y="69" width="1216" height="436.0000305175781">
+          <instance id="1:1660" name="Product Card" x="0" y="0" width="292" height="436.0000305175781" />
+          <instance id="1:1661" name="Product Card" x="308" y="0" width="292" height="436.0000305175781" />
+          <instance id="1:1662" name="Product Card" x="616" y="0" width="292" height="436.0000305175781" />
+          <instance id="1:1663" name="Product Card" x="924" y="0" width="292" height="436.0000305175781" />
+        </frame>
+      </frame>
+      <frame id="1:1664" name="Testimonials Section" x="96" y="3425.0458984375" width="1216" height="619">
+        <frame id="1:1665" name="Frame 65" x="0" y="0" width="1216" height="45">
+          <text id="1:1666" name="Testimonials Title" x="0" y="0" width="317" height="42" />
+          <instance id="1:1667" name="View All Button" x="1097" y="0" width="119" height="45" />
+        </frame>
+        <frame id="1:1668" name="Testimonials Cards" x="0" y="69" width="1216" height="550">
+          <frame id="1:1669" name="Testimonial Card" x="0" y="0" width="394.6666564941406" height="550">
+            <frame id="1:1670" name="Add to Cart" x="169.80078125" y="247.75408935546875" width="54.39999771118164" height="54.39999771118164">
+              <text id="1:1671" name="Add to Cart Button" x="72.53472137451172" y="21.33333396911621" width="97" height="54" hidden="true" />
+              <frame id="1:1672" name="PlayCircle" x="8" y="8" width="38.39999771118164" height="38.39999771118164" />
+            </frame>
+          </frame>
+          <frame id="1:1677" name="Testimonial Card" x="410.6666564941406" y="0" width="394.66668701171875" height="550">
+            <frame id="1:1678" name="Add to Cart" x="169.80078125" y="247.75408935546875" width="54.39999771118164" height="54.39999771118164">
+              <text id="1:1679" name="Add to Cart Button" x="72.53472137451172" y="21.33333396911621" width="97" height="54" hidden="true" />
+              <frame id="1:1680" name="PlayCircle" x="8" y="8" width="38.39999771118164" height="38.39999771118164" />
+            </frame>
+          </frame>
+          <frame id="1:1685" name="Testimonial Card" x="821.3333740234375" y="0" width="394.66668701171875" height="550">
+            <frame id="1:1686" name="Add to Cart" x="169.80078125" y="247.75408935546875" width="54.39999771118164" height="54.39999771118164">
+              <text id="1:1687" name="Add to Cart Button" x="72.53472137451172" y="21.33333396911621" width="97" height="54" hidden="true" />
+              <frame id="1:1688" name="PlayCircle" x="8" y="8" width="38.39999771118164" height="38.39999771118164" />
+            </frame>
+          </frame>
+          <frame id="1:1693" name="Arrow" x="1200" y="258.9541015625" width="32" height="32">
+            <frame id="1:1694" name="arrow-right-line" x="8" y="8" width="16" height="16" />
+          </frame>
+        </frame>
+      </frame>
+      <frame id="1:1696" name="Frame 9" x="0" y="4116.0458984375" width="1408" height="1653">
+        <instance id="1:1697" name="Interactive Session Section" x="0" y="0" width="1408" height="556" />
+        <frame id="1:1698" name="Newsletter Container" x="0" y="580" width="1408" height="556">
+          <frame id="1:1699" name="Newsletter Form" x="32" y="96" width="380" height="364">
+            <instance id="1:1700" name="MessengerLogo" x="170" y="0" width="40" height="40" />
+            <text id="1:1701" name="Newsletter Title" x="59" y="50" width="262" height="66" />
+            <text id="1:1702" name="Newsletter Subtitle" x="0" y="126" width="380" height="22" />
+            <instance id="1:1703" name="Input" x="0" y="158" width="380" height="44" />
+            <instance id="1:1704" name="Input" x="0" y="212" width="380" height="44" />
+            <instance id="1:1705" name="Input" x="0" y="266" width="380" height="44" />
+            <instance id="1:1706" name="Primary Button" x="0" y="320" width="380" height="44" />
+          </frame>
+          <rounded-rectangle id="1:1707" name="Newsletter Image" x="444" y="32" width="932" height="492" />
+        </frame>
+        <frame id="1:1708" name="footer" x="-18" y="1160" width="1444" height="493">
+          <frame id="1:1709" name="Frame 51" x="0" y="0" width="1440" height="450">
+            <frame id="1:1710" name="Frame 50" x="155.5" y="106" width="1129" height="124">
+              <frame id="1:1711" name="Row" x="0" y="25" width="337" height="99">
+                <frame id="1:1712" name="Newsletter Signup" x="0" y="0" width="337" height="24">
+                  <frame id="1:1713" name="Mailbox" x="0" y="0" width="24" height="24" />
+                  <text id="1:1719" name="Newsletter Text" x="32" y="0.5" width="305" height="23" />
+                </frame>
+                <frame id="1:1720" name="Newsletter Form" x="0" y="46" width="337" height="53">
+                  <frame id="1:1721" name="Row" x="0" y="0" width="337" height="53">
+                    <frame id="1:1722" name="field" x="0" y="0" width="337" height="53">
+                      <text id="1:1723" name="Email Field" x="24" y="16" width="117" height="21" />
+                      <frame id="1:1724" name="sbumit" x="239" y="8" width="90" height="37">
+                        <text id="1:1725" name="Submit Button" x="25.5" y="8" width="39" height="21" />
+                      </frame>
+                    </frame>
+                  </frame>
+                </frame>
+              </frame>
+              <frame id="1:1726" name="Frame 48" x="396" y="0" width="733" height="124">
+                <frame id="1:1727" name="Frame 46" x="0" y="0" width="122" height="124">
+                  <text id="1:1728" name="Mapa do site" x="15" y="0" width="92" height="22" />
+                  <frame id="1:1729" name="Frame 44" x="0" y="34" width="122" height="90">
+                    <text id="1:1730" name="Início" x="42.5" y="0" width="37" height="22" />
+                    <text id="1:1731" name="Catálogo" x="28.5" y="34" width="65" height="22" />
+                    <text id="1:1732" name="Malinha Delivery" x="0" y="68" width="122" height="22" />
+                  </frame>
+                </frame>
+                <frame id="1:1733" name="Frame 47" x="156" y="0" width="187" height="100">
+                  <text id="1:1734" name="Endereço" x="60" y="0" width="67" height="22" />
+                  <frame id="1:1735" name="Frame 45" x="0" y="34" width="187" height="66">
+                    <text id="1:1736" name="Al. Rio Negro, 111 - Alphaville Industrial, Barueri - SP, 06454-000" x="0" y="0" width="187" height="66" />
+                  </frame>
+                </frame>
+                <frame id="1:1737" name="Frame 48" x="377" y="0" width="160" height="124">
+                  <text id="1:1738" name="Contato" x="51.5" y="0" width="57" height="22" />
+                  <frame id="1:1739" name="Frame 45" x="0" y="34" width="160" height="90">
+                    <text id="1:1740" name="+55 (00) 00000-0000" x="0" y="0" width="160" height="22" />
+                    <text id="1:1741" name="+55 (00) 00000-0000" x="0" y="34" width="160" height="22" />
+                    <text id="1:1742" name="contato@assopra.com" x="0.5" y="68" width="159" height="22" />
+                  </frame>
+                </frame>
+                <frame id="1:1743" name="Frame 49" x="571" y="0" width="162" height="124">
+                  <text id="1:1744" name="Políticas" x="50.5" y="0" width="61" height="22" />
+                  <frame id="1:1745" name="Frame 45" x="0" y="34" width="162" height="90">
+                    <text id="1:1746" name="Política de Privacidade" x="0" y="0" width="162" height="22" />
+                    <text id="1:1747" name="Política de Cookies" x="13.5" y="34" width="135" height="22" />
+                    <text id="1:1748" name="Política de Segurança" x="3.5" y="68" width="155" height="22" />
+                  </frame>
+                </frame>
+              </frame>
+            </frame>
+            <text id="1:1749" name="A Loja Assopra é seu destino encantador para roupas infantis de qualidade. Com dedicação e responsabilidade, oferecemos peças nacionais que unem conforto, estilo e cuidado para os pequenos. Cada coleção é pensada com carinho para vestir as crianças com charme e segurança, garantindo a satisfação dos pais e o bem-estar dos pequenos." x="156" y="278" width="1128" height="66" />
+          </frame>
+          <frame id="1:1750" name="promo-bar" x="0" y="450" width="1444" height="43">
+            <text id="1:1751" name="Loja Assopra - Todos Direitos Reservados" x="591" y="11" width="262" height="21" />
+          </frame>
+        </frame>
+      </frame>
+      <ellipse id="1:1752" name="Ellipse 15" x="-22" y="2142" width="1452" height="1452" />
+    </frame>
+    <instance id="1:1753" name="Main Banner" x="16" y="138" width="1408" height="640" />
+    <rounded-rectangle id="1:1754" name="image 5" x="1360" y="1294" width="63.866943359375" height="64" />
+    <instance id="1:1755" name="Nav Bar" x="0" y="0" width="1440" height="122" />
+  </frame>
+  <frame id="1:1756" name="Home - Menu Hover" x="1711" y="100" width="1440" height="6593">
+    <instance id="1:1757" name="Main Banner" x="16" y="138" width="1408" height="640" />
+    <frame id="1:1758" name="Main Content" x="16" y="828" width="1408" height="5764.0458984375">
+      <frame id="1:1759" name="Destaques" x="80" y="0" width="1248" height="78">
+        <frame id="1:1760" name="Category Card Guris" x="0" y="0" width="300" height="78">
+          <text id="1:1761" name="Winter Fashion Text" x="16" y="37" width="51" height="25" />
+          <vector id="1:1762" name="Vector" x="254" y="25" width="30" height="37" />
+        </frame>
+        <frame id="1:1763" name="Category Card Gurias" x="316" y="0" width="300" height="78">
+          <text id="1:1764" name="Siblings Text" x="16" y="37" width="53" height="25" />
+          <vector id="1:1765" name="Vector" x="254.07135009765625" y="25" width="29.928653717041016" height="37" />
+        </frame>
+        <frame id="1:1766" name="Category Card Lacos" x="632" y="0" width="300" height="78">
+          <text id="1:1767" name="Matching Sets Text" x="16" y="37" width="62" height="25" />
+          <rounded-rectangle id="1:1768" name="magnific__preservando-o-estilo-de-fotografia-e-ensaio-profis__15946 1" x="51.001953125" y="-89" width="198" height="167" hidden="true" />
+          <frame id="1:1769" name="Group 1" x="252.78533935546875" y="33" width="31.214656829833984" height="29" />
+        </frame>
+        <frame id="1:1786" name="Category Card Guris" x="948" y="0" width="300" height="78">
+          <text id="1:1787" name="Winter Fashion Text" x="16" y="37" width="77" height="25" />
+          <frame id="1:1788" name="Group 2" x="242" y="20" width="42" height="42" />
+        </frame>
+      </frame>
+      <frame id="1:1801" name="Winter Collection Section" x="96" y="150" width="1216" height="500.0000305175781">
+        <frame id="1:1802" name="Section Header" x="0" y="0" width="1216" height="40">
+          <text id="1:1803" name="Winter Collection Text" x="0" y="0.5" width="217" height="39" />
+          <frame id="1:1804" name="View All Button" x="1099" y="0" width="117" height="40">
+            <text id="1:1805" name="View All Text" x="20" y="10" width="55" height="20" />
+            <frame id="1:1806" name="ArrowRight" x="85" y="12" width="16" height="16" />
+          </frame>
+        </frame>
+        <frame id="1:1810" name="Product List" x="0" y="64" width="1216" height="436.0000305175781">
+          <instance id="1:1811" name="Product Card" x="0" y="0" width="292" height="436.0000305175781" />
+          <instance id="1:1812" name="Product Card" x="308" y="0" width="292" height="436.0000305175781" />
+          <instance id="1:1813" name="Product Card" x="616" y="0" width="292" height="436.0000305175781" />
+          <instance id="1:1814" name="Product Card" x="924" y="0" width="292" height="436.0000305175781" />
+        </frame>
+      </frame>
+      <frame id="1:1815" name="Home Compositions Section" x="0" y="722" width="1408" height="436" />
+      <frame id="1:1826" name="Collections Section" x="206" y="1230" width="996" height="741">
+        <frame id="1:1827" name="Collections Container" x="0" y="0" width="996" height="741">
+          <frame id="1:1828" name="Collections Card" x="0" y="0" width="486" height="651" />
+          <frame id="1:1838" name="Collections Card" x="510" y="90" width="486" height="651" />
+        </frame>
+      </frame>
+      <frame id="1:1848" name="About Section" x="206" y="2043" width="996" height="728.0460205078125">
+        <frame id="1:1849" name="About Content" x="127" y="0" width="742" height="250.0460205078125">
+          <rounded-rectangle id="1:1850" name="Assopra - OK 03 6" x="349.8235168457031" y="0" width="42.35293960571289" height="88.0460205078125" />
+          <text id="1:1851" name="About Title" x="168" y="104.0460205078125" width="406" height="64" />
+          <text id="1:1852" name="About Description" x="0" y="184.0460205078125" width="742" height="66" />
+        </frame>
+        <frame id="1:1853" name="Group 3" x="0" y="274.0460205078125" width="996" height="454">
+          <rounded-rectangle id="1:1854" name="About Image" x="0" y="274.0460205078125" width="996" height="454" />
+          <text id="1:1855" name="Celebrando a Infância" x="370" y="631.0001220703125" width="255" height="33" />
+        </frame>
+      </frame>
+      <frame id="1:1856" name="Winter Collection Section" x="96" y="2843.0458984375" width="1216" height="505.0000305175781">
+        <frame id="1:1857" name="Section Header" x="0" y="0" width="1216" height="45">
+          <text id="1:1858" name="Winter Collection Text" x="0" y="7" width="150" height="31" />
+          <instance id="1:1859" name="View All Button" x="1097" y="0" width="119" height="45" />
+        </frame>
+        <frame id="1:1860" name="Product List" x="0" y="69" width="1216" height="436.0000305175781">
+          <instance id="1:1861" name="Product Card" x="0" y="0" width="292" height="436.0000305175781" />
+          <instance id="1:1862" name="Product Card" x="308" y="0" width="292" height="436.0000305175781" />
+          <instance id="1:1863" name="Product Card" x="616" y="0" width="292" height="436.0000305175781" />
+          <instance id="1:1864" name="Product Card" x="924" y="0" width="292" height="436.0000305175781" />
+        </frame>
+      </frame>
+      <frame id="1:1865" name="Testimonials Section" x="96" y="3420.0458984375" width="1216" height="619">
+        <frame id="1:1866" name="Frame 65" x="0" y="0" width="1216" height="45">
+          <text id="1:1867" name="Testimonials Title" x="0" y="0" width="317" height="42" />
+          <instance id="1:1868" name="View All Button" x="1097" y="0" width="119" height="45" />
+        </frame>
+        <frame id="1:1869" name="Testimonials Cards" x="0" y="69" width="1216" height="550">
+          <frame id="1:1870" name="Testimonial Card" x="0" y="0" width="394.6666564941406" height="550">
+            <frame id="1:1871" name="Add to Cart" x="169.80078125" y="247.75408935546875" width="54.39999771118164" height="54.39999771118164">
+              <text id="1:1872" name="Add to Cart Button" x="72.53472137451172" y="21.33333396911621" width="97" height="54" hidden="true" />
+              <frame id="1:1873" name="PlayCircle" x="8" y="8" width="38.39999771118164" height="38.39999771118164" />
+            </frame>
+          </frame>
+          <frame id="1:1878" name="Testimonial Card" x="410.6666564941406" y="0" width="394.66668701171875" height="550">
+            <frame id="1:1879" name="Add to Cart" x="169.80078125" y="247.75408935546875" width="54.39999771118164" height="54.39999771118164">
+              <text id="1:1880" name="Add to Cart Button" x="72.53472137451172" y="21.33333396911621" width="97" height="54" hidden="true" />
+              <frame id="1:1881" name="PlayCircle" x="8" y="8" width="38.39999771118164" height="38.39999771118164" />
+            </frame>
+          </frame>
+          <frame id="1:1886" name="Testimonial Card" x="821.3333740234375" y="0" width="394.66668701171875" height="550">
+            <frame id="1:1887" name="Add to Cart" x="169.80078125" y="247.75408935546875" width="54.39999771118164" height="54.39999771118164">
+              <text id="1:1888" name="Add to Cart Button" x="72.53472137451172" y="21.33333396911621" width="97" height="54" hidden="true" />
+              <frame id="1:1889" name="PlayCircle" x="8" y="8" width="38.39999771118164" height="38.39999771118164" />
+            </frame>
+          </frame>
+          <frame id="1:1894" name="Arrow" x="1200" y="258.9541015625" width="32" height="32">
+            <frame id="1:1895" name="arrow-right-line" x="8" y="8" width="16" height="16" />
+          </frame>
+        </frame>
+      </frame>
+      <frame id="1:1897" name="Frame 9" x="0" y="4111.0458984375" width="1408" height="1653">
+        <frame id="1:1898" name="Group 4" x="0" y="0" width="1408" height="556">
+          <frame id="1:1899" name="Interactive Session Section" x="0" y="0" width="1408" height="556" />
+        </frame>
+        <frame id="1:1916" name="Newsletter Container" x="0" y="580" width="1408" height="556">
+          <frame id="1:1917" name="Newsletter Form" x="32" y="96" width="380" height="364">
+            <instance id="1:1918" name="MessengerLogo" x="170" y="0" width="40" height="40" />
+            <text id="1:1919" name="Newsletter Title" x="58" y="50" width="264" height="66" />
+            <text id="1:1920" name="Newsletter Subtitle" x="0" y="126" width="380" height="22" />
+            <instance id="1:1921" name="Input" x="0" y="158" width="380" height="44" />
+            <instance id="1:1922" name="Input" x="0" y="212" width="380" height="44" />
+            <instance id="1:1923" name="Input" x="0" y="266" width="380" height="44" />
+            <instance id="1:1924" name="Primary Button" x="0" y="320" width="380" height="44" />
+          </frame>
+          <rounded-rectangle id="1:1925" name="Newsletter Image" x="444" y="32" width="932" height="492" />
+        </frame>
+        <frame id="1:1926" name="footer" x="-18" y="1160" width="1444" height="493">
+          <frame id="1:1927" name="Frame 51" x="0" y="0" width="1440" height="450">
+            <frame id="1:1928" name="Frame 50" x="155.5" y="106" width="1129" height="124">
+              <frame id="1:1929" name="Row" x="0" y="25" width="337" height="99">
+                <frame id="1:1930" name="Newsletter Signup" x="0" y="0" width="337" height="24">
+                  <frame id="1:1931" name="Mailbox" x="0" y="0" width="24" height="24" />
+                  <text id="1:1937" name="Newsletter Text" x="32" y="0.5" width="305" height="23" />
+                </frame>
+                <frame id="1:1938" name="Newsletter Form" x="0" y="46" width="337" height="53">
+                  <frame id="1:1939" name="Row" x="0" y="0" width="337" height="53">
+                    <frame id="1:1940" name="field" x="0" y="0" width="337" height="53">
+                      <text id="1:1941" name="Email Field" x="24" y="16" width="117" height="21" />
+                      <frame id="1:1942" name="sbumit" x="239" y="8" width="90" height="37">
+                        <text id="1:1943" name="Submit Button" x="25.5" y="8" width="39" height="21" />
+                      </frame>
+                    </frame>
+                  </frame>
+                </frame>
+              </frame>
+              <frame id="1:1944" name="Frame 48" x="396" y="0" width="733" height="124">
+                <frame id="1:1945" name="Frame 46" x="0" y="0" width="122" height="124">
+                  <text id="1:1946" name="Mapa do site" x="15" y="0" width="92" height="22" />
+                  <frame id="1:1947" name="Frame 44" x="0" y="34" width="122" height="90">
+                    <text id="1:1948" name="Início" x="42.5" y="0" width="37" height="22" />
+                    <text id="1:1949" name="Catálogo" x="28.5" y="34" width="65" height="22" />
+                    <text id="1:1950" name="Malinha Delivery" x="0" y="68" width="122" height="22" />
+                  </frame>
+                </frame>
+                <frame id="1:1951" name="Frame 47" x="156" y="0" width="187" height="100">
+                  <text id="1:1952" name="Endereço" x="60" y="0" width="67" height="22" />
+                  <frame id="1:1953" name="Frame 45" x="0" y="34" width="187" height="66">
+                    <text id="1:1954" name="Al. Rio Negro, 111 - Alphaville Industrial, Barueri - SP, 06454-000" x="0" y="0" width="187" height="66" />
+                  </frame>
+                </frame>
+                <frame id="1:1955" name="Frame 48" x="377" y="0" width="160" height="124">
+                  <text id="1:1956" name="Contato" x="51.5" y="0" width="57" height="22" />
+                  <frame id="1:1957" name="Frame 45" x="0" y="34" width="160" height="90">
+                    <text id="1:1958" name="+55 (00) 00000-0000" x="0" y="0" width="160" height="22" />
+                    <text id="1:1959" name="+55 (00) 00000-0000" x="0" y="34" width="160" height="22" />
+                    <text id="1:1960" name="contato@assopra.com" x="0.5" y="68" width="159" height="22" />
+                  </frame>
+                </frame>
+                <frame id="1:1961" name="Frame 49" x="571" y="0" width="162" height="124">
+                  <text id="1:1962" name="Políticas" x="50.5" y="0" width="61" height="22" />
+                  <frame id="1:1963" name="Frame 45" x="0" y="34" width="162" height="90">
+                    <text id="1:1964" name="Política de Privacidade" x="0" y="0" width="162" height="22" />
+                    <text id="1:1965" name="Política de Cookies" x="13.5" y="34" width="135" height="22" />
+                    <text id="1:1966" name="Política de Segurança" x="3.5" y="68" width="155" height="22" />
+                  </frame>
+                </frame>
+              </frame>
+            </frame>
+            <text id="1:1967" name="A Loja Assopra é seu destino encantador para roupas infantis de qualidade. Com dedicação e responsabilidade, oferecemos peças nacionais que unem conforto, estilo e cuidado para os pequenos. Cada coleção é pensada com carinho para vestir as crianças com charme e segurança, garantindo a satisfação dos pais e o bem-estar dos pequenos." x="156" y="278" width="1128" height="66" />
+          </frame>
+          <frame id="1:1968" name="promo-bar" x="0" y="450" width="1444" height="43">
+            <text id="1:1969" name="Loja Assopra - Todos Direitos Reservados" x="591" y="11" width="262" height="21" />
+          </frame>
+        </frame>
+      </frame>
+    </frame>
+    <rounded-rectangle id="1:1970" name="Rectangle 11" x="0" y="0" width="1440" height="6593" />
+    <instance id="1:1971" name="Nav Bar" x="0" y="0" width="1440" height="560" />
+  </frame>
+  <frame id="1:1972" name="Home - Search" x="3322" y="100" width="1440" height="6593">
+    <instance id="1:1973" name="Main Banner" x="16" y="138" width="1408" height="640" />
+    <frame id="1:1974" name="Main Content" x="16" y="828" width="1408" height="5764.0458984375">
+      <frame id="1:1975" name="Frame 64" x="96" y="0" width="1216" height="78">
+        <frame id="1:1976" name="Category Card Guris" x="0" y="0" width="292" height="78">
+          <text id="1:1977" name="Winter Fashion Text" x="16" y="37" width="51" height="25" />
+          <vector id="1:1978" name="Vector" x="250" y="12" width="30" height="37" />
+          <rounded-rectangle id="1:1979" name="Foto 24" x="86" y="-19" width="121" height="110" />
+        </frame>
+        <frame id="1:1980" name="Category Card Gurias" x="308" y="0" width="292" height="78">
+          <text id="1:1981" name="Siblings Text" x="16" y="37" width="53" height="25" />
+          <vector id="1:1982" name="Vector" x="250" y="12" width="29.928653717041016" height="37" />
+          <rounded-rectangle id="1:1983" name="Foto 10" x="78" y="-44" width="137" height="172" />
+        </frame>
+        <frame id="1:1984" name="Category Card Lacos" x="616" y="0" width="292" height="78">
+          <text id="1:1985" name="Matching Sets Text" x="16" y="37" width="62" height="25" />
+          <rounded-rectangle id="1:1986" name="magnific__preservando-o-estilo-de-fotografia-e-ensaio-profis__15946 1" x="47" y="-89" width="198" height="167" hidden="true" />
+          <frame id="1:1987" name="Group 1" x="248.53515625" y="12" width="31.214656829833984" height="29" />
+          <rounded-rectangle id="1:2004" name="image 4" x="86" y="-36" width="120" height="150" />
+        </frame>
+        <frame id="1:2005" name="Category Card Guris" x="924" y="0" width="292" height="78">
+          <text id="1:2006" name="Winter Fashion Text" x="16" y="37" width="77" height="25" />
+          <frame id="1:2007" name="Group 2" x="235.5" y="6" width="42" height="42" />
+          <rounded-rectangle id="1:2020" name="Foto 19" x="81" y="-35" width="121" height="152" />
+          <rounded-rectangle id="1:2021" name="Foto 20" x="142" y="-27" width="109" height="136" />
+        </frame>
+      </frame>
+      <frame id="1:2022" name="Winter Collection Section" x="96" y="150" width="1216" height="500.0000305175781">
+        <frame id="1:2023" name="Section Header" x="0" y="0" width="1216" height="40">
+          <text id="1:2024" name="Winter Collection Text" x="0" y="4.5" width="171" height="31" />
+          <frame id="1:2025" name="View All Button" x="1099" y="0" width="117" height="40">
+            <text id="1:2026" name="View All Text" x="20" y="10" width="55" height="20" />
+            <frame id="1:2027" name="ArrowRight" x="85" y="12" width="16" height="16" />
+          </frame>
+        </frame>
+        <frame id="1:2031" name="Product List" x="0" y="64" width="1216" height="436.0000305175781">
+          <instance id="1:2032" name="Product Card" x="0" y="0" width="292" height="436.0000305175781" />
+          <instance id="1:2033" name="Product Card" x="308" y="0" width="292" height="436.0000305175781" />
+          <instance id="1:2034" name="Product Card" x="616" y="0" width="292" height="436.0000305175781" />
+          <instance id="1:2035" name="Product Card" x="924" y="0" width="292" height="436.0000305175781" />
+        </frame>
+      </frame>
+      <frame id="1:2036" name="Home Compositions Section" x="0" y="722" width="1408" height="436" />
+      <frame id="1:2047" name="Collections Section" x="206" y="1230" width="996" height="741">
+        <frame id="1:2048" name="Collections Container" x="0" y="0" width="996" height="741">
+          <frame id="1:2049" name="Collections Card" x="0" y="0" width="486" height="651" />
+          <frame id="1:2059" name="Collections Card" x="510" y="90" width="486" height="651" />
+        </frame>
+      </frame>
+      <frame id="1:2069" name="About Section" x="206" y="2043" width="996" height="728.0460205078125">
+        <frame id="1:2070" name="About Content" x="127" y="0" width="742" height="250.0460205078125">
+          <rounded-rectangle id="1:2071" name="Assopra - OK 03 6" x="349.8235168457031" y="0" width="42.35293960571289" height="88.0460205078125" />
+          <text id="1:2072" name="About Title" x="168" y="104.0460205078125" width="406" height="64" />
+          <text id="1:2073" name="About Description" x="0" y="184.0460205078125" width="742" height="66" />
+        </frame>
+        <frame id="1:2074" name="Group 3" x="0" y="274.0460205078125" width="996" height="454">
+          <rounded-rectangle id="1:2075" name="About Image" x="0" y="274.0460205078125" width="996" height="454" />
+          <text id="1:2076" name="Celebrando a Infância" x="278" y="567.0001220703125" width="440" height="80" />
+        </frame>
+      </frame>
+      <frame id="1:2077" name="Winter Collection Section" x="96" y="2843.0458984375" width="1216" height="505.0000305175781">
+        <frame id="1:2078" name="Section Header" x="0" y="0" width="1216" height="45">
+          <text id="1:2079" name="Winter Collection Text" x="0" y="7" width="150" height="31" />
+          <instance id="1:2080" name="View All Button" x="1097" y="0" width="119" height="45" />
+        </frame>
+        <frame id="1:2081" name="Product List" x="0" y="69" width="1216" height="436.0000305175781">
+          <instance id="1:2082" name="Product Card" x="0" y="0" width="292" height="436.0000305175781" />
+          <instance id="1:2083" name="Product Card" x="308" y="0" width="292" height="436.0000305175781" />
+          <instance id="1:2084" name="Product Card" x="616" y="0" width="292" height="436.0000305175781" />
+          <instance id="1:2085" name="Product Card" x="924" y="0" width="292" height="436.0000305175781" />
+        </frame>
+      </frame>
+      <frame id="1:2086" name="Testimonials Section" x="96" y="3420.0458984375" width="1216" height="619">
+        <frame id="1:2087" name="Frame 65" x="0" y="0" width="1216" height="45">
+          <text id="1:2088" name="Testimonials Title" x="0" y="0" width="317" height="42" />
+          <instance id="1:2089" name="View All Button" x="1097" y="0" width="119" height="45" />
+        </frame>
+        <frame id="1:2090" name="Testimonials Cards" x="0" y="69" width="1216" height="550">
+          <frame id="1:2091" name="Testimonial Card" x="0" y="0" width="394.6666564941406" height="550">
+            <frame id="1:2092" name="Add to Cart" x="169.80078125" y="247.75408935546875" width="54.39999771118164" height="54.39999771118164">
+              <text id="1:2093" name="Add to Cart Button" x="72.53472137451172" y="21.33333396911621" width="97" height="54" hidden="true" />
+              <frame id="1:2094" name="PlayCircle" x="8" y="8" width="38.39999771118164" height="38.39999771118164" />
+            </frame>
+          </frame>
+          <frame id="1:2099" name="Testimonial Card" x="410.6666564941406" y="0" width="394.66668701171875" height="550">
+            <frame id="1:2100" name="Add to Cart" x="169.80078125" y="247.75408935546875" width="54.39999771118164" height="54.39999771118164">
+              <text id="1:2101" name="Add to Cart Button" x="72.53472137451172" y="21.33333396911621" width="97" height="54" hidden="true" />
+              <frame id="1:2102" name="PlayCircle" x="8" y="8" width="38.39999771118164" height="38.39999771118164" />
+            </frame>
+          </frame>
+          <frame id="1:2107" name="Testimonial Card" x="821.3333740234375" y="0" width="394.66668701171875" height="550">
+            <frame id="1:2108" name="Add to Cart" x="169.80078125" y="247.75408935546875" width="54.39999771118164" height="54.39999771118164">
+              <text id="1:2109" name="Add to Cart Button" x="72.53472137451172" y="21.33333396911621" width="97" height="54" hidden="true" />
+              <frame id="1:2110" name="PlayCircle" x="8" y="8" width="38.39999771118164" height="38.39999771118164" />
+            </frame>
+          </frame>
+          <frame id="1:2115" name="Arrow" x="1200" y="258.9541015625" width="32" height="32">
+            <frame id="1:2116" name="arrow-right-line" x="8" y="8" width="16" height="16" />
+          </frame>
+        </frame>
+      </frame>
+      <frame id="1:2118" name="Frame 9" x="0" y="4111.0458984375" width="1408" height="1653">
+        <frame id="1:2119" name="Group 4" x="0" y="0" width="1408" height="556">
+          <frame id="1:2120" name="Interactive Session Section" x="0" y="0" width="1408" height="556" />
+        </frame>
+        <frame id="1:2137" name="Newsletter Container" x="0" y="580" width="1408" height="556">
+          <frame id="1:2138" name="Newsletter Form" x="32" y="96" width="380" height="364">
+            <instance id="1:2139" name="MessengerLogo" x="170" y="0" width="40" height="40" />
+            <text id="1:2140" name="Newsletter Title" x="61" y="50" width="258" height="66" />
+            <text id="1:2141" name="Newsletter Subtitle" x="0" y="126" width="380" height="22" />
+            <instance id="1:2142" name="Input" x="0" y="158" width="380" height="44" />
+            <instance id="1:2143" name="Input" x="0" y="212" width="380" height="44" />
+            <instance id="1:2144" name="Input" x="0" y="266" width="380" height="44" />
+            <instance id="1:2145" name="Primary Button" x="0" y="320" width="380" height="44" />
+          </frame>
+          <rounded-rectangle id="1:2146" name="Newsletter Image" x="444" y="32" width="932" height="492" />
+        </frame>
+        <frame id="1:2147" name="footer" x="-18" y="1160" width="1444" height="493">
+          <frame id="1:2148" name="Frame 51" x="0" y="0" width="1440" height="450">
+            <frame id="1:2149" name="Frame 50" x="155.5" y="106" width="1129" height="124">
+              <frame id="1:2150" name="Row" x="0" y="25" width="337" height="99">
+                <frame id="1:2151" name="Newsletter Signup" x="0" y="0" width="337" height="24">
+                  <frame id="1:2152" name="Mailbox" x="0" y="0" width="24" height="24" />
+                  <text id="1:2158" name="Newsletter Text" x="32" y="0.5" width="305" height="23" />
+                </frame>
+                <frame id="1:2159" name="Newsletter Form" x="0" y="46" width="337" height="53">
+                  <frame id="1:2160" name="Row" x="0" y="0" width="337" height="53">
+                    <frame id="1:2161" name="field" x="0" y="0" width="337" height="53">
+                      <text id="1:2162" name="Email Field" x="24" y="16" width="117" height="21" />
+                      <frame id="1:2163" name="sbumit" x="239" y="8" width="90" height="37">
+                        <text id="1:2164" name="Submit Button" x="25.5" y="8" width="39" height="21" />
+                      </frame>
+                    </frame>
+                  </frame>
+                </frame>
+              </frame>
+              <frame id="1:2165" name="Frame 48" x="396" y="0" width="733" height="124">
+                <frame id="1:2166" name="Frame 46" x="0" y="0" width="122" height="124">
+                  <text id="1:2167" name="Mapa do site" x="15" y="0" width="92" height="22" />
+                  <frame id="1:2168" name="Frame 44" x="0" y="34" width="122" height="90">
+                    <text id="1:2169" name="Início" x="42.5" y="0" width="37" height="22" />
+                    <text id="1:2170" name="Catálogo" x="28.5" y="34" width="65" height="22" />
+                    <text id="1:2171" name="Malinha Delivery" x="0" y="68" width="122" height="22" />
+                  </frame>
+                </frame>
+                <frame id="1:2172" name="Frame 47" x="156" y="0" width="187" height="100">
+                  <text id="1:2173" name="Endereço" x="60" y="0" width="67" height="22" />
+                  <frame id="1:2174" name="Frame 45" x="0" y="34" width="187" height="66">
+                    <text id="1:2175" name="Al. Rio Negro, 111 - Alphaville Industrial, Barueri - SP, 06454-000" x="0" y="0" width="187" height="66" />
+                  </frame>
+                </frame>
+                <frame id="1:2176" name="Frame 48" x="377" y="0" width="160" height="124">
+                  <text id="1:2177" name="Contato" x="51.5" y="0" width="57" height="22" />
+                  <frame id="1:2178" name="Frame 45" x="0" y="34" width="160" height="90">
+                    <text id="1:2179" name="+55 (00) 00000-0000" x="0" y="0" width="160" height="22" />
+                    <text id="1:2180" name="+55 (00) 00000-0000" x="0" y="34" width="160" height="22" />
+                    <text id="1:2181" name="contato@assopra.com" x="0.5" y="68" width="159" height="22" />
+                  </frame>
+                </frame>
+                <frame id="1:2182" name="Frame 49" x="571" y="0" width="162" height="124">
+                  <text id="1:2183" name="Políticas" x="50.5" y="0" width="61" height="22" />
+                  <frame id="1:2184" name="Frame 45" x="0" y="34" width="162" height="90">
+                    <text id="1:2185" name="Política de Privacidade" x="0" y="0" width="162" height="22" />
+                    <text id="1:2186" name="Política de Cookies" x="13.5" y="34" width="135" height="22" />
+                    <text id="1:2187" name="Política de Segurança" x="3.5" y="68" width="155" height="22" />
+                  </frame>
+                </frame>
+              </frame>
+            </frame>
+            <text id="1:2188" name="A Loja Assopra é seu destino encantador para roupas infantis de qualidade. Com dedicação e responsabilidade, oferecemos peças nacionais que unem conforto, estilo e cuidado para os pequenos. Cada coleção é pensada com carinho para vestir as crianças com charme e segurança, garantindo a satisfação dos pais e o bem-estar dos pequenos." x="156" y="278" width="1128" height="66" />
+          </frame>
+          <frame id="1:2189" name="promo-bar" x="0" y="450" width="1444" height="43">
+            <text id="1:2190" name="Loja Assopra - Todos Direitos Reservados" x="591" y="11" width="262" height="21" />
+          </frame>
+        </frame>
+      </frame>
+    </frame>
+    <instance id="1:2191" name="Nav Bar" x="0" y="0" width="1440" height="122" />
+    <instance id="1:2192" name="Search Menu" x="218" y="110" width="1004" height="524" />
+  </frame>
+  <frame id="1:2193" name="Home - Searching" x="4933" y="100" width="1440" height="6593">
+    <instance id="1:2194" name="Main Banner" x="16" y="138" width="1408" height="640" />
+    <frame id="1:2195" name="Main Content" x="16" y="828" width="1408" height="5764.0458984375">
+      <frame id="1:2196" name="Frame 64" x="96" y="0" width="1216" height="78">
+        <frame id="1:2197" name="Category Card Guris" x="0" y="0" width="292" height="78">
+          <text id="1:2198" name="Winter Fashion Text" x="16" y="37" width="51" height="25" />
+          <vector id="1:2199" name="Vector" x="250" y="12" width="30" height="37" />
+          <rounded-rectangle id="1:2200" name="Foto 24" x="86" y="-19" width="121" height="110" />
+        </frame>
+        <frame id="1:2201" name="Category Card Gurias" x="308" y="0" width="292" height="78">
+          <text id="1:2202" name="Siblings Text" x="16" y="37" width="53" height="25" />
+          <vector id="1:2203" name="Vector" x="250" y="12" width="29.928653717041016" height="37" />
+          <rounded-rectangle id="1:2204" name="Foto 10" x="78" y="-44" width="137" height="172" />
+        </frame>
+        <frame id="1:2205" name="Category Card Lacos" x="616" y="0" width="292" height="78">
+          <text id="1:2206" name="Matching Sets Text" x="16" y="37" width="62" height="25" />
+          <rounded-rectangle id="1:2207" name="magnific__preservando-o-estilo-de-fotografia-e-ensaio-profis__15946 1" x="47" y="-89" width="198" height="167" hidden="true" />
+          <frame id="1:2208" name="Group 1" x="248.53515625" y="12" width="31.214656829833984" height="29" />
+          <rounded-rectangle id="1:2225" name="image 4" x="86" y="-36" width="120" height="150" />
+        </frame>
+        <frame id="1:2226" name="Category Card Guris" x="924" y="0" width="292" height="78">
+          <text id="1:2227" name="Winter Fashion Text" x="16" y="37" width="77" height="25" />
+          <frame id="1:2228" name="Group 2" x="235.5" y="6" width="42" height="42" />
+          <rounded-rectangle id="1:2241" name="Foto 19" x="81" y="-35" width="121" height="152" />
+          <rounded-rectangle id="1:2242" name="Foto 20" x="142" y="-27" width="109" height="136" />
+        </frame>
+      </frame>
+      <frame id="1:2243" name="Winter Collection Section" x="96" y="150" width="1216" height="500.0000305175781">
+        <frame id="1:2244" name="Section Header" x="0" y="0" width="1216" height="40">
+          <text id="1:2245" name="Winter Collection Text" x="0" y="4.5" width="171" height="31" />
+          <frame id="1:2246" name="View All Button" x="1099" y="0" width="117" height="40">
+            <text id="1:2247" name="View All Text" x="20" y="10" width="55" height="20" />
+            <frame id="1:2248" name="ArrowRight" x="85" y="12" width="16" height="16" />
+          </frame>
+        </frame>
+        <frame id="1:2252" name="Product List" x="0" y="64" width="1216" height="436.0000305175781">
+          <instance id="1:2253" name="Product Card" x="0" y="0" width="292" height="436.0000305175781" />
+          <instance id="1:2254" name="Product Card" x="308" y="0" width="292" height="436.0000305175781" />
+          <instance id="1:2255" name="Product Card" x="616" y="0" width="292" height="436.0000305175781" />
+          <instance id="1:2256" name="Product Card" x="924" y="0" width="292" height="436.0000305175781" />
+        </frame>
+      </frame>
+      <frame id="1:2257" name="Home Compositions Section" x="0" y="722" width="1408" height="436" />
+      <frame id="1:2268" name="Collections Section" x="206" y="1230" width="996" height="741">
+        <frame id="1:2269" name="Collections Container" x="0" y="0" width="996" height="741">
+          <frame id="1:2270" name="Collections Card" x="0" y="0" width="486" height="651" />
+          <frame id="1:2280" name="Collections Card" x="510" y="90" width="486" height="651" />
+        </frame>
+      </frame>
+      <frame id="1:2290" name="About Section" x="206" y="2043" width="996" height="728.0460205078125">
+        <frame id="1:2291" name="About Content" x="127" y="0" width="742" height="250.0460205078125">
+          <rounded-rectangle id="1:2292" name="Assopra - OK 03 6" x="349.8235168457031" y="0" width="42.35293960571289" height="88.0460205078125" />
+          <text id="1:2293" name="About Title" x="168" y="104.0460205078125" width="406" height="64" />
+          <text id="1:2294" name="About Description" x="0" y="184.0460205078125" width="742" height="66" />
+        </frame>
+        <frame id="1:2295" name="Group 3" x="0" y="274.0460205078125" width="996" height="454">
+          <rounded-rectangle id="1:2296" name="About Image" x="0" y="274.0460205078125" width="996" height="454" />
+          <text id="1:2297" name="Celebrando a Infância" x="278" y="567.0001220703125" width="440" height="80" />
+        </frame>
+      </frame>
+      <frame id="1:2298" name="Winter Collection Section" x="96" y="2843.0458984375" width="1216" height="505.0000305175781">
+        <frame id="1:2299" name="Section Header" x="0" y="0" width="1216" height="45">
+          <text id="1:2300" name="Winter Collection Text" x="0" y="7" width="150" height="31" />
+          <instance id="1:2301" name="View All Button" x="1097" y="0" width="119" height="45" />
+        </frame>
+        <frame id="1:2302" name="Product List" x="0" y="69" width="1216" height="436.0000305175781">
+          <instance id="1:2303" name="Product Card" x="0" y="0" width="292" height="436.0000305175781" />
+          <instance id="1:2304" name="Product Card" x="308" y="0" width="292" height="436.0000305175781" />
+          <instance id="1:2305" name="Product Card" x="616" y="0" width="292" height="436.0000305175781" />
+          <instance id="1:2306" name="Product Card" x="924" y="0" width="292" height="436.0000305175781" />
+        </frame>
+      </frame>
+      <frame id="1:2307" name="Testimonials Section" x="96" y="3420.0458984375" width="1216" height="619">
+        <frame id="1:2308" name="Frame 65" x="0" y="0" width="1216" height="45">
+          <text id="1:2309" name="Testimonials Title" x="0" y="0" width="317" height="42" />
+          <instance id="1:2310" name="View All Button" x="1097" y="0" width="119" height="45" />
+        </frame>
+        <frame id="1:2311" name="Testimonials Cards" x="0" y="69" width="1216" height="550">
+          <frame id="1:2312" name="Testimonial Card" x="0" y="0" width="394.6666564941406" height="550">
+            <frame id="1:2313" name="Add to Cart" x="169.80078125" y="247.75408935546875" width="54.39999771118164" height="54.39999771118164">
+              <text id="1:2314" name="Add to Cart Button" x="72.53472137451172" y="21.33333396911621" width="97" height="54" hidden="true" />
+              <frame id="1:2315" name="PlayCircle" x="8" y="8" width="38.39999771118164" height="38.39999771118164" />
+            </frame>
+          </frame>
+          <frame id="1:2320" name="Testimonial Card" x="410.6666564941406" y="0" width="394.66668701171875" height="550">
+            <frame id="1:2321" name="Add to Cart" x="169.80078125" y="247.75408935546875" width="54.39999771118164" height="54.39999771118164">
+              <text id="1:2322" name="Add to Cart Button" x="72.53472137451172" y="21.33333396911621" width="97" height="54" hidden="true" />
+              <frame id="1:2323" name="PlayCircle" x="8" y="8" width="38.39999771118164" height="38.39999771118164" />
+            </frame>
+          </frame>
+          <frame id="1:2328" name="Testimonial Card" x="821.3333740234375" y="0" width="394.66668701171875" height="550">
+            <frame id="1:2329" name="Add to Cart" x="169.80078125" y="247.75408935546875" width="54.39999771118164" height="54.39999771118164">
+              <text id="1:2330" name="Add to Cart Button" x="72.53472137451172" y="21.33333396911621" width="97" height="54" hidden="true" />
+              <frame id="1:2331" name="PlayCircle" x="8" y="8" width="38.39999771118164" height="38.39999771118164" />
+            </frame>
+          </frame>
+          <frame id="1:2336" name="Arrow" x="1200" y="258.9541015625" width="32" height="32">
+            <frame id="1:2337" name="arrow-right-line" x="8" y="8" width="16" height="16" />
+          </frame>
+        </frame>
+      </frame>
+      <frame id="1:2339" name="Frame 9" x="0" y="4111.0458984375" width="1408" height="1653">
+        <frame id="1:2340" name="Group 4" x="0" y="0" width="1408" height="556">
+          <frame id="1:2341" name="Interactive Session Section" x="0" y="0" width="1408" height="556" />
+        </frame>
+        <frame id="1:2358" name="Newsletter Container" x="0" y="580" width="1408" height="556">
+          <frame id="1:2359" name="Newsletter Form" x="32" y="96" width="380" height="364">
+            <instance id="1:2360" name="MessengerLogo" x="170" y="0" width="40" height="40" />
+            <text id="1:2361" name="Newsletter Title" x="52" y="50" width="276" height="66" />
+            <text id="1:2362" name="Newsletter Subtitle" x="0" y="126" width="380" height="22" />
+            <instance id="1:2363" name="Input" x="0" y="158" width="380" height="44" />
+            <instance id="1:2364" name="Input" x="0" y="212" width="380" height="44" />
+            <instance id="1:2365" name="Input" x="0" y="266" width="380" height="44" />
+            <instance id="1:2366" name="Primary Button" x="0" y="320" width="380" height="44" />
+          </frame>
+          <rounded-rectangle id="1:2367" name="Newsletter Image" x="444" y="32" width="932" height="492" />
+        </frame>
+        <frame id="1:2368" name="footer" x="-18" y="1160" width="1444" height="493">
+          <frame id="1:2369" name="Frame 51" x="0" y="0" width="1440" height="450">
+            <frame id="1:2370" name="Frame 50" x="155.5" y="106" width="1129" height="124">
+              <frame id="1:2371" name="Row" x="0" y="25" width="337" height="99">
+                <frame id="1:2372" name="Newsletter Signup" x="0" y="0" width="337" height="24">
+                  <frame id="1:2373" name="Mailbox" x="0" y="0" width="24" height="24" />
+                  <text id="1:2379" name="Newsletter Text" x="32" y="0.5" width="305" height="23" />
+                </frame>
+                <frame id="1:2380" name="Newsletter Form" x="0" y="46" width="337" height="53">
+                  <frame id="1:2381" name="Row" x="0" y="0" width="337" height="53">
+                    <frame id="1:2382" name="field" x="0" y="0" width="337" height="53">
+                      <text id="1:2383" name="Email Field" x="24" y="16" width="117" height="21" />
+                      <frame id="1:2384" name="sbumit" x="239" y="8" width="90" height="37">
+                        <text id="1:2385" name="Submit Button" x="25.5" y="8" width="39" height="21" />
+                      </frame>
+                    </frame>
+                  </frame>
+                </frame>
+              </frame>
+              <frame id="1:2386" name="Frame 48" x="396" y="0" width="733" height="124">
+                <frame id="1:2387" name="Frame 46" x="0" y="0" width="122" height="124">
+                  <text id="1:2388" name="Mapa do site" x="15" y="0" width="92" height="22" />
+                  <frame id="1:2389" name="Frame 44" x="0" y="34" width="122" height="90">
+                    <text id="1:2390" name="Início" x="42.5" y="0" width="37" height="22" />
+                    <text id="1:2391" name="Catálogo" x="28.5" y="34" width="65" height="22" />
+                    <text id="1:2392" name="Malinha Delivery" x="0" y="68" width="122" height="22" />
+                  </frame>
+                </frame>
+                <frame id="1:2393" name="Frame 47" x="156" y="0" width="187" height="100">
+                  <text id="1:2394" name="Endereço" x="60" y="0" width="67" height="22" />
+                  <frame id="1:2395" name="Frame 45" x="0" y="34" width="187" height="66">
+                    <text id="1:2396" name="Al. Rio Negro, 111 - Alphaville Industrial, Barueri - SP, 06454-000" x="0" y="0" width="187" height="66" />
+                  </frame>
+                </frame>
+                <frame id="1:2397" name="Frame 48" x="377" y="0" width="160" height="124">
+                  <text id="1:2398" name="Contato" x="51.5" y="0" width="57" height="22" />
+                  <frame id="1:2399" name="Frame 45" x="0" y="34" width="160" height="90">
+                    <text id="1:2400" name="+55 (00) 00000-0000" x="0" y="0" width="160" height="22" />
+                    <text id="1:2401" name="+55 (00) 00000-0000" x="0" y="34" width="160" height="22" />
+                    <text id="1:2402" name="contato@assopra.com" x="0.5" y="68" width="159" height="22" />
+                  </frame>
+                </frame>
+                <frame id="1:2403" name="Frame 49" x="571" y="0" width="162" height="124">
+                  <text id="1:2404" name="Políticas" x="50.5" y="0" width="61" height="22" />
+                  <frame id="1:2405" name="Frame 45" x="0" y="34" width="162" height="90">
+                    <text id="1:2406" name="Política de Privacidade" x="0" y="0" width="162" height="22" />
+                    <text id="1:2407" name="Política de Cookies" x="13.5" y="34" width="135" height="22" />
+                    <text id="1:2408" name="Política de Segurança" x="3.5" y="68" width="155" height="22" />
+                  </frame>
+                </frame>
+              </frame>
+            </frame>
+            <text id="1:2409" name="A Loja Assopra é seu destino encantador para roupas infantis de qualidade. Com dedicação e responsabilidade, oferecemos peças nacionais que unem conforto, estilo e cuidado para os pequenos. Cada coleção é pensada com carinho para vestir as crianças com charme e segurança, garantindo a satisfação dos pais e o bem-estar dos pequenos." x="156" y="278" width="1128" height="66" />
+          </frame>
+          <frame id="1:2410" name="promo-bar" x="0" y="450" width="1444" height="43">
+            <text id="1:2411" name="Loja Assopra - Todos Direitos Reservados" x="591" y="11" width="262" height="21" />
+          </frame>
+        </frame>
+      </frame>
+    </frame>
+    <instance id="1:2412" name="Nav Bar" x="0" y="0" width="1440" height="122" />
+    <instance id="1:2413" name="Search Menu" x="218" y="110" width="1004" height="580" />
+  </frame>
+  <frame id="1:2414" name="Catálogo" x="6544" y="100" width="1440" height="2555">
+    <frame id="1:2415" name="Frame 11" x="112" y="552" width="1216" height="1844.0001220703125">
+      <frame id="1:2416" name="Frame 10" x="0" y="0" width="1216" height="31">
+        <text id="1:2417" name="Section Title" x="0" y="0" width="171" height="31" />
+        <frame id="1:2418" name="Filter Bar" x="1046" y="9" width="170" height="22">
+          <text id="1:2419" name="Total Items" x="0" y="0" width="80" height="22" />
+          <frame id="1:2420" name="Filters" x="104" y="0" width="66" height="22">
+            <frame id="1:2421" name="Funnel" x="0" y="2" width="18" height="18" />
+            <text id="1:2424" name="Filters Text" x="22" y="0" width="44" height="22" />
+          </frame>
+        </frame>
+      </frame>
+      <frame id="1:2425" name="Product Grid" x="0" y="52" width="1216" height="1792.0001220703125">
+        <frame id="1:2426" name="Product List" x="0" y="0" width="1216" height="436.0000305175781">
+          <instance id="1:2427" name="Product Card" x="0" y="0" width="292" height="436.0000305175781" />
+          <instance id="1:2428" name="Product Card" x="308" y="0" width="292" height="436.0000305175781" />
+          <instance id="1:2429" name="Product Card" x="616" y="0" width="292" height="436.0000305175781" />
+          <instance id="1:2430" name="Product Card" x="924" y="0" width="292" height="436.0000305175781" />
+        </frame>
+        <frame id="1:2431" name="Product Row" x="0" y="452.0000305175781" width="1216" height="436.0000305175781">
+          <frame id="1:2432" name="Wide Product Card" x="0" y="0" width="600" height="436.0000305175781">
+            <frame id="1:2433" name="Product Image Container" x="0" y="0" width="600" height="436.0000305175781">
+              <rounded-rectangle id="1:2434" name="Wide Product Image" x="0" y="0" width="600" height="436.0000305175781" />
+            </frame>
+          </frame>
+          <instance id="1:2435" name="Product Card" x="616" y="0" width="292" height="436.0000305175781" />
+          <instance id="1:2436" name="Product Card" x="924" y="0" width="292" height="436.0000305175781" />
+        </frame>
+        <frame id="1:2437" name="Product List" x="0" y="904.0000610351562" width="1216" height="436.0000305175781">
+          <instance id="1:2438" name="Product Card" x="0" y="0" width="292" height="436.0000305175781" />
+          <instance id="1:2439" name="Product Card" x="308" y="0" width="292" height="436.0000305175781" />
+          <instance id="1:2440" name="Product Card" x="616" y="0" width="292" height="436.0000305175781" />
+          <instance id="1:2441" name="Product Card" x="924" y="0" width="292" height="436.0000305175781" />
+        </frame>
+        <frame id="1:2442" name="Product Row" x="0" y="1356.0001220703125" width="1216" height="436.0000305175781">
+          <instance id="1:2443" name="Product Card" x="0" y="0" width="292" height="436.0000305175781" />
+          <instance id="1:2444" name="Product Card" x="308" y="0" width="292" height="436.0000305175781" />
+          <frame id="1:2445" name="Wide Product Card" x="616" y="0" width="600" height="436.0000305175781">
+            <frame id="1:2446" name="Product Image Container" x="0" y="0" width="600" height="436.0000305175781">
+              <rounded-rectangle id="1:2447" name="Wide Product Image" x="0" y="0" width="600" height="436.0000305175781" />
+            </frame>
+          </frame>
+        </frame>
+      </frame>
+    </frame>
+    <frame id="1:2448" name="Home Compositions Section" x="16" y="138" width="1408" height="360" />
+    <instance id="1:2459" name="Nav Bar" x="0" y="0" width="1440" height="122" />
+  </frame>
+  <frame id="1:2460" name="Catálogo - Filtro Dropdown" x="8155" y="100" width="1440" height="2555">
+    <frame id="1:2461" name="Frame 13" x="112" y="552" width="1216" height="1844.0001220703125">
+      <frame id="1:2462" name="Frame 12" x="0" y="0" width="1216" height="31">
+        <text id="1:2463" name="Section Title" x="0" y="0" width="171" height="31" />
+        <frame id="1:2464" name="Filter Bar" x="1046" y="9" width="170" height="22">
+          <text id="1:2465" name="Total Items" x="0" y="0" width="80" height="22" />
+          <frame id="1:2466" name="Filters" x="104" y="0" width="66" height="22">
+            <frame id="1:2467" name="Funnel" x="0" y="2" width="18" height="18" />
+            <text id="1:2470" name="Filters Text" x="22" y="0" width="44" height="22" />
+          </frame>
+        </frame>
+      </frame>
+      <frame id="1:2471" name="Product Grid" x="0" y="52" width="1216" height="1792.0001220703125">
+        <frame id="1:2472" name="Product List" x="0" y="0" width="1216" height="436.0000305175781">
+          <instance id="1:2473" name="Product Card" x="0" y="0" width="292" height="436.0000305175781" />
+          <instance id="1:2474" name="Product Card" x="308" y="0" width="292" height="436.0000305175781" />
+          <instance id="1:2475" name="Product Card" x="616" y="0" width="292" height="436.0000305175781" />
+          <instance id="1:2476" name="Product Card" x="924" y="0" width="292" height="436.0000305175781" />
+        </frame>
+        <frame id="1:2477" name="Product Row" x="0" y="452.0000305175781" width="1216" height="436.0000305175781">
+          <frame id="1:2478" name="Wide Product Card" x="0" y="0" width="600" height="436.0000305175781">
+            <frame id="1:2479" name="Product Image Container" x="0" y="0" width="600" height="436.0000305175781">
+              <rounded-rectangle id="1:2480" name="Wide Product Image" x="0" y="0" width="600" height="436.0000305175781" />
+            </frame>
+          </frame>
+          <instance id="1:2481" name="Product Card" x="616" y="0" width="292" height="436.0000305175781" />
+          <instance id="1:2482" name="Product Card" x="924" y="0" width="292" height="436.0000305175781" />
+        </frame>
+        <frame id="1:2483" name="Product List" x="0" y="904.0000610351562" width="1216" height="436.0000305175781">
+          <instance id="1:2484" name="Product Card" x="0" y="0" width="292" height="436.0000305175781" />
+          <instance id="1:2485" name="Product Card" x="308" y="0" width="292" height="436.0000305175781" />
+          <instance id="1:2486" name="Product Card" x="616" y="0" width="292" height="436.0000305175781" />
+          <instance id="1:2487" name="Product Card" x="924" y="0" width="292" height="436.0000305175781" />
+        </frame>
+        <frame id="1:2488" name="Product Row" x="0" y="1356.0001220703125" width="1216" height="436.0000305175781">
+          <instance id="1:2489" name="Product Card" x="0" y="0" width="292" height="436.0000305175781" />
+          <instance id="1:2490" name="Product Card" x="308" y="0" width="292" height="436.0000305175781" />
+          <frame id="1:2491" name="Wide Product Card" x="616" y="0" width="600" height="436.0000305175781">
+            <frame id="1:2492" name="Product Image Container" x="0" y="0" width="600" height="436.0000305175781">
+              <rounded-rectangle id="1:2493" name="Wide Product Image" x="0" y="0" width="600" height="436.0000305175781" />
+            </frame>
+          </frame>
+        </frame>
+      </frame>
+    </frame>
+    <frame id="1:2494" name="Card Filter" x="1036" y="604" width="292" height="655">
+      <frame id="1:2495" name="Filter Container" x="20" y="20" width="252" height="36">
+        <frame id="1:2496" name="Filter Settings" x="0" y="0" width="252" height="24">
+          <frame id="1:2497" name="Filter Header" x="0" y="1" width="98" height="22">
+            <frame id="1:2498" name="Funnel" x="0" y="2" width="18" height="18" />
+            <text id="1:2502" name="Filter Title Text" x="26" y="0" width="72" height="22" />
+          </frame>
+          <frame id="1:2503" name="Clear Filter Button" x="228" y="0" width="24" height="24">
+            <frame id="1:2504" name="X" x="6" y="6" width="12" height="12" />
+          </frame>
+        </frame>
+        <vector id="1:2508" name="Vector 1" x="0" y="36" width="252" height="0" />
+      </frame>
+      <frame id="1:2509" name="Categories Container" x="20" y="72" width="77" height="207">
+        <text id="1:2510" name="Category Title" x="0" y="0" width="77" height="20" />
+        <frame id="1:2511" name="Subcategories Container" x="0" y="31" width="77" height="176">
+          <instance id="1:2512" name="Combo Box" x="0" y="0" width="55" height="20" />
+          <instance id="1:2513" name="Combo Box" x="0" y="26" width="54" height="20" />
+          <instance id="1:2514" name="Combo Box" x="0" y="52" width="65" height="20" />
+          <instance id="1:2515" name="Combo Box" x="0" y="78" width="46" height="20" />
+          <instance id="1:2516" name="Combo Box" x="0" y="104" width="67" height="20" />
+          <instance id="1:2517" name="Combo Box" x="0" y="130" width="60" height="20" />
+          <instance id="1:2518" name="Combo Box" x="0" y="156" width="64" height="20" />
+        </frame>
+      </frame>
+      <vector id="1:2519" name="Vector 2" x="20" y="295" width="252" height="0" />
+      <frame id="1:2520" name="Price Container" x="20" y="311" width="252" height="103">
+        <text id="1:2521" name="Price Title" x="0" y="0" width="252" height="20" />
+        <frame id="1:2522" name="Price Options Container" x="0" y="31" width="150" height="72">
+          <instance id="1:2523" name="Combo Box" x="0" y="0" width="134" height="20" />
+          <instance id="1:2524" name="Combo Box" x="0" y="26" width="142" height="20" />
+          <instance id="1:2525" name="Combo Box" x="0" y="52" width="150" height="20" />
+        </frame>
+      </frame>
+      <vector id="1:2526" name="Vector 3" x="20" y="430" width="252" height="0" />
+      <frame id="1:2527" name="Age Container" x="20" y="446" width="86" height="129">
+        <text id="1:2528" name="Age Title" x="0" y="0" width="86" height="20" />
+        <frame id="1:2529" name="Age Options Container" x="0" y="31" width="86" height="98">
+          <instance id="1:2530" name="Combo Box" x="0" y="0" width="86" height="20" />
+          <instance id="1:2531" name="Combo Box" x="0" y="26" width="86" height="20" />
+          <instance id="1:2532" name="Combo Box" x="0" y="52" width="86" height="20" />
+          <instance id="1:2533" name="Combo Box" x="0" y="78" width="83" height="20" />
+        </frame>
+      </frame>
+      <instance id="1:2534" name="Primary Button" x="20" y="591" width="252" height="44" />
+    </frame>
+    <frame id="1:2535" name="Home Compositions Section" x="16" y="138" width="1408" height="360" />
+    <instance id="1:2546" name="Nav Bar" x="0" y="0" width="1440" height="122" />
+  </frame>
+  <frame id="1:2547" name="Produto" x="9766" y="100" width="1440" height="5114">
+    <frame id="1:2548" name="Container" x="112" y="118" width="1216" height="5007">
+      <frame id="1:2549" name="Container" x="0" y="0" width="1216" height="1412">
+        <frame id="1:2550" name="Container" x="0" y="0" width="800" height="896">
+          <frame id="1:2551" name="Container" x="0" y="48" width="800" height="848">
+            <frame id="1:2552" name="Thumbnail List" x="0" y="0" width="192" height="848">
+              <rounded-rectangle id="1:2553" name="Thumbnail" x="0" y="0" width="192" height="200" />
+              <rounded-rectangle id="1:2554" name="Thumbnail" x="0" y="216" width="192" height="200" />
+              <rounded-rectangle id="1:2555" name="Thumbnail" x="0" y="432" width="192" height="200" />
+              <rounded-rectangle id="1:2556" name="Thumbnail" x="0" y="648" width="192" height="200" />
+            </frame>
+            <frame id="1:2557" name="Product Image" x="208" y="0" width="592" height="848">
+              <rounded-rectangle id="1:2558" name="Product Image" x="208" y="0" width="592" height="848" />
+              <frame id="1:2559" name="Zoom Icon" x="748" y="796" width="40" height="40">
+                <ellipse id="1:2560" name="Fundo" x="748" y="796" width="40" height="40" />
+                <frame id="1:2561" name="MagnifyingGlassPlus" x="758.345703125" y="805.97265625" width="20" height="20" />
+              </frame>
+            </frame>
+          </frame>
+        </frame>
+        <frame id="1:2568" name="Subtitle Container" x="832" y="0" width="384" height="1412">
+          <frame id="1:2569" name="Header Container" x="0" y="48" width="384" height="134">
+            <text id="1:2570" name="Product Name" x="0" y="0" width="278" height="30" />
+            <text id="1:2571" name="Product Price" x="0" y="42" width="384" height="28" />
+            <frame id="1:2572" name="Color Options" x="0" y="82" width="384" height="40">
+              <ellipse id="1:2573" name="Ellipse 4" x="0" y="0" width="40" height="40" />
+              <ellipse id="1:2574" name="Ellipse 5" x="48" y="0" width="40" height="40" />
+              <ellipse id="1:2575" name="Ellipse 6" x="96" y="0" width="40" height="40" />
+              <ellipse id="1:2576" name="Ellipse 7" x="144" y="0" width="40" height="40" />
+              <ellipse id="1:2577" name="Ellipse 8" x="192" y="0" width="40" height="40" />
+              <ellipse id="1:2578" name="Ellipse 9" x="240" y="0" width="40" height="40" />
+            </frame>
+            <vector id="1:2579" name="Vector 5" x="0" y="134" width="384" height="0" />
+          </frame>
+          <frame id="1:2580" name="Container" x="0" y="206" width="384" height="1206">
+            <frame id="1:2581" name="Size Container" x="0" y="0" width="384" height="76">
+              <frame id="1:2582" name="Size Info" x="0" y="0" width="384" height="20">
+                <text id="1:2583" name="Size Text" x="0" y="0" width="81" height="20" />
+                <frame id="1:2584" name="Size Guide" x="321" y="0" width="63" height="20">
+                  <frame id="1:2585" name="Ruler" x="0" y="2" width="16" height="16" />
+                  <text id="1:2591" name="Size Guide Text" x="22" y="0" width="41" height="20" />
+                </frame>
+              </frame>
+              <frame id="1:2592" name="Size Buttons" x="0" y="32" width="384" height="44">
+                <instance id="1:2593" name="Size Button" x="0" y="0" width="59" height="44" />
+                <instance id="1:2594" name="Size Button" x="65" y="0" width="59" height="44" />
+                <instance id="1:2595" name="Size Button" x="130" y="0" width="59" height="44" />
+                <instance id="1:2596" name="Size Button" x="195" y="0" width="59" height="44" />
+                <instance id="1:2597" name="Size Button" x="260" y="0" width="59" height="44" />
+                <instance id="1:2598" name="Size Button" x="325" y="0" width="59" height="44" />
+              </frame>
+            </frame>
+            <frame id="1:2599" name="Add to Cart Container" x="0" y="96" width="384" height="44">
+              <instance id="1:2600" name="Quantity Selector" x="0" y="0" width="114" height="44" />
+              <instance id="1:2601" name="Primary Button" x="124" y="0" width="260" height="44" />
+            </frame>
+            <frame id="1:2602" name="Shipping Container" x="0" y="160" width="384" height="76">
+              <frame id="1:2603" name="Shipping Info" x="16" y="16" width="352" height="44">
+                <frame id="1:2604" name="Shipping Input" x="0" y="0" width="257" height="44">
+                  <text id="1:2605" name="Calculate Shipping Text" x="16" y="12" width="84" height="20" />
+                  <text id="1:2606" name="Zip Code" x="110" y="12" width="74" height="20" />
+                </frame>
+                <frame id="1:2607" name="Calculate Shipping Button" x="267" y="0" width="85" height="44">
+                  <text id="1:2608" name="Calculate Text" x="16" y="12" width="53" height="20" />
+                </frame>
+              </frame>
+            </frame>
+            <frame id="1:2609" name="Info Line" x="27" y="256" width="330" height="50">
+              <frame id="1:2610" name="Info Block" x="0" y="0" width="86" height="50">
+                <frame id="1:2611" name="ArrowsCounterClockwise" x="29" y="0" width="28" height="28" />
+                <text id="1:2617" name="Info Text" x="0" y="33" width="86" height="17" />
+              </frame>
+              <frame id="1:2618" name="Info Block" x="98" y="0" width="110" height="50">
+                <frame id="1:2619" name="HandHeart" x="41" y="0" width="28" height="28" />
+                <text id="1:2624" name="Info Text" x="0" y="33" width="110" height="17" />
+              </frame>
+              <frame id="1:2625" name="Info Block" x="220" y="0" width="110" height="50">
+                <frame id="1:2626" name="Package" x="41" y="0" width="28" height="28" />
+                <text id="1:2632" name="Info Text" x="0" y="33" width="110" height="17" />
+              </frame>
+            </frame>
+            <frame id="1:2633" name="Accordion Container" x="0" y="326" width="384" height="366">
+              <instance id="1:2634" name="Accordion" x="0" y="0" width="384" height="262" />
+              <instance id="1:2635" name="Accordion" x="0" y="262" width="384" height="52" />
+              <instance id="1:2636" name="Accordion" x="0" y="314" width="384" height="52" />
+            </frame>
+            <frame id="1:2637" name="Combined Container" x="0" y="712" width="384" height="494">
+              <text id="1:2638" name="Combined Text" x="0" y="0" width="102" height="34" />
+              <frame id="1:2639" name="Recommendation List" x="0" y="50" width="384" height="444">
+                <instance id="1:2640" name="Mini Product Card" x="0" y="0" width="384" height="140" />
+                <instance id="1:2641" name="Mini Product Card" x="0" y="152" width="384" height="140" />
+                <instance id="1:2642" name="Mini Product Card" x="0" y="304" width="384" height="140" />
+              </frame>
+            </frame>
+          </frame>
+        </frame>
+      </frame>
+      <frame id="1:2643" name="Testimonials Section" x="0" y="1484" width="1216" height="299">
+        <frame id="1:2644" name="Frame 66" x="0" y="0" width="1216" height="42">
+          <text id="1:2645" name="Testimonials Title" x="0" y="0" width="317" height="42" />
+          <frame id="1:2646" name="Navigation Dots" x="1144" y="5.5" width="72" height="31">
+            <frame id="1:2647" name="Navigation Dot" x="0" y="0" width="31" height="31">
+              <ellipse id="1:2648" name="Ellipse 11" x="0" y="0" width="31" height="31" />
+              <frame id="1:2649" name="CaretRight" x="22" y="10" width="12" height="12" />
+            </frame>
+            <frame id="1:2652" name="Navigation Dot" x="41" y="0" width="31" height="31">
+              <ellipse id="1:2653" name="Ellipse 10" x="41" y="0" width="31" height="31" />
+              <frame id="1:2654" name="CaretRight" x="51" y="10" width="12" height="12" />
+            </frame>
+          </frame>
+        </frame>
+        <frame id="1:2657" name="Testimonials Cards" x="0" y="66" width="1216" height="233">
+          <frame id="1:2658" name="Testimonial Card" x="0" y="0" width="394.6666564941406" height="233">
+            <text id="1:2659" name="Stars" x="32" y="32" width="76" height="22" />
+            <text id="1:2660" name="Testimonial Text" x="32" y="66" width="330.6666564941406" height="66" />
+            <text id="1:2661" name="Client Name" x="32" y="144" width="87" height="25" />
+            <text id="1:2662" name="City" x="32" y="181" width="84" height="20" />
+          </frame>
+          <frame id="1:2663" name="Testimonial Card" x="410.6666564941406" y="0" width="394.66668701171875" height="233">
+            <text id="1:2664" name="Stars" x="32" y="32" width="76" height="22" />
+            <text id="1:2665" name="Testimonial Text" x="32" y="66" width="330.66668701171875" height="66" />
+            <text id="1:2666" name="Client Name" x="32" y="144" width="65" height="25" />
+            <text id="1:2667" name="City" x="32" y="181" width="330.66668701171875" height="20" />
+          </frame>
+          <frame id="1:2668" name="Testimonial Card" x="821.3333740234375" y="0" width="394.66668701171875" height="233">
+            <text id="1:2669" name="Stars" x="32" y="32" width="76" height="22" />
+            <text id="1:2670" name="Testimonial Text" x="32" y="66" width="330.66668701171875" height="66" />
+            <text id="1:2671" name="Client Name" x="32" y="144" width="77" height="25" />
+            <text id="1:2672" name="City" x="32" y="181" width="103" height="20" />
+          </frame>
+        </frame>
+      </frame>
+      <frame id="1:2673" name="Like Container" x="0" y="1855" width="1216" height="490.0000305175781">
+        <text id="1:2674" name="Like Text" x="0" y="0" width="1216" height="30" />
+        <frame id="1:2675" name="Product List" x="0" y="54" width="1216" height="436.0000305175781">
+          <instance id="1:2676" name="Product Card" x="0" y="0" width="292" height="436.0000305175781" />
+          <instance id="1:2677" name="Product Card" x="308" y="0" width="292" height="436.0000305175781" />
+          <instance id="1:2678" name="Product Card" x="616" y="0" width="292" height="436.0000305175781" />
+          <instance id="1:2679" name="Product Card" x="924" y="0" width="292" height="436.0000305175781" />
+        </frame>
+      </frame>
+      <frame id="1:2680" name="Family Container" x="0" y="2417" width="1216" height="706">
+        <frame id="1:2681" name="Family Header" x="0" y="0" width="1216" height="31">
+          <text id="1:2682" name="Family Text" x="0" y="0" width="366" height="30" />
+          <frame id="1:2683" name="Navigation Dots" x="1144" y="0" width="72" height="31">
+            <frame id="1:2684" name="Navigation Dot" x="0" y="0" width="31" height="31">
+              <ellipse id="1:2685" name="Ellipse 11" x="0" y="0" width="31" height="31" />
+              <frame id="1:2686" name="CaretRight" x="22" y="10" width="12" height="12" />
+            </frame>
+            <frame id="1:2689" name="Navigation Dot" x="41" y="0" width="31" height="31">
+              <ellipse id="1:2690" name="Ellipse 10" x="41" y="0" width="31" height="31" />
+              <frame id="1:2691" name="CaretRight" x="51" y="10" width="12" height="12" />
+            </frame>
+          </frame>
+        </frame>
+        <frame id="1:2694" name="Family Cards Container" x="0" y="55" width="1216" height="651">
+          <instance id="1:2695" name="Collections Card" x="0" y="0" width="486" height="651" />
+          <instance id="1:2696" name="Collections Card" x="506" y="0" width="486" height="651" />
+          <instance id="1:2697" name="Collections Card" x="1012" y="0" width="486" height="651" />
+          <instance id="1:2698" name="Collections Card" x="1518" y="0" width="486" height="651" />
+        </frame>
+      </frame>
+      <frame id="1:2699" name="Testimonials Section" x="0" y="3195" width="1216" height="619">
+        <frame id="1:2700" name="Frame 65" x="0" y="0" width="1216" height="45">
+          <text id="1:2701" name="Testimonials Title" x="0" y="0" width="317" height="42" />
+          <instance id="1:2702" name="View All Button" x="1097" y="0" width="119" height="45" />
+        </frame>
+        <frame id="1:2703" name="Testimonials Cards" x="0" y="69" width="1216" height="550">
+          <frame id="1:2704" name="Testimonial Card" x="0" y="0" width="394.6666564941406" height="550">
+            <frame id="1:2705" name="Add to Cart" x="169.80078125" y="247.75408935546875" width="54.39999771118164" height="54.39999771118164">
+              <text id="1:2706" name="Add to Cart Button" x="72.53472137451172" y="21.33333396911621" width="97" height="54" hidden="true" />
+              <frame id="1:2707" name="PlayCircle" x="8" y="8" width="38.39999771118164" height="38.39999771118164" />
+            </frame>
+          </frame>
+          <frame id="1:2712" name="Testimonial Card" x="410.6666564941406" y="0" width="394.66668701171875" height="550">
+            <frame id="1:2713" name="Add to Cart" x="169.80078125" y="247.75408935546875" width="54.39999771118164" height="54.39999771118164">
+              <text id="1:2714" name="Add to Cart Button" x="72.53472137451172" y="21.33333396911621" width="97" height="54" hidden="true" />
+              <frame id="1:2715" name="PlayCircle" x="8" y="8" width="38.39999771118164" height="38.39999771118164" />
+            </frame>
+          </frame>
+          <frame id="1:2720" name="Testimonial Card" x="821.3333740234375" y="0" width="394.66668701171875" height="550">
+            <frame id="1:2721" name="Add to Cart" x="169.80078125" y="247.75408935546875" width="54.39999771118164" height="54.39999771118164">
+              <text id="1:2722" name="Add to Cart Button" x="72.53472137451172" y="21.33333396911621" width="97" height="54" hidden="true" />
+              <frame id="1:2723" name="PlayCircle" x="8" y="8" width="38.39999771118164" height="38.39999771118164" />
+            </frame>
+          </frame>
+          <frame id="1:2728" name="Arrow" x="1200" y="258.9541015625" width="32" height="32">
+            <frame id="1:2729" name="arrow-right-line" x="8" y="8" width="16" height="16" />
+          </frame>
+        </frame>
+      </frame>
+      <frame id="1:2731" name="Newsletter Container" x="0" y="3886" width="1216" height="556">
+        <frame id="1:2732" name="Newsletter Form" x="32" y="96" width="380" height="364">
+          <instance id="1:2733" name="MessengerLogo" x="170" y="0" width="40" height="40" />
+          <text id="1:2734" name="Newsletter Title" x="52" y="50" width="276" height="66" />
+          <text id="1:2735" name="Newsletter Subtitle" x="0" y="126" width="380" height="22" />
+          <instance id="1:2736" name="Input" x="0" y="158" width="380" height="44" />
+          <instance id="1:2737" name="Input" x="0" y="212" width="380" height="44" />
+          <instance id="1:2738" name="Input" x="0" y="266" width="380" height="44" />
+          <instance id="1:2739" name="Primary Button" x="0" y="320" width="380" height="44" />
+        </frame>
+        <rounded-rectangle id="1:2740" name="Newsletter Image" x="444" y="32" width="740" height="492" />
+      </frame>
+      <frame id="1:2741" name="footer" x="-114" y="4514" width="1444" height="493">
+        <frame id="1:2742" name="Frame 51" x="0" y="0" width="1440" height="450">
+          <frame id="1:2743" name="Frame 50" x="155.5" y="106" width="1129" height="124">
+            <frame id="1:2744" name="Row" x="0" y="25" width="337" height="99">
+              <frame id="1:2745" name="Newsletter Signup" x="0" y="0" width="337" height="24">
+                <frame id="1:2746" name="Mailbox" x="0" y="0" width="24" height="24" />
+                <text id="1:2752" name="Newsletter Text" x="32" y="0.5" width="305" height="23" />
+              </frame>
+              <frame id="1:2753" name="Newsletter Form" x="0" y="46" width="337" height="53">
+                <frame id="1:2754" name="Row" x="0" y="0" width="337" height="53">
+                  <frame id="1:2755" name="field" x="0" y="0" width="337" height="53">
+                    <text id="1:2756" name="Email Field" x="24" y="16" width="117" height="21" />
+                    <frame id="1:2757" name="sbumit" x="239" y="8" width="90" height="37">
+                      <text id="1:2758" name="Submit Button" x="25.5" y="8" width="39" height="21" />
+                    </frame>
+                  </frame>
+                </frame>
+              </frame>
+            </frame>
+            <frame id="1:2759" name="Frame 48" x="396" y="0" width="733" height="124">
+              <frame id="1:2760" name="Frame 46" x="0" y="0" width="122" height="124">
+                <text id="1:2761" name="Mapa do site" x="15" y="0" width="92" height="22" />
+                <frame id="1:2762" name="Frame 44" x="0" y="34" width="122" height="90">
+                  <text id="1:2763" name="Início" x="42.5" y="0" width="37" height="22" />
+                  <text id="1:2764" name="Catálogo" x="28.5" y="34" width="65" height="22" />
+                  <text id="1:2765" name="Malinha Delivery" x="0" y="68" width="122" height="22" />
+                </frame>
+              </frame>
+              <frame id="1:2766" name="Frame 47" x="156" y="0" width="187" height="100">
+                <text id="1:2767" name="Endereço" x="60" y="0" width="67" height="22" />
+                <frame id="1:2768" name="Frame 45" x="0" y="34" width="187" height="66">
+                  <text id="1:2769" name="Al. Rio Negro, 111 - Alphaville Industrial, Barueri - SP, 06454-000" x="0" y="0" width="187" height="66" />
+                </frame>
+              </frame>
+              <frame id="1:2770" name="Frame 48" x="377" y="0" width="160" height="124">
+                <text id="1:2771" name="Contato" x="51.5" y="0" width="57" height="22" />
+                <frame id="1:2772" name="Frame 45" x="0" y="34" width="160" height="90">
+                  <text id="1:2773" name="+55 (00) 00000-0000" x="0" y="0" width="160" height="22" />
+                  <text id="1:2774" name="+55 (00) 00000-0000" x="0" y="34" width="160" height="22" />
+                  <text id="1:2775" name="contato@assopra.com" x="0.5" y="68" width="159" height="22" />
+                </frame>
+              </frame>
+              <frame id="1:2776" name="Frame 49" x="571" y="0" width="162" height="124">
+                <text id="1:2777" name="Políticas" x="50.5" y="0" width="61" height="22" />
+                <frame id="1:2778" name="Frame 45" x="0" y="34" width="162" height="90">
+                  <text id="1:2779" name="Política de Privacidade" x="0" y="0" width="162" height="22" />
+                  <text id="1:2780" name="Política de Cookies" x="13.5" y="34" width="135" height="22" />
+                  <text id="1:2781" name="Política de Segurança" x="3.5" y="68" width="155" height="22" />
+                </frame>
+              </frame>
+            </frame>
+          </frame>
+          <text id="1:2782" name="A Loja Assopra é seu destino encantador para roupas infantis de qualidade. Com dedicação e responsabilidade, oferecemos peças nacionais que unem conforto, estilo e cuidado para os pequenos. Cada coleção é pensada com carinho para vestir as crianças com charme e segurança, garantindo a satisfação dos pais e o bem-estar dos pequenos." x="156" y="278" width="1128" height="66" />
+        </frame>
+        <frame id="1:2783" name="promo-bar" x="0" y="450" width="1444" height="43">
+          <text id="1:2784" name="Loja Assopra - Todos Direitos Reservados" x="591" y="11" width="262" height="21" />
+        </frame>
+      </frame>
+    </frame>
+    <instance id="1:2785" name="Nav Bar" x="0" y="0" width="1440" height="122" />
+  </frame>
+  <frame id="1:2786" name="Produto Adicionar ao Carrinho" x="11377" y="100" width="1440" height="1784">
+    <frame id="1:2787" name="Container" x="112" y="118" width="1216" height="3376">
+      <frame id="1:2788" name="Container" x="0" y="0" width="1216" height="1407">
+        <frame id="1:2789" name="Container" x="0" y="0" width="800" height="896">
+          <frame id="1:2790" name="Container" x="0" y="48" width="800" height="848">
+            <frame id="1:2791" name="Thumbnail List" x="0" y="0" width="192" height="848">
+              <rounded-rectangle id="1:2792" name="Thumbnail" x="0" y="0" width="192" height="200" />
+              <rounded-rectangle id="1:2793" name="Thumbnail" x="0" y="216" width="192" height="200" />
+              <rounded-rectangle id="1:2794" name="Thumbnail" x="0" y="432" width="192" height="200" />
+              <rounded-rectangle id="1:2795" name="Thumbnail" x="0" y="648" width="192" height="200" />
+            </frame>
+            <rounded-rectangle id="1:2796" name="Product Image" x="208" y="0" width="592" height="848" />
+          </frame>
+        </frame>
+        <frame id="1:2797" name="Subtitle Container" x="832" y="0" width="384" height="1407">
+          <frame id="1:2798" name="Header Container" x="0" y="48" width="384" height="138">
+            <text id="1:2799" name="Product Name" x="0" y="0" width="222" height="34" />
+            <text id="1:2800" name="Product Price" x="0" y="46" width="384" height="28" />
+            <frame id="1:2801" name="Color Options" x="0" y="86" width="384" height="40">
+              <ellipse id="1:2802" name="Ellipse 4" x="0" y="0" width="40" height="40" />
+              <ellipse id="1:2803" name="Ellipse 5" x="48" y="0" width="40" height="40" />
+              <ellipse id="1:2804" name="Ellipse 6" x="96" y="0" width="40" height="40" />
+              <ellipse id="1:2805" name="Ellipse 7" x="144" y="0" width="40" height="40" />
+              <ellipse id="1:2806" name="Ellipse 8" x="192" y="0" width="40" height="40" />
+              <ellipse id="1:2807" name="Ellipse 9" x="240" y="0" width="40" height="40" />
+            </frame>
+            <vector id="1:2808" name="Vector 5" x="0" y="138" width="384" height="0" />
+          </frame>
+          <frame id="1:2809" name="Container" x="0" y="210" width="384" height="1197">
+            <frame id="1:2810" name="Size Container" x="0" y="0" width="384" height="76">
+              <frame id="1:2811" name="Size Info" x="0" y="0" width="384" height="20">
+                <text id="1:2812" name="Size Text" x="0" y="0" width="81" height="20" />
+                <frame id="1:2813" name="Size Guide" x="321" y="0" width="63" height="20">
+                  <frame id="1:2814" name="Ruler" x="0" y="2" width="16" height="16" />
+                  <text id="1:2820" name="Size Guide Text" x="22" y="0" width="41" height="20" />
+                </frame>
+              </frame>
+              <frame id="1:2821" name="Size Buttons" x="0" y="32" width="384" height="44">
+                <instance id="1:2822" name="Size Button" x="0" y="0" width="59" height="44" />
+                <instance id="1:2823" name="Size Button" x="65" y="0" width="59" height="44" />
+                <instance id="1:2824" name="Size Button" x="130" y="0" width="59" height="44" />
+                <instance id="1:2825" name="Size Button" x="195" y="0" width="59" height="44" />
+                <instance id="1:2826" name="Size Button" x="260" y="0" width="59" height="44" />
+                <instance id="1:2827" name="Size Button" x="325" y="0" width="59" height="44" />
+              </frame>
+            </frame>
+            <frame id="1:2828" name="Add to Cart Container" x="0" y="96" width="384" height="44">
+              <instance id="1:2829" name="Quantity Selector" x="0" y="0" width="114" height="44" />
+              <instance id="1:2830" name="Primary Button" x="124" y="0" width="260" height="44" />
+            </frame>
+            <frame id="1:2831" name="Shipping Container" x="0" y="160" width="384" height="76">
+              <frame id="1:2832" name="Shipping Info" x="16" y="16" width="352" height="44">
+                <frame id="1:2833" name="Shipping Input" x="0" y="0" width="257" height="44">
+                  <text id="1:2834" name="Calculate Shipping Text" x="16" y="12" width="84" height="20" />
+                  <text id="1:2835" name="Zip Code" x="110" y="12" width="74" height="20" />
+                </frame>
+                <frame id="1:2836" name="Calculate Shipping Button" x="267" y="0" width="85" height="44">
+                  <text id="1:2837" name="Calculate Text" x="16" y="12" width="53" height="20" />
+                </frame>
+              </frame>
+            </frame>
+            <frame id="1:2838" name="Info Line" x="27" y="256" width="330" height="50">
+              <frame id="1:2839" name="Info Block" x="0" y="0" width="86" height="50">
+                <frame id="1:2840" name="ArrowsCounterClockwise" x="29" y="0" width="28" height="28" />
+                <text id="1:2846" name="Info Text" x="0" y="33" width="86" height="17" />
+              </frame>
+              <frame id="1:2847" name="Info Block" x="98" y="0" width="110" height="50">
+                <frame id="1:2848" name="HandHeart" x="41" y="0" width="28" height="28" />
+                <text id="1:2853" name="Info Text" x="0" y="33" width="110" height="17" />
+              </frame>
+              <frame id="1:2854" name="Info Block" x="220" y="0" width="110" height="50">
+                <frame id="1:2855" name="Package" x="41" y="0" width="28" height="28" />
+                <text id="1:2861" name="Info Text" x="0" y="33" width="110" height="17" />
+              </frame>
+            </frame>
+            <frame id="1:2862" name="Accordion Container" x="0" y="326" width="384" height="366">
+              <instance id="1:2863" name="Accordion" x="0" y="0" width="384" height="262" />
+              <instance id="1:2864" name="Accordion" x="0" y="262" width="384" height="52" />
+              <instance id="1:2865" name="Accordion" x="0" y="314" width="384" height="52" />
+            </frame>
+            <frame id="1:2866" name="Combined Container" x="0" y="712" width="384" height="485">
+              <text id="1:2867" name="Combined Text" x="0" y="0" width="77" height="25" />
+              <frame id="1:2868" name="Recommendation List" x="0" y="41" width="384" height="444">
+                <instance id="1:2869" name="Mini Product Card" x="0" y="0" width="384" height="140" />
+                <instance id="1:2870" name="Mini Product Card" x="0" y="152" width="384" height="140" />
+                <instance id="1:2871" name="Mini Product Card" x="0" y="304" width="384" height="140" />
+              </frame>
+            </frame>
+          </frame>
+        </frame>
+      </frame>
+      <frame id="1:2872" name="Like Container" x="0" y="1479" width="1216" height="491.0000305175781">
+        <text id="1:2873" name="Like Text" x="0" y="0" width="1216" height="31" />
+        <frame id="1:2874" name="Product List" x="0" y="55" width="1216" height="436.0000305175781">
+          <instance id="1:2875" name="Product Card" x="0" y="0" width="292" height="436.0000305175781" />
+          <instance id="1:2876" name="Product Card" x="308" y="0" width="292" height="436.0000305175781" />
+          <instance id="1:2877" name="Product Card" x="616" y="0" width="292" height="436.0000305175781" />
+          <instance id="1:2878" name="Product Card" x="924" y="0" width="292" height="436.0000305175781" />
+        </frame>
+      </frame>
+      <frame id="1:2879" name="Family Container" x="0" y="2042" width="1216" height="706">
+        <frame id="1:2880" name="Family Header" x="0" y="0" width="1216" height="31">
+          <text id="1:2881" name="Family Text" x="0" y="0" width="268" height="31" />
+          <frame id="1:2882" name="Navigation Dots" x="1144" y="0" width="72" height="31">
+            <frame id="1:2883" name="Navigation Dot" x="0" y="0" width="31" height="31" />
+            <frame id="1:2886" name="Navigation Dot" x="41" y="0" width="31" height="31" />
+          </frame>
+        </frame>
+        <frame id="1:2889" name="Family Cards Container" x="0" y="55" width="1216" height="651">
+          <frame id="1:2890" name="Family Card" x="0" y="0" width="460" height="651">
+            <frame id="1:2891" name="Family Info" x="108" y="498" width="245" height="114">
+              <frame id="1:2892" name="Family Info Header" x="0" y="0" width="245" height="58">
+                <text id="1:2893" name="Family Title" x="0" y="0" width="245" height="28" />
+                <text id="1:2894" name="Family Subtitle" x="0" y="36" width="245" height="22" />
+              </frame>
+              <frame id="1:2895" name="Button" x="70" y="74" width="105" height="40">
+                <text id="1:2896" name="Family Button Text" x="24" y="10" width="57" height="20" />
+              </frame>
+            </frame>
+          </frame>
+          <frame id="1:2897" name="Family Card" x="480" y="0" width="460" height="651">
+            <frame id="1:2898" name="Family Info" x="108" y="498" width="245" height="114">
+              <frame id="1:2899" name="Family Info Header" x="0" y="0" width="245" height="58">
+                <text id="1:2900" name="Family Title" x="0" y="0" width="245" height="28" />
+                <text id="1:2901" name="Family Subtitle" x="0" y="36" width="245" height="22" />
+              </frame>
+              <frame id="1:2902" name="Button" x="70" y="74" width="105" height="40">
+                <text id="1:2903" name="Family Button Text" x="24" y="10" width="57" height="20" />
+              </frame>
+            </frame>
+          </frame>
+          <frame id="1:2904" name="Family Card" x="960" y="0" width="460" height="651">
+            <frame id="1:2905" name="Family Info" x="108" y="498" width="245" height="114">
+              <frame id="1:2906" name="Family Info Header" x="0" y="0" width="245" height="58">
+                <text id="1:2907" name="Family Title" x="0" y="0" width="245" height="28" />
+                <text id="1:2908" name="Family Subtitle" x="0" y="36" width="245" height="22" />
+              </frame>
+              <frame id="1:2909" name="Button" x="70" y="74" width="105" height="40">
+                <text id="1:2910" name="Family Button Text" x="24" y="10" width="57" height="20" />
+              </frame>
+            </frame>
+          </frame>
+          <frame id="1:2911" name="Family Card" x="1440" y="0" width="460" height="651">
+            <frame id="1:2912" name="Family Info" x="108" y="498" width="245" height="114">
+              <frame id="1:2913" name="Family Info Header" x="0" y="0" width="245" height="58">
+                <text id="1:2914" name="Family Title" x="0" y="0" width="245" height="28" />
+                <text id="1:2915" name="Family Subtitle" x="0" y="36" width="245" height="22" />
+              </frame>
+              <frame id="1:2916" name="Button" x="70" y="74" width="105" height="40">
+                <text id="1:2917" name="Family Button Text" x="24" y="10" width="57" height="20" />
+              </frame>
+            </frame>
+          </frame>
+        </frame>
+      </frame>
+      <frame id="1:2918" name="Newsletter Container" x="0" y="2820" width="1216" height="556">
+        <frame id="1:2919" name="Newsletter Form" x="32" y="90.97698974609375" width="380" height="374.0460205078125">
+          <rounded-rectangle id="1:2920" name="Assopra - OK 03 6" x="168.8235321044922" y="0" width="42.35293960571289" height="88.0460205078125" />
+          <text id="1:2921" name="Newsletter Title" x="0" y="98.0460205078125" width="380" height="28" />
+          <text id="1:2922" name="Newsletter Subtitle" x="0" y="136.0460205078125" width="380" height="22" />
+          <frame id="1:2923" name="Name Field" x="0" y="168.0460205078125" width="380" height="44">
+            <text id="1:2924" name="Name Placeholder" x="16" y="12" width="99" height="20" />
+          </frame>
+          <frame id="1:2925" name="Email Field" x="0" y="222.0460205078125" width="380" height="44">
+            <text id="1:2926" name="Email Placeholder" x="16" y="12" width="126" height="20" />
+          </frame>
+          <frame id="1:2927" name="Phone Field" x="0" y="276.0460205078125" width="380" height="44">
+            <text id="1:2928" name="Phone Placeholder" x="16" y="12" width="135" height="20" />
+          </frame>
+          <frame id="1:2929" name="Subscribe Button" x="0" y="330.0460205078125" width="380" height="44">
+            <text id="1:2930" name="Subscribe Text" x="131.5" y="12" width="117" height="20" />
+          </frame>
+        </frame>
+        <rounded-rectangle id="1:2931" name="Newsletter Image" x="444" y="32" width="740" height="492" />
+      </frame>
+    </frame>
+    <frame id="1:2932" name="Header Container" x="0" y="0" width="1440" height="122">
+      <frame id="1:2933" name="Promo Bar" x="0" y="0" width="1440" height="40">
+        <text id="1:2934" name="Promo Text" x="521" y="11.5" width="376" height="17" />
+        <frame id="1:2935" name="ArrowRight" x="907" y="14" width="12" height="12" />
+      </frame>
+      <frame id="1:2939" name="Nav" x="0" y="40" width="1440" height="82">
+        <frame id="1:2940" name="Wrapper" x="112" y="0" width="1216" height="82">
+          <frame id="1:2941" name="Logo" x="0" y="16" width="122.30731201171875" height="50">
+            <rounded-rectangle id="1:2942" name="Assopra - OK 02 2" x="31.538536071777344" y="31.384618759155273" width="90.76922607421875" height="30.76923179626465" />
+            <rounded-rectangle id="1:2943" name="Assopra - OK 03 1" x="0" y="16" width="23.846153259277344" height="50" />
+            <rounded-rectangle id="1:2944" name="Assopra - OK 03 2" x="0" y="16" width="23.846153259277344" height="50" />
+            <rounded-rectangle id="1:2945" name="Assopra - OK 03 3" x="0" y="16" width="23.846153259277344" height="50" />
+            <rounded-rectangle id="1:2946" name="Assopra - OK 03 4" x="0" y="16" width="23.846153259277344" height="50" />
+            <rounded-rectangle id="1:2947" name="Assopra - OK 03 5" x="0" y="16" width="23.846153259277344" height="50" />
+            <rounded-rectangle id="1:2948" name="Assopra - OK 03 6" x="0" y="16" width="23.846153259277344" height="50" />
+          </frame>
+          <frame id="1:2949" name="Navigation Menu" x="366.1536560058594" y="32.5" width="502" height="17">
+            <frame id="1:2950" name="Nav" x="0" y="0" width="72" height="17">
+              <text id="1:2951" name="Clothes Link" x="0" y="0" width="52" height="17" />
+              <frame id="1:2952" name="CaretDown" x="60" y="2.5" width="12" height="12" />
+            </frame>
+            <frame id="1:2955" name="Nav" x="100" y="0" width="102" height="17">
+              <text id="1:2956" name="Accessories Link" x="0" y="0" width="82" height="17" />
+              <frame id="1:2957" name="CaretDown" x="90" y="2.5" width="12" height="12" />
+            </frame>
+            <frame id="1:2960" name="Nav" x="230" y="0" width="93" height="17">
+              <text id="1:2961" name="Gifts Link" x="0" y="0" width="73" height="17" />
+              <frame id="1:2962" name="CaretDown" x="81" y="2.5" width="12" height="12" />
+            </frame>
+            <frame id="1:2965" name="Nav" x="351" y="0" width="88" height="17">
+              <text id="1:2966" name="About Us Link" x="0" y="0" width="88" height="17" />
+            </frame>
+            <frame id="1:2967" name="Nav" x="467" y="0" width="35" height="17">
+              <text id="1:2968" name="Blog Link" x="0" y="0" width="35" height="17" />
+            </frame>
+          </frame>
+          <frame id="1:2969" name="Action Icons" x="1112" y="29" width="104" height="24">
+            <frame id="1:2970" name="MagnifyingGlass" x="0" y="0" width="24" height="24" />
+            <frame id="1:2974" name="UserCircle" x="40" y="0" width="24" height="24" />
+            <frame id="1:2979" name="ShoppingBag" x="80" y="0" width="24" height="24">
+              <vector id="1:2980" name="Vector" x="0" y="0" width="24" height="24" />
+              <vector id="1:2981" name="Vector" x="3" y="4.5" width="18" height="15" />
+              <vector id="1:2982" name="Vector" x="8.25" y="8.25" width="7.5" height="3.75" />
+              <frame id="1:2983" name="Cart Count" x="16" y="-4" width="14" height="14">
+                <text id="1:2984" name="Cart Quantity" x="4" y="3.5" width="6" height="7" />
+              </frame>
+            </frame>
+          </frame>
+        </frame>
+      </frame>
+    </frame>
+    <rounded-rectangle id="1:2985" name="Rectangle 10" x="0" y="0" width="1440" height="1784" />
+    <frame id="1:2986" name="Card Filter" x="967" y="56" width="442" height="842">
+      <frame id="1:2987" name="Card" x="20" y="20" width="402" height="640">
+        <frame id="1:2988" name="Card" x="0" y="0" width="402" height="640">
+          <frame id="1:2989" name="Header" x="0" y="0" width="402" height="36">
+            <frame id="1:2990" name="Container" x="0" y="0" width="402" height="28">
+              <frame id="1:2991" name="Title Container" x="0" y="0" width="106" height="28">
+                <frame id="1:2992" name="ShoppingBag" x="0" y="2" width="24" height="24" />
+                <text id="1:2997" name="Title" x="32" y="0" width="74" height="28" />
+              </frame>
+              <frame id="1:2998" name="Close Button" x="378" y="2" width="24" height="24">
+                <frame id="1:2999" name="X" x="6" y="6" width="12" height="12" />
+              </frame>
+            </frame>
+            <vector id="1:3003" name="Vector 4" x="0" y="36" width="402" height="0" />
+          </frame>
+          <frame id="1:3004" name="Container" x="0" y="60" width="402" height="40">
+            <text id="1:3005" name="Free Shipping Message" x="0" y="0" width="282" height="20" />
+            <frame id="1:3006" name="Free Shipping Progress Bar" x="0" y="32" width="402" height="8">
+              <rounded-rectangle id="1:3007" name="Progress Background" x="0" y="32" width="402" height="8" />
+              <rounded-rectangle id="1:3008" name="Progress Indicator" x="0" y="32" width="273" height="8" />
+            </frame>
+          </frame>
+          <frame id="1:3009" name="Products List" x="0" y="124" width="402" height="296">
+            <instance id="1:3010" name="Mini Product Card" x="0" y="0" width="384" height="140" />
+            <instance id="1:3011" name="Mini Product Card" x="0" y="156" width="384" height="140" />
+          </frame>
+          <vector id="1:3012" name="Vector 2" x="0" y="444" width="402" height="0" />
+          <frame id="1:3013" name="Suggestions Container" x="0" y="468" width="402" height="172">
+            <text id="1:3014" name="Suggestions Title" x="0" y="0" width="256" height="20" />
+            <instance id="1:3015" name="Mini Product Card" x="0" y="32" width="384" height="140" />
+          </frame>
+        </frame>
+      </frame>
+      <frame id="1:3016" name="Summary Container" x="20" y="698" width="402" height="124">
+        <text id="1:3017" name="Subtotal" x="129.5" y="24" width="143" height="22" />
+        <instance id="1:3018" name="Primary Button" x="24" y="56" width="354" height="44" />
+      </frame>
+    </frame>
+  </frame>
+  <frame id="1:3019" name="Política de seguranca" x="12988" y="100" width="1440" height="1953">
+    <frame id="1:3020" name="Mask group" x="822" y="319" width="488.37774658203125" height="1015.2699584960938">
+      <rounded-rectangle id="1:3021" name="Assopra - OK 03 6" x="822.0001470563147" y="319.00004577637446" width="488.37774658203125" height="1015.2699584960938" />
+      <rounded-rectangle id="1:3022" name="Rectangle 15" x="764.3444519042969" y="249.81248474121094" width="599.619384765625" height="1164.6439208984375" />
+    </frame>
+    <frame id="1:3023" name="Frame 73" x="424" y="192" width="592" height="1029">
+      <frame id="1:3024" name="Frame 72" x="32" y="32" width="528" height="109">
+        <text id="1:3025" name="Product Name" x="0" y="0" width="528" height="30" />
+        <text id="1:3026" name="Price" x="0" y="43" width="528" height="66" />
+      </frame>
+      <vector id="1:3027" name="Vector 7" x="32" y="165" width="528" height="0" />
+      <frame id="1:3028" name="Frame 69" x="32" y="189" width="528" height="808">
+        <frame id="1:3029" name="Frame 67" x="0" y="0" width="528" height="186">
+          <text id="1:3030" name="Price" x="0" y="0" width="528" height="22" />
+          <text id="1:3031" name="Price" x="0" y="30" width="528" height="148" />
+          <vector id="1:3032" name="Vector 7" x="0" y="186" width="528" height="0" />
+        </frame>
+        <frame id="1:3033" name="Frame 68" x="0" y="204" width="528" height="126">
+          <text id="1:3034" name="Price" x="0" y="0" width="528" height="22" />
+          <text id="1:3035" name="Price" x="0" y="30" width="528" height="88" />
+          <vector id="1:3036" name="Vector 7" x="0" y="126" width="528" height="0" />
+        </frame>
+        <frame id="1:3037" name="Frame 69" x="0" y="348" width="528" height="104">
+          <text id="1:3038" name="Price" x="0" y="0" width="528" height="22" />
+          <text id="1:3039" name="Price" x="0" y="30" width="528" height="66" />
+          <vector id="1:3040" name="Vector 7" x="0" y="104" width="528" height="0" />
+        </frame>
+        <frame id="1:3041" name="Frame 70" x="0" y="470" width="528" height="164">
+          <text id="1:3042" name="Price" x="0" y="0" width="528" height="22" />
+          <text id="1:3043" name="Price" x="0" y="30" width="528" height="126" />
+          <vector id="1:3044" name="Vector 7" x="0" y="164" width="528" height="0" />
+        </frame>
+        <frame id="1:3045" name="Frame 71" x="0" y="652" width="528" height="156">
+          <text id="1:3046" name="Price" x="0" y="0" width="528" height="22" />
+          <text id="1:3047" name="Price" x="0" y="30" width="528" height="126" />
+        </frame>
+      </frame>
+    </frame>
+    <frame id="1:3048" name="footer" x="-2" y="1460" width="1444" height="493">
+      <frame id="1:3049" name="Frame 51" x="0" y="0" width="1440" height="450">
+        <frame id="1:3050" name="Frame 50" x="155.5" y="106" width="1129" height="124">
+          <frame id="1:3051" name="Row" x="0" y="25" width="337" height="99">
+            <frame id="1:3052" name="Newsletter Signup" x="0" y="0" width="337" height="24">
+              <frame id="1:3053" name="Mailbox" x="0" y="0" width="24" height="24" />
+              <text id="1:3059" name="Newsletter Text" x="32" y="0.5" width="305" height="23" />
+            </frame>
+            <frame id="1:3060" name="Newsletter Form" x="0" y="46" width="337" height="53">
+              <frame id="1:3061" name="Row" x="0" y="0" width="337" height="53">
+                <frame id="1:3062" name="field" x="0" y="0" width="337" height="53">
+                  <text id="1:3063" name="Email Field" x="24" y="16" width="117" height="21" />
+                  <frame id="1:3064" name="sbumit" x="239" y="8" width="90" height="37">
+                    <text id="1:3065" name="Submit Button" x="25.5" y="8" width="39" height="21" />
+                  </frame>
+                </frame>
+              </frame>
+            </frame>
+          </frame>
+          <frame id="1:3066" name="Frame 48" x="396" y="0" width="733" height="124">
+            <frame id="1:3067" name="Frame 46" x="0" y="0" width="122" height="124">
+              <text id="1:3068" name="Mapa do site" x="15" y="0" width="92" height="22" />
+              <frame id="1:3069" name="Frame 44" x="0" y="34" width="122" height="90">
+                <text id="1:3070" name="Início" x="42.5" y="0" width="37" height="22" />
+                <text id="1:3071" name="Catálogo" x="28.5" y="34" width="65" height="22" />
+                <text id="1:3072" name="Malinha Delivery" x="0" y="68" width="122" height="22" />
+              </frame>
+            </frame>
+            <frame id="1:3073" name="Frame 47" x="156" y="0" width="187" height="100">
+              <text id="1:3074" name="Endereço" x="60" y="0" width="67" height="22" />
+              <frame id="1:3075" name="Frame 45" x="0" y="34" width="187" height="66">
+                <text id="1:3076" name="Al. Rio Negro, 111 - Alphaville Industrial, Barueri - SP, 06454-000" x="0" y="0" width="187" height="66" />
+              </frame>
+            </frame>
+            <frame id="1:3077" name="Frame 48" x="377" y="0" width="160" height="124">
+              <text id="1:3078" name="Contato" x="51.5" y="0" width="57" height="22" />
+              <frame id="1:3079" name="Frame 45" x="0" y="34" width="160" height="90">
+                <text id="1:3080" name="+55 (00) 00000-0000" x="0" y="0" width="160" height="22" />
+                <text id="1:3081" name="+55 (00) 00000-0000" x="0" y="34" width="160" height="22" />
+                <text id="1:3082" name="contato@assopra.com" x="0.5" y="68" width="159" height="22" />
+              </frame>
+            </frame>
+            <frame id="1:3083" name="Frame 49" x="571" y="0" width="162" height="124">
+              <text id="1:3084" name="Políticas" x="50.5" y="0" width="61" height="22" />
+              <frame id="1:3085" name="Frame 45" x="0" y="34" width="162" height="90">
+                <text id="1:3086" name="Política de Privacidade" x="0" y="0" width="162" height="22" />
+                <text id="1:3087" name="Política de Cookies" x="13.5" y="34" width="135" height="22" />
+                <text id="1:3088" name="Política de Segurança" x="3.5" y="68" width="155" height="22" />
+              </frame>
+            </frame>
+          </frame>
+        </frame>
+        <text id="1:3089" name="A Loja Assopra é seu destino encantador para roupas infantis de qualidade. Com dedicação e responsabilidade, oferecemos peças nacionais que unem conforto, estilo e cuidado para os pequenos. Cada coleção é pensada com carinho para vestir as crianças com charme e segurança, garantindo a satisfação dos pais e o bem-estar dos pequenos." x="156" y="278" width="1128" height="66" />
+      </frame>
+      <frame id="1:3090" name="promo-bar" x="0" y="450" width="1444" height="43">
+        <text id="1:3091" name="Loja Assopra - Todos Direitos Reservados" x="591" y="11" width="262" height="21" />
+      </frame>
+    </frame>
+    <instance id="1:3092" name="Nav Bar" x="0" y="0" width="1440" height="122" />
+  </frame>
+</section>
