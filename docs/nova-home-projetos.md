@@ -150,3 +150,7 @@ As legendas usam `text-wrap: pretty`, como as descrições do site já faziam, p
 
 
 **Legenda de imagem grande entre outras imagens (21/10/2026):** quando a imagem ocupa a linha inteira e ainda há imagens depois dela, a legenda usa toda a largura da galeria e `text-wrap: balance`. Isso permite uma linha mais ampla ou linhas equilibradas, conforme o espaço. A última legenda mantém a coluna de até 640 para a transição aos blocos finais; pares desktop e linhas mobile preservam suas regras. A condição é estrutural (`.pgal__item--wide:not(:last-child)`), sem índices fixos de conteúdo.
+
+### Borda das imagens e telas mobile mais próximas — 22/10/2026
+
+A pedido do Otavio, capa e capturas da galeria no drawer recebem borda sólida de 1px em preto puro a 8% (`--project-image-border`), inclusive no tema escuro. O gap horizontal entre telas mobile passa de 32 para 16 no grupo de três e de 24 para 16 no grupo de duas. A largura máxima dos grupos acompanha os novos gaps para manter a distância real entre imagens em 16, sem espaço extra nas colunas. O espaçamento vertical permanece em 32/24.
