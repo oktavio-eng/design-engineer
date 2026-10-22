@@ -393,6 +393,12 @@ function detailMarkup(entry, key) {
     '<div class="pdrawer__head">' +
     '<h2 class="pdrawer__title">' + esc(entry.name) + "</h2>" +
     (entry.role ? '<p class="pdrawer__role">' + entry.role + "</p>" : "") +
+    (entry.links?.length
+      ? '<div class="pdrawer__links">' + entry.links.map((link) =>
+          '<a class="pdrawer__link" href="' + esc(link[1]) + '" target="_blank" rel="noopener" data-cursor="merge">' +
+          favicon(link[1]) + '<span>' + esc(link[0]) + '</span></a>',
+        ).join('') + '</div>'
+      : '') +
     (Array.isArray(entry.bio)
       ? entry.bio.map((p) => '<p class="pdrawer__bio">' + p + "</p>").join("")
       : entry.bio ? '<p class="pdrawer__bio">' + entry.bio + "</p>" : "") +
@@ -423,19 +429,6 @@ function detailMarkup(entry, key) {
         '</a>',
       ).join('') +
       '</div></div>';
-  }
-  if (entry.links && entry.links.length) {
-    html +=
-      '<div class="pdrawer__section">' +
-      '<span class="label">Links</span>' +
-      '<div class="pdrawer__links">' +
-      entry.links
-        .map((link) =>
-          '<a class="pdrawer__link" href="' + esc(link[1]) + '" target="_blank" rel="noopener" data-cursor="merge">' +
-          favicon(link[1]) + "<span>" + esc(link[0]) + "</span></a>",
-        )
-        .join("") +
-      "</div></div>";
   }
   html += "</div>";
   return html;

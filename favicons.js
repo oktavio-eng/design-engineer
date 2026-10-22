@@ -57,6 +57,7 @@ sweepFavicons();
    portfolio-content.js keeps the brand domain as the key), and the two
    Webflow subdomains serve their icons from Webflow's CDN. */
 const ICON_SOURCES = {
+  "gow-pixel-office.vercel.app": "https://gow-pixel-office.vercel.app/favicon-32.png",
   "simile.com": "https://www.simile.com/brand/favicon.svg",
   "finqedu.com.br": "https://cdn.prod.website-files.com/67433c17156afcafa41a804f/6743460b06a920f998bed41d_fav-finq.png",
   "finqedu.webflow.io": "https://cdn.prod.website-files.com/67433c17156afcafa41a804f/6743460b06a920f998bed41d_fav-finq.png",
