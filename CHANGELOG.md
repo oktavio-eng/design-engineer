@@ -8,7 +8,7 @@ Notable changes to this site, in the order they landed on `main`. Newest first. 
 
 ## 2026-10-22
 
-- Galerias: mockups vetoriais de MacBook nas telas web do Caderno e nas duas páginas da DascIA, iPhone nas capturas do FinQ e seis peças mobile adicionais do Caderno; originais completos preservados no lightbox. Ver [experimento](docs/nova-home-projetos.md).
+- Galerias: mockups vetoriais de MacBook nas telas web do Caderno e nas duas páginas da DascIA, iPhone nas capturas do FinQ e seis peças mobile adicionais do Caderno; originais completos preservados no lightbox. Ver [experimento](docs/nova-home-projetos.md) (#101).
 
 - Drawer: pill “Close” com X no fundo clicável, reutilizando a mola da pill “Drag” (`cursor.mjs`, `projects.mjs`); ver [padrão](docs/patterns.md). (#101)
 
