@@ -1,5 +1,13 @@
 # Nova home — Projects em cards e o detalhe do projeto
 
+## Meta Suplementos — 22/10/2026
+
+Case de redesign aprovado pelo Otavio: UX/UI de todas as telas da loja, informado por pesquisa de mercado e persona, e direção de imagens profissionais com modelos e produtos usando IA. Textos em inglês aprovados em Role, Summary, Overview, The challenge, Design decisions e Image direction; sem métricas de resultado ou URL da loja inferidas. O favicon PNG 600×600 foi enviado pelo Otavio e preservado byte a byte.
+
+`assets/projects/meta-suplementos/` contém cinco PNGs com aparelhos já compostos e fundo transparente e dez recortes individuais. `framed: true` mantém as imagens dos aparelhos sem borda externa ou segunda moldura e preserva sua proporção; os dois iPhones continuam agrupados. Componentes usam `layout: "masonry"`, com três colunas, duas abaixo de 760px úteis e uma abaixo de 480px, gap 16, raio 16 e a borda existente de preto a 8%. Não há drop shadow nem fundo cinza externo. As cores internas das interfaces permanecem. Lightbox e falha de imagem reutilizam o comportamento da galeria.
+
+A seed e o suplemento estático espelham o novo registro `projects/meta-suplementos`; o Studio/D1 recebe a entrada após a publicação dos assets, com backup e trava de revisão, preservando as demais coleções. Os estudos e o pacote para continuar a Assopra permanecem em `output/meta-suplementos/`, fora do deploy estático.
+
 Desde 21/10/2026, o carrossel e o detalhe com galeria estão aprovados para a home **`/`**, com **sangra + drawer + anel** fixos e sem painel de ajustes público. O protótipo continua em **`/testes/prototipo-nova-home`** (rota `noindex`) para comparar variantes. As preferências salvas no protótipo não alteram a home. Ele existe pra decidir olhando, não descrevendo — três escolhas que o Figma não fecha estão num painel de troca na própria página.
 
 Fonte: arquivo `Oktavio` (`H0X3JmAFN32LWINqemEhXs`), frames **card `124:562`**, **seção `124:1280`** e **detalhe `133:248`** ("Project details Modal estilo Vault do Emil"). Contrato geral entre Figma e repositório: [figma-workflow.md](figma-workflow.md).

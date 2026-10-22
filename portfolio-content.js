@@ -423,6 +423,141 @@
       ],
       links: [["Live site", "https://www.jlcp.com.br/"]],
     },
+    "meta-suplementos": {
+      "name": "Meta Suplementos",
+      "role": "UX/UI + AI Art Direction · E-commerce",
+      "summary": "A supplement store redesign, from shopping flows to product imagery.",
+      "bio": "UX/UI redesign of the Meta Suplementos online store, informed by market and persona research. I redesigned every screen, from product discovery and catalogue browsing to product details and cart, with close attention to typography, spacing and component consistency. I also created AI-generated imagery featuring models and products, directing cohesive scenes across the storefront.",
+      "faviconFrom": "/assets/projects/meta-suplementos/favicon.png",
+      "preview": "/assets/projects/meta-suplementos/home-macbook.png",
+      "gallery": [
+        {
+          "src": "/assets/projects/meta-suplementos/home-macbook.png",
+          "alt": "Storefront redesign shown in the existing MacBook frame",
+          "layout": "full",
+          "framed": true,
+          "width": 1330,
+          "height": 843
+        },
+        {
+          "src": "/assets/projects/meta-suplementos/catalogue-macbook.png",
+          "alt": "Supplement catalogue opening shown in the existing MacBook frame",
+          "layout": "full",
+          "framed": true,
+          "width": 1330,
+          "height": 843
+        },
+        {
+          "src": "/assets/projects/meta-suplementos/product-macbook.png",
+          "alt": "Creatine product page and purchase options shown in the existing MacBook frame",
+          "layout": "full",
+          "framed": true,
+          "width": 1330,
+          "height": 843
+        },
+        {
+          "src": "/assets/projects/meta-suplementos/mobile-products-iphone.png",
+          "alt": "Mobile navigation by product shown in the existing iPhone frame",
+          "layout": "mobile",
+          "framed": true,
+          "width": 352,
+          "height": 726
+        },
+        {
+          "src": "/assets/projects/meta-suplementos/mobile-goals-iphone.png",
+          "alt": "Mobile navigation by wellness goal shown in the existing iPhone frame",
+          "layout": "mobile",
+          "framed": true,
+          "width": 352,
+          "height": 726
+        },
+        {
+          "src": "/assets/projects/meta-suplementos/navigation-products.png",
+          "alt": "Desktop navigation with a grid of supplement products",
+          "layout": "masonry",
+          "width": 1495,
+          "height": 700
+        },
+        {
+          "src": "/assets/projects/meta-suplementos/filters.png",
+          "alt": "Catalogue filters with categories, availability, prices and product weights",
+          "layout": "masonry",
+          "width": 337,
+          "height": 1203
+        },
+        {
+          "src": "/assets/projects/meta-suplementos/cart.png",
+          "alt": "Shopping cart with product quantities, shipping progress and order totals",
+          "layout": "masonry",
+          "width": 440,
+          "height": 1156
+        },
+        {
+          "src": "/assets/projects/meta-suplementos/product-information.png",
+          "alt": "Product composition and usage guidance for creatine",
+          "layout": "masonry",
+          "width": 1372,
+          "height": 1229
+        },
+        {
+          "src": "/assets/projects/meta-suplementos/navigation-goals.png",
+          "alt": "Visual navigation by wellness goal with models and supplement products",
+          "layout": "masonry",
+          "width": 1505,
+          "height": 517
+        },
+        {
+          "src": "/assets/projects/meta-suplementos/product-benefits.png",
+          "alt": "Six benefit cards on the creatine product page",
+          "layout": "masonry",
+          "width": 1440,
+          "height": 579
+        },
+        {
+          "src": "/assets/projects/meta-suplementos/campaign-ironhair.png",
+          "alt": "IronHair campaign banner featuring an AI-generated model and product",
+          "layout": "masonry",
+          "width": 1372,
+          "height": 670
+        },
+        {
+          "src": "/assets/projects/meta-suplementos/catalogue-products.png",
+          "alt": "Supplement catalogue with product cards, sorting and filters",
+          "layout": "masonry",
+          "width": 1370,
+          "height": 1040
+        },
+        {
+          "src": "/assets/projects/meta-suplementos/campaign-ironfit.png",
+          "alt": "IronFit campaign banner with an AI-generated product composition",
+          "layout": "masonry",
+          "width": 1372,
+          "height": 670
+        },
+        {
+          "src": "/assets/projects/meta-suplementos/sticky-purchase.png",
+          "alt": "Persistent purchase bar with product, price and add-to-cart action",
+          "layout": "masonry",
+          "width": 1440,
+          "height": 96
+        }
+      ],
+      "sections": [
+        {
+          "label": "The challenge",
+          "text": "Rethink an existing supplement store, bringing product discovery, detailed information and purchasing into a cohesive shopping experience."
+        },
+        {
+          "label": "Design decisions",
+          "text": "I paired warm neutral backgrounds and serif typography with distinct colours for each product. Shared components keep the store consistent, while navigation by product and wellness goal offers different ways to explore the range. Product pages organise purchase options, ingredients, usage guidance and customer reviews into a clear hierarchy."
+        },
+        {
+          "label": "Image direction",
+          "text": "I used AI to create imagery featuring models and products, coordinating lighting, colour and composition across campaign banners, category cards and product pages. Each supplement has its own visual setting within a shared brand direction."
+        }
+      ],
+      "links": []
+    },
   };
 
   const personal = {

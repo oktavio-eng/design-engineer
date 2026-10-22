@@ -17,6 +17,9 @@ const updateBaselines = process.env.UPDATE_VISUAL_BASELINES === "1";
 const requestedCases = process.env.VISUAL_CASES?.split(',');
 
 const cases = [
+  { name: 'project-masonry-light', story: 'patterns-portfolio--masonry-project-images', theme: 'light', flatType: 'on', width: 1024, height: 1200, state: 'project-devices' },
+  { name: 'project-masonry-dark', story: 'patterns-portfolio--masonry-project-images', theme: 'dark', flatType: 'on', width: 1024, height: 1200, state: 'project-devices' },
+  { name: 'project-masonry-narrow', story: 'patterns-portfolio--masonry-project-images', theme: 'light', flatType: 'on', width: 390, height: 1200, state: 'project-devices' },
   { name: 'project-devices-light', story: 'patterns-portfolio--device-project-images', theme: 'light', flatType: 'on', width: 1024, height: 1200, state: 'project-devices' },
   { name: 'project-devices-dark', story: 'patterns-portfolio--device-project-images', theme: 'dark', flatType: 'on', width: 1024, height: 1200, state: 'project-devices' },
   { name: 'project-devices-narrow', story: 'patterns-portfolio--device-project-images', theme: 'light', flatType: 'on', width: 390, height: 1200, state: 'project-devices' },

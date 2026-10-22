@@ -568,6 +568,42 @@ body.pdrawer-open > .topbar {
 .pgal__item--full .pgal__img {
   aspect-ratio: auto;
 }
+/* Approved component crops keep their natural height in a masonry group. */
+.pgal__masonry {
+  grid-column: 1 / -1;
+  columns: 3;
+  column-gap: var(--space-16);
+}
+.pgal__masonry > .pgal__item {
+  display: block;
+  width: 100%;
+  break-inside: avoid;
+  margin-bottom: var(--space-16);
+  background: transparent;
+  overflow: visible;
+}
+.pgal__masonry .pgal__img {
+  aspect-ratio: auto;
+}
+/* These PNGs already contain their device; keep the transparent perimeter. */
+.pgal__item--framed {
+  background: transparent;
+  overflow: visible;
+}
+.pgal__item--framed .pgal__img,
+.pgal__item--mobile.pgal__item--framed .pgal__img,
+.pdrawer__shot--framed {
+  border: 0;
+  border-radius: 0;
+  aspect-ratio: auto;
+  background: transparent;
+}
+@container (max-width: 760px) {
+  .pgal__masonry { columns: 2; }
+}
+@container (max-width: 480px) {
+  .pgal__masonry { columns: 1; }
+}
 .pgal__img--cover {
   object-position: center;
 }

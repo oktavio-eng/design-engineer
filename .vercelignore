@@ -13,6 +13,7 @@
 /node_modules/
 /storybook-static/
 /artifacts/
+/output/
 /content.js
 /portfolio-content.js
 /prompts.mjs

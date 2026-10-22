@@ -513,3 +513,42 @@ export const DeviceProjectImages = {
     canvasElement.querySelector('[data-project-gallery]').dataset.playDone = 'true';
   },
 };
+
+export const MasonryProjectImages = {
+  render: () => {
+    const root = Gallery.render();
+    root.insertAdjacentHTML('afterbegin', '<link rel="stylesheet" href="/styles/projects.css">');
+    root.querySelector('h1').textContent = 'Project component masonry';
+    root.querySelector('[data-gallery]').outerHTML = '<div data-project-gallery></div>';
+    import('../projects.mjs').then(({ galleryMarkup }) => {
+      root.querySelector('[data-project-gallery]').innerHTML = galleryMarkup({ gallery: [
+        { src: '/assets/projects/meta-suplementos/home-macbook.png', alt: 'Meta storefront in a MacBook', layout: 'full', framed: true },
+        { src: '/assets/projects/meta-suplementos/navigation-products.png', alt: 'Product navigation', layout: 'masonry' },
+        { src: '/assets/projects/meta-suplementos/filters.png', alt: 'Catalogue filters', layout: 'masonry' },
+        { src: '/assets/projects/meta-suplementos/cart.png', alt: 'Shopping cart', layout: 'masonry' },
+      ] });
+    });
+    return root;
+  },
+  play: async ({ canvasElement, userEvent }) => {
+    await waitFor(() => expect(canvasElement.querySelectorAll('.pgal__masonry > button')).toHaveLength(3));
+    const framed = canvasElement.querySelector('.pgal__item--framed img');
+    await expect(getComputedStyle(framed).borderTopWidth).toBe('0px');
+    const triggers = canvasElement.querySelectorAll('.pgal__masonry > button');
+    for (const trigger of triggers) {
+      const image = trigger.querySelector('img');
+      await waitFor(() => expect(image.naturalWidth).toBeGreaterThan(0));
+      await expect(getComputedStyle(image).aspectRatio).toBe('auto');
+      await expect(getComputedStyle(image).borderTopWidth).toBe('1px');
+      await expect(getComputedStyle(image).boxShadow).toBe('none');
+    }
+    const trigger = triggers[1];
+    trigger.focus();
+    await userEvent.keyboard('{Enter}');
+    await waitFor(() => expect(canvasElement.querySelector('[data-lightbox]')).toHaveAttribute('aria-hidden', 'false'));
+    await expect(canvasElement.querySelector('[data-lightbox-img]')).toHaveAttribute('src', trigger.dataset.lightboxSrc);
+    await userEvent.keyboard('{Escape}');
+    await expect(trigger).toHaveFocus();
+    canvasElement.querySelector('[data-project-gallery]').dataset.playDone = 'true';
+  },
+};

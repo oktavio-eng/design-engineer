@@ -64,6 +64,122 @@ export const pixelOfficeGallery = [
 
 // Supplied project artwork and per-image presentation metadata.
 export const suppliedProjectMedia = {
+  "meta-suplementos": {
+    "preview": "/assets/projects/meta-suplementos/home-macbook.png",
+    "faviconFrom": "/assets/projects/meta-suplementos/favicon.png",
+    "gallery": [
+      {
+        "src": "/assets/projects/meta-suplementos/home-macbook.png",
+        "alt": "Storefront redesign shown in the existing MacBook frame",
+        "layout": "full",
+        "framed": true,
+        "width": 1330,
+        "height": 843
+      },
+      {
+        "src": "/assets/projects/meta-suplementos/catalogue-macbook.png",
+        "alt": "Supplement catalogue opening shown in the existing MacBook frame",
+        "layout": "full",
+        "framed": true,
+        "width": 1330,
+        "height": 843
+      },
+      {
+        "src": "/assets/projects/meta-suplementos/product-macbook.png",
+        "alt": "Creatine product page and purchase options shown in the existing MacBook frame",
+        "layout": "full",
+        "framed": true,
+        "width": 1330,
+        "height": 843
+      },
+      {
+        "src": "/assets/projects/meta-suplementos/mobile-products-iphone.png",
+        "alt": "Mobile navigation by product shown in the existing iPhone frame",
+        "layout": "mobile",
+        "framed": true,
+        "width": 352,
+        "height": 726
+      },
+      {
+        "src": "/assets/projects/meta-suplementos/mobile-goals-iphone.png",
+        "alt": "Mobile navigation by wellness goal shown in the existing iPhone frame",
+        "layout": "mobile",
+        "framed": true,
+        "width": 352,
+        "height": 726
+      },
+      {
+        "src": "/assets/projects/meta-suplementos/navigation-products.png",
+        "alt": "Desktop navigation with a grid of supplement products",
+        "layout": "masonry",
+        "width": 1495,
+        "height": 700
+      },
+      {
+        "src": "/assets/projects/meta-suplementos/filters.png",
+        "alt": "Catalogue filters with categories, availability, prices and product weights",
+        "layout": "masonry",
+        "width": 337,
+        "height": 1203
+      },
+      {
+        "src": "/assets/projects/meta-suplementos/cart.png",
+        "alt": "Shopping cart with product quantities, shipping progress and order totals",
+        "layout": "masonry",
+        "width": 440,
+        "height": 1156
+      },
+      {
+        "src": "/assets/projects/meta-suplementos/product-information.png",
+        "alt": "Product composition and usage guidance for creatine",
+        "layout": "masonry",
+        "width": 1372,
+        "height": 1229
+      },
+      {
+        "src": "/assets/projects/meta-suplementos/navigation-goals.png",
+        "alt": "Visual navigation by wellness goal with models and supplement products",
+        "layout": "masonry",
+        "width": 1505,
+        "height": 517
+      },
+      {
+        "src": "/assets/projects/meta-suplementos/product-benefits.png",
+        "alt": "Six benefit cards on the creatine product page",
+        "layout": "masonry",
+        "width": 1440,
+        "height": 579
+      },
+      {
+        "src": "/assets/projects/meta-suplementos/campaign-ironhair.png",
+        "alt": "IronHair campaign banner featuring an AI-generated model and product",
+        "layout": "masonry",
+        "width": 1372,
+        "height": 670
+      },
+      {
+        "src": "/assets/projects/meta-suplementos/catalogue-products.png",
+        "alt": "Supplement catalogue with product cards, sorting and filters",
+        "layout": "masonry",
+        "width": 1370,
+        "height": 1040
+      },
+      {
+        "src": "/assets/projects/meta-suplementos/campaign-ironfit.png",
+        "alt": "IronFit campaign banner with an AI-generated product composition",
+        "layout": "masonry",
+        "width": 1372,
+        "height": 670
+      },
+      {
+        "src": "/assets/projects/meta-suplementos/sticky-purchase.png",
+        "alt": "Persistent purchase bar with product, price and add-to-cart action",
+        "layout": "masonry",
+        "width": 1440,
+        "height": 96
+      }
+    ]
+  },
   "caderno-de-erros": {
     "faviconFrom": "/assets/projects/caderno-de-erros/favicon.jpg",
     "gallery": [

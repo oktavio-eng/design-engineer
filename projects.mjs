@@ -303,6 +303,7 @@ export function galleryMarkup(entry) {
       ' loading="lazy" decoding="async" onerror="this.closest(\'.pgal__item\').remove()">';
     return '<button class="pgal__item' + (mobile ? " pgal__item--mobile" : wide ? " pgal__item--wide" : "") +
       (device ? " pgal__item--device" : "") +
+      (photo.framed ? " pgal__item--framed" : "") +
       (photo.layout === "full" ? " pgal__item--full" : "") +
       (photo.caption ? " pgal__item--captioned" : "") + '" type="button"' +
       ' data-cursor="ring" aria-label="' + esc(alt || "Enlarge image") + '"' +
@@ -316,10 +317,12 @@ export function galleryMarkup(entry) {
   }
   let html = '<div class="pgal">';
   for (let index = 0; index < photos.length;) {
-    const mobile = photos[index].layout === "mobile";
+    const group = photo => photo.layout === "mobile" ? "mobile" : photo.layout === "masonry" ? "masonry" : "standard";
+    const kind = group(photos[index]);
     const run = [];
-    while (index < photos.length && (photos[index].layout === "mobile") === mobile) run.push(photos[index++]);
-    if (mobile) html += '<div class="pgal__mobile-row">' + run.map(photo => imageButton(photo)).join("") + '</div>';
+    while (index < photos.length && group(photos[index]) === kind) run.push(photos[index++]);
+    if (kind === "mobile") html += '<div class="pgal__mobile-row">' + run.map(photo => imageButton(photo)).join("") + '</div>';
+    else if (kind === "masonry") html += '<div class="pgal__masonry">' + run.map(photo => imageButton(photo)).join("") + '</div>';
     else html += run.map((photo, i) => imageButton(photo, photo.layout === "wide" || photo.layout === "full" || isWide(i, run.length))).join("");
   }
   return html + '</div>';
@@ -391,7 +394,8 @@ function detailMarkup(entry, key) {
   const preview = entry.preview === "https://cloudfaster.academy/assets/og-image.png"
     ? coverFallbacks[key] : entry.preview || coverFallbacks[key];
   if (preview) {
-    html += '<img class="pdrawer__shot" src="' + esc(preview) + '" alt="" loading="lazy" onerror="this.remove()">';
+    const framed = galleryPhotos(entry).some(photo => photo.src === preview && photo.framed);
+    html += '<img class="pdrawer__shot' + (framed ? ' pdrawer__shot--framed' : '') + '" src="' + esc(preview) + '" alt="" loading="lazy" onerror="this.remove()">';
   }
   html += '<div class="pdrawer__body">';
   html +=
