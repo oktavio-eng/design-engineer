@@ -78,19 +78,17 @@ test("page links stay out of homepage scroll-spy and clean URLs keep sibling pag
 
   assert.deepEqual(
     await page.locator("footer a").allTextContents(),
-    ["Prompts", "Changelog"],
-    "mobile fallback navigation exposes both sibling pages",
+    ["GitHub", "Changelog"],
+    "footer navigation exposes the profile and changelog",
   );
 
   await page.goto(`${server.origin}/changelog`, { waitUntil: "domcontentloaded" });
   assert.equal(new URL(page.url()).pathname, "/changelog");
   assert.equal(await page.locator("h1").textContent(), "Changelog");
-  // The topbar now carries its own "prompts" link on this page too (the fix
-  // under test), so the footer's matching "Prompts" link needs scoping to
-  // stay a single match.
+  // GitHub replaces Prompts in the footer; the page remains reachable in the topbar.
   assert.equal(
-    await page.locator("footer").getByRole("link", { name: "Prompts" }).getAttribute("href"),
-    "/prompts",
+    await page.locator("footer").getByRole("link", { name: "GitHub" }).getAttribute("href"),
+    "https://github.com/oktavio-eng",
   );
   const changelogTopbarLinks = page.locator(".topbar__nav a[href^=\"/\"]");
   assert.deepEqual(await changelogTopbarLinks.allTextContents(), ["Home", "Wiki", "Changelog", "Prompts"]);

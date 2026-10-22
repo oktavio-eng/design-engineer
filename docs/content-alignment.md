@@ -19,3 +19,7 @@ Não foi criada uma seção curricular nem publicada uma taxa por hora. Datas de
 ## Fontes e persistência
 
 Textos estruturados são editados no Studio/D1 e espelhados nas seeds `content.js` e `portfolio-content.js`. Editar só as seeds não atualiza a produção após o cutover. O backup exportado antes das alterações foi mantido fora do repositório. Para qualquer escrita em lote, usar a revisão atual do acervo e rejeitar alterações concorrentes; nunca substituir o D1 pela seed inteira.
+
+## Caderno de Erros — 22/10/2026
+
+A descrição explicita autoria no design do site institucional e das páginas de assinatura, além da implementação no Framer. O trecho aprovado preserva o sistema de cupons com atualização de preço e a integração ASAAS. Atualizado no Studio/D1 pelo terminal com backup prévio, alteração restrita à bio e trava de revisão (15 → 16); descrição confirmada no módulo público de produção. Seed local sincronizada.

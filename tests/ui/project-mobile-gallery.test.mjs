@@ -44,7 +44,7 @@ test('mobile project galleries remain compact, preserve source order and support
           height: bounds.height, fit: getComputedStyle(img).objectFit, ratio: bounds.width / bounds.height, naturalRatio: img.naturalWidth / img.naturalHeight };
       });
       assert.equal(geometry.columns, width > 700 ? 3 : 2);
-      assert.equal(geometry.columnGap, width > 700 ? '32px' : '24px');
+      assert.equal(geometry.columnGap, '16px');
       assert.equal(geometry.rowGap, width > 700 ? '32px' : '24px');
       assert.ok(geometry.height <= (width > 700 ? 480 : 420) + 1);
       assert.ok(Math.abs(geometry.ratio - 9 / 19.5) < .01, 'mobile previews use a uniform frame');
@@ -52,8 +52,12 @@ test('mobile project galleries remain compact, preserve source order and support
       const sizes = await row.locator('.pgal__img').evaluateAll(images => images.slice(0, 3).map(img => { const box = img.getBoundingClientRect(); return [box.width, box.height]; }));
       for (const size of sizes) { assert.ok(Math.abs(size[0] - sizes[0][0]) < 1); assert.ok(Math.abs(size[1] - sizes[0][1]) < 1); }
       const visibleGap = await row.locator('.pgal__img').evaluateAll(images => images[1].getBoundingClientRect().left - images[0].getBoundingClientRect().right);
-      assert.ok(Math.abs(visibleGap - (width > 700 ? 32 : 24)) < 1, 'the visible image gap must match the grid gap');
-
+      assert.ok(Math.abs(visibleGap - 16) < 1, 'the visible image gap must match the grid gap');
+      const borders = await page.locator('.pdrawer__shot, .pgal__img').evaluateAll(images => images.map(img => {
+        const style = getComputedStyle(img);
+        return [style.borderTopWidth, style.borderTopStyle, style.borderTopColor];
+      }));
+      for (const border of borders) assert.deepEqual(border, ['1px', 'solid', 'oklch(0 0 0 / 0.08)']);
 
       await page.waitForFunction(() => {
         const group = document.querySelector('.pgal__mobile-row');

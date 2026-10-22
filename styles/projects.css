@@ -419,6 +419,10 @@ body.pdrawer-open > .topbar {
 /* --- conteúdo do detalhe -------------------------------------------------
    Ritmo refinado: 48 depois da capa e 56 entre blocos no desktop;
    no celular, 32 e 40, respectivamente. */
+.pdrawer__shot,
+.pgal__img {
+  border: var(--border-w) solid var(--project-image-border);
+}
 .pdrawer__shot {
   display: block;
   width: 100%;
@@ -607,10 +611,10 @@ body.pdrawer-open > .topbar {
   display: grid;
   grid-column: 1 / -1;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--space-32);
+  gap: var(--space-32) var(--space-16);
   align-items: start;
   width: 100%;
-  max-width: calc(var(--space-220) * 3 + var(--space-32) * 2);
+  max-width: calc(var(--space-220) * 3 + var(--space-16) * 2);
   margin-inline: auto;
 }
 .pgal__item--mobile,
@@ -659,8 +663,8 @@ body.pdrawer-open > .topbar {
 @container (max-width: 620px) {
   .pgal__mobile-row {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: var(--space-24);
-    max-width: calc(var(--space-420) * 9 / 19.5 * 2 + var(--space-24));
+    gap: var(--space-24) var(--space-16);
+    max-width: calc(var(--space-420) * 9 / 19.5 * 2 + var(--space-16));
   }
   .pgal__item--mobile .pgal__img {
     max-width: calc(var(--space-420) * 9 / 19.5);

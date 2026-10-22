@@ -50,6 +50,8 @@
      dark enough to sit on the (now light) --ink button text. One override
      below covers both call sites; don't split it into two tokens. */
   --white: oklch(1 0 0);
+  /* Project screenshots: pure black at 8%, independent of theme. */
+  --project-image-border: oklch(0 0 0 / 0.08);
   --white-a40: oklch(1 0 0 / 0.4);
   --white-a50: oklch(1 0 0 / 0.5);
   --white-a60: oklch(1 0 0 / 0.6);
