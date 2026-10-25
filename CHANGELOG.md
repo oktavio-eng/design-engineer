@@ -6,6 +6,10 @@ Notable changes to this site, in the order they landed on `main`. Newest first. 
 
 **Meses anteriores:** [agosto de 2026](docs/changelog/2026-08.md) (01/08–30/08 — recuperação do site, tokens, intro, ⌘K, `/prompts`, portfólio na home, Figma-first, Lenis, composer + Supabase).
 
+## 2026-10-24
+
+- Caderno de Erros: removidas da descrição a frase sobre cupons e integração de pagamento e a métrica de seguidores em `portfolio-content.js`.
+
 ## 2026-10-22
 
 - CloudFaster: home desktop como capa e telas de ranking, visão geral e conteúdo dos cursos antes da galeria mobile, na ordem do ZIP. Ver [galeria](docs/nova-home-projetos.md).
