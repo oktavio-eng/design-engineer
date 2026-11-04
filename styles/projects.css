@@ -887,6 +887,7 @@ body.pdrawer-open > .topbar {
 /* Landing-page links sit beside captions, outside the image button. */
 .pgal__landing { min-width: 0; }
 .pgal__landing > .pgal__item { width: 100%; }
+.pgal__landing-caption { margin-top: var(--space-8); }
 .pgal__landing-caption,
 .lightbox--project .lightbox__caption {
   display: flex;
