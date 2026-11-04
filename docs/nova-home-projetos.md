@@ -123,6 +123,8 @@ As 12 capturas de 21/10/2026 estão em `assets/projects/pixel-office/`, na ordem
 
 ### Links das landing pages
 
+Em 04/11/2026, as capas derivadas de `subprojects` preservam também o URL: “Live Site” aparece ao lado do nome na galeria e na imagem ampliada, abrindo em nova aba. Na galeria, o link fica fora do botão que amplia a imagem; a legenda do lightbox é reconstruída a cada abertura para não reter o destino anterior.
+
 A promoção havia usado apenas `subprojects[].preview` na galeria, descartando os URLs e descrições que o detalhe anterior mostrava. Corrigido em 21/10/2026: todo registro com `subprojects` ganha uma seção **Landing pages** com o nome e a descrição dentro do link, abrindo a LP em nova aba (`target="_blank"`, `rel="noopener"`). A galeria continua ampliando imagens; a seção de links existe independentemente de uma capa carregar ou falhar. Na Escola da Bel, os cinco destinos são preservados integralmente. O teste compara nomes, descrições e URLs com os dados de conteúdo e cobre falha das imagens.
 
 O subtítulo de perfil da home e do protótipo agora é **UI/UX & Visual Designer**, a pedido do Otavio.

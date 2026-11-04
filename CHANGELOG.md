@@ -6,6 +6,10 @@ Notable changes to this site, in the order they landed on `main`. Newest first. 
 
 **Meses anteriores:** [agosto de 2026](docs/changelog/2026-08.md) (01/08–30/08 — recuperação do site, tokens, intro, ⌘K, `/prompts`, portfólio na home, Figma-first, Lenis, composer + Supabase).
 
+## 2026-11-04
+
+- Escola da Bel: “Live Site” junto às legendas das landing pages na galeria e no lightbox. Ver [links das landing pages](docs/nova-home-projetos.md#links-das-landing-pages).
+
 ## 2026-10-24
 
 - Caderno de Erros: removidas da descrição a frase sobre cupons e integração de pagamento e a métrica de seguidores em `portfolio-content.js`.

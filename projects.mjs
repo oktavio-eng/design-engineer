@@ -275,7 +275,7 @@ function galleryPhotos(entry) {
   if (Array.isArray(entry.subprojects)) {
     return entry.subprojects
       .filter((sub) => sub && sub.preview)
-      .map((sub) => ({ src: sub.preview, alt: sub.name, caption: sub.name, layout: "cover" }));
+      .map((sub) => ({ src: sub.preview, alt: sub.name, caption: sub.name, url: sub.url, layout: "cover" }));
   }
   return [];
 }
@@ -300,8 +300,8 @@ export function galleryMarkup(entry) {
       ? ' width="' + photo.width + '" height="' + photo.height + '"' : "";
     const image = '<img class="pgal__img' + (photo.layout === "cover" ? ' pgal__img--cover' : '') + '"' +
       (device ? '' : ' data-cursor="ring"') + ' src="' + esc(photo.src) + '" alt=""' + dimensions +
-      ' loading="lazy" decoding="async" onerror="this.closest(\'.pgal__item\').remove()">';
-    return '<button class="pgal__item' + (mobile ? " pgal__item--mobile" : wide ? " pgal__item--wide" : "") +
+      ' loading="lazy" decoding="async" onerror="(this.closest(\'.pgal__landing\') || this.closest(\'.pgal__item\')).remove()">';
+    const button = '<button class="pgal__item' + (mobile ? " pgal__item--mobile" : wide ? " pgal__item--wide" : "") +
       (device ? " pgal__item--device" : "") +
       (photo.framed ? " pgal__item--framed" : "") +
       (photo.layout === "full" ? " pgal__item--full" : "") +
@@ -310,10 +310,16 @@ export function galleryMarkup(entry) {
       (photo.caption ? ' aria-describedby="' + captionID + '"' : "") +
       ' data-lightbox-src="' + esc(photo.src) + '"' +
       ' data-lightbox-alt="' + esc(alt) + '"' +
-      ' data-lightbox-caption="' + esc(photo.caption || "") + '">' +
+      ' data-lightbox-caption="' + esc(photo.caption || "") + '"' +
+      (photo.url ? ' data-lightbox-url="' + esc(photo.url) + '"' : '') + '>' +
       (device ? '<span class="pgal__device pgal__device--' + device + '" data-cursor="ring"><span class="pgal__screen">' + image + '</span></span>' : image) +
-      (photo.caption ? '<span class="pgal__caption" id="' + captionID + '">' + esc(photo.caption) + '</span>' : "") +
+      (photo.caption && !photo.url ? '<span class="pgal__caption" id="' + captionID + '">' + esc(photo.caption) + '</span>' : "") +
       '</button>';
+    if (!photo.url) return button;
+    return '<div class="pgal__landing' + (wide ? ' pgal__item--wide' : '') + '">' + button +
+      '<p class="pgal__caption pgal__landing-caption" id="' + captionID + '">' +
+      '<span>' + esc(photo.caption || alt) + '</span>' +
+      '<a class="inline-link project-live-link" href="' + esc(photo.url) + '" target="_blank" rel="noopener" aria-label="Live Site — ' + esc(photo.caption || alt) + '">Live Site</a></p></div>';
   }
   let html = '<div class="pgal">';
   for (let index = 0; index < photos.length;) {

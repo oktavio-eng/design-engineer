@@ -238,7 +238,20 @@ export function initLightbox(root) {
     box.classList.toggle("lightbox--project", Boolean(trigger.closest(".pgal")));
     img.src = trigger.dataset.lightboxSrc;
     img.alt = trigger.dataset.lightboxAlt || "";
-    if (caption) caption.textContent = trigger.dataset.lightboxCaption || "";
+    if (caption) {
+      caption.textContent = trigger.dataset.lightboxCaption || "";
+      const url = trigger.dataset.lightboxUrl;
+      if (url && /^https?:\/\//i.test(url)) {
+        const link = document.createElement("a");
+        link.className = "inline-link project-live-link";
+        link.href = url;
+        link.target = "_blank";
+        link.rel = "noopener";
+        link.textContent = "Live Site";
+        link.setAttribute("aria-label", "Live Site — " + (trigger.dataset.lightboxCaption || img.alt));
+        caption.append(link);
+      }
+    }
     box.setAttribute("aria-label", trigger.dataset.lightboxCaption || trigger.dataset.lightboxAlt || "Photo");
     open = true;
     box.inert = false;

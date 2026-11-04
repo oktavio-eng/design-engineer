@@ -333,7 +333,8 @@ export const ProjectImages = {
       <img class="pdrawer__shot" src="${GALLERY_PHOTO}" alt="Project cover">
       <div class="pgal" style="margin-top: var(--space-16)">
         <button class="pgal__item pgal__item--wide pgal__item--full" type="button" aria-label="Enlarge project image"
-          data-lightbox-src="${GALLERY_PHOTO}" data-lightbox-alt="Blue disc on a pale field">
+          data-lightbox-src="${GALLERY_PHOTO}" data-lightbox-alt="Blue disc on a pale field"
+          data-lightbox-caption="Fresh Frozen Paris" data-lightbox-url="https://escoladabel.com/freshfrozen/paris">
           <img class="pgal__img" src="${GALLERY_PHOTO}" alt="">
         </button>
       </div>`;
@@ -351,6 +352,11 @@ export const ProjectImages = {
     await userEvent.click(trigger);
     await waitFor(() => expect(box).toHaveAttribute("aria-hidden", "false"));
     await expect(box).toHaveClass("lightbox--project");
+    const liveLink = canvasElement.querySelector('[data-lightbox-text] a');
+    await expect(liveLink).toHaveTextContent('Live Site');
+    await expect(liveLink).toHaveAttribute('href', 'https://escoladabel.com/freshfrozen/paris');
+    await userEvent.tab();
+    await expect(liveLink).toHaveFocus();
     await expect(getComputedStyle(canvasElement.querySelector(".lightbox__img")).borderRadius).toBe("16px");
     await userEvent.keyboard("{Escape}");
     await expect(trigger).toHaveFocus();

@@ -223,9 +223,17 @@ test("/ (portfolio home) renders its collections, opens rows and photos in modal
   assert.deepEqual(landings, expectedLandings, "all original landing-page links and descriptions survive the drawer migration");
   assert.deepEqual(await page.locator('.pgal__img').evaluateAll(images => images.map(img => getComputedStyle(img).objectPosition)),
     expectedLandings.map(() => '50% 50%'), 'landing-page covers use a centered crop');
+  assert.deepEqual(await page.locator('.pgal__landing .project-live-link').evaluateAll(links =>
+    links.map(link => ({ href: link.getAttribute('href'), text: link.textContent, target: link.target, rel: link.rel }))),
+    expectedLandings.map(sub => ({ href: sub.href, text: 'Live Site', target: '_blank', rel: 'noopener' })));
+  assert.equal(await page.locator('.pgal__item a').count(), 0, 'links stay outside enlargement buttons');
   await scanAxe(page, "project landing-page links");
   await page.locator(".pgal__item").first().click();
   await page.locator('[data-lightbox][aria-hidden="false"]').waitFor();
+  const liveLink = page.locator('[data-lightbox-text] .project-live-link');
+  assert.equal(await liveLink.getAttribute('href'), expectedLandings[0].href);
+  await page.keyboard.press('Tab');
+  assert.equal(await liveLink.evaluate(link => link === document.activeElement), true, 'Live Site is reachable by keyboard');
   await page.keyboard.press("Escape");
   assert.equal(await page.locator("[data-proto-sheet]").getAttribute("aria-hidden"), "false");
   await page.keyboard.press("Escape");

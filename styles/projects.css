@@ -883,3 +883,20 @@ body.pdrawer-open > .topbar {
 .pgal__mobile-captions .pgal__caption {
   margin: 0;
 }
+
+/* Landing-page links sit beside captions, outside the image button. */
+.pgal__landing { min-width: 0; }
+.pgal__landing > .pgal__item { width: 100%; }
+.pgal__landing-caption,
+.lightbox--project .lightbox__caption {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-8) var(--space-16);
+}
+.project-live-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--space-44);
+  flex-shrink: 0;
+}
