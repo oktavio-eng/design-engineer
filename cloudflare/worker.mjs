@@ -65,10 +65,11 @@ async function route(request, env) {
   const local = env.LOCAL_DEV === 'true' && ['localhost', '127.0.0.1', '[::1]'].includes(url.hostname);
   const origin = request.headers.get('Origin');
   const write = !['GET', 'HEAD', 'OPTIONS'].includes(request.method);
-  const publicOrigin = local ? url.origin : env.SITE_ORIGIN;
   if (pathname === '/api/contact') {
-    const cors = { 'Access-Control-Allow-Origin': publicOrigin, 'Vary': 'Origin' };
-    if (origin !== publicOrigin && !(local && origin === url.origin)) throw fail(403, 'Origem não permitida.');
+    const allowedOrigins = local ? [url.origin] : [env.SITE_ORIGIN,
+      ...(env.ADDITIONAL_SITE_ORIGINS || '').split(',').map(value => value.trim()).filter(Boolean)];
+    if (!allowedOrigins.includes(origin)) throw fail(403, 'Origem não permitida.');
+    const cors = { 'Access-Control-Allow-Origin': origin, 'Vary': 'Origin' };
     if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: { ...cors, 'Access-Control-Allow-Methods': 'POST', 'Access-Control-Allow-Headers': 'Content-Type' } });
     if (request.method !== 'POST') throw fail(405, 'Método não permitido.');
     const input = await readBody(request);

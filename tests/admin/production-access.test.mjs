@@ -118,6 +118,20 @@ test('Produção simulada: Access RS256 no Worker — token válido entra, forja
   const sent = await call('/api/contact', { method: 'POST', data: message, headers: { Origin: SITE } });
   assert.equal(sent.status, 201); assert.equal(sent.headers.get('access-control-allow-origin'), SITE);
   assert.equal((await (await call('/api/admin/messages', { token: valid })).json()).total, 1, 'the message reaches the authenticated inbox');
+  const customSite = 'https://oktavio.gowstudio.pro';
+  const bothSites = { ...env, ADDITIONAL_SITE_ORIGINS: customSite };
+  for (const site of [SITE, customSite]) {
+    const response = await call('/api/contact', { method: 'OPTIONS', headers: { Origin: site }, environment: bothSites });
+    assert.equal(response.status, 204);
+    assert.equal(response.headers.get('access-control-allow-origin'), site);
+    assert.equal(response.headers.get('vary'), 'Origin');
+  }
+  assert.equal((await call('/api/contact', { method: 'POST', data: message, headers: { Origin: customSite }, environment: bothSites })).status, 201);
+  assert.equal((await (await call('/api/admin/messages', { token: valid })).json()).total, 2, 'both public origins reach the same inbox');
+  for (const origin of ['https://evil.example', 'https://oktavio.gowstudio.pro.evil.example', 'http://oktavio.gowstudio.pro']) {
+    assert.equal((await call('/api/contact', { method: 'OPTIONS', headers: { Origin: origin }, environment: bothSites })).status, 403);
+  }
+  assert.equal((await call('/api/contact', { method: 'OPTIONS', headers: { Origin: customSite }, environment: { ...env, ADDITIONAL_SITE_ORIGINS: '' } })).status, 403);
   // Anything else on the Worker host bounces to the public site.
   const elsewhere = await call('/wiki');
   assert.equal(elsewhere.status, 302); assert.equal(elsewhere.headers.get('location'), SITE + '/wiki');

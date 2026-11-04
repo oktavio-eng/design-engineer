@@ -16,6 +16,7 @@
   "vars": {
     "LOCAL_DEV": "false",
     "SITE_ORIGIN": "https://oktavio.vercel.app",
+    "ADDITIONAL_SITE_ORIGINS": "https://oktavio.gowstudio.pro",
     "ACCESS_TEAM_DOMAIN": "https://oktavio.cloudflareaccess.com",
     "ACCESS_AUD": "770041307546001a17307fa6eb407784b9ec1b076b89572853f8ae7e973ae3a6",
     "ADMIN_EMAIL": "oktavio@gowstudio.pro"

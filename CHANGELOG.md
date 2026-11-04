@@ -8,6 +8,8 @@ Notable changes to this site, in the order they landed on `main`. Newest first. 
 
 ## 2026-11-04
 
+- Contato: origem adicional `oktavio.gowstudio.pro`, preservando `oktavio.vercel.app`. Ver [Studio](docs/studio.md#origem-adicional-do-portfólio-04112026).
+
 - Escola da Bel: espaço acima das legendas das landing pages reduzido em 16px.
 
 - Escola da Bel: “Live Site” junto às legendas das landing pages na galeria e no lightbox. Ver [links das landing pages](docs/nova-home-projetos.md#links-das-landing-pages).
