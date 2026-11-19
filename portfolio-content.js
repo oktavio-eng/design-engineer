@@ -351,7 +351,7 @@
       ],
       role: "UX/UI + Identity + Website · AI Education",
       summary: "Identity and website for an AI-education brand",
-      bio: "Visual identity and website, via GOW Design, for an AI-education brand positioned against shallow 'AI in three clicks' courses — built to read as technical and credible.",
+      bio: "Visual identity and website, via GOW Studio, for an AI-education brand positioned against shallow 'AI in three clicks' courses — built to read as technical and credible.",
       items: ["Compressed, mixed-weight capital headline as the core brand device."],
       links: [["Live site", "https://dascia.com.br/"]],
       sections: [
@@ -875,9 +875,9 @@
       ],
     },
     "gow-studio": {
-      name: "GOW Design",
+      name: "GOW Studio",
       role: "Studio · ongoing",
-      bio: "The studio I've run since 2019 — UI/UX, visual design and brand systems, with a growing focus on implementation and design engineering.",
+      bio: "The studio I've run since 2019: UI/UX, visual design and brand systems, with a growing focus on implementation and design engineering.",
       links: [["Site", "https://gowdesign.framer.website/"]],
     },
   };
@@ -970,7 +970,7 @@
   // replace/extend with real photos.
   const gallery = [
     { src: "/avatar.webp", alt: "Portrait of Otavio Alexandre", caption: "Otavio", width: 150, height: 150 },
-    { src: "/Logo%20Black.svg", alt: "GOW Design mark", caption: "GOW Design", width: 44, height: 56 },
+    { src: "/Logo%20Black.svg", alt: "GOW Studio mark", caption: "GOW Studio", width: 44, height: 56 },
     { src: "/og.jpg", alt: "The plan page's share card", caption: "The plan, as a card", width: 1200, height: 628 },
   ];
 

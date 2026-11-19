@@ -18,6 +18,8 @@ Notable changes to this site, in the order they landed on `main`. Newest first. 
 
 - README: link do site vivo aponta para `oktavio.gowstudio.pro`.
 
+- Copy: cargo no perfil da wiki e meta description da home acompanham o novo cargo; na seed (`portfolio-content.js`), a entrada `gow-studio` do ⌘K, a legenda do logo na galeria e a bio da DascIA passam a “GOW Studio”. Produção lê do D1; a troca no Studio é manual.
+
 ## 2026-11-04
 
 - Contato: origem adicional `oktavio.gowstudio.pro`, preservando `oktavio.vercel.app`. Ver [Studio](docs/studio.md#origem-adicional-do-portfólio-04112026).
