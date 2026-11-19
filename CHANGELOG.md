@@ -6,6 +6,18 @@ Notable changes to this site, in the order they landed on `main`. Newest first. 
 
 **Meses anteriores:** [agosto de 2026](docs/changelog/2026-08.md) (01/08–30/08 — recuperação do site, tokens, intro, ⌘K, `/prompts`, portfólio na home, Figma-first, Lenis, composer + Supabase).
 
+## 2026-11-19
+
+- Copy: cargo em `.profile__role` (`index.html`) passa a “Designer moving into design engineering”; asserção em `tests/ui/portfolio-page.test.mjs` acompanha.
+
+- Copy: “GOW Design” vira “GOW Studio” nos rodapés (agora “Oktavio · GOW Studio”), nas meta og/twitter e nas descriptions de `index.html`, `wiki.html`, `changelog.html` e `prompts.html`, e no subtítulo da wiki. `portfolio-content.js`, `admin/` e `testes/` ficam como estão.
+
+- Copy: travessões trocados em `index.html` (parágrafo “Everything on this site…”, títulos og/twitter, meta description).
+
+- Escola da Bel: resumo do card no seed (`portfolio-content.js`) passa a “Founding design for an aesthetics education company”. Produção lê do D1; a troca no Studio é manual. Ver [Studio](docs/studio.md).
+
+- README: link do site vivo aponta para `oktavio.gowstudio.pro`.
+
 ## 2026-11-04
 
 - Contato: origem adicional `oktavio.gowstudio.pro`, preservando `oktavio.vercel.app`. Ver [Studio](docs/studio.md#origem-adicional-do-portfólio-04112026).

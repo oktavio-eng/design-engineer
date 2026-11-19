@@ -203,7 +203,7 @@
     "escola-da-bel": {
       name: "Escola da Bel",
       role: "Web + UX/UI + Visual Design · Aesthetics Education",
-      summary: "Founding design for a medical-education company",
+      summary: "Founding design for an aesthetics education company",
       preview: "https://framerusercontent.com/images/BP6trVJNYC4N4uySVf4sXwSvUA.jpg",
       bio: "Web design, UX/UI and visual communication for a Brazilian education brand in the aesthetics industry. I design and evolve the main website, landing pages, course and event pages, responsive interfaces and interactive experiences in Figma and Framer, collaborating with developers on frontend and product implementation. Built a Framer-based diagnostic quiz with a seven-course recommendation engine, Google Sheets webhook and iframe height sync, used as a lead-generation tool on the site. It generated around 600 leads at a single event with 1,500–2,000 attendees. Interactive work also includes a voting experience for the brand's reality show. Ongoing campaign work includes the Fresh Frozen Paris and Las Vegas series and a full anatomical illustration set for an educational atlas.",
       items: [
