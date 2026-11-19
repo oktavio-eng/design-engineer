@@ -88,7 +88,7 @@ test("/ (portfolio home) renders its collections, opens rows and photos in modal
   // renderGallery()) — the section still exists in the markup, just
   // permanently hidden until that's restored.
   assert.deepEqual(sections, ["positioning", "contributions", "writing", "projects", "personal", "life", "gallery:hidden"]);
-  assert.equal(await page.locator(".profile__role").textContent(), "UI/UX & Visual Designer");
+  assert.equal(await page.locator(".profile__role").textContent(), "Designer moving into design engineering");
 
   assert.equal(await page.locator("#projects .pcard").count(), 10, "all projects render as cards");
   assert.equal(await page.locator("[data-proto-panel]").count(), 0, "no prototype controls on the public homepage");
@@ -204,7 +204,7 @@ test("/ (portfolio home) renders its collections, opens rows and photos in modal
   // ⌘K indexes the portfolio collections, projects included (real content
   // since 22/08/2026, not draft-gated).
   await page.locator("#cmdInput").fill("gow");
-  assert.equal(await page.locator('.cmd__item:has-text("GOW Design")').count(), 1);
+  assert.equal(await page.locator('.cmd__item:has-text("GOW Studio")').count(), 1);
   await page.locator("#cmdInput").fill("Sphera");
   assert.equal(await page.locator(".cmd__item").count(), 1, "project rows are searchable");
   await page.keyboard.press("Escape");
