@@ -1,5 +1,22 @@
 # Nova home — Projects em cards e o detalhe do projeto
 
+## TratyVet (21/11/2026)
+
+Case da loja internacional (`tratyvet.com`, em inglês e em dólar). A loja `.com.br` não é trabalho do Otavio e não entra. Escopo confirmado por ele: UX/UI das telas e criação dos banners. Os banners são **composição** (produto + fotografia de pets e lifestyle), **sem IA**, e **não houve pesquisa** de mercado ou persona. Por isso o role é "UX/UI Designer for E-Commerce Store" (texto dele), e a terceira seção se chama "Banner design" em vez de "Image direction". A área do usuário (perfil, pedidos), o login e cadastro e o dashboard admin existem no Figma, mas **não podem aparecer no portfólio**. O texto fala só da loja.
+
+Fonte: arquivo Figma `2H7Ajtr8jXuIf3FfagcXjC`, organizado em 21/11 em Sections por jornada (`01 Storefront` … `06 Errors`, `Notes`, `Archive`) e componentes por família na página `📖 components`. A home final é a v2 (`980:6033`). A v1 está em `Archive`. Os textos de Design decisions partem da "pauta" (Section `Notes`), onde o Otavio registrou o porquê da seção PETA com dois caminhos (comprar / saber mais) e dos ícones abaixo do banner. Não existe design mobile, então o case não tem iPhone.
+
+`assets/projects/tratyvet/` tem:
+
+- **8 MacBooks:** home (capa), PETA, produtos da home, catálogo (abertura e grade), produto (abertura e "comprados juntos") e 404. Mesma moldura e área útil da Assopra: 1272×795 dentro de 1440×912, raio 8. Os recortes 1440×900 das páginas exportadas em 1× foram compostos via Playwright sobre a moldura de `assopra-store/home-opening-macbook.png`. A capa não se repete na galeria, como na Meta.
+- **5 banners:** exportados em 2× (2256×800) e convertidos para JPG 88, em `layout: "ticker"` entre catálogo e produto.
+- **4 recortes em masonry:** header, catálogo (filtros + card), painel de compra e carrinho (2×). Filtros e card começaram como recortes separados, mas em largura de coluna os filtros apareciam em ~1,6× e o painel em ~0,55×. Juntar filtros e card num recorte de 570px deixa os quatro numa escala parecida.
+- **Favicon:** o símbolo do logo (nó `945:5072`), em 128×128 transparente.
+
+Ficaram de fora de propósito: o modal "Become A Grommer" (o texto da arte tem o erro de digitação), os recortes que repetiam MacBooks e os componentes da página de componentes (cards sem foto). Os dois banners "Elevate your grooming game" estão escritos "gromming" na arte. Isso precisa ser corrigido no Figma e reexportado antes de publicar.
+
+Validação local em 21/11: 29 testes de página (contagens de 10 → 11 cards e a ordem Meta → Assopra → TratyVet → CloudFaster atualizadas, mais um teste próprio da TratyVet), 31 testes Storybook/axe e a matriz visual completa sem mudar baseline. Galeria conferida em 1440, 768 e 390px, sem overflow ou imagem quebrada. Sem publicação nem escrita no Studio/D1 até o Otavio pedir.
+
 ## CloudFaster — telas desktop de 22/10/2026
 
 As quatro imagens de `CloudFaster/new.zip` entram em `assets/projects/cloudfaster-academy/` como JPEGs originais, preservados byte a byte. `00-desktop-home.jpg` substitui a capa legada e não se repete na galeria. Ranking (01), visão geral dos cursos (02) e conteúdo do curso (03) abrem a galeria, antes das 15 peças existentes. A seed aponta para a nova capa; `prependGallery` no suplemento estático aplica a mesma ordem ao conteúdo do Studio, preservando as imagens e legendas remotas e sem duplicar entradas ao reaplicar. Uma futura capa definida no Studio continua tendo prioridade sobre o fallback legado.

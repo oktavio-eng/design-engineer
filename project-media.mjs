@@ -246,6 +246,133 @@ export const suppliedProjectMedia = {
       }
     ]
   },
+  "tratyvet": {
+    "previewFramed": true,
+    "preview": "/assets/projects/tratyvet/home-opening-macbook.png",
+    "faviconFrom": "/assets/projects/tratyvet/favicon.png",
+    "gallery": [
+      {
+        "src": "/assets/projects/tratyvet/home-peta-macbook.png",
+        "alt": "Home page section about the brand's PETA cruelty-free and vegan certification",
+        "layout": "full",
+        "width": 1440,
+        "height": 912,
+        "framed": true
+      },
+      {
+        "src": "/assets/projects/tratyvet/home-products-macbook.png",
+        "alt": "Featured grooming products on the home page, filtered by product line",
+        "layout": "full",
+        "width": 1440,
+        "height": 912,
+        "framed": true
+      },
+      {
+        "src": "/assets/projects/tratyvet/catalogue-opening-macbook.png",
+        "alt": "Catalogue opening with the campaign banner, filters and sorting",
+        "layout": "full",
+        "width": 1440,
+        "height": 912,
+        "framed": true
+      },
+      {
+        "src": "/assets/projects/tratyvet/catalogue-grid-macbook.png",
+        "alt": "Product grid with filters by category, price and volume",
+        "layout": "full",
+        "width": 1440,
+        "height": 912,
+        "framed": true
+      },
+      {
+        "src": "/assets/projects/tratyvet/banner-welcome.jpg",
+        "alt": "Welcome banner with a woman and her dog outdoors",
+        "layout": "ticker",
+        "width": 2256,
+        "height": 800,
+        "groupCaption": "I designed the campaign banners by composing product shots with pet and lifestyle photography, keeping the brand's teal palette and typography consistent across each message."
+      },
+      {
+        "src": "/assets/projects/tratyvet/banner-grooming-split.jpg",
+        "alt": "Grooming products on a pedestal surrounded by yellow flowers, with the headline beside them",
+        "layout": "ticker",
+        "width": 2256,
+        "height": 800
+      },
+      {
+        "src": "/assets/projects/tratyvet/banner-grooming-centred.jpg",
+        "alt": "A grooming spray among yellow flowers with a centred headline",
+        "layout": "ticker",
+        "width": 2256,
+        "height": 800
+      },
+      {
+        "src": "/assets/projects/tratyvet/banner-results.jpg",
+        "alt": "A white dog on a light blue background for the professional line",
+        "layout": "ticker",
+        "width": 2256,
+        "height": 800
+      },
+      {
+        "src": "/assets/projects/tratyvet/banner-ethical.jpg",
+        "alt": "A woman holding her dog next to the PETA vegan seal",
+        "layout": "ticker",
+        "width": 2256,
+        "height": 800
+      },
+      {
+        "src": "/assets/projects/tratyvet/product-opening-macbook.png",
+        "alt": "Product page with image gallery, combo selection, quantity and add-to-cart action",
+        "layout": "full",
+        "width": 1440,
+        "height": 912,
+        "framed": true
+      },
+      {
+        "src": "/assets/projects/tratyvet/product-pairing-macbook.png",
+        "alt": "Products often purchased together, followed by similar products",
+        "layout": "full",
+        "width": 1440,
+        "height": 912,
+        "framed": true
+      },
+      {
+        "src": "/assets/projects/tratyvet/not-found-macbook.png",
+        "alt": "Not-found page with a dog illustration inside the 404",
+        "layout": "full",
+        "width": 1440,
+        "height": 912,
+        "framed": true
+      },
+      {
+        "src": "/assets/projects/tratyvet/navigation.png",
+        "alt": "Header with free-shipping bar, search, ZIP code, account, cart and product lines",
+        "layout": "masonry",
+        "width": 1440,
+        "height": 175
+      },
+      {
+        "src": "/assets/projects/tratyvet/catalogue-filters.png",
+        "alt": "Catalogue filters by category, price and volume beside a product card with rating, discount and sizes",
+        "layout": "masonry",
+        "width": 570,
+        "height": 770
+      },
+      {
+        "src": "/assets/projects/tratyvet/purchase-panel.png",
+        "alt": "Purchase panel with combos, quantity, shipping by ZIP code and reviews",
+        "layout": "masonry",
+        "width": 550,
+        "height": 970
+      },
+      {
+        "src": "/assets/projects/tratyvet/cart.png",
+        "alt": "Cart with product options, quantities, subtotal and free-shipping message",
+        "layout": "masonry",
+        "width": 1056,
+        "height": 2032
+      }
+    ]
+  },
   "meta-suplementos": {
     "previewFramed": true,
     "preview": "/assets/projects/meta-suplementos/home-macbook.png",
