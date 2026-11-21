@@ -6,6 +6,10 @@ Notable changes to this site, in the order they landed on `main`. Newest first. 
 
 **Meses anteriores:** [agosto de 2026](docs/changelog/2026-08.md) (01/08–30/08 — recuperação do site, tokens, intro, ⌘K, `/prompts`, portfólio na home, Figma-first, Lenis, composer + Supabase).
 
+## 2026-11-21
+
+- TratyVet: novo case da loja internacional logo depois da Assopra (na seed e no D1), em `portfolio-content.js`, `project-media.mjs` e `assets/projects/tratyvet/` (16 imagens + favicon). Só a loja: área do usuário e dashboard ficam de fora. Ver [TratyVet](docs/nova-home-projetos.md#tratyvet-21112026).
+
 ## 2026-11-19
 
 - Copy: cargo em `.profile__role` (`index.html`) passa a “Designer moving into design engineering”; asserção em `tests/ui/portfolio-page.test.mjs` acompanha.

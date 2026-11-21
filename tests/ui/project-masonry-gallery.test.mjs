@@ -49,3 +49,21 @@ test('Meta preserves framed images and keyboard access in responsive masonry', a
   await cart.locator('img').evaluate(image => image.dispatchEvent(new Event('error')));
   assert.equal(await page.locator('.pgal__masonry > button').count(), 7);
 });
+
+test('TratyVet shows framed store screens, composed banners and same-scale masonry', async context => {
+  const server = await serveDirectory(root);
+  context.after(() => server.close());
+  const browser = await launchChromium();
+  context.after(() => browser.close());
+  const page = await browser.newPage({ viewport: { width: 1440, height: 1000 }, reducedMotion: 'reduce' });
+  await page.addInitScript(() => sessionStorage.setItem('intro-shown-v1', 'true'));
+  await page.goto(server.origin, { waitUntil: 'load' });
+  await page.locator('[data-proto-open="tratyvet"]').click();
+  await page.locator('.pgal__masonry').waitFor();
+  assert.equal(await page.locator('.pgal__img').count(), 16);
+  assert.equal(await page.locator('.pgal__item--framed').count(), 7);
+  assert.equal(await page.locator('[data-ticker-track] > button').count(), 5);
+  assert.equal(await page.locator('.pgal__masonry img').count(), 4);
+  assert.match(await page.locator('.pgal__banner-intro').textContent(), /composing product shots/);
+  assert.doesNotMatch(await page.locator('.pgal__banner-intro').textContent(), /\bAI\b/);
+});

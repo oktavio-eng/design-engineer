@@ -17,7 +17,7 @@ test('project cards fill their marks and drawer text keeps its final words toget
   await page.goto(server.origin, { waitUntil: 'load' });
   const keys = await page.locator('.pcard').evaluateAll(cards => cards.map(card => card.dataset.protoOpen));
   assert.deepEqual(keys.slice(keys.indexOf('dascia'), keys.indexOf('cloudfaster-academy') + 1),
-    ['dascia', 'meta-suplementos', 'assopra-store', 'cloudfaster-academy']);
+    ['dascia', 'meta-suplementos', 'assopra-store', 'tratyvet', 'cloudfaster-academy']);
   const dascia = page.locator('[data-proto-open="dascia"] .fav');
   await dascia.scrollIntoViewIfNeeded();
   await page.waitForFunction(() => document.querySelector('[data-proto-open="dascia"] .fav')?.naturalWidth === 600);
