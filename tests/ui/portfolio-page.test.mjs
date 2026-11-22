@@ -282,10 +282,10 @@ test("/ (portfolio home) renders its collections, opens rows and photos in modal
   assert.equal(await page.locator('.pdrawer__head .pdrawer__link .fav').getAttribute('src'),
     'https://gow-pixel-office.vercel.app/favicon-32.png', 'Pixel Office uses its declared favicon instead of a service placeholder');
   assert.equal(await page.locator(".pgal__item").count(), 12, "Pixel Office shows all twelve supplied screenshots");
-  assert.equal(await page.locator(".pdrawer__shot").getAttribute("src"), "/assets/projects/pixel-office/cover.png");
+  assert.equal(await page.locator(".pdrawer__shot").getAttribute("src"), "/assets/projects/pixel-office/cover.webp");
   await page.locator(".pgal__item").last().click();
   await page.locator('[data-lightbox][aria-hidden="false"]').waitFor();
-  assert.match(await page.locator("[data-lightbox-img]").getAttribute("src"), /12-usage\.png$/);
+  assert.match(await page.locator("[data-lightbox-img]").getAttribute("src"), /12-usage\.webp$/);
   await page.keyboard.press("Escape");
   assert.equal(await page.locator("[data-proto-sheet]").getAttribute("aria-hidden"), "false", "closing a screenshot keeps Pixel Office open");
   await page.keyboard.press("Escape");

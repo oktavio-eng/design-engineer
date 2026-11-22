@@ -17,3 +17,13 @@
 /content.js
 /portfolio-content.js
 /prompts.mjs
+/data/
+/tests/
+/validation/
+/stories/
+/.storybook/
+/docs/
+/supabase/
+/.github/
+/.claude/
+/.codex/

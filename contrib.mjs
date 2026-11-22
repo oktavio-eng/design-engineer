@@ -19,10 +19,10 @@
    follow GitHub's rule of thumb — quartiles of the non-zero days — so one
    heavy day doesn't wash out the rest of the year.
 
-   Where the data comes from is a separate decision (a JSON file the repo
-   refreshes with a scheduled GitHub Action is the plan — the site has no
-   server, and GitHub's contribution calendar isn't reachable from a browser
-   without a token). This module only knows how to draw an array.
+   Where the data comes from is a separate decision (the Worker refreshes it
+   daily and serves /data/contributions.json, see cloudflare/contributions.mjs
+   — GitHub's contribution calendar isn't reachable from a browser without a
+   token). This module only knows how to draw an array.
 
    Hover readout: each cell carries `data-date`/`data-count` and the grid
    gets ONE shared `.contrib__tip` (appended to <body>, position: fixed —

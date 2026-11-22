@@ -51,11 +51,11 @@ test('device mockups preserve original sources, exclude composed artwork and rem
       for (let i = 0; i < 3; i++) assert.equal(await page.locator('.pgal__item').nth(i).locator('.pgal__device').count(), 0);
     }
     if (key === 'cloudfaster-academy') {
-      assert.equal(await page.locator('.pdrawer__shot').getAttribute('src'), '/assets/projects/cloudfaster-academy/00-desktop-home.jpg');
+      assert.equal(await page.locator('.pdrawer__shot').getAttribute('src'), '/assets/projects/cloudfaster-academy/00-desktop-home.webp');
       assert.deepEqual(await page.locator('.pgal__item').evaluateAll(items => items.slice(0, 3).map(item => item.dataset.lightboxSrc)), [
-        '/assets/projects/cloudfaster-academy/01-desktop-ranking.jpg',
-        '/assets/projects/cloudfaster-academy/02-desktop-cursos-geral.jpg',
-        '/assets/projects/cloudfaster-academy/03-desktop-cursos-conteudos.jpg',
+        '/assets/projects/cloudfaster-academy/01-desktop-ranking.webp',
+        '/assets/projects/cloudfaster-academy/02-desktop-cursos-geral.webp',
+        '/assets/projects/cloudfaster-academy/03-desktop-cursos-conteudos.webp',
       ]);
       assert.equal(await page.locator('.pgal__caption').first().textContent(), 'Preserved mobile caption');
       for (const item of await page.locator('.pgal__item').all()) {

@@ -52,9 +52,9 @@ const showDrafts =
 
 // Verified local covers for entries whose Studio preview is absent/outdated.
 const coverFallbacks = {
-  "cloudfaster-academy": "/assets/projects/cloudfaster-academy.png",
-  dascia: "/assets/projects/dascia/cover.jpg",
-  "finq-edu": "/assets/projects/finq-edu.jpg",
+  "cloudfaster-academy": "/assets/projects/cloudfaster-academy.webp",
+  dascia: "/assets/projects/dascia/cover.webp",
+  "finq-edu": "/assets/projects/finq-edu.webp",
 };
 
 /* ===========================================================================

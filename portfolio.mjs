@@ -183,7 +183,7 @@ export async function renderGraph(root, url = "/data/contributions.json") {
     return result;
   } catch (error) {
     // No data, no graph — the section stays hidden rather than showing an
-    // empty card. The daily Action (contributions.yml) is what fills the file.
+    // empty card. The Worker's daily cron is what fills it (cloudflare/contributions.mjs).
     return null;
   }
 }

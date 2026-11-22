@@ -14,7 +14,7 @@ test('drawer content enters once on scroll, stays accessible and cancels on clos
   await page.route(/^https?:\/\/(?!127\.0\.0\.1)/, route => route.fulfill({ status: 204, body: '' }));
   let releaseImage;
   const imageReady = new Promise(resolve => { releaseImage = resolve; });
-  await page.route('**/assets/projects/assopra-store/home-opening-macbook.png', async route => {
+  await page.route('**/assets/projects/assopra-store/home-opening-macbook.webp', async route => {
     await imageReady;
     await route.continue();
   });

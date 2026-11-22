@@ -37,7 +37,7 @@ npm run test:ui
 
 ## Arquitetura
 
-`admin.html`, `admin/*.mjs` e `styles/admin.css` compõem a interface. `cloudflare/worker.mjs` serve a API, os assets e os módulos públicos de conteúdo; `cloudflare/access.mjs` valida a identidade. `cloudflare/migrations` contém o esquema D1.
+`admin.html`, `admin/*.mjs` e `styles/admin.css` compõem a interface. `cloudflare/worker.mjs` serve a API, os assets e os módulos públicos de conteúdo; `cloudflare/access.mjs` valida a identidade. `cloudflare/migrations` contém o esquema D1. Desde 22/11/2026 o Worker também serve `/data/contributions.json`, atualizado por um Cron Trigger diário (`cloudflare/contributions.mjs`, tabela `contributions`, migration `0003`); a `0004` é uma migração de dados que troca os caminhos `.png`/`.jpg` do acervo pelos `.webp`. Ver [architecture.md](architecture.md#peso-do-deploy-22112026).
 
 O acervo fica em uma linha JSON com revisão transacional em `cms_state` (limite de aplicação de 1,5 MB). Mensagens, sessões locais e tentativas de login ficam em tabelas separadas. O limite do acervo inclui lixeira e histórico; amplie o modelo antes de atingir esse tamanho. Imagens são URLs/caminhos, não uploads binários.
 
