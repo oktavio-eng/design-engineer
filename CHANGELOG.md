@@ -10,6 +10,8 @@ Notable changes to this site, in the order they landed on `main`. Newest first. 
 
 - Deploy mais leve: gráfico de contribuições servido pelo Worker (`cloudflare/contributions.mjs`, Cron Trigger diário, migration `0003`, rewrite de `/data/contributions.json`), sem a Action `contributions.yml` que fazia um deploy por dia. 193 imagens de `assets/projects/` em WebP com perdas, até 2000 px (83 → 18 MB), referências atualizadas na seed, em `project-media.mjs`, testes e stories; rewrite dos `.png`/`.jpg` antigos e migration `0004` pro D1. `tests/`, `docs/`, `stories/` e afins fora do deploy. Ver [Peso do deploy](docs/architecture.md#peso-do-deploy-22112026). PR #105.
 
+- Contribuições: `/data/contributions.json` sem `s-maxage` (`cloudflare/worker.mjs`), pra Vercel não cachear a resposta em zstd pra todo navegador. Ver [Peso do deploy](docs/architecture.md#peso-do-deploy-22112026). PR #106.
+
 ## 2026-11-21
 
 - TratyVet: novo case da loja internacional logo depois da Assopra (na seed e no D1), em `portfolio-content.js`, `project-media.mjs` e `assets/projects/tratyvet/` (16 imagens + favicon). Só a loja: área do usuário e dashboard ficam de fora. Ver [TratyVet](docs/nova-home-projetos.md#tratyvet-21112026).
