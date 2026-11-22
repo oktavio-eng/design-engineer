@@ -31,9 +31,9 @@ test('campaign tickers span the drawer, pause, drag, loop without clones and pre
     assert.ok(geometry.before && geometry.after, 'campaigns sit between catalogue and purchase screens');
     assert.equal(await page.locator('.pgal__item').count(), 23);
     if (key === 'meta-suplementos') {
-      assert.equal(await page.locator('.pgal__item img[src$="home-macbook.png"]').count(), 0);
-      assert.equal(await page.locator('.pgal__item img[src$="ironhair-feature-macbook.png"]').count(), 0);
-      assert.equal(await page.locator('.pdrawer__shot--framed[src$="home-macbook.png"]').count(), 1);
+      assert.equal(await page.locator('.pgal__item img[src$="home-macbook.webp"]').count(), 0);
+      assert.equal(await page.locator('.pgal__item img[src$="ironhair-feature-macbook.webp"]').count(), 0);
+      assert.equal(await page.locator('.pdrawer__shot--framed[src$="home-macbook.webp"]').count(), 1);
     }
     await page.mouse.move(10, 10);
     await page.bringToFront();

@@ -39,11 +39,11 @@ test('Meta preserves framed images and keyboard access in responsive masonry', a
       assert.deepEqual(await image.evaluate(img => ({ aspect: getComputedStyle(img).aspectRatio, border: getComputedStyle(img).borderTopWidth })), { aspect: 'auto', border: '0px' });
     }
   }
-  const cart = page.locator('.pgal__masonry button[data-lightbox-src$="/cart.png"]');
+  const cart = page.locator('.pgal__masonry button[data-lightbox-src$="/cart.webp"]');
   await cart.focus();
   await page.keyboard.press('Enter');
   await page.locator('[data-lightbox][aria-hidden="false"]').waitFor();
-  assert.match(await page.locator('[data-lightbox-img]').getAttribute('src'), /\/cart\.png$/);
+  assert.match(await page.locator('[data-lightbox-img]').getAttribute('src'), /\/cart\.webp$/);
   await page.keyboard.press('Escape');
   assert.equal(await cart.evaluate(button => document.activeElement === button), true);
   await cart.locator('img').evaluate(image => image.dispatchEvent(new Event('error')));

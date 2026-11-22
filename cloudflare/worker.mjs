@@ -1,6 +1,7 @@
 import { COLLECTIONS, validateEntry } from '../admin/schema.mjs';
 import { accessIdentity, hash, randomToken } from './access.mjs';
 import { listMessages, updateMessage } from './messages.mjs';
+import { refreshContributions, storedContributions } from './contributions.mjs';
 import seed from '../.worker-generated/seed.json' with { type: 'json' };
 import promptsSource from '../.worker-generated/prompts-source.mjs';
 
@@ -136,6 +137,14 @@ async function route(request, env) {
     }
     return new Response(source, { headers: { 'Content-Type': 'text/javascript; charset=utf-8', 'Cache-Control': 'no-cache' } });
   }
+  if (pathname === '/data/contributions.json') {
+    // The daily cron's last good copy. Before its first run, try GitHub once;
+    // if that fails too, the seed bundled with the Worker assets keeps the graph up.
+    let body = await storedContributions(env.DB);
+    if (!body) try { body = JSON.stringify(await refreshContributions(env.DB)); } catch {}
+    if (!body) return env.ASSETS.fetch(new Request(new URL('/data/contributions.json', url)));
+    return new Response(body, { headers: { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'public, max-age=300, s-maxage=3600' } });
+  }
   // Public site remains on Vercel. Assets allowlist is created by build-worker;
   // private files and .worker-generated never enter the asset directory.
   if (!local && !adminRoute && !/^\/(styles|vendor)\//.test(pathname) && !['/new-favicon.png', '/cursor.mjs', '/sound.mjs'].includes(pathname)) return Response.redirect(env.SITE_ORIGIN + pathname + url.search, 302);
@@ -152,5 +161,9 @@ export default {
     secured.headers.set('Referrer-Policy', 'same-origin');
     if (new URL(request.url).pathname.startsWith('/admin')) { secured.headers.set('X-Robots-Tag', 'noindex, nofollow'); secured.headers.set('Cache-Control', 'no-store'); }
     return secured;
+  },
+  // Cron Trigger (wrangler.jsonc → triggers.crons): refreshes the contributions graph.
+  async scheduled(controller, env, ctx) {
+    ctx.waitUntil(refreshContributions(env.DB));
   }
 };

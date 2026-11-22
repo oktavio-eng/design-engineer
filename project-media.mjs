@@ -1,62 +1,62 @@
 // User-provided Pixel Office screenshots, kept with the static deployment.
 export const pixelOfficeGallery = [
   {
-    "src": "/assets/projects/pixel-office/01-office.png",
+    "src": "/assets/projects/pixel-office/01-office.webp",
     "alt": "Pixel Office with teammates in the shared workspace",
     "caption": "The shared office gives teammates a common space, bringing presence and everyday collaboration into the product."
   },
   {
-    "src": "/assets/projects/pixel-office/02-people.png",
+    "src": "/assets/projects/pixel-office/02-people.webp",
     "alt": "Workspace sidebar with channels and teammates",
     "caption": "Channels and teammates stay together in the sidebar, providing a consistent starting point for moving through the workspace."
   },
   {
-    "src": "/assets/projects/pixel-office/03-calendar.png",
+    "src": "/assets/projects/pixel-office/03-calendar.webp",
     "alt": "Weekly calendar with connected schedules",
     "caption": "A weekly calendar brings connected schedules into one view, keeping team planning close to the rest of the office."
   },
   {
-    "src": "/assets/projects/pixel-office/04-board.png",
+    "src": "/assets/projects/pixel-office/04-board.webp",
     "alt": "Team board with tasks grouped by workflow stage",
     "caption": "Tasks are grouped by workflow stage on the board, making project status visible alongside the team’s other tools."
   },
   {
-    "src": "/assets/projects/pixel-office/05-ranking.png",
+    "src": "/assets/projects/pixel-office/05-ranking.webp",
     "alt": "Weekly ranking of completed team tasks",
     "caption": "The weekly ranking summarises completed tasks, adding a shared view of activity within the same workspace."
   },
   {
-    "src": "/assets/projects/pixel-office/06-finances.png",
+    "src": "/assets/projects/pixel-office/06-finances.webp",
     "alt": "Personal finances with categories and cash flow",
     "caption": "The finance view brings categories and cash flow together, applying the product’s visual patterns to personal planning."
   },
   {
-    "src": "/assets/projects/pixel-office/07-timer.png",
+    "src": "/assets/projects/pixel-office/07-timer.webp",
     "alt": "Focus timer linked to the current project",
     "caption": "A focus timer stays connected to the current project, keeping work sessions and their context together."
   },
   {
-    "src": "/assets/projects/pixel-office/08-timeline.png",
+    "src": "/assets/projects/pixel-office/08-timeline.webp",
     "alt": "Time tracking timeline with editable entries",
     "caption": "The time-tracking timeline keeps entries visible and editable, with the same navigation used across the office."
   },
   {
-    "src": "/assets/projects/pixel-office/09-weather.png",
+    "src": "/assets/projects/pixel-office/09-weather.webp",
     "alt": "Weather panel with hourly and weekly forecasts",
     "caption": "Hourly and weekly forecasts share a compact weather panel, keeping supporting information within the workspace."
   },
   {
-    "src": "/assets/projects/pixel-office/10-chat.png",
+    "src": "/assets/projects/pixel-office/10-chat.webp",
     "alt": "Direct conversations within the workspace",
     "caption": "Direct conversations live inside the office, placing communication beside the boards, calendar and other team tools."
   },
   {
-    "src": "/assets/projects/pixel-office/11-changelog.png",
+    "src": "/assets/projects/pixel-office/11-changelog.webp",
     "alt": "Product changelog inside the shared office",
     "caption": "The changelog presents product updates inside the workspace, giving changes a familiar place in the interface."
   },
   {
-    "src": "/assets/projects/pixel-office/12-usage.png",
+    "src": "/assets/projects/pixel-office/12-usage.webp",
     "alt": "Usage dashboard for connected coding agents",
     "caption": "The usage dashboard groups activity from connected coding agents, bringing technical information into the product’s visual system."
   }
@@ -65,11 +65,11 @@ export const pixelOfficeGallery = [
 // Supplied project artwork and per-image presentation metadata.
 export const suppliedProjectMedia = {
   "assopra-store": {
-    "preview": "/assets/projects/assopra-store/home-opening-macbook.png",
-    "faviconFrom": "/assets/projects/assopra-store/favicon.png",
+    "preview": "/assets/projects/assopra-store/home-opening-macbook.webp",
+    "faviconFrom": "/assets/projects/assopra-store/favicon.webp",
     "gallery": [
       {
-        "src": "/assets/projects/assopra-store/home-opening-macbook.png",
+        "src": "/assets/projects/assopra-store/home-opening-macbook.webp",
         "alt": "The Assopra storefront, campaign opening and clothing categories",
         "layout": "full",
         "width": 1440,
@@ -77,7 +77,7 @@ export const suppliedProjectMedia = {
         "framed": true
       },
       {
-        "src": "/assets/projects/assopra-store/home-products-macbook.png",
+        "src": "/assets/projects/assopra-store/home-products-macbook.webp",
         "alt": "Clothing categories and the first product collection",
         "layout": "full",
         "width": 1440,
@@ -85,7 +85,7 @@ export const suppliedProjectMedia = {
         "framed": true
       },
       {
-        "src": "/assets/projects/assopra-store/home-collections-macbook.png",
+        "src": "/assets/projects/assopra-store/home-collections-macbook.webp",
         "alt": "Coordinated collection cards for boys and girls",
         "layout": "full",
         "width": 1440,
@@ -93,7 +93,7 @@ export const suppliedProjectMedia = {
         "framed": true
       },
       {
-        "src": "/assets/projects/assopra-store/home-story-macbook.png",
+        "src": "/assets/projects/assopra-store/home-story-macbook.webp",
         "alt": "The brand story and family campaign in the middle of the home page",
         "layout": "full",
         "width": 1440,
@@ -101,7 +101,7 @@ export const suppliedProjectMedia = {
         "framed": true
       },
       {
-        "src": "/assets/projects/assopra-store/catalogue-opening-macbook.png",
+        "src": "/assets/projects/assopra-store/catalogue-opening-macbook.webp",
         "alt": "Catalogue opening with a campaign banner, filters and clothing products",
         "layout": "full",
         "width": 1440,
@@ -109,7 +109,7 @@ export const suppliedProjectMedia = {
         "framed": true
       },
       {
-        "src": "/assets/projects/assopra-store/catalogue-discovery-macbook.png",
+        "src": "/assets/projects/assopra-store/catalogue-discovery-macbook.webp",
         "alt": "Campaign imagery interspersed with the clothing catalogue",
         "layout": "full",
         "width": 1440,
@@ -117,7 +117,7 @@ export const suppliedProjectMedia = {
         "framed": true
       },
       {
-        "src": "/assets/projects/assopra-store/campaign-siblings.png",
+        "src": "/assets/projects/assopra-store/campaign-siblings.webp",
         "alt": "Sibling campaign with coordinated clothing in an everyday family setting",
         "layout": "ticker",
         "width": 1408,
@@ -125,21 +125,21 @@ export const suppliedProjectMedia = {
         "groupCaption": "I used AI as part of a professional image production workflow to create scenes featuring children, families and clothing. The imagery moves between product-focused studio compositions and everyday family settings, keeping the store's visual language consistent across campaign banners and collection cards."
       },
       {
-        "src": "/assets/projects/assopra-store/campaign-home.png",
+        "src": "/assets/projects/assopra-store/campaign-home.webp",
         "alt": "Clothing campaign presented in a warm domestic setting",
         "layout": "ticker",
         "width": 1408,
         "height": 436
       },
       {
-        "src": "/assets/projects/assopra-store/campaign-family.png",
+        "src": "/assets/projects/assopra-store/campaign-family.webp",
         "alt": "Family campaign featuring children in coordinated blue clothing",
         "layout": "ticker",
         "width": 1408,
         "height": 556
       },
       {
-        "src": "/assets/projects/assopra-store/product-opening-macbook.png",
+        "src": "/assets/projects/assopra-store/product-opening-macbook.webp",
         "alt": "Product gallery, size selection, quantity, purchase action and shipping estimate",
         "layout": "full",
         "width": 1440,
@@ -147,7 +147,7 @@ export const suppliedProjectMedia = {
         "framed": true
       },
       {
-        "src": "/assets/projects/assopra-store/product-family-macbook.png",
+        "src": "/assets/projects/assopra-store/product-family-macbook.webp",
         "alt": "Coordinated looks for cousins, siblings and children further down the product page",
         "layout": "full",
         "width": 1440,
@@ -155,7 +155,7 @@ export const suppliedProjectMedia = {
         "framed": true
       },
       {
-        "src": "/assets/projects/assopra-store/cart-context-macbook.png",
+        "src": "/assets/projects/assopra-store/cart-context-macbook.webp",
         "alt": "Cart panel open over the product page, including quantities, matching pieces and subtotal",
         "layout": "full",
         "width": 1440,
@@ -164,7 +164,7 @@ export const suppliedProjectMedia = {
         "caption": "The cart opens over the product page with quantities, matching pieces, free-shipping progress and a subtotal."
       },
       {
-        "src": "/assets/projects/assopra-store/home-mobile-opening-iphone.png",
+        "src": "/assets/projects/assopra-store/home-mobile-opening-iphone.webp",
         "alt": "Original mobile storefront with navigation, family campaign and clothing categories",
         "layout": "mobile",
         "width": 520,
@@ -172,7 +172,7 @@ export const suppliedProjectMedia = {
         "framed": true
       },
       {
-        "src": "/assets/projects/assopra-store/product-mobile-selection-iphone.png",
+        "src": "/assets/projects/assopra-store/product-mobile-selection-iphone.webp",
         "alt": "Original mobile product details with size and quantity selection, add-to-cart action and shipping estimate",
         "layout": "mobile",
         "width": 520,
@@ -180,7 +180,7 @@ export const suppliedProjectMedia = {
         "framed": true
       },
       {
-        "src": "/assets/projects/assopra-store/quick-add-iphone.png",
+        "src": "/assets/projects/assopra-store/quick-add-iphone.webp",
         "alt": "Mobile quick-add panel with product imagery and size availability, including a sold-out size",
         "layout": "mobile",
         "width": 520,
@@ -188,7 +188,7 @@ export const suppliedProjectMedia = {
         "framed": true
       },
       {
-        "src": "/assets/projects/assopra-store/cart-phone-iphone.png",
+        "src": "/assets/projects/assopra-store/cart-phone-iphone.webp",
         "alt": "Original mobile cart with quantities, matching pieces, free-shipping progress and subtotal",
         "layout": "mobile",
         "width": 520,
@@ -196,49 +196,49 @@ export const suppliedProjectMedia = {
         "framed": true
       },
       {
-        "src": "/assets/projects/assopra-store/navigation.png",
+        "src": "/assets/projects/assopra-store/navigation.webp",
         "alt": "Desktop navigation expanded into clothing categories and featured products",
         "layout": "masonry",
         "width": 1440,
         "height": 560
       },
       {
-        "src": "/assets/projects/assopra-store/search-results.png",
+        "src": "/assets/projects/assopra-store/search-results.webp",
         "alt": "Search query with product, collection and coordinated-outfit result categories",
         "layout": "masonry",
         "width": 1004,
         "height": 580
       },
       {
-        "src": "/assets/projects/assopra-store/filters.png",
+        "src": "/assets/projects/assopra-store/filters.webp",
         "alt": "Clothing filters by garment type, price range and age, with an apply action",
         "layout": "masonry",
         "width": 292,
         "height": 655
       },
       {
-        "src": "/assets/projects/assopra-store/cart.png",
+        "src": "/assets/projects/assopra-store/cart.webp",
         "alt": "Cart details with quantity controls, matching products and subtotal",
         "layout": "masonry",
         "width": 362,
         "height": 842
       },
       {
-        "src": "/assets/projects/assopra-store/product-options.png",
+        "src": "/assets/projects/assopra-store/product-options.webp",
         "alt": "Product options, shipping calculator, care information and coordinated pieces",
         "layout": "masonry",
         "width": 384,
         "height": 1364
       },
       {
-        "src": "/assets/projects/assopra-store/collection-boys.png",
+        "src": "/assets/projects/assopra-store/collection-boys.webp",
         "alt": "Boys collection card with campaign photography and its discovery action",
         "layout": "masonry",
         "width": 486,
         "height": 651
       },
       {
-        "src": "/assets/projects/assopra-store/collection-girls.png",
+        "src": "/assets/projects/assopra-store/collection-girls.webp",
         "alt": "Girls collection card with campaign photography and its discovery action",
         "layout": "masonry",
         "width": 486,
@@ -248,11 +248,11 @@ export const suppliedProjectMedia = {
   },
   "tratyvet": {
     "previewFramed": true,
-    "preview": "/assets/projects/tratyvet/home-opening-macbook.png",
-    "faviconFrom": "/assets/projects/tratyvet/favicon.png",
+    "preview": "/assets/projects/tratyvet/home-opening-macbook.webp",
+    "faviconFrom": "/assets/projects/tratyvet/favicon.webp",
     "gallery": [
       {
-        "src": "/assets/projects/tratyvet/home-peta-macbook.png",
+        "src": "/assets/projects/tratyvet/home-peta-macbook.webp",
         "alt": "Home page section about the brand's PETA cruelty-free and vegan certification",
         "layout": "full",
         "width": 1440,
@@ -260,7 +260,7 @@ export const suppliedProjectMedia = {
         "framed": true
       },
       {
-        "src": "/assets/projects/tratyvet/home-products-macbook.png",
+        "src": "/assets/projects/tratyvet/home-products-macbook.webp",
         "alt": "Featured grooming products on the home page, filtered by product line",
         "layout": "full",
         "width": 1440,
@@ -268,7 +268,7 @@ export const suppliedProjectMedia = {
         "framed": true
       },
       {
-        "src": "/assets/projects/tratyvet/catalogue-opening-macbook.png",
+        "src": "/assets/projects/tratyvet/catalogue-opening-macbook.webp",
         "alt": "Catalogue opening with the campaign banner, filters and sorting",
         "layout": "full",
         "width": 1440,
@@ -276,7 +276,7 @@ export const suppliedProjectMedia = {
         "framed": true
       },
       {
-        "src": "/assets/projects/tratyvet/catalogue-grid-macbook.png",
+        "src": "/assets/projects/tratyvet/catalogue-grid-macbook.webp",
         "alt": "Product grid with filters by category, price and volume",
         "layout": "full",
         "width": 1440,
@@ -284,7 +284,7 @@ export const suppliedProjectMedia = {
         "framed": true
       },
       {
-        "src": "/assets/projects/tratyvet/banner-welcome.jpg",
+        "src": "/assets/projects/tratyvet/banner-welcome.webp",
         "alt": "Welcome banner with a woman and her dog outdoors",
         "layout": "ticker",
         "width": 2256,
@@ -292,35 +292,35 @@ export const suppliedProjectMedia = {
         "groupCaption": "I designed the campaign banners by composing product shots with pet and lifestyle photography, keeping the brand's teal palette and typography consistent across each message."
       },
       {
-        "src": "/assets/projects/tratyvet/banner-grooming-split.jpg",
+        "src": "/assets/projects/tratyvet/banner-grooming-split.webp",
         "alt": "Grooming products on a pedestal surrounded by yellow flowers, with the headline beside them",
         "layout": "ticker",
         "width": 2256,
         "height": 800
       },
       {
-        "src": "/assets/projects/tratyvet/banner-grooming-centred.jpg",
+        "src": "/assets/projects/tratyvet/banner-grooming-centred.webp",
         "alt": "A grooming spray among yellow flowers with a centred headline",
         "layout": "ticker",
         "width": 2256,
         "height": 800
       },
       {
-        "src": "/assets/projects/tratyvet/banner-results.jpg",
+        "src": "/assets/projects/tratyvet/banner-results.webp",
         "alt": "A white dog on a light blue background for the professional line",
         "layout": "ticker",
         "width": 2256,
         "height": 800
       },
       {
-        "src": "/assets/projects/tratyvet/banner-ethical.jpg",
+        "src": "/assets/projects/tratyvet/banner-ethical.webp",
         "alt": "A woman holding her dog next to the PETA vegan seal",
         "layout": "ticker",
         "width": 2256,
         "height": 800
       },
       {
-        "src": "/assets/projects/tratyvet/product-opening-macbook.png",
+        "src": "/assets/projects/tratyvet/product-opening-macbook.webp",
         "alt": "Product page with image gallery, combo selection, quantity and add-to-cart action",
         "layout": "full",
         "width": 1440,
@@ -328,7 +328,7 @@ export const suppliedProjectMedia = {
         "framed": true
       },
       {
-        "src": "/assets/projects/tratyvet/product-pairing-macbook.png",
+        "src": "/assets/projects/tratyvet/product-pairing-macbook.webp",
         "alt": "Products often purchased together, followed by similar products",
         "layout": "full",
         "width": 1440,
@@ -336,7 +336,7 @@ export const suppliedProjectMedia = {
         "framed": true
       },
       {
-        "src": "/assets/projects/tratyvet/not-found-macbook.png",
+        "src": "/assets/projects/tratyvet/not-found-macbook.webp",
         "alt": "Not-found page with a dog illustration inside the 404",
         "layout": "full",
         "width": 1440,
@@ -344,28 +344,28 @@ export const suppliedProjectMedia = {
         "framed": true
       },
       {
-        "src": "/assets/projects/tratyvet/navigation.png",
+        "src": "/assets/projects/tratyvet/navigation.webp",
         "alt": "Header with free-shipping bar, search, ZIP code, account, cart and product lines",
         "layout": "masonry",
         "width": 1440,
         "height": 175
       },
       {
-        "src": "/assets/projects/tratyvet/catalogue-filters.png",
+        "src": "/assets/projects/tratyvet/catalogue-filters.webp",
         "alt": "Catalogue filters by category, price and volume beside a product card with rating, discount and sizes",
         "layout": "masonry",
         "width": 570,
         "height": 770
       },
       {
-        "src": "/assets/projects/tratyvet/purchase-panel.png",
+        "src": "/assets/projects/tratyvet/purchase-panel.webp",
         "alt": "Purchase panel with combos, quantity, shipping by ZIP code and reviews",
         "layout": "masonry",
         "width": 550,
         "height": 970
       },
       {
-        "src": "/assets/projects/tratyvet/cart.png",
+        "src": "/assets/projects/tratyvet/cart.webp",
         "alt": "Cart with product options, quantities, subtotal and free-shipping message",
         "layout": "masonry",
         "width": 1056,
@@ -375,11 +375,11 @@ export const suppliedProjectMedia = {
   },
   "meta-suplementos": {
     "previewFramed": true,
-    "preview": "/assets/projects/meta-suplementos/home-macbook.png",
-    "faviconFrom": "/assets/projects/meta-suplementos/favicon.png",
+    "preview": "/assets/projects/meta-suplementos/home-macbook.webp",
+    "faviconFrom": "/assets/projects/meta-suplementos/favicon.webp",
     "gallery": [
       {
-        "src": "/assets/projects/meta-suplementos/categories-science-macbook.png",
+        "src": "/assets/projects/meta-suplementos/categories-science-macbook.webp",
         "alt": "Product categories and formulation principles on the Meta storefront",
         "layout": "full",
         "width": 1330,
@@ -387,7 +387,7 @@ export const suppliedProjectMedia = {
         "framed": true
       },
       {
-        "src": "/assets/projects/meta-suplementos/favourites-ironhair-macbook.png",
+        "src": "/assets/projects/meta-suplementos/favourites-ironhair-macbook.webp",
         "alt": "Featured supplement products and the IronHair campaign banner",
         "layout": "full",
         "width": 1330,
@@ -395,7 +395,7 @@ export const suppliedProjectMedia = {
         "framed": true
       },
       {
-        "src": "/assets/projects/meta-suplementos/reviews-footer-macbook.png",
+        "src": "/assets/projects/meta-suplementos/reviews-footer-macbook.webp",
         "alt": "Supplement products, customer reviews and footer navigation",
         "layout": "full",
         "width": 1330,
@@ -403,7 +403,7 @@ export const suppliedProjectMedia = {
         "framed": true
       },
       {
-        "src": "/assets/projects/meta-suplementos/catalogue-macbook.png",
+        "src": "/assets/projects/meta-suplementos/catalogue-macbook.webp",
         "alt": "Supplement catalogue opening shown in the existing MacBook frame",
         "layout": "full",
         "width": 1330,
@@ -411,7 +411,7 @@ export const suppliedProjectMedia = {
         "framed": true
       },
       {
-        "src": "/assets/projects/meta-suplementos/catalogue-grid-macbook.png",
+        "src": "/assets/projects/meta-suplementos/catalogue-grid-macbook.webp",
         "alt": "Complete supplement collection with product cards, sorting and filters",
         "layout": "full",
         "width": 1330,
@@ -419,7 +419,7 @@ export const suppliedProjectMedia = {
         "framed": true
       },
       {
-        "src": "/assets/projects/meta-suplementos/catalogue-ironfit-macbook.png",
+        "src": "/assets/projects/meta-suplementos/catalogue-ironfit-macbook.webp",
         "alt": "Supplement product cards followed by the IronFit campaign banner",
         "layout": "full",
         "width": 1330,
@@ -427,7 +427,7 @@ export const suppliedProjectMedia = {
         "framed": true
       },
       {
-        "src": "/assets/projects/meta-suplementos/banner-ironhair.jpg",
+        "src": "/assets/projects/meta-suplementos/banner-ironhair.webp",
         "alt": "IronHair campaign with a model holding the supplement",
         "layout": "ticker",
         "width": 1372,
@@ -435,35 +435,35 @@ export const suppliedProjectMedia = {
         "groupCaption": "I used AI as part of a professional image production workflow to create realistic scenes featuring models and products, directing lighting, colour and composition across the campaign banners."
       },
       {
-        "src": "/assets/projects/meta-suplementos/banner-ironfit.jpg",
+        "src": "/assets/projects/meta-suplementos/banner-ironfit.webp",
         "alt": "IronFit product composition with capsules and dried orange",
         "layout": "ticker",
         "width": 1372,
         "height": 670
       },
       {
-        "src": "/assets/projects/meta-suplementos/banner-metapower.jpg",
+        "src": "/assets/projects/meta-suplementos/banner-metapower.webp",
         "alt": "MetaPower campaign with a model in a blue studio scene",
         "layout": "ticker",
         "width": 1372,
         "height": 670
       },
       {
-        "src": "/assets/projects/meta-suplementos/banner-orapro-nobis.jpg",
+        "src": "/assets/projects/meta-suplementos/banner-orapro-nobis.webp",
         "alt": "OraPro Nobis product composition with leaves and lime",
         "layout": "ticker",
         "width": 1372,
         "height": 670
       },
       {
-        "src": "/assets/projects/meta-suplementos/banner-magnesium.jpg",
+        "src": "/assets/projects/meta-suplementos/banner-magnesium.webp",
         "alt": "Magnesium campaign with a couple holding the supplement",
         "layout": "ticker",
         "width": 1372,
         "height": 670
       },
       {
-        "src": "/assets/projects/meta-suplementos/product-macbook.png",
+        "src": "/assets/projects/meta-suplementos/product-macbook.webp",
         "alt": "Creatine product page and purchase options shown in the existing MacBook frame",
         "layout": "full",
         "width": 1330,
@@ -471,7 +471,7 @@ export const suppliedProjectMedia = {
         "framed": true
       },
       {
-        "src": "/assets/projects/meta-suplementos/pre-checkout-macbook.png",
+        "src": "/assets/projects/meta-suplementos/pre-checkout-macbook.webp",
         "alt": "Pre-checkout cart panel open over the creatine product page",
         "layout": "full",
         "width": 1330,
@@ -480,7 +480,7 @@ export const suppliedProjectMedia = {
         "caption": "Opening the cart reveals a pre-checkout panel with product quantities, shipping progress, discounts and the order total before checkout."
       },
       {
-        "src": "/assets/projects/meta-suplementos/mobile-products-iphone.png",
+        "src": "/assets/projects/meta-suplementos/mobile-products-iphone.webp",
         "alt": "Mobile navigation by product shown in the existing iPhone frame",
         "layout": "mobile",
         "width": 352,
@@ -488,7 +488,7 @@ export const suppliedProjectMedia = {
         "framed": true
       },
       {
-        "src": "/assets/projects/meta-suplementos/mobile-goals-iphone.png",
+        "src": "/assets/projects/meta-suplementos/mobile-goals-iphone.webp",
         "alt": "Mobile navigation by wellness goal shown in the existing iPhone frame",
         "layout": "mobile",
         "width": 352,
@@ -496,56 +496,56 @@ export const suppliedProjectMedia = {
         "framed": true
       },
       {
-        "src": "/assets/projects/meta-suplementos/navigation-products.png",
+        "src": "/assets/projects/meta-suplementos/navigation-products.webp",
         "alt": "Desktop navigation with a grid of supplement products",
         "layout": "masonry",
         "width": 1495,
         "height": 700
       },
       {
-        "src": "/assets/projects/meta-suplementos/filters.png",
+        "src": "/assets/projects/meta-suplementos/filters.webp",
         "alt": "Catalogue filters with categories, availability, prices and product weights",
         "layout": "masonry",
         "width": 337,
         "height": 1203
       },
       {
-        "src": "/assets/projects/meta-suplementos/cart.png",
+        "src": "/assets/projects/meta-suplementos/cart.webp",
         "alt": "Shopping cart with product quantities, shipping progress and order totals",
         "layout": "masonry",
         "width": 440,
         "height": 1156
       },
       {
-        "src": "/assets/projects/meta-suplementos/product-information.png",
+        "src": "/assets/projects/meta-suplementos/product-information.webp",
         "alt": "Product composition and usage guidance for creatine",
         "layout": "masonry",
         "width": 1372,
         "height": 1229
       },
       {
-        "src": "/assets/projects/meta-suplementos/navigation-goals.png",
+        "src": "/assets/projects/meta-suplementos/navigation-goals.webp",
         "alt": "Visual navigation by wellness goal with models and supplement products",
         "layout": "masonry",
         "width": 1505,
         "height": 517
       },
       {
-        "src": "/assets/projects/meta-suplementos/product-benefits.png",
+        "src": "/assets/projects/meta-suplementos/product-benefits.webp",
         "alt": "Six benefit cards on the creatine product page",
         "layout": "masonry",
         "width": 1440,
         "height": 579
       },
       {
-        "src": "/assets/projects/meta-suplementos/catalogue-products.png",
+        "src": "/assets/projects/meta-suplementos/catalogue-products.webp",
         "alt": "Supplement catalogue with product cards, sorting and filters",
         "layout": "masonry",
         "width": 1370,
         "height": 1040
       },
       {
-        "src": "/assets/projects/meta-suplementos/sticky-purchase.png",
+        "src": "/assets/projects/meta-suplementos/sticky-purchase.webp",
         "alt": "Persistent purchase bar with product, price and add-to-cart action",
         "layout": "masonry",
         "width": 1440,
@@ -554,7 +554,7 @@ export const suppliedProjectMedia = {
     ]
   },
   "caderno-de-erros": {
-    "faviconFrom": "/assets/projects/caderno-de-erros/favicon.jpg",
+    "faviconFrom": "/assets/projects/caderno-de-erros/favicon.webp",
     "gallery": [
       {
         "src": "https://framerusercontent.com/images/4mVd8cIXTAWMJcjRNnR9amYNGAw.png",
@@ -587,7 +587,7 @@ export const suppliedProjectMedia = {
     ],
     "appendGallery": [
       {
-        "src": "/assets/projects/caderno-de-erros/mobile-digital-notebook.jpg",
+        "src": "/assets/projects/caderno-de-erros/mobile-digital-notebook.webp",
         "alt": "Caderno de Erros mobile presentation with study streak and mastery levels",
         "width": 1320,
         "height": 2868,
@@ -595,35 +595,35 @@ export const suppliedProjectMedia = {
         "caption": "Mobile presentation pieces bring the notebook, mastery levels, community, question editor, search and study progress into the Caderno de Erros visual identity."
       },
       {
-        "src": "/assets/projects/caderno-de-erros/mobile-mastery-flashcards.jpg",
+        "src": "/assets/projects/caderno-de-erros/mobile-mastery-flashcards.webp",
         "alt": "Caderno de Erros mobile presentation of mastery levels and flashcards",
         "width": 1320,
         "height": 2868,
         "layout": "mobile"
       },
       {
-        "src": "/assets/projects/caderno-de-erros/mobile-community.jpg",
+        "src": "/assets/projects/caderno-de-erros/mobile-community.webp",
         "alt": "Caderno de Erros mobile community presentation with study challenges and channels",
         "width": 1320,
         "height": 2868,
         "layout": "mobile"
       },
       {
-        "src": "/assets/projects/caderno-de-erros/mobile-smart-notebook.jpg",
+        "src": "/assets/projects/caderno-de-erros/mobile-smart-notebook.webp",
         "alt": "Caderno de Erros mobile notebook presentation with a question and rich-text editor",
         "width": 1320,
         "height": 2868,
         "layout": "mobile"
       },
       {
-        "src": "/assets/projects/caderno-de-erros/mobile-question-search.jpg",
+        "src": "/assets/projects/caderno-de-erros/mobile-question-search.webp",
         "alt": "Caderno de Erros mobile question search presentation",
         "width": 1320,
         "height": 2868,
         "layout": "mobile"
       },
       {
-        "src": "/assets/projects/caderno-de-erros/mobile-study-progress.jpg",
+        "src": "/assets/projects/caderno-de-erros/mobile-study-progress.webp",
         "alt": "Caderno de Erros mobile study progress presentation with time and focus chart",
         "width": 1320,
         "height": 2868,
@@ -632,10 +632,10 @@ export const suppliedProjectMedia = {
     ],
   },
   "dascia": {
-    "faviconFrom": "/assets/projects/dascia/favicon.png",
+    "faviconFrom": "/assets/projects/dascia/favicon.webp",
     "gallery": [
       {
-        "src": "/assets/projects/dascia/institutional-home.jpg",
+        "src": "/assets/projects/dascia/institutional-home.webp",
         "device": "macbook",
         "alt": "DascIA institutional homepage in a light appearance",
         "caption": "The institutional home presents the company’s AI services through use cases, its technical approach and a contact section.",
@@ -644,7 +644,7 @@ export const suppliedProjectMedia = {
         "height": 5652
       },
       {
-        "src": "/assets/projects/dascia/platform-home.jpg",
+        "src": "/assets/projects/dascia/platform-home.webp",
         "device": "macbook",
         "alt": "DascIA academy platform page in a dark appearance",
         "caption": "The dark platform page brings together the academy, learning tools, study paths and course catalogue.",
@@ -653,7 +653,7 @@ export const suppliedProjectMedia = {
         "height": 7583
       },
       {
-        "src": "/assets/projects/dascia/brand-overview.jpg",
+        "src": "/assets/projects/dascia/brand-overview.webp",
         "alt": "DascIA visual identity overview with typography, symbol and colours",
         "caption": "The identity overview brings typography, the circular symbol, gradients and the core colour palette into one system.",
         "layout": "cover",
@@ -661,7 +661,7 @@ export const suppliedProjectMedia = {
         "height": 1089
       },
       {
-        "src": "/assets/projects/dascia/brand-typography.jpg",
+        "src": "/assets/projects/dascia/brand-typography.webp",
         "alt": "IBM Plex Sans typography presentation for DascIA",
         "caption": "IBM Plex Sans establishes the typographic foundation, shown through letterforms, numerals and the blue-to-green gradient.",
         "layout": "cover",
@@ -669,7 +669,7 @@ export const suppliedProjectMedia = {
         "height": 1089
       },
       {
-        "src": "/assets/projects/dascia/brand-symbol.jpg",
+        "src": "/assets/projects/dascia/brand-symbol.webp",
         "alt": "Geometric construction of the circular DascIA symbol",
         "caption": "Repeated curves around a circular centre show the geometry behind the symbol and its sense of movement.",
         "layout": "cover",
@@ -677,7 +677,7 @@ export const suppliedProjectMedia = {
         "height": 1089
       },
       {
-        "src": "/assets/projects/dascia/brand-palette.jpg",
+        "src": "/assets/projects/dascia/brand-palette.webp",
         "alt": "DascIA palette of off-white, green, blue, yellow, purple and dark blue",
         "caption": "Off-white and dark blue establish the base, supported by green, blue, yellow and purple for different expressions of the brand.",
         "layout": "cover",
@@ -685,7 +685,7 @@ export const suppliedProjectMedia = {
         "height": 1089
       },
       {
-        "src": "/assets/projects/dascia/brand-social.jpg",
+        "src": "/assets/projects/dascia/brand-social.webp",
         "alt": "Three DascIA social-media layouts combining imagery and typography",
         "caption": "The social layouts combine the symbol, gradients, photography and typography across different messages.",
         "layout": "cover",
@@ -693,7 +693,7 @@ export const suppliedProjectMedia = {
         "height": 1089
       },
       {
-        "src": "/assets/projects/dascia/brand-tablet.jpg",
+        "src": "/assets/projects/dascia/brand-tablet.webp",
         "alt": "DascIA campaign composition presented on a tablet mockup",
         "caption": "A tablet mockup brings the visual language into a campaign composition, combining a portrait, typography and enlarged curves from the symbol.",
         "layout": "cover",
@@ -701,7 +701,7 @@ export const suppliedProjectMedia = {
         "height": 1089
       },
       {
-        "src": "/assets/projects/dascia/brand-stationery.jpg",
+        "src": "/assets/projects/dascia/brand-stationery.webp",
         "alt": "DascIA identity applied to business cards, letterhead and a document folder",
         "caption": "The stationery mockup extends the identity to business cards, letterhead and a document folder, connecting the mark with physical applications.",
         "layout": "cover",
@@ -709,7 +709,7 @@ export const suppliedProjectMedia = {
         "height": 1080
       },
       {
-        "src": "/assets/projects/dascia/brand-banner.jpg",
+        "src": "/assets/projects/dascia/brand-banner.webp",
         "alt": "DascIA profile banner with wordmark and enlarged symbol",
         "caption": "The profile banner combines the wordmark, a concise message and enlarged curves from the symbol in a compact horizontal composition.",
         "layout": "cover",
@@ -717,25 +717,25 @@ export const suppliedProjectMedia = {
         "height": 1089
       }
     ],
-    "preview": "/assets/projects/dascia/cover.jpg"
+    "preview": "/assets/projects/dascia/cover.webp"
   },
   "cloudfaster-academy": {
-    "preview": "/assets/projects/cloudfaster-academy/00-desktop-home.jpg",
+    "preview": "/assets/projects/cloudfaster-academy/00-desktop-home.webp",
     "prependGallery": [
       {
-        "src": "/assets/projects/cloudfaster-academy/01-desktop-ranking.jpg",
+        "src": "/assets/projects/cloudfaster-academy/01-desktop-ranking.webp",
         "alt": "CloudFaster Academy — Desktop ranking",
         "width": 1440,
         "height": 877
       },
       {
-        "src": "/assets/projects/cloudfaster-academy/02-desktop-cursos-geral.jpg",
+        "src": "/assets/projects/cloudfaster-academy/02-desktop-cursos-geral.webp",
         "alt": "CloudFaster Academy — Desktop course overview",
         "width": 1440,
         "height": 2092
       },
       {
-        "src": "/assets/projects/cloudfaster-academy/03-desktop-cursos-conteudos.jpg",
+        "src": "/assets/projects/cloudfaster-academy/03-desktop-cursos-conteudos.webp",
         "alt": "CloudFaster Academy — Desktop course content",
         "width": 1440,
         "height": 2092
@@ -1139,12 +1139,12 @@ export function applyProjectMedia(content) {
     const legacySpheraCover = key === "sphera-academy" &&
       entry.preview === "https://framerusercontent.com/images/PgbsHlNgpSQclDuYYOPfMT6Zo.png";
     const legacyCloudFasterCover = key === "cloudfaster-academy" &&
-      ["https://cloudfaster.academy/assets/og-image.png", "/assets/projects/cloudfaster-academy.png"].includes(entry.preview);
+      ["https://cloudfaster.academy/assets/og-image.png", "/assets/projects/cloudfaster-academy.webp"].includes(entry.preview);
     if (media.preview && (!entry.preview || legacySpheraCover || legacyCloudFasterCover)) entry.preview = media.preview;
   }
   for (const entry of Object.values(content.personal || {})) {
     if (!entry.links?.some(([, url]) => /^https:\/\/gow-pixel-office\.vercel\.app(?:\/|$)/.test(url))) continue;
     if (!entry.gallery?.length) entry.gallery = pixelOfficeGallery;
-    if (!entry.preview) entry.preview = "/assets/projects/pixel-office/cover.png";
+    if (!entry.preview) entry.preview = "/assets/projects/pixel-office/cover.webp";
   }
 }

@@ -21,11 +21,11 @@ test('project cards fill their marks and drawer text keeps its final words toget
   const dascia = page.locator('[data-proto-open="dascia"] .fav');
   await dascia.scrollIntoViewIfNeeded();
   await page.waitForFunction(() => document.querySelector('[data-proto-open="dascia"] .fav')?.naturalWidth === 600);
-  assert.equal(await dascia.getAttribute('src'), '/assets/projects/dascia/favicon.png');
+  assert.equal(await dascia.getAttribute('src'), '/assets/projects/dascia/favicon.webp');
   // Exercise the external-icon branch even with external requests disabled.
   await page.locator('.pcard__mark:not(.pcard__mark--artwork)').first().evaluate(mark => {
     const image = document.createElement('img');
-    image.src = '/assets/projects/dascia/favicon.png';
+    image.src = '/assets/projects/dascia/favicon.webp';
     mark.append(image);
   });
   for (const size of await page.locator('.pcard__mark img').evaluateAll(images => images.map(img => ({

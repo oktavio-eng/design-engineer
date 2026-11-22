@@ -60,7 +60,7 @@
   const projects = {
     "caderno-de-erros": {
       name: "Caderno de Erros",
-      faviconFrom: "/assets/projects/caderno-de-erros/favicon.jpg",
+      faviconFrom: "/assets/projects/caderno-de-erros/favicon.webp",
       role: "UX/UI + Design Systems · EdTech SaaS",
       summary: "Founding design for website and multi-device platform",
       preview: "https://framerusercontent.com/images/3hNIyBkZHnghlMhz2wT4u2MiDw.jpg",
@@ -102,7 +102,7 @@
           caption: "Question cards link an answer to the cause of a mistake, supporting the review method at the centre of the product.",
         },
         {
-          "src": "/assets/projects/caderno-de-erros/mobile-digital-notebook.jpg",
+          "src": "/assets/projects/caderno-de-erros/mobile-digital-notebook.webp",
           "alt": "Caderno de Erros mobile presentation with study streak and mastery levels",
           "width": 1320,
           "height": 2868,
@@ -110,35 +110,35 @@
           "caption": "Mobile presentation pieces bring the notebook, mastery levels, community, question editor, search and study progress into the Caderno de Erros visual identity."
         },
         {
-          "src": "/assets/projects/caderno-de-erros/mobile-mastery-flashcards.jpg",
+          "src": "/assets/projects/caderno-de-erros/mobile-mastery-flashcards.webp",
           "alt": "Caderno de Erros mobile presentation of mastery levels and flashcards",
           "width": 1320,
           "height": 2868,
           "layout": "mobile"
         },
         {
-          "src": "/assets/projects/caderno-de-erros/mobile-community.jpg",
+          "src": "/assets/projects/caderno-de-erros/mobile-community.webp",
           "alt": "Caderno de Erros mobile community presentation with study challenges and channels",
           "width": 1320,
           "height": 2868,
           "layout": "mobile"
         },
         {
-          "src": "/assets/projects/caderno-de-erros/mobile-smart-notebook.jpg",
+          "src": "/assets/projects/caderno-de-erros/mobile-smart-notebook.webp",
           "alt": "Caderno de Erros mobile notebook presentation with a question and rich-text editor",
           "width": 1320,
           "height": 2868,
           "layout": "mobile"
         },
         {
-          "src": "/assets/projects/caderno-de-erros/mobile-question-search.jpg",
+          "src": "/assets/projects/caderno-de-erros/mobile-question-search.webp",
           "alt": "Caderno de Erros mobile question search presentation",
           "width": 1320,
           "height": 2868,
           "layout": "mobile"
         },
         {
-          "src": "/assets/projects/caderno-de-erros/mobile-study-progress.jpg",
+          "src": "/assets/projects/caderno-de-erros/mobile-study-progress.webp",
           "alt": "Caderno de Erros mobile study progress presentation with time and focus chart",
           "width": 1320,
           "height": 2868,
@@ -265,11 +265,11 @@
     },
     dascia: {
       name: "DascIA",
-      faviconFrom: "/assets/projects/dascia/favicon.png",
-      preview: "/assets/projects/dascia/cover.jpg",
+      faviconFrom: "/assets/projects/dascia/favicon.webp",
+      preview: "/assets/projects/dascia/cover.webp",
       gallery: [
         {
-          "src": "/assets/projects/dascia/institutional-home.jpg",
+          "src": "/assets/projects/dascia/institutional-home.webp",
           "alt": "DascIA institutional homepage in a light appearance",
           "caption": "The institutional home presents the company’s AI services through use cases, its technical approach and a contact section.",
           "layout": "wide",
@@ -277,7 +277,7 @@
           "height": 5652
         },
         {
-          "src": "/assets/projects/dascia/platform-home.jpg",
+          "src": "/assets/projects/dascia/platform-home.webp",
           "alt": "DascIA academy platform page in a dark appearance",
           "caption": "The dark platform page brings together the academy, learning tools, study paths and course catalogue.",
           "layout": "wide",
@@ -285,7 +285,7 @@
           "height": 7583
         },
         {
-          "src": "/assets/projects/dascia/brand-overview.jpg",
+          "src": "/assets/projects/dascia/brand-overview.webp",
           "alt": "DascIA visual identity overview with typography, symbol and colours",
           "caption": "The identity overview brings typography, the circular symbol, gradients and the core colour palette into one system.",
           "layout": "cover",
@@ -293,7 +293,7 @@
           "height": 1089
         },
         {
-          "src": "/assets/projects/dascia/brand-typography.jpg",
+          "src": "/assets/projects/dascia/brand-typography.webp",
           "alt": "IBM Plex Sans typography presentation for DascIA",
           "caption": "IBM Plex Sans establishes the typographic foundation, shown through letterforms, numerals and the blue-to-green gradient.",
           "layout": "cover",
@@ -301,7 +301,7 @@
           "height": 1089
         },
         {
-          "src": "/assets/projects/dascia/brand-symbol.jpg",
+          "src": "/assets/projects/dascia/brand-symbol.webp",
           "alt": "Geometric construction of the circular DascIA symbol",
           "caption": "Repeated curves around a circular centre show the geometry behind the symbol and its sense of movement.",
           "layout": "cover",
@@ -309,7 +309,7 @@
           "height": 1089
         },
         {
-          "src": "/assets/projects/dascia/brand-palette.jpg",
+          "src": "/assets/projects/dascia/brand-palette.webp",
           "alt": "DascIA palette of off-white, green, blue, yellow, purple and dark blue",
           "caption": "Off-white and dark blue establish the base, supported by green, blue, yellow and purple for different expressions of the brand.",
           "layout": "cover",
@@ -317,7 +317,7 @@
           "height": 1089
         },
         {
-          "src": "/assets/projects/dascia/brand-social.jpg",
+          "src": "/assets/projects/dascia/brand-social.webp",
           "alt": "Three DascIA social-media layouts combining imagery and typography",
           "caption": "The social layouts combine the symbol, gradients, photography and typography across different messages.",
           "layout": "cover",
@@ -325,7 +325,7 @@
           "height": 1089
         },
         {
-          "src": "/assets/projects/dascia/brand-tablet.jpg",
+          "src": "/assets/projects/dascia/brand-tablet.webp",
           "alt": "DascIA campaign composition presented on a tablet mockup",
           "caption": "A tablet mockup brings the visual language into a campaign composition, combining a portrait, typography and enlarged curves from the symbol.",
           "layout": "cover",
@@ -333,7 +333,7 @@
           "height": 1089
         },
         {
-          "src": "/assets/projects/dascia/brand-stationery.jpg",
+          "src": "/assets/projects/dascia/brand-stationery.webp",
           "alt": "DascIA identity applied to business cards, letterhead and a document folder",
           "caption": "The stationery mockup extends the identity to business cards, letterhead and a document folder, connecting the mark with physical applications.",
           "layout": "cover",
@@ -341,7 +341,7 @@
           "height": 1080
         },
         {
-          "src": "/assets/projects/dascia/brand-banner.jpg",
+          "src": "/assets/projects/dascia/brand-banner.webp",
           "alt": "DascIA profile banner with wordmark and enlarged symbol",
           "caption": "The profile banner combines the wordmark, a concise message and enlarged curves from the symbol in a compact horizontal composition.",
           "layout": "cover",
@@ -370,11 +370,11 @@
       "role": "UX/UI + AI Art Direction · E-commerce",
       "summary": "A supplement store redesign, from shopping flows to product imagery.",
       "bio": "UX/UI redesign of the Meta Suplementos online store, informed by market and persona research. I redesigned every screen, from product discovery and catalogue browsing to product details and cart, with close attention to typography, spacing and component consistency. I also created AI-generated imagery featuring models and products, directing cohesive scenes across the storefront.",
-      "faviconFrom": "/assets/projects/meta-suplementos/favicon.png",
-      "preview": "/assets/projects/meta-suplementos/home-macbook.png",
+      "faviconFrom": "/assets/projects/meta-suplementos/favicon.webp",
+      "preview": "/assets/projects/meta-suplementos/home-macbook.webp",
       "gallery": [
         {
-          "src": "/assets/projects/meta-suplementos/categories-science-macbook.png",
+          "src": "/assets/projects/meta-suplementos/categories-science-macbook.webp",
           "alt": "Product categories and formulation principles on the Meta storefront",
           "layout": "full",
           "width": 1330,
@@ -382,7 +382,7 @@
           "framed": true
         },
         {
-          "src": "/assets/projects/meta-suplementos/favourites-ironhair-macbook.png",
+          "src": "/assets/projects/meta-suplementos/favourites-ironhair-macbook.webp",
           "alt": "Featured supplement products and the IronHair campaign banner",
           "layout": "full",
           "width": 1330,
@@ -390,7 +390,7 @@
           "framed": true
         },
         {
-          "src": "/assets/projects/meta-suplementos/reviews-footer-macbook.png",
+          "src": "/assets/projects/meta-suplementos/reviews-footer-macbook.webp",
           "alt": "Supplement products, customer reviews and footer navigation",
           "layout": "full",
           "width": 1330,
@@ -398,7 +398,7 @@
           "framed": true
         },
         {
-          "src": "/assets/projects/meta-suplementos/catalogue-macbook.png",
+          "src": "/assets/projects/meta-suplementos/catalogue-macbook.webp",
           "alt": "Supplement catalogue opening shown in the existing MacBook frame",
           "layout": "full",
           "width": 1330,
@@ -406,7 +406,7 @@
           "framed": true
         },
         {
-          "src": "/assets/projects/meta-suplementos/catalogue-grid-macbook.png",
+          "src": "/assets/projects/meta-suplementos/catalogue-grid-macbook.webp",
           "alt": "Complete supplement collection with product cards, sorting and filters",
           "layout": "full",
           "width": 1330,
@@ -414,7 +414,7 @@
           "framed": true
         },
         {
-          "src": "/assets/projects/meta-suplementos/catalogue-ironfit-macbook.png",
+          "src": "/assets/projects/meta-suplementos/catalogue-ironfit-macbook.webp",
           "alt": "Supplement product cards followed by the IronFit campaign banner",
           "layout": "full",
           "width": 1330,
@@ -422,7 +422,7 @@
           "framed": true
         },
         {
-          "src": "/assets/projects/meta-suplementos/banner-ironhair.jpg",
+          "src": "/assets/projects/meta-suplementos/banner-ironhair.webp",
           "alt": "IronHair campaign with a model holding the supplement",
           "layout": "ticker",
           "width": 1372,
@@ -430,35 +430,35 @@
           "groupCaption": "I used AI as part of a professional image production workflow to create realistic scenes featuring models and products, directing lighting, colour and composition across the campaign banners."
         },
         {
-          "src": "/assets/projects/meta-suplementos/banner-ironfit.jpg",
+          "src": "/assets/projects/meta-suplementos/banner-ironfit.webp",
           "alt": "IronFit product composition with capsules and dried orange",
           "layout": "ticker",
           "width": 1372,
           "height": 670
         },
         {
-          "src": "/assets/projects/meta-suplementos/banner-metapower.jpg",
+          "src": "/assets/projects/meta-suplementos/banner-metapower.webp",
           "alt": "MetaPower campaign with a model in a blue studio scene",
           "layout": "ticker",
           "width": 1372,
           "height": 670
         },
         {
-          "src": "/assets/projects/meta-suplementos/banner-orapro-nobis.jpg",
+          "src": "/assets/projects/meta-suplementos/banner-orapro-nobis.webp",
           "alt": "OraPro Nobis product composition with leaves and lime",
           "layout": "ticker",
           "width": 1372,
           "height": 670
         },
         {
-          "src": "/assets/projects/meta-suplementos/banner-magnesium.jpg",
+          "src": "/assets/projects/meta-suplementos/banner-magnesium.webp",
           "alt": "Magnesium campaign with a couple holding the supplement",
           "layout": "ticker",
           "width": 1372,
           "height": 670
         },
         {
-          "src": "/assets/projects/meta-suplementos/product-macbook.png",
+          "src": "/assets/projects/meta-suplementos/product-macbook.webp",
           "alt": "Creatine product page and purchase options shown in the existing MacBook frame",
           "layout": "full",
           "width": 1330,
@@ -466,7 +466,7 @@
           "framed": true
         },
         {
-          "src": "/assets/projects/meta-suplementos/pre-checkout-macbook.png",
+          "src": "/assets/projects/meta-suplementos/pre-checkout-macbook.webp",
           "alt": "Pre-checkout cart panel open over the creatine product page",
           "layout": "full",
           "width": 1330,
@@ -475,7 +475,7 @@
           "caption": "Opening the cart reveals a pre-checkout panel with product quantities, shipping progress, discounts and the order total before checkout."
         },
         {
-          "src": "/assets/projects/meta-suplementos/mobile-products-iphone.png",
+          "src": "/assets/projects/meta-suplementos/mobile-products-iphone.webp",
           "alt": "Mobile navigation by product shown in the existing iPhone frame",
           "layout": "mobile",
           "width": 352,
@@ -483,7 +483,7 @@
           "framed": true
         },
         {
-          "src": "/assets/projects/meta-suplementos/mobile-goals-iphone.png",
+          "src": "/assets/projects/meta-suplementos/mobile-goals-iphone.webp",
           "alt": "Mobile navigation by wellness goal shown in the existing iPhone frame",
           "layout": "mobile",
           "width": 352,
@@ -491,56 +491,56 @@
           "framed": true
         },
         {
-          "src": "/assets/projects/meta-suplementos/navigation-products.png",
+          "src": "/assets/projects/meta-suplementos/navigation-products.webp",
           "alt": "Desktop navigation with a grid of supplement products",
           "layout": "masonry",
           "width": 1495,
           "height": 700
         },
         {
-          "src": "/assets/projects/meta-suplementos/filters.png",
+          "src": "/assets/projects/meta-suplementos/filters.webp",
           "alt": "Catalogue filters with categories, availability, prices and product weights",
           "layout": "masonry",
           "width": 337,
           "height": 1203
         },
         {
-          "src": "/assets/projects/meta-suplementos/cart.png",
+          "src": "/assets/projects/meta-suplementos/cart.webp",
           "alt": "Shopping cart with product quantities, shipping progress and order totals",
           "layout": "masonry",
           "width": 440,
           "height": 1156
         },
         {
-          "src": "/assets/projects/meta-suplementos/product-information.png",
+          "src": "/assets/projects/meta-suplementos/product-information.webp",
           "alt": "Product composition and usage guidance for creatine",
           "layout": "masonry",
           "width": 1372,
           "height": 1229
         },
         {
-          "src": "/assets/projects/meta-suplementos/navigation-goals.png",
+          "src": "/assets/projects/meta-suplementos/navigation-goals.webp",
           "alt": "Visual navigation by wellness goal with models and supplement products",
           "layout": "masonry",
           "width": 1505,
           "height": 517
         },
         {
-          "src": "/assets/projects/meta-suplementos/product-benefits.png",
+          "src": "/assets/projects/meta-suplementos/product-benefits.webp",
           "alt": "Six benefit cards on the creatine product page",
           "layout": "masonry",
           "width": 1440,
           "height": 579
         },
         {
-          "src": "/assets/projects/meta-suplementos/catalogue-products.png",
+          "src": "/assets/projects/meta-suplementos/catalogue-products.webp",
           "alt": "Supplement catalogue with product cards, sorting and filters",
           "layout": "masonry",
           "width": 1370,
           "height": 1040
         },
         {
-          "src": "/assets/projects/meta-suplementos/sticky-purchase.png",
+          "src": "/assets/projects/meta-suplementos/sticky-purchase.webp",
           "alt": "Persistent purchase bar with product, price and add-to-cart action",
           "layout": "masonry",
           "width": 1440,
@@ -571,11 +571,11 @@
         "UX/UI redesign of the Assopra online store, informed by market and persona research. I redesigned every screen across desktop and mobile, covering the home page, navigation, search, catalogue, filters, product details and cart. I also created AI-generated imagery featuring children, families and clothing, carrying a shared visual direction across the storefront and campaign banners.",
         "The design brings two ways of shopping together: exploring collections and coordinated family looks, or looking for a specific garment and size. I worked on the screens and their supporting states, including expanded navigation, search results, catalogue filters, quick size selection and the open cart."
       ],
-      "faviconFrom": "/assets/projects/assopra-store/favicon.png",
-      "preview": "/assets/projects/assopra-store/home-opening-macbook.png",
+      "faviconFrom": "/assets/projects/assopra-store/favicon.webp",
+      "preview": "/assets/projects/assopra-store/home-opening-macbook.webp",
       "gallery": [
         {
-          "src": "/assets/projects/assopra-store/home-opening-macbook.png",
+          "src": "/assets/projects/assopra-store/home-opening-macbook.webp",
           "alt": "The Assopra storefront, campaign opening and clothing categories",
           "layout": "full",
           "width": 1440,
@@ -583,7 +583,7 @@
           "framed": true
         },
         {
-          "src": "/assets/projects/assopra-store/home-products-macbook.png",
+          "src": "/assets/projects/assopra-store/home-products-macbook.webp",
           "alt": "Clothing categories and the first product collection",
           "layout": "full",
           "width": 1440,
@@ -591,7 +591,7 @@
           "framed": true
         },
         {
-          "src": "/assets/projects/assopra-store/home-collections-macbook.png",
+          "src": "/assets/projects/assopra-store/home-collections-macbook.webp",
           "alt": "Coordinated collection cards for boys and girls",
           "layout": "full",
           "width": 1440,
@@ -599,7 +599,7 @@
           "framed": true
         },
         {
-          "src": "/assets/projects/assopra-store/home-story-macbook.png",
+          "src": "/assets/projects/assopra-store/home-story-macbook.webp",
           "alt": "The brand story and family campaign in the middle of the home page",
           "layout": "full",
           "width": 1440,
@@ -607,7 +607,7 @@
           "framed": true
         },
         {
-          "src": "/assets/projects/assopra-store/catalogue-opening-macbook.png",
+          "src": "/assets/projects/assopra-store/catalogue-opening-macbook.webp",
           "alt": "Catalogue opening with a campaign banner, filters and clothing products",
           "layout": "full",
           "width": 1440,
@@ -615,7 +615,7 @@
           "framed": true
         },
         {
-          "src": "/assets/projects/assopra-store/catalogue-discovery-macbook.png",
+          "src": "/assets/projects/assopra-store/catalogue-discovery-macbook.webp",
           "alt": "Campaign imagery interspersed with the clothing catalogue",
           "layout": "full",
           "width": 1440,
@@ -623,7 +623,7 @@
           "framed": true
         },
         {
-          "src": "/assets/projects/assopra-store/campaign-siblings.png",
+          "src": "/assets/projects/assopra-store/campaign-siblings.webp",
           "alt": "Sibling campaign with coordinated clothing in an everyday family setting",
           "layout": "ticker",
           "width": 1408,
@@ -631,21 +631,21 @@
           "groupCaption": "I used AI as part of a professional image production workflow to create scenes featuring children, families and clothing. The imagery moves between product-focused studio compositions and everyday family settings, keeping the store's visual language consistent across campaign banners and collection cards."
         },
         {
-          "src": "/assets/projects/assopra-store/campaign-home.png",
+          "src": "/assets/projects/assopra-store/campaign-home.webp",
           "alt": "Clothing campaign presented in a warm domestic setting",
           "layout": "ticker",
           "width": 1408,
           "height": 436
         },
         {
-          "src": "/assets/projects/assopra-store/campaign-family.png",
+          "src": "/assets/projects/assopra-store/campaign-family.webp",
           "alt": "Family campaign featuring children in coordinated blue clothing",
           "layout": "ticker",
           "width": 1408,
           "height": 556
         },
         {
-          "src": "/assets/projects/assopra-store/product-opening-macbook.png",
+          "src": "/assets/projects/assopra-store/product-opening-macbook.webp",
           "alt": "Product gallery, size selection, quantity, purchase action and shipping estimate",
           "layout": "full",
           "width": 1440,
@@ -653,7 +653,7 @@
           "framed": true
         },
         {
-          "src": "/assets/projects/assopra-store/product-family-macbook.png",
+          "src": "/assets/projects/assopra-store/product-family-macbook.webp",
           "alt": "Coordinated looks for cousins, siblings and children further down the product page",
           "layout": "full",
           "width": 1440,
@@ -661,7 +661,7 @@
           "framed": true
         },
         {
-          "src": "/assets/projects/assopra-store/cart-context-macbook.png",
+          "src": "/assets/projects/assopra-store/cart-context-macbook.webp",
           "alt": "Cart panel open over the product page, including quantities, matching pieces and subtotal",
           "layout": "full",
           "width": 1440,
@@ -670,7 +670,7 @@
           "caption": "The cart opens over the product page with quantities, matching pieces, free-shipping progress and a subtotal."
         },
         {
-          "src": "/assets/projects/assopra-store/home-mobile-opening-iphone.png",
+          "src": "/assets/projects/assopra-store/home-mobile-opening-iphone.webp",
           "alt": "Original mobile storefront with navigation, family campaign and clothing categories",
           "layout": "mobile",
           "width": 520,
@@ -678,7 +678,7 @@
           "framed": true
         },
         {
-          "src": "/assets/projects/assopra-store/product-mobile-selection-iphone.png",
+          "src": "/assets/projects/assopra-store/product-mobile-selection-iphone.webp",
           "alt": "Original mobile product details with size and quantity selection, add-to-cart action and shipping estimate",
           "layout": "mobile",
           "width": 520,
@@ -686,7 +686,7 @@
           "framed": true
         },
         {
-          "src": "/assets/projects/assopra-store/quick-add-iphone.png",
+          "src": "/assets/projects/assopra-store/quick-add-iphone.webp",
           "alt": "Mobile quick-add panel with product imagery and size availability, including a sold-out size",
           "layout": "mobile",
           "width": 520,
@@ -694,7 +694,7 @@
           "framed": true
         },
         {
-          "src": "/assets/projects/assopra-store/cart-phone-iphone.png",
+          "src": "/assets/projects/assopra-store/cart-phone-iphone.webp",
           "alt": "Original mobile cart with quantities, matching pieces, free-shipping progress and subtotal",
           "layout": "mobile",
           "width": 520,
@@ -702,49 +702,49 @@
           "framed": true
         },
         {
-          "src": "/assets/projects/assopra-store/navigation.png",
+          "src": "/assets/projects/assopra-store/navigation.webp",
           "alt": "Desktop navigation expanded into clothing categories and featured products",
           "layout": "masonry",
           "width": 1440,
           "height": 560
         },
         {
-          "src": "/assets/projects/assopra-store/search-results.png",
+          "src": "/assets/projects/assopra-store/search-results.webp",
           "alt": "Search query with product, collection and coordinated-outfit result categories",
           "layout": "masonry",
           "width": 1004,
           "height": 580
         },
         {
-          "src": "/assets/projects/assopra-store/filters.png",
+          "src": "/assets/projects/assopra-store/filters.webp",
           "alt": "Clothing filters by garment type, price range and age, with an apply action",
           "layout": "masonry",
           "width": 292,
           "height": 655
         },
         {
-          "src": "/assets/projects/assopra-store/cart.png",
+          "src": "/assets/projects/assopra-store/cart.webp",
           "alt": "Cart details with quantity controls, matching products and subtotal",
           "layout": "masonry",
           "width": 362,
           "height": 842
         },
         {
-          "src": "/assets/projects/assopra-store/product-options.png",
+          "src": "/assets/projects/assopra-store/product-options.webp",
           "alt": "Product options, shipping calculator, care information and coordinated pieces",
           "layout": "masonry",
           "width": 384,
           "height": 1364
         },
         {
-          "src": "/assets/projects/assopra-store/collection-boys.png",
+          "src": "/assets/projects/assopra-store/collection-boys.webp",
           "alt": "Boys collection card with campaign photography and its discovery action",
           "layout": "masonry",
           "width": 486,
           "height": 651
         },
         {
-          "src": "/assets/projects/assopra-store/collection-girls.png",
+          "src": "/assets/projects/assopra-store/collection-girls.webp",
           "alt": "Girls collection card with campaign photography and its discovery action",
           "layout": "masonry",
           "width": 486,
@@ -776,11 +776,11 @@
       "role": "UX/UI Designer for E-Commerce Store",
       "summary": "The international store of a pet grooming brand, from catalogue to cart.",
       "bio": "UX/UI design for the international online store of TratyVet, a cruelty-free pet grooming brand with products for professional groomers. The brand already sold in Brazil, and this store was built in English with prices in dollars. I designed the store screens, covering the home page, catalogue and filters, product and combo pages, cart and the not-found page, and created the campaign banners.",
-      "faviconFrom": "/assets/projects/tratyvet/favicon.png",
-      "preview": "/assets/projects/tratyvet/home-opening-macbook.png",
+      "faviconFrom": "/assets/projects/tratyvet/favicon.webp",
+      "preview": "/assets/projects/tratyvet/home-opening-macbook.webp",
       "gallery": [
         {
-          "src": "/assets/projects/tratyvet/home-peta-macbook.png",
+          "src": "/assets/projects/tratyvet/home-peta-macbook.webp",
           "alt": "Home page section about the brand's PETA cruelty-free and vegan certification",
           "layout": "full",
           "width": 1440,
@@ -788,7 +788,7 @@
           "framed": true
         },
         {
-          "src": "/assets/projects/tratyvet/home-products-macbook.png",
+          "src": "/assets/projects/tratyvet/home-products-macbook.webp",
           "alt": "Featured grooming products on the home page, filtered by product line",
           "layout": "full",
           "width": 1440,
@@ -796,7 +796,7 @@
           "framed": true
         },
         {
-          "src": "/assets/projects/tratyvet/catalogue-opening-macbook.png",
+          "src": "/assets/projects/tratyvet/catalogue-opening-macbook.webp",
           "alt": "Catalogue opening with the campaign banner, filters and sorting",
           "layout": "full",
           "width": 1440,
@@ -804,7 +804,7 @@
           "framed": true
         },
         {
-          "src": "/assets/projects/tratyvet/catalogue-grid-macbook.png",
+          "src": "/assets/projects/tratyvet/catalogue-grid-macbook.webp",
           "alt": "Product grid with filters by category, price and volume",
           "layout": "full",
           "width": 1440,
@@ -812,7 +812,7 @@
           "framed": true
         },
         {
-          "src": "/assets/projects/tratyvet/banner-welcome.jpg",
+          "src": "/assets/projects/tratyvet/banner-welcome.webp",
           "alt": "Welcome banner with a woman and her dog outdoors",
           "layout": "ticker",
           "width": 2256,
@@ -820,35 +820,35 @@
           "groupCaption": "I designed the campaign banners by composing product shots with pet and lifestyle photography, keeping the brand's teal palette and typography consistent across each message."
         },
         {
-          "src": "/assets/projects/tratyvet/banner-grooming-split.jpg",
+          "src": "/assets/projects/tratyvet/banner-grooming-split.webp",
           "alt": "Grooming products on a pedestal surrounded by yellow flowers, with the headline beside them",
           "layout": "ticker",
           "width": 2256,
           "height": 800
         },
         {
-          "src": "/assets/projects/tratyvet/banner-grooming-centred.jpg",
+          "src": "/assets/projects/tratyvet/banner-grooming-centred.webp",
           "alt": "A grooming spray among yellow flowers with a centred headline",
           "layout": "ticker",
           "width": 2256,
           "height": 800
         },
         {
-          "src": "/assets/projects/tratyvet/banner-results.jpg",
+          "src": "/assets/projects/tratyvet/banner-results.webp",
           "alt": "A white dog on a light blue background for the professional line",
           "layout": "ticker",
           "width": 2256,
           "height": 800
         },
         {
-          "src": "/assets/projects/tratyvet/banner-ethical.jpg",
+          "src": "/assets/projects/tratyvet/banner-ethical.webp",
           "alt": "A woman holding her dog next to the PETA vegan seal",
           "layout": "ticker",
           "width": 2256,
           "height": 800
         },
         {
-          "src": "/assets/projects/tratyvet/product-opening-macbook.png",
+          "src": "/assets/projects/tratyvet/product-opening-macbook.webp",
           "alt": "Product page with image gallery, combo selection, quantity and add-to-cart action",
           "layout": "full",
           "width": 1440,
@@ -856,7 +856,7 @@
           "framed": true
         },
         {
-          "src": "/assets/projects/tratyvet/product-pairing-macbook.png",
+          "src": "/assets/projects/tratyvet/product-pairing-macbook.webp",
           "alt": "Products often purchased together, followed by similar products",
           "layout": "full",
           "width": 1440,
@@ -864,7 +864,7 @@
           "framed": true
         },
         {
-          "src": "/assets/projects/tratyvet/not-found-macbook.png",
+          "src": "/assets/projects/tratyvet/not-found-macbook.webp",
           "alt": "Not-found page with a dog illustration inside the 404",
           "layout": "full",
           "width": 1440,
@@ -872,28 +872,28 @@
           "framed": true
         },
         {
-          "src": "/assets/projects/tratyvet/navigation.png",
+          "src": "/assets/projects/tratyvet/navigation.webp",
           "alt": "Header with free-shipping bar, search, ZIP code, account, cart and product lines",
           "layout": "masonry",
           "width": 1440,
           "height": 175
         },
         {
-          "src": "/assets/projects/tratyvet/catalogue-filters.png",
+          "src": "/assets/projects/tratyvet/catalogue-filters.webp",
           "alt": "Catalogue filters by category, price and volume beside a product card with rating, discount and sizes",
           "layout": "masonry",
           "width": 570,
           "height": 770
         },
         {
-          "src": "/assets/projects/tratyvet/purchase-panel.png",
+          "src": "/assets/projects/tratyvet/purchase-panel.webp",
           "alt": "Purchase panel with combos, quantity, shipping by ZIP code and reviews",
           "layout": "masonry",
           "width": 550,
           "height": 970
         },
         {
-          "src": "/assets/projects/tratyvet/cart.png",
+          "src": "/assets/projects/tratyvet/cart.webp",
           "alt": "Cart with product options, quantities, subtotal and free-shipping message",
           "layout": "masonry",
           "width": 1056,
@@ -925,7 +925,7 @@
       name: "CloudFaster Academy",
       role: "UX/UI + Identity + Web & Mobile · Cloud/AWS training",
       summary: "Identity and learning experiences across web and mobile",
-      preview: "/assets/projects/cloudfaster-academy/00-desktop-home.jpg",
+      preview: "/assets/projects/cloudfaster-academy/00-desktop-home.webp",
       bio: "Visual identity, website and product interfaces for an AWS certification learning platform, serving individual learners and corporate teams. I worked on responsive layouts and reusable interface patterns across web and mobile, keeping the learning experience consistent between devices.",
       links: [["Live site", "https://cloudfaster.academy/"]],
       sections: [

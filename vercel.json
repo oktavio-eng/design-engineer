@@ -55,6 +55,18 @@
     {
       "source": "/prompts.mjs",
       "destination": "https://oktavio-studio.oktavio.workers.dev/prompts.mjs"
+    },
+    {
+      "source": "/data/contributions.json",
+      "destination": "https://oktavio-studio.oktavio.workers.dev/data/contributions.json"
+    },
+    {
+      "source": "/assets/projects/(.*)\\.png",
+      "destination": "/assets/projects/$1.webp"
+    },
+    {
+      "source": "/assets/projects/(.*)\\.jpg",
+      "destination": "/assets/projects/$1.webp"
     }
   ]
 }

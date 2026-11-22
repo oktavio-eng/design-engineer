@@ -18,7 +18,7 @@ portfolio-content.js  — as coleções do portfólio → window.PORTFOLIO_CONTE
 script.js             — a interação da wiki (painel, modais, animações)
 chrome.js             — tema + navbar nas outras páginas
 cmd.mjs               — busca ⌘K, em todas as páginas
-contrib.mjs           — gráfico de contribuições (dados em data/contributions.json)
+contrib.mjs           — gráfico de contribuições (dados em /data/contributions.json, servido pelo Worker)
 favicons.js           — favicon() + cascata de fallback
 intro.js              — a saudação em 6 idiomas antes do conteúdo (home e wiki)
 mail.js               — o composer de e-mail (envelope na navbar)
@@ -29,7 +29,7 @@ vendor/
   cuelume/      — sons sintetizados via Web Audio (MIT)
   lenis/        — smooth scroll (MIT)
 data/
-  contributions.json — o calendário do GitHub, atualizado 1×/dia por GitHub Action
+  contributions.json — seed local do calendário do GitHub; em produção o Worker atualiza 1×/dia
 styles/
   main.css      — componentes, importa os tokens
   tokens/       — cores, tipografia, motion, spacing, radius

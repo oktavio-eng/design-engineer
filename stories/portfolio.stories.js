@@ -490,7 +490,7 @@ export const DeviceProjectImages = {
       root.querySelector('[data-project-gallery]').innerHTML = galleryMarkup({ gallery: [
         { src: '/assets/projects/bullster/landing-page.webp', alt: 'Web interface in a MacBook', device: 'macbook', caption: 'Open the original capture to see the complete page.' },
         { src: '/assets/projects/finq-edu/3-1-home.webp', alt: 'FinQ home in an iPhone', device: 'iphone', layout: 'mobile' },
-        { src: '/assets/projects/caderno-de-erros/mobile-digital-notebook.jpg', alt: 'Caderno de Erros mobile presentation', layout: 'mobile' },
+        { src: '/assets/projects/caderno-de-erros/mobile-digital-notebook.webp', alt: 'Caderno de Erros mobile presentation', layout: 'mobile' },
       ] });
       arrangeMobileCaptions(root);
       bindDetailEntrances(root);
@@ -529,10 +529,10 @@ export const MasonryProjectImages = {
     root.querySelector('[data-gallery]').outerHTML = '<div data-project-gallery></div>';
     import('../projects.mjs').then(({ galleryMarkup }) => {
       root.querySelector('[data-project-gallery]').innerHTML = galleryMarkup({ gallery: [
-        { src: '/assets/projects/meta-suplementos/home-macbook.png', alt: 'Meta storefront in a MacBook', layout: 'full', framed: true },
-        { src: '/assets/projects/meta-suplementos/navigation-products.png', alt: 'Product navigation', layout: 'masonry' },
-        { src: '/assets/projects/meta-suplementos/filters.png', alt: 'Catalogue filters', layout: 'masonry' },
-        { src: '/assets/projects/meta-suplementos/cart.png', alt: 'Shopping cart', layout: 'masonry' },
+        { src: '/assets/projects/meta-suplementos/home-macbook.webp', alt: 'Meta storefront in a MacBook', layout: 'full', framed: true },
+        { src: '/assets/projects/meta-suplementos/navigation-products.webp', alt: 'Product navigation', layout: 'masonry' },
+        { src: '/assets/projects/meta-suplementos/filters.webp', alt: 'Catalogue filters', layout: 'masonry' },
+        { src: '/assets/projects/meta-suplementos/cart.webp', alt: 'Shopping cart', layout: 'masonry' },
       ] });
     });
     return root;
@@ -569,11 +569,11 @@ export const CampaignProjectImages = {
     root.querySelector('[data-gallery]').outerHTML = '<div data-project-gallery></div>';
     import('../projects.mjs').then(({ galleryMarkup, bindCampaignTickers, bindDetailEntrances }) => {
       root.querySelector('[data-project-gallery]').innerHTML = galleryMarkup({ gallery: [
-        { src: '/assets/projects/meta-suplementos/banner-ironhair.jpg', alt: 'IronHair campaign', layout: 'ticker', groupCaption: 'I used AI in a professional image production workflow to create realistic model and product imagery.' },
-        { src: '/assets/projects/meta-suplementos/banner-ironfit.jpg', alt: 'IronFit campaign', layout: 'ticker' },
-        { src: '/assets/projects/meta-suplementos/banner-metapower.jpg', alt: 'MetaPower campaign', layout: 'ticker' },
-        { src: '/assets/projects/meta-suplementos/banner-orapro-nobis.jpg', alt: 'OraPro Nobis campaign', layout: 'ticker' },
-        { src: '/assets/projects/meta-suplementos/banner-magnesium.jpg', alt: 'Magnesium campaign', layout: 'ticker' },
+        { src: '/assets/projects/meta-suplementos/banner-ironhair.webp', alt: 'IronHair campaign', layout: 'ticker', groupCaption: 'I used AI in a professional image production workflow to create realistic model and product imagery.' },
+        { src: '/assets/projects/meta-suplementos/banner-ironfit.webp', alt: 'IronFit campaign', layout: 'ticker' },
+        { src: '/assets/projects/meta-suplementos/banner-metapower.webp', alt: 'MetaPower campaign', layout: 'ticker' },
+        { src: '/assets/projects/meta-suplementos/banner-orapro-nobis.webp', alt: 'OraPro Nobis campaign', layout: 'ticker' },
+        { src: '/assets/projects/meta-suplementos/banner-magnesium.webp', alt: 'Magnesium campaign', layout: 'ticker' },
       ] });
       bindCampaignTickers(root);
       bindDetailEntrances(root);
