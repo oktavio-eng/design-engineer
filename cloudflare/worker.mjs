@@ -143,9 +143,10 @@ async function route(request, env) {
     let body = await storedContributions(env.DB);
     if (!body) try { body = JSON.stringify(await refreshContributions(env.DB)); } catch {}
     if (!body) return env.ASSETS.fetch(new Request(new URL('/data/contributions.json', url)));
-    // No s-maxage: Vercel's CDN would cache the zstd body Cloudflare sends it and
-    // serve that to every browser, even ones that can't decode zstd (22/11/2026).
-    return new Response(body, { headers: { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'public, max-age=300' } });
+    // no-cache, like content.js: any cacheable answer (s-maxage or a public
+    // max-age) lets Vercel's CDN keep the first encoding it got, zstd from a
+    // Chrome visitor, and serve it to every browser (22/11/2026, PR #106/#107).
+    return new Response(body, { headers: { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-cache' } });
   }
   // Public site remains on Vercel. Assets allowlist is created by build-worker;
   // private files and .worker-generated never enter the asset directory.

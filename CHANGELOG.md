@@ -12,6 +12,8 @@ Notable changes to this site, in the order they landed on `main`. Newest first. 
 
 - Contribuições: `/data/contributions.json` sem `s-maxage` (`cloudflare/worker.mjs`), pra Vercel não cachear a resposta em zstd pra todo navegador. Ver [Peso do deploy](docs/architecture.md#peso-do-deploy-22112026). PR #106.
 
+- Contribuições: `/data/contributions.json` com `Cache-Control: no-cache` (`cloudflare/worker.mjs`); só tirar o `s-maxage` não bastou, a Vercel cacheia também com `public, max-age`. PR #107.
+
 ## 2026-11-21
 
 - TratyVet: novo case da loja internacional logo depois da Assopra (na seed e no D1), em `portfolio-content.js`, `project-media.mjs` e `assets/projects/tratyvet/` (16 imagens + favicon). Só a loja: área do usuário e dashboard ficam de fora. Ver [TratyVet](docs/nova-home-projetos.md#tratyvet-21112026).
