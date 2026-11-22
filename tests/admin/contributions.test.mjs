@@ -51,7 +51,7 @@ test('Worker: /data/contributions.json vem do D1, o cron atualiza e o seed cobre
   response = await get();
   assert.equal(response.status, 200);
   assert.match(response.headers.get('content-type'), /application\/json/);
-  assert.equal(response.headers.get('cache-control'), 'public, max-age=300', 'no s-maxage: the Vercel CDN must not cache one encoding for everyone');
+  assert.equal(response.headers.get('cache-control'), 'no-cache', 'the Vercel CDN must not cache one encoding for everyone');
   const stored = await response.json();
   assert.equal(stored.days.length, 365);
   assert.equal(stored.user, 'oktavio-eng');
